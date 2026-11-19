@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bookstery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --maj:#6050DC;--maj-d:#4A3BC4;--maj-l:#EEECFC;--maj-xl:#F7F6FE;
+  --ink:#0B0B10;--ink-2:#2A2A33;--muted:#5E5E6B;--line:#E6E5EE;
+  --sans:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(90px + env(safe-area-inset-top,0px))}
+body{margin:0;background:#fff;color:var(--ink);font:400 16px/1.6 var(--sans)}
+h1,h2,h3{margin:0;font-weight:800;line-height:1.08;letter-spacing:-.025em}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--maj);outline-offset:3px;border-radius:10px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- Header ---------- */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s}
+header.scrolled{border-color:var(--line)}
+.bar{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:20px;height:92px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:28px;letter-spacing:-.03em;justify-self:start}
+.brand img{width:54px;height:54px}
+.brand b{color:var(--ink)}.brand span{color:var(--maj)}
+.mini-search{justify-self:center;width:100%;max-width:380px;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .3s,transform .3s}
+header.scrolled .mini-search{opacity:1;transform:none;pointer-events:auto}
+.actions{display:flex;align-items:center;gap:14px;justify-self:end}
+.sep{width:1px;height:28px;background:var(--line)}
+
+.search{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:6px 6px 6px 18px;transition:border-color .2s,box-shadow .2s}
+.search:focus-within{border-color:var(--maj);box-shadow:0 0 0 4px rgba(96,80,220,.14)}
+.search svg{flex:none;color:var(--muted)}
+.search input{flex:1;min-width:0;width:100%;border:0;background:transparent;font:500 15px var(--sans);color:var(--ink);outline:none;padding:6px 0}
+.search button{flex:none;border:0;background:var(--ink);color:#fff;border-radius:999px;padding:9px 18px;font-weight:700;font-size:14px;transition:background .2s}
+.search button:hover{background:var(--maj)}
+
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 22px;font:700 15px var(--sans);background:var(--maj);color:#fff;white-space:nowrap;transition:background .2s,transform .15s}
+.btn:hover{background:var(--maj-d)}.btn:active{transform:scale(.97)}
+.btn.dark{background:var(--ink)}.btn.dark:hover{background:var(--ink-2)}
+.btn.white{background:#fff;color:var(--ink)}.btn.white:hover{background:var(--maj-l)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}.btn.ghost:hover{background:var(--maj-xl);box-shadow:inset 0 0 0 1.5px var(--maj);color:var(--maj)}
+.bagbtn{display:inline-flex;align-items:center;gap:10px;border:0;background:var(--maj);color:#fff;border-radius:999px;padding:8px 8px 8px 18px;font:800 15px var(--sans);white-space:nowrap;box-shadow:0 10px 24px rgba(96,80,220,.35);transition:background .2s,transform .15s}
+.bagbtn:hover{background:var(--maj-d)}.bagbtn:active{transform:scale(.97)}
+.bagbtn .amt{background:#fff;color:var(--maj);font-weight:800;border-radius:999px;padding:5px 12px;font-variant-numeric:tabular-nums}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;overflow:hidden;background:radial-gradient(1200px 500px at 50% -10%,var(--maj-l),#fff 70%)}
+.hero-in{position:relative;z-index:2;max-width:720px;margin:0 auto;padding:56px 24px 64px;text-align:center}
+.hero-logo{width:132px;height:132px;margin:0 auto 26px;display:block;filter:drop-shadow(0 18px 30px rgba(96,80,220,.25))}
+.hero h1{font-size:clamp(34px,5.2vw,60px)}
+.hero h1 em{font-style:normal;color:var(--maj)}
+.motto{font-size:clamp(17px,1.8vw,20px);color:var(--muted);max-width:34em;margin:18px auto 34px}
+.big-search{max-width:640px;margin:0 auto;padding:8px 8px 8px 24px;box-shadow:0 16px 40px rgba(11,11,16,.08)}
+.big-search input{font-size:17px;padding:10px 0}
+.big-search button{padding:13px 26px;font-size:15px}
+.search-note{min-height:1.6em;margin:12px 0 0;font-size:14px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:18px}
+.chip{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:8px 16px;font:600 14px var(--sans);transition:.2s}
+.chip:hover{border-color:var(--maj);color:var(--maj)}
+.chip[aria-pressed="true"]{background:var(--maj);border-color:var(--maj);color:#fff}
+.hero-cta{margin-top:34px}
+
+/* ---------- Quote bubbles ---------- */
+.quotes{position:relative;z-index:1}
+.bubble{margin:0;position:relative;max-width:300px;background:#fff;border:1.5px solid var(--line);border-radius:24px;padding:20px 22px 18px;box-shadow:0 18px 40px rgba(96,80,220,.13);opacity:0;transform:translateY(10px) scale(.98);transition:opacity .9s ease,transform .9s ease}
+.bubble.on{opacity:1;transform:none}
+.bubble::after{content:"";position:absolute;bottom:-11px;left:36px;width:20px;height:20px;background:#fff;border-right:1.5px solid var(--line);border-bottom:1.5px solid var(--line);transform:rotate(45deg);border-radius:0 0 5px 0}
+.bubble.right::after{left:auto;right:36px}
+.bubble p{margin:0;font:500 italic 17px/1.5 var(--sans);color:var(--ink)}
+.bubble p::before{content:"“";display:block;font:700 46px/.5 Georgia,serif;color:var(--maj);margin:8px 0 6px;font-style:normal}
+.bubble cite{display:block;margin-top:10px;font:700 normal 14px var(--sans);color:var(--maj)}
+
+/* wide screens: bubble floats in the free side space of the hero, never over content */
+@media(min-width:1280px){
+  .quotes{position:absolute;inset:0;pointer-events:none}
+  .bubble{position:absolute;width:260px;pointer-events:auto}
+  .bubble.left{left:calc((50% - 336px - 260px) / 2);top:26%}
+  .bubble.right{right:calc((50% - 336px - 260px) / 2);top:50%}
+}
+/* smaller screens: one bubble in its own reserved slot under the search */
+@media(max-width:1279px){
+  .quotes{max-width:520px;margin:0 auto;padding:0 24px 40px;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .slot{display:grid;width:100%;min-height:170px;align-items:center}
+  .bubble{grid-area:1/1;max-width:none;width:100%;text-align:center}
+  .bubble::after,.bubble.right::after{left:50%;right:auto;margin-left:-10px}
+}
+
+/* ---------- Sections ---------- */
+section{padding:72px 0}
+.sec-head{text-align:center;max-width:620px;margin:0 auto 40px}
+.sec-head h2{font-size:clamp(28px,3.4vw,40px)}
+.sec-head p{color:var(--muted);margin:12px 0 0}
+#comment{padding:48px 0 40px}
+#comment .sec-head{margin-bottom:28px}
+.steps{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:14px;background:var(--maj-xl);border-radius:24px;padding:22px 26px}
+.step{display:flex;align-items:center;gap:14px}
+.num{flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--maj);color:#fff;font-weight:800}
+.step h3{font-size:16px;letter-spacing:-.01em;margin-bottom:2px}
+.step p{margin:0;color:var(--muted);font-size:14px;line-height:1.4}
+.arrow{color:var(--maj);opacity:.5}
+
+.authors{background:var(--ink);color:#fff;border-radius:32px;padding:56px}
+.a-top{display:block;max-width:760px}
+.a-eyebrow{display:inline-block;background:rgba(96,80,220,.3);color:#c9c2ff;border-radius:999px;padding:5px 14px;font-weight:700;font-size:13px;margin-bottom:16px}
+.authors h2{font-size:clamp(28px,3.4vw,42px)}
+.authors h2 span{color:#a99fff}
+.authors p{opacity:.8;margin:16px 0 26px;max-width:34em;font-size:17px}
+.flow{list-style:none;margin:36px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;counter-reset:f}
+.flow li{position:relative;display:flex;gap:14px;align-items:center;background:rgba(255,255,255,.06);border-radius:18px;padding:16px 18px}
+.flow i{flex:none;width:34px;height:34px;border-radius:50%;background:var(--maj);display:grid;place-items:center;font-style:normal;font-weight:800}
+.flow b{display:block}.flow span{font-size:14px;opacity:.7}
+.flow li:not(:last-child)::after{content:"";position:absolute;right:-12px;top:50%;width:10px;height:10px;border-top:2px solid #a99fff;border-right:2px solid #a99fff;transform:translateY(-50%) rotate(45deg);z-index:1}
+.promises{list-style:none;margin:36px 0 0;padding:32px 0 0;border-top:1px solid rgba(255,255,255,.12);display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.promises li{display:flex;flex-direction:column;gap:6px}
+.promises i{width:44px;height:44px;border-radius:14px;background:rgba(96,80,220,.3);color:#c9c2ff;display:grid;place-items:center;margin-bottom:8px}
+.promises b{font-size:16px;line-height:1.3}
+.promises span{font-size:14px;opacity:.7}
+
+/* ---------- Footer ---------- */
+footer{border-top:1px solid var(--line);padding:40px 0 calc(28px + env(safe-area-inset-bottom,0px))}
+footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer .brand{font-size:22px}footer .brand img{width:40px;height:40px}
+footer nav{display:flex;gap:22px;font-size:14px;color:var(--muted)}
+footer nav a:hover{color:var(--ink)}
+.legal{width:100%;font-size:13px;color:var(--muted);margin:0}
+
+/* ---------- Drawer & modal ---------- */
+.scrim{position:fixed;inset:0;background:rgba(11,11,16,.45);opacity:0;pointer-events:none;transition:.25s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);background:#fff;z-index:41;transform:translateX(100%);transition:transform .3s ease;display:flex;flex-direction:column;padding:calc(22px + env(safe-area-inset-top,0px)) 24px calc(22px + env(safe-area-inset-bottom,0px))}
+.drawer.on{transform:none}
+.dh{display:flex;align-items:center;justify-content:space-between}
+.dh h2{font-size:24px}
+.dempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted);gap:10px}
+.dempty .ico{width:64px;height:64px;border-radius:20px;background:var(--maj-l);color:var(--maj);display:grid;place-items:center}
+.dempty b{color:var(--ink);font-size:17px}
+.dsum{border-top:1.5px solid var(--ink);padding-top:16px;display:flex;justify-content:space-between;font-weight:800;font-size:20px}
+.icon{width:36px;height:36px;border-radius:50%;border:0;background:transparent;color:var(--muted);display:grid;place-items:center}
+.icon:hover{background:var(--maj-xl);color:var(--ink)}
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-46%);opacity:0;pointer-events:none;transition:.25s;z-index:41;width:min(440px,calc(100% - 32px));background:#fff;border-radius:28px;padding:34px;box-shadow:0 30px 80px rgba(11,11,16,.3)}
+.modal.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.modal img{width:60px;height:60px}
+.modal h2{font-size:28px;margin:14px 0 6px}
+.modal p{color:var(--muted);margin:0 0 18px}
+.modal label{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
+.modal input{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font:500 15px var(--sans)}
+.modal input:focus{outline:none;border-color:var(--maj);box-shadow:0 0 0 4px rgba(96,80,220,.14)}
+.modal .btn{width:100%;justify-content:center;margin-top:22px}
+.modal .x{position:absolute;right:16px;top:16px}
+.modal{max-height:calc(100dvh - 32px);overflow:auto}
+.modal .hint{display:block;font-weight:500;color:var(--muted);font-size:13px;margin-left:4px}
+.gchips{display:flex;flex-wrap:wrap;gap:6px}
+.gchips .chip{padding:6px 12px;font-size:13px}
+.form-msg{min-height:1.4em;margin:12px 0 0!important;font-size:14px;font-weight:600}
+.form-msg.err{color:#C0263A}.form-msg.ok{color:var(--maj)}
+.forgot{display:block;margin:8px 0 0 auto;border:0;background:none;padding:0;color:var(--muted);font:600 13px var(--sans);text-decoration:underline;text-underline-offset:3px}
+.forgot:hover{color:var(--maj)}
+.btn[disabled]{opacity:.6;cursor:wait}
+.me{display:none}
+body.authed .join,body.authed .login,body.authed .sep{display:none}
+body.authed .me{display:inline-flex}
+.me .av{width:26px;height:26px;border-radius:50%;background:var(--maj);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:800}
+.me-list{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:10px}
+.me-list li{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid var(--line);padding-bottom:10px;font-size:15px}
+.me-list span{color:var(--muted)}.me-list b{text-align:right;overflow-wrap:anywhere}
+.demo-flag{display:inline-block;margin-top:14px;font-size:12px;font-weight:700;color:var(--muted);background:var(--maj-xl);border-radius:999px;padding:4px 10px}
+.swap{margin:18px 0 0!important;text-align:center;font-size:14px}.swap button{border:0;background:none;padding:0;color:var(--maj);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,40px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-size:15px;opacity:0;transition:.3s;pointer-events:none;z-index:60;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- Responsive ---------- */
+@media(max-width:1240px){.mini-search{display:none!important}}
+@media(max-width:1000px){.login-txt{display:none}.btn.login{padding:12px 14px}.sep{display:none}}
+@media(max-width:900px){
+  .bar{grid-template-columns:auto 1fr;height:72px}
+  .mini-search{display:none}
+  .brand{font-size:24px}.brand img{width:46px;height:46px}
+  .steps{grid-template-columns:1fr;gap:16px}.arrow{display:none}
+  .authors{padding:36px 26px}.flow{grid-template-columns:1fr}.flow li::after{display:none}.promises{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .wrap{padding:0 16px}
+  .brand span{display:none}
+  .bagbtn .lbl,.join-txt,.login-txt,.me-txt{display:none}.btn.me{padding:9px 10px}.btn.login{padding:12px 14px}.actions{gap:8px}
+  .bagbtn{padding-left:12px}.btn.join{padding:12px 14px}
+  .hero-in{padding:36px 16px 40px}
+  .hero-logo{width:104px;height:104px}
+  .big-search{padding:6px 6px 6px 16px}.big-search button{padding:11px 16px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin-left:-16px;margin-right:-16px;padding:0 16px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}.chip{flex:none}
+  section{padding:52px 0}
+  .promises{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header id="hdr">
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="Bookstery, accueil"><img src="mark.png" alt=""><span><b>Book</b>stery</span></a>
+    <div class="actions">
+      <button class="bagbtn" id="bagBtn" type="button" aria-label="Ouvrir mon Bookster Bag, vide, 0,00 €">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span class="lbl">Bookster Bag</span>
+        <span class="amt" id="bagAmt">0,00&nbsp;€</span>
+      </button>
+      <button class="btn dark join" type="button" data-join aria-label="Deviens un Bookster">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="8" r="4"/><path d="M3 21a7 7 0 0 1 14 0M19 8v6M16 11h6"/></svg>
+        <span class="join-txt">Deviens un Bookster</span>
+      </button>
+      <span class="sep" aria-hidden="true"></span>
+      <button class="btn ghost login" type="button" data-login aria-label="Se connecter">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        <span class="login-txt">Se connecter</span>
+      </button>
+      <button class="btn ghost me" type="button" id="meBtn" aria-label="Mon espace Bookster">
+        <span class="av" id="meAv" aria-hidden="true">B</span>
+        <span class="me-txt" id="meTxt">Mon espace</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="hero-in">
+      <img class="hero-logo" src="mark.png" alt="Logo Bookstery">
+      <h1>Rejoignez les <em>Booksters</em> et faites tourner les livres.</h1>
+      <p class="motto">La première plateforme qui donne une seconde vie aux livres, et une première aux auteurs.</p>
+
+      <form class="search big-search" role="search" id="heroSearch" data-search>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label class="sr" for="q">Rechercher un livre</label>
+        <input id="q" type="search" placeholder="Rechercher un titre, un auteur, un ISBN…" autocomplete="off">
+        <button type="submit">Rechercher</button>
+      </form>
+      <p class="search-note" id="note" aria-live="polite"></p>
+
+      <div class="chips" id="chips" role="group" aria-label="Genres"></div>
+    </div>
+
+    <div class="quotes" id="quotes" aria-label="Citations sur la lecture">
+      <div class="slot" id="slot">
+        <figure class="bubble left" id="bA" aria-hidden="true"><p></p><cite></cite></figure>
+        <figure class="bubble right" id="bB" aria-hidden="true"><p></p><cite></cite></figure>
+      </div>
+    </div>
+  </div>
+
+  <section id="comment">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Comment ça marche</h2>
+        <p>Trois gestes pour faire circuler les livres.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><div><h3>Vends tes livres</h3><p>Ceux qui dorment sur tes étagères.</p></div></div>
+        <svg class="arrow" width="28" height="14" viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 7h25M20 1l6 6-6 6"/></svg>
+        <div class="step"><div class="num">2</div><div><h3>Trouve ta prochaine lecture</h3><p>Par titre, auteur ou genre.</p></div></div>
+        <svg class="arrow" width="28" height="14" viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 7h25M20 1l6 6-6 6"/></svg>
+        <div class="step"><div class="num">3</div><div><h3>Ouvre ton cadeau mystère</h3><p>Un texte inédit dans chaque Bag.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="auteurs" style="padding-top:0">
+    <div class="wrap">
+      <div class="authors">
+        <div class="a-top">
+          <div>
+            <span class="a-eyebrow">Auteurs</span>
+            <h2>Ton texte, <span>cadeau mystère</span> de toute une communauté.</h2>
+            <p>Envoie une nouvelle, un extrait ou ton manuscrit : il sera glissé en surprise dans les Bookster Bags des lecteurs. Des Booksters qui ne te connaissent pas encore vont l’ouvrir, te lire, et parler de toi.</p>
+            <button class="btn" type="button" data-toast="L’envoi de manuscrits ouvrira bientôt. Merci de ton intérêt !">Envoyer mon texte</button>
+          </div>
+        </div>
+        <ol class="flow" aria-label="Le parcours de ton texte">
+            <li><i>1</i><div><b>Tu envoies ton texte</b><span>Nouvelle, extrait ou manuscrit.</span></div></li>
+            <li><i>2</i><div><b>Il part en cadeau mystère</b><span>Glissé dans les Bookster Bags de la communauté.</span></div></li>
+            <li><i>3</i><div><b>Les Booksters te découvrent</b><span>Ils te lisent, te recommandent, te suivent.</span></div></li>
+          </ol>
+        <ul class="promises">
+          <li><i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6s3-2 10 0 10 0 10 0v13s-3 2-10 0-10 0-10 0z"/><path d="M12 6v13"/></svg></i><b>Lu par de vrais lecteurs passionnés</b><span>Ton texte arrive entre les mains de Booksters qui aiment lire et le disent.</span></li>
+          <li><i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M15 14.5a5 5 0 0 1 6.5 5"/></svg></i><b>Ton nom mis en avant dans la communauté</b><span>Profil d’auteur, recommandations et lecteurs qui te suivent.</span></li>
+          <li><i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></i><b>Gratuit et protégé</b><span>Aucun frais pour les auteurs, et ton texte reste le tien.</span></li>
+          <li><i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3L22 9.2l-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.2l7.1-.9z"/></svg></i><b>La promesse d’une édition</b><span>Les textes plébiscités par la communauté sont édités dans nos librairies partenaires.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="mark.png" alt=""><span><b>Book</b>stery</span></a>
+    <nav aria-label="Pied de page"><a href="#comment">Comment ça marche</a><a href="#auteurs">Auteurs</a><a href="#top">Aide</a><a href="#top">Mentions légales</a></nav>
+    <p class="legal">© 2026 Bookstery. Prototype.</p>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim"></div>
+
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle" aria-hidden="true">
+  <div class="dh"><h2 id="dTitle">Bookster Bag</h2><button class="icon" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div class="dempty">
+    <div class="ico"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></div>
+    <b>Ton Bookster Bag est vide</b>
+    <span>Les premiers livres arrivent bientôt.</span>
+    <button class="btn" type="button" data-join style="margin-top:8px">Deviens un Bookster</button>
+  </div>
+  <div class="dsum"><span>Total</span><span id="dTotal">0,00 €</span></div>
+</aside>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" aria-hidden="true">
+  <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <img src="mark.png" alt="">
+  <h2 id="mTitle">Deviens un Bookster</h2>
+  <p>Sois prévenu dès l’arrivée des premiers livres et des premiers manuscrits.</p>
+  <form id="joinForm" novalidate>
+    <label for="fn">Prénom</label><input id="fn" required autocomplete="given-name">
+    <label for="em">E-mail</label><input id="em" type="email" required autocomplete="email">
+    <label for="pw">Mot de passe <span class="hint">8 caractères minimum</span></label><input id="pw" type="password" required minlength="8" autocomplete="new-password">
+    <label for="city">Ville</label><input id="city" autocomplete="address-level2">
+    <label id="gLbl">Tes 3 genres préférés <span class="hint" id="gCount">0/3</span></label>
+    <div class="gchips" id="gChips" role="group" aria-labelledby="gLbl"></div>
+    <p class="form-msg" id="joinMsg" role="alert"></p>
+    <button class="btn" type="submit" id="joinSubmit">Rejoindre les Booksters</button>
+  </form>
+  <p class="swap">Déjà Bookster ? <button type="button" data-login>Se connecter</button></p>
+</div>
+
+<div class="modal" id="login" role="dialog" aria-modal="true" aria-labelledby="lTitle" aria-hidden="true">
+  <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <img src="mark.png" alt="">
+  <h2 id="lTitle">Bon retour, Bookster</h2>
+  <p>Connecte-toi pour retrouver ton Bookster Bag et tes auteurs suivis.</p>
+  <form id="loginForm" novalidate>
+    <label for="lem">E-mail</label><input id="lem" type="email" required autocomplete="email">
+    <label for="lpw">Mot de passe</label><input id="lpw" type="password" required autocomplete="current-password">
+    <button class="forgot" type="button" id="forgot">Mot de passe oublié ?</button>
+    <p class="form-msg" id="loginMsg" role="alert"></p>
+    <button class="btn" type="submit" id="loginSubmit">Se connecter</button>
+  </form>
+  <p class="swap">Pas encore Bookster ? <button type="button" data-join>Deviens un Bookster</button></p>
+</div>
+
+<div class="modal" id="account" role="dialog" aria-modal="true" aria-labelledby="aTitle" aria-hidden="true">
+  <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <img src="mark.png" alt="">
+  <h2 id="aTitle">Mon espace Bookster</h2>
+  <p id="aHello">Bienvenue !</p>
+  <ul class="me-list">
+    <li><span>Prénom</span><b id="aPrenom">—</b></li>
+    <li><span>E-mail</span><b id="aEmail">—</b></li>
+    <li><span>Ville</span><b id="aVille">—</b></li>
+    <li><span>Genres préférés</span><b id="aGenres">—</b></li>
+  </ul>
+  <button class="btn dark" type="button" id="logout">Se déconnecter</button>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+var QUOTES=[
+ ["Lire, c’est boire et manger. L’esprit qui ne lit pas maigrit comme le corps qui ne mange pas.","Victor Hugo"],
+ ["La lecture est une amitié.","Marcel Proust"],
+ ["La lecture agrandit l’âme.","Voltaire"],
+ ["Je n’ai jamais eu de chagrin qu’une heure de lecture ne m’ait ôté.","Montesquieu"],
+ ["Une bibliothèque est une chambre d’amis.","Tahar Ben Jelloun"],
+ ["J’ai toujours imaginé que le Paradis serait une sorte de bibliothèque.","Jorge Luis Borges"]
+];
+var GENRES=["Romans","Polar","Thriller","Fantasy","Science-fiction","Romance","BD","Manga","Poésie","Jeunesse","Classiques","Scolaire"];
+function $(i){return document.getElementById(i)}
+var EUR=new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"});
+function toast(m){var t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove("show")},2800)}
+
+/* Bag amount in euros */
+$("bagAmt").textContent=EUR.format(0);$("dTotal").textContent=EUR.format(0);
+
+/* Header: mini search appears once the big one scrolls away */
+var hdr=$("hdr");
+new IntersectionObserver(function(e){var off=!e[0].isIntersecting;hdr.classList.toggle("scrolled",off);
+},{rootMargin:"-80px 0px 0px 0px"}).observe($("heroSearch"));
+
+/* Genres */
+var genre=null;
+$("chips").innerHTML=GENRES.map(function(g){return '<button class="chip" type="button" aria-pressed="false">'+g+'</button>'}).join("");
+$("chips").addEventListener("click",function(e){var b=e.target.closest(".chip");if(!b)return;
+  var on=b.getAttribute("aria-pressed")!=="true";
+  $("chips").querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed","false")});
+  b.setAttribute("aria-pressed",on);genre=on?b.textContent:null;
+  $("note").textContent=on?"Pas encore de livres « "+genre+" » : les premiers arrivent bientôt.":"";});
+
+/* Search (no books yet) */
+document.querySelectorAll("[data-search]").forEach(function(f){f.addEventListener("submit",function(e){e.preventDefault();
+  var v=f.querySelector("input").value.trim();
+  if(f.id!=="heroSearch"){$("q").value=v;window.scrollTo({top:0})}
+  $("note").textContent=v?"Aucun livre pour « "+v+" » pour l’instant : le catalogue ouvre bientôt.":"Tape un titre, un auteur ou un ISBN.";})});
+
+/* Drawer / modal */
+var lastFocus;
+function open(el){closeAll(true);lastFocus=document.activeElement;$("scrim").classList.add("on");el.classList.add("on");el.setAttribute("aria-hidden","false");var f=el.querySelector("input")||el.querySelector("button");f&&setTimeout(function(){f.focus()},60)}
+function closeAll(keep){["drawer","modal","login","account"].forEach(function(id){$(id).classList.remove("on");$(id).setAttribute("aria-hidden","true")});$("scrim").classList.remove("on");if(!keep&&lastFocus)lastFocus.focus()}
+$("bagBtn").addEventListener("click",function(){open($("drawer"))});
+document.addEventListener("click",function(e){
+  if(e.target.closest("[data-join]"))open($("modal"));
+  if(e.target.closest("[data-login]"))open($("login"));
+  if(e.target.closest("[data-close]"))closeAll();
+  var t=e.target.closest("[data-toast]");if(t)toast(t.getAttribute("data-toast"));});
+$("scrim").addEventListener("click",function(){closeAll()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeAll()});
+
+/* ================= Authentification Supabase ================= */
+var CFG=window.BOOKSTERY_CONFIG||{};
+var sb=null;
+if(CFG.SUPABASE_URL&&CFG.SUPABASE_ANON_KEY&&window.supabase&&window.supabase.createClient){
+  try{sb=window.supabase.createClient(CFG.SUPABASE_URL,CFG.SUPABASE_ANON_KEY)}catch(e){console.error("Bookstery : impossible de créer le client Supabase",e)}
+}
+if(sb)console.info("Bookstery : Supabase connecté ("+CFG.SUPABASE_URL+").");
+else console.info("Bookstery : mode démo. Remplis SUPABASE_URL et SUPABASE_ANON_KEY dans config.js pour activer l’inscription et la connexion"+(window.supabase?"":" (la librairie supabase-js n’a pas pu être chargée)")+".");
+
+function setMsg(id,txt,kind){var m=$(id);m.textContent=txt||"";m.className="form-msg"+(kind?" "+kind:"")}
+function busy(btn,on,label){if(on){btn.dataset.label=btn.textContent;btn.textContent=label;btn.disabled=true}else{btn.textContent=btn.dataset.label||btn.textContent;btn.disabled=false}}
+function frErr(err){
+  var m=((err&&(err.message||err.error_description))||"").toLowerCase(),c=(err&&err.code)||"";
+  if(c==="user_already_exists"||m.indexOf("already registered")>-1||m.indexOf("already exists")>-1)return"Un compte existe déjà avec cet e-mail. Connecte-toi plutôt.";
+  if(c==="weak_password"||m.indexOf("password should")>-1||m.indexOf("weak")>-1)return"Mot de passe trop faible : 8 caractères minimum, mélange lettres et chiffres.";
+  if(c==="invalid_credentials"||m.indexOf("invalid login")>-1)return"E-mail ou mot de passe incorrect.";
+  if(c==="email_not_confirmed"||m.indexOf("not confirmed")>-1)return"Ton e-mail n’est pas encore confirmé. Clique sur le lien reçu par mail.";
+  if(c==="over_email_send_rate_limit"||m.indexOf("rate limit")>-1||err&&err.status===429)return"Trop de tentatives. Réessaie dans quelques minutes.";
+  if(m.indexOf("invalid")>-1&&m.indexOf("email")>-1)return"Cette adresse e-mail n’est pas valide.";
+  if(m.indexOf("failed to fetch")>-1||m.indexOf("network")>-1)return"Connexion impossible. Vérifie ta connexion internet.";
+  return"Une erreur est survenue. Réessaie dans un instant.";
+}
+var EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/* 3 genres préférés */
+var picked=[];
+$("gChips").innerHTML=GENRES.map(function(g){return '<button class="chip" type="button" aria-pressed="false" data-g="'+g+'">'+g+'</button>'}).join("");
+$("gChips").addEventListener("click",function(e){var b=e.target.closest(".chip");if(!b)return;var g=b.dataset.g,i=picked.indexOf(g);
+  if(i>-1){picked.splice(i,1);b.setAttribute("aria-pressed","false");setMsg("joinMsg","")}
+  else if(picked.length>=3){setMsg("joinMsg","3 genres maximum : retire-en un pour en choisir un autre.","err");return}
+  else{picked.push(g);b.setAttribute("aria-pressed","true");setMsg("joinMsg","")}
+  $("gCount").textContent=picked.length+"/3"});
+function resetGenres(){picked=[];$("gChips").querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed","false")});$("gCount").textContent="0/3"}
+
+/* Inscription */
+$("joinForm").addEventListener("submit",async function(e){
+  e.preventDefault();
+  var prenom=$("fn").value.trim(),email=$("em").value.trim(),password=$("pw").value,ville=$("city").value.trim(),btn=$("joinSubmit");
+  if(!prenom)return setMsg("joinMsg","Indique ton prénom.","err");
+  if(!EMAIL_RE.test(email))return setMsg("joinMsg","Cette adresse e-mail n’est pas valide.","err");
+  if(password.length<8)return setMsg("joinMsg","Le mot de passe doit faire au moins 8 caractères.","err");
+  if(!sb){var f=this;closeAll();f.reset();resetGenres();setMsg("joinMsg","");toast("Bienvenue chez les Booksters, "+prenom+" ! (Mode démo : rien n’est envoyé.)");return}
+  busy(btn,true,"Création…");setMsg("joinMsg","");
+  try{
+    var r=await sb.auth.signUp({email:email,password:password,options:{data:{prenom:prenom,ville:ville,genres_preferes:picked.slice()},emailRedirectTo:location.origin+location.pathname}});
+    if(r.error)throw r.error;
+    /* Supabase renvoie un utilisateur sans identité quand l'e-mail est déjà pris (anti-énumération) */
+    if(r.data&&r.data.user&&Array.isArray(r.data.user.identities)&&r.data.user.identities.length===0)throw{code:"user_already_exists"};
+    this.reset();resetGenres();
+    if(!r.data.session){setMsg("joinMsg","Vérifie ta boîte mail pour confirmer ton compte.","ok")}
+    else{closeAll();toast("Bienvenue chez les Booksters, "+prenom+" !")}
+  }catch(err){setMsg("joinMsg",frErr(err),"err")}
+  finally{busy(btn,false)}
+});
+
+/* Connexion */
+$("loginForm").addEventListener("submit",async function(e){
+  e.preventDefault();
+  var email=$("lem").value.trim(),password=$("lpw").value,btn=$("loginSubmit");
+  if(!EMAIL_RE.test(email))return setMsg("loginMsg","Cette adresse e-mail n’est pas valide.","err");
+  if(!password)return setMsg("loginMsg","Indique ton mot de passe.","err");
+  if(!sb){closeAll();this.reset();setMsg("loginMsg","");toast("Connexion simulée (mode démo) : ajoute tes clés Supabase pour l’activer.");return}
+  busy(btn,true,"Connexion…");setMsg("loginMsg","");
+  try{var r=await sb.auth.signInWithPassword({email:email,password:password});if(r.error)throw r.error;this.reset();closeAll();toast("Connecté·e. Bienvenue !")}
+  catch(err){setMsg("loginMsg",frErr(err),"err")}
+  finally{busy(btn,false)}
+});
+
+/* Mot de passe oublié */
+$("forgot").addEventListener("click",async function(){
+  var email=$("lem").value.trim();
+  if(!EMAIL_RE.test(email))return setMsg("loginMsg","Saisis ton e-mail ci-dessus, puis clique sur « Mot de passe oublié ? ».","err");
+  if(!sb)return setMsg("loginMsg","Mode démo : aucun e-mail n’est envoyé.","ok");
+  this.disabled=true;
+  try{var r=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(r.error)throw r.error;
+    setMsg("loginMsg","Si un compte existe pour cet e-mail, un lien de réinitialisation vient d’être envoyé.","ok")}
+  catch(err){setMsg("loginMsg",frErr(err),"err")}
+  finally{this.disabled=false}
+});
+
+/* État connecté */
+var current=null;
+async function showUser(user){
+  current=user;document.body.classList.toggle("authed",!!user);
+  if(!user)return;
+  var md=user.user_metadata||{},p=null;
+  try{var r=await sb.from("profiles").select("prenom, ville, genres_preferes").eq("id",user.id).maybeSingle();if(!r.error)p=r.data}catch(e){}
+  var prenom=(p&&p.prenom)||md.prenom||"",ville=(p&&p.ville)||md.ville||"",genres=(p&&p.genres_preferes)||md.genres_preferes||[];
+  $("meTxt").textContent=prenom||"Mon espace";$("meAv").textContent=(prenom||user.email||"B").charAt(0).toUpperCase();
+  $("meBtn").setAttribute("aria-label","Mon espace Bookster"+(prenom?", "+prenom:""));
+  $("aHello").textContent=prenom?"Bonjour "+prenom+", content de te revoir !":"Bienvenue !";
+  $("aPrenom").textContent=prenom||"—";$("aEmail").textContent=user.email||"—";$("aVille").textContent=ville||"—";
+  $("aGenres").textContent=genres&&genres.length?genres.join(", "):"—";
+}
+$("meBtn").addEventListener("click",function(){open($("account"))});
+$("logout").addEventListener("click",async function(){if(!sb)return;busy(this,true,"Déconnexion…");try{await sb.auth.signOut()}finally{busy(this,false);closeAll();toast("À bientôt, Bookster !")}});
+if(sb){
+  sb.auth.getSession().then(function(r){showUser(r.data&&r.data.session?r.data.session.user:null)});
+  sb.auth.onAuthStateChange(function(ev,session){
+    /* Laisser le callback rendre la main avant tout appel Supabase (recommandation supabase-js) */
+    setTimeout(function(){showUser(session?session.user:null);if(ev==="PASSWORD_RECOVERY")toast("Choisis un nouveau mot de passe depuis ton espace (bientôt disponible).")},0);
+  });
+}
+
+/* Quote bubbles: soft fade in, 6 s visible, soft fade out, next quote */
+var qi=0,side=0,timer=null,FADE=900,SHOW=6000;
+var bubbles=[$("bA"),$("bB")];
+function cycle(){
+  clearTimeout(timer);
+  var b=bubbles[side],q=QUOTES[qi];
+  b.querySelector("p").textContent=q[0];b.querySelector("cite").textContent="— "+q[1];
+  b.setAttribute("aria-hidden","false");b.classList.add("on");
+  timer=setTimeout(function(){
+    b.classList.remove("on");b.setAttribute("aria-hidden","true");
+    timer=setTimeout(function(){qi=(qi+1)%QUOTES.length;side=1-side;cycle()},FADE+150);
+  },FADE+SHOW);
+}
+document.addEventListener("visibilitychange",function(){if(document.hidden){clearTimeout(timer);bubbles.forEach(function(b){b.classList.remove("on")})}else{cycle()}});
+cycle();
+</script>
+</body>
+</html>

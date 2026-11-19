@@ -1,0 +1,20 @@
+/*
+ * Bookstery — configuration Supabase (fichier lu par le navigateur)
+ *
+ * Où trouver ces deux valeurs :
+ *   Supabase > ton projet > Project Settings > API (ou "API Keys")
+ *   - SUPABASE_URL      : "Project URL"  (ex. https://abcd1234.supabase.co)
+ *   - SUPABASE_ANON_KEY : clé "anon public" (ou "publishable", commence par eyJ... ou sb_publishable_...)
+ *
+ * La clé anon/publishable est FAITE pour le navigateur : elle est visible par tous,
+ * c'est la sécurité RLS de la base qui protège les données.
+ *
+ * ⚠️ Ne mets JAMAIS ici la clé "service_role" / "secret" : elle donne tous les droits
+ *    sur ta base et ne doit vivre que sur un serveur.
+ *
+ * Laisse les deux champs vides pour garder le site en mode démo.
+ */
+window.BOOKSTERY_CONFIG = {
+  SUPABASE_URL: "",
+  SUPABASE_ANON_KEY: ""
+};
