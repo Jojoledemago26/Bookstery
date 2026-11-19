@@ -1372,7 +1372,10 @@ document.addEventListener("click",function(e){
   var d=e.target.closest("[data-certdl]");
   if(d){var c=certs[d.getAttribute("data-certdl")];if(!c)return;
     var html='<!doctype html><meta charset="utf-8"><title>Certificat '+certNo(c.id)+'</title><body style="font-family:system-ui;max-width:640px;margin:40px auto;padding:0 16px;color:#111"><h1 style="font-size:22px">Bookstery · Certificat d’horodatage</h1><p><b>N°</b> '+certNo(c.id)+'</p><p><b>Titre</b> '+esc(c.titre)+'</p><p><b>Auteur</b> '+esc(c.auteur||"")+'</p><p><b>Genre</b> '+esc(c.genre)+'</p><p><b>Longueur</b> '+c.nb_mots+' mots</p><p><b>Déposé le</b> '+esc(frDate(c.created_at))+' (Paris) · '+new Date(c.created_at).toISOString()+'</p><p><b>Empreinte SHA-256</b><br><code style="word-break:break-all">'+c.sha256+'</code></p><p><b>Analyse anti-IA</b> '+(c.ai_score==null?"non lancée (démo)":Math.round(c.ai_score*100)+" % IA (seuil 50 %)")+'</p></body>';
-    var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([html],{type:"text/html"}));a.download="certificat-"+certNo(c.id)+".html";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);
+    var fname="certificat-"+certNo(c.id)+".html";
+    /* Dans l’aperçu claude.ai, le téléchargement passe par la permission « downloads » ; sur le vrai site, par un lien classique */
+    if(window.claude&&typeof window.claude.use==="function"){window.claude.use("downloads").then(function(dl){if(dl)dl.save({filename:fname,data:html}).catch(function(){});else toast("Téléchargement indisponible ici : copie l’empreinte, elle suffit à prouver ton dépôt.")});return}
+    var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([html],{type:"text/html"}));a.download=fname;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);
     toast("Si le téléchargement ne démarre pas, copie l’empreinte : elle suffit à prouver ton dépôt.")}
 });
 
