@@ -688,7 +688,10 @@ document.addEventListener("click",function(e){
   if(e.target.closest("[data-login]"))open($("login"));
   if(e.target.closest("[data-close]"))closeAll();
   var t=e.target.closest("[data-toast]");if(t)toast(t.getAttribute("data-toast"));});
-$("scrim").addEventListener("click",function(){closeAll()});
+$("scrim").addEventListener("click",function(e){
+  /* Un clic sur le logo Bookstery, même sous le voile d’une fenêtre ouverte, ramène à l’accueil */
+  var b=document.querySelector("header .brand").getBoundingClientRect();
+  if(e.clientX>=b.left&&e.clientX<=b.right&&e.clientY>=b.top&&e.clientY<=b.bottom&&typeof goHome==="function")goHome();else closeAll()});
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeAll()});
 
 /* ================= Authentification Supabase ================= */
