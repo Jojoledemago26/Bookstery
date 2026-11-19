@@ -381,6 +381,13 @@ body.authed .me{display:inline-flex}
 .refus{border:1.5px solid #F2B8C0;background:#FDF1F3;border-radius:18px;padding:18px 20px;color:#7A1626}
 .refus b{display:block;font-size:17px;margin-bottom:6px;color:#9B1C2E}
 .refus .score{font-size:34px;font-weight:800;letter-spacing:-.02em;color:#C0263A;font-variant-numeric:tabular-nums}
+.au-demo{display:flex;flex-direction:column;gap:8px;background:var(--maj-xl);border:1px dashed #CFCAF6;border-radius:16px;padding:12px 14px;margin:10px 0 2px}
+.au-demo[hidden]{display:none}
+.au-demo>span{font-size:13px;font-weight:600;color:var(--maj-d)}
+.au-demo-b{display:flex;flex-wrap:wrap;gap:6px}
+.au-demo-b button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:700 12.5px var(--sans);cursor:pointer}
+.au-demo-b .ok{color:#1C7A4A;border-color:#B9DEC9}.au-demo-b .ok:hover{background:#E8F6EE}
+.au-demo-b .ko{color:#9B1C2E;border-color:#F2B8C0}.au-demo-b .ko:hover{background:#FDF1F3}
 .refus.soft{border-color:#F1D9A6;background:#FFF8EA;color:#6B4A12}
 .refus.soft b{color:#8A5A0B}
 .refus-tip{margin:12px 0 0!important;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.7);font-size:14px;color:inherit!important}
@@ -395,7 +402,7 @@ body.authed .me{display:inline-flex}
 .cert dt{color:var(--muted)}.cert dd{margin:0;color:var(--ink);font-weight:600;min-width:0;overflow-wrap:anywhere}
 .cert .hash{font:600 12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all}
 .cert .ia{color:#1C7A4A}
-.cert-demo{position:absolute;top:14px;right:-6px;background:#C0263A;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px 0 0 6px}
+.cert-demo{position:absolute;top:-11px;right:18px;background:#C0263A;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px}
 .cert-act{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .modal .cert-act .btn{width:auto;margin:0;padding:9px 16px;font-size:13.5px}
 .cert-legal{margin:12px 0 0!important;font-size:12px!important;color:var(--muted)}
@@ -980,6 +987,16 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
   </div>
 
   <div id="auDepot" role="tabpanel" aria-labelledby="tabDepot">
+    <div class="au-demo" id="auDemo" hidden>
+      <span>Démo : remplis le formulaire avec un exemple, puis clique sur « Analyser et déposer ».</span>
+      <div class="au-demo-b">
+        <button type="button" data-exemple="conforme" class="ok">✓ Texte conforme</button>
+        <button type="button" data-exemple="illicite" class="ko">✗ Contenu illicite</button>
+        <button type="button" data-exemple="fautes" class="ko">✗ Bourré de fautes</button>
+        <button type="button" data-exemple="recette" class="ko">✗ Recette de cuisine</button>
+        <button type="button" data-exemple="anglais" class="ko">✗ En anglais</button>
+      </div>
+    </div>
     <form id="auForm" novalidate>
       <div class="au-row">
         <div><label for="exTitre">Titre</label><input id="exTitre" maxlength="200" required></div>
@@ -1719,6 +1736,7 @@ function showModRefus(motif,msg,conseil){
 }
 /* Mode démo uniquement : simulation simplifiée (la vraie vérification se fait côté serveur, par un modèle d’IA) */
 function demoModeration(t){
+  if(t.indexOf(MARQUEUR_ILLICITE)>-1)return"contenu_interdit";
   var words=t.toLowerCase().match(/[a-zàâäçéèêëîïôöùûüœæ']+/g)||[],n=words.length||1;
   var fr={"le":1,"la":1,"les":1,"de":1,"des":1,"du":1,"et":1,"un":1,"une":1,"est":1,"que":1,"qui":1,"dans":1,"pour":1,"pas":1,"il":1,"elle":1,"je":1,"ne":1,"se":1,"sur":1,"au":1,"en":1,"à":1,"on":1,"avait":1,"était":1};
   var frRatio=words.filter(function(w){return fr[w]}).length/n;
@@ -1837,6 +1855,23 @@ $("auForm").addEventListener("submit",async function(e){
   finally{busy(btn,false)}
 });
 
+
+/* --- Exemples de dépôt pour la démo (mode démo uniquement) --- */
+var SUITE_BROUILLARD="La boutique du bouquiniste se trouvait au pied des pentes, coincée entre une herboristerie et un atelier de reliure qui sentait la colle chaude. Monsieur Delorme leva à peine les yeux de son registre quand la porte fit tinter sa clochette. C’était un petit homme sec, aux lunettes rondes, qui avait l’air d’avoir été imprimé en même temps que ses livres.\n\nVasseur posa le roman sur le comptoir. Le vieil homme le reconnut aussitôt, et quelque chose passa sur son visage, une ombre rapide, comme un nuage sur la Saône.\n\n« Je l’ai vendu samedi, dit-il. À une jeune femme. Elle a payé en pièces de deux euros, toutes neuves. Elle a demandé si j’avais d’autres livres de la même collection, puis elle est repartie sans rien acheter de plus. »\n\nKarim nota tout dans son carnet. Vasseur, elle, regardait les étagères. Des milliers de dos usés, rangés sans ordre apparent, et pourtant elle devinait une logique secrète, celle d’un homme qui avait passé sa vie à classer les histoires des autres.\n\n« Et ce livre, avant elle ? Qui vous l’avait vendu ? »\n\nDelorme hésita. Il retira ses lunettes, les essuya lentement avec un coin de son gilet, comme on gagne du temps avant un aveu. « Personne ne me l’a vendu, commissaire. Il était dans un carton déposé devant ma porte, il y a trois semaines. Une vingtaine de romans, tous annotés de la même main. J’ai cru à un héritage dont quelqu’un voulait se débarrasser. Ça arrive souvent, vous savez. Les gens meurent, et leurs livres finissent sur un trottoir. »\n\nIl disparut dans l’arrière-boutique et revint avec une boîte en carton marquée au feutre d’un seul mot : « Rendez-les ». Vasseur sentit le froid du matin remonter le long de sa nuque. Elle feuilleta le premier volume. Dans la marge, la même écriture appliquée. Une phrase soulignée, encore. Puis une autre, trois pages plus loin. Elle comprit que ce n’étaient pas des notes de lecture. C’était un message découpé en morceaux, dispersé dans vingt livres, et il fallait les lire dans le bon ordre pour l’entendre.\n\n« Combien en avez-vous vendu ? demanda-t-elle.\n\n— Onze, peut-être douze. Je ne tiens pas de liste pour les livres à deux euros. »\n\nKarim siffla entre ses dents. Onze livres éparpillés dans la ville, onze morceaux d’une phrase que quelqu’un voulait faire lire à Lyon tout entière, ou peut-être à une seule personne. Vasseur reposa délicatement le carton, comme s’il contenait des œufs.\n\nIls sortirent dans la rue. Le brouillard s’était levé, et la colline apparaissait maintenant dans une lumière pâle, avec ses façades ocre et ses fenêtres hautes. Les traboules, ces passages secrets qui traversent les immeubles d’une rue à l’autre, avaient été construites pour les canuts, les ouvriers de la soie, afin qu’ils puissent porter leurs étoffes à l’abri de la pluie. Vasseur pensa que la ville entière était un livre aux pages cousues ensemble, et que la clé dans sa poche ouvrait l’une de ces pages.\n\n« On commence par où ? demanda Karim.\n\n— Par la jeune femme aux pièces neuves. Les gens qui paient avec des pièces toutes neuves sortent souvent de la banque d’en face. Va demander les images de la caméra du distributeur. »\n\nIl partit en courant, son café refroidi à la main. Vasseur resta seule sur le trottoir. Elle sortit la clé, la soupesa, la tourna dans la lumière. Sur l’anneau, presque effacé, un chiffre était gravé : 1831. L’année de la première révolte des canuts. Elle sourit malgré elle. Quelqu’un avait le goût de l’histoire, et un sens certain de la mise en scène.\n\nElle remonta la montée de la Grande-Côte, à pied, parce qu’elle réfléchissait toujours mieux en marchant. À chaque palier, la ville s’ouvrait un peu plus sous ses yeux : les toits de la Presqu’île, les deux fleuves qui se rejoignent plus au sud, la silhouette de Fourvière sur l’autre rive. Au sommet, sur la place, un vieil homme donnait du pain aux pigeons. Il la regarda passer avec une curiosité tranquille, puis, au moment où elle allait le dépasser, il lui tendit un petit papier plié en quatre.\n\n« On m’a dit de vous donner ça, si une femme passait avec une clé à la main. »\n\nElle déplia le papier. Une seule ligne, de la même écriture appliquée : « Page cent douze. Vous avez trouvé le début. Maintenant, trouvez la fin. »\n\nQuand elle releva la tête, le vieil homme et ses pigeons avaient disparu, et il ne restait sur la place que le vent et le bruit lointain d’un tramway.";
+var MARQUEUR_ILLICITE="[Passage simulé pour la démonstration]";
+function exemple(type){
+  var base=DEMO_TEXTES[0].texte+"\n\n"+SUITE_BROUILLARD,t,titre="Brouillard sur le quai Saint-Vincent",genre="Polar";
+  if(type==="conforme")t=base;
+  else if(type==="illicite")t=DEMO_TEXTES[0].texte+"\n\n"+MARQUEUR_ILLICITE+" À cet endroit, le manuscrit contiendrait des propos haineux visant un groupe de personnes et un appel à la violence. Ce passage n’est volontairement pas écrit : il sert uniquement à montrer comment Bookstery refuse un contenu illicite.\n\n"+SUITE_BROUILLARD;
+  else if(type==="fautes"){t=base.replace(/[.!?;:…«»,]/g,"").replace(/\bc’était\b/gi,"cété").replace(/\bqu(e|i)\b/gi,function(m,x){return x==="e"?"ke":"ki"}).replace(/\best\b/g,"é").replace(/\bbeaucoup\b/g,"bcp").replace(/\bpourquoi\b/g,"pk").replace(/\bavait\b/g,"avé").replace(/\bses\b/g,"cé");titre="brouillar sur le kai"}
+  else if(type==="recette"){var l=["Ingrédients pour 6 personnes :","- 250 g de farine","- 4 oeufs","- 50 cl de lait","- 30 g de beurre fondu","- 1 pincée de sel","Préchauffez le four à 180 °C.","Mélangez la farine et le sel dans un saladier.","Ajoutez les oeufs un à un avec une cuillère en bois.","Versez le lait petit à petit en mélangeant.","Faites cuire 25 minutes et laissez refroidir."],o=[];while(o.join(" ").split(/\s+/).length<1100)o=o.concat(l);t=o.join("\n");titre="Ma recette de clafoutis";genre="Romans"}
+  else{var e="The fog had risen from the river before dawn and swallowed the barges one by one. Inspector Vasseur liked this hour, when the city hesitated between night and day. She said it was the time when people forgot to lie. Someone had left a book on a bench by the quay, open at page one hundred and twelve, with an old brass key between the pages.",o2=[];while(o2.join(" ").split(/\s+/).length<1100)o2.push(e);t=o2.join("\n\n");titre="Fog on the quay"}
+  $("exTitre").value=titre;$("exGenre").value=genre;$("exTexte").value=t;$("exCert").checked=true;calib();
+  setMsg("auMsg","");$("auResult").hidden=true;$("auSteps").hidden=true;
+  $("auSubmit").scrollIntoView({behavior:"smooth",block:"center"});$("auSubmit").classList.add("tour-hi");setTimeout(function(){$("auSubmit").classList.remove("tour-hi")},2500);
+}
+document.addEventListener("click",function(e){var b=e.target.closest("[data-exemple]");if(b)exemple(b.getAttribute("data-exemple"))});
+if(!sb)$("auDemo").hidden=false;
 /* --- Mes textes déposés --- */
 async function loadMesTextes(){
   var box=$("auList"),list=[];
