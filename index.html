@@ -268,6 +268,56 @@ body.authed .me{display:inline-flex}
   section{padding:52px 0}
   .promises{grid-template-columns:1fr}
 }
+
+/* ---------- Finitions : rythme, typographie, hiérarchie ---------- */
+body{color:var(--ink-2);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+h1,h2,h3{color:var(--ink);text-wrap:balance}
+p{text-wrap:pretty}
+.authors h2,.authors h3{color:#fff}
+.bar{height:80px}
+.brand{font-size:26px}.brand img{width:48px;height:48px}
+.actions .btn{padding:11px 20px;font-size:14.5px}
+.bagbtn{padding:7px 7px 7px 18px;font-size:14.5px;box-shadow:0 8px 20px rgba(96,80,220,.28)}
+.hero{background:radial-gradient(1100px 480px at 50% -12%,var(--maj-l),#fff 68%)}
+.hero-in{max-width:720px;padding:44px 24px 48px}
+.hero-top{margin-bottom:28px}
+.hero h1{font-size:clamp(36px,5vw,58px);line-height:1.04;letter-spacing:-.022em;word-spacing:.04em}
+.motto{max-width:31em;margin:20px auto 32px;line-height:1.55}
+.big-search{box-shadow:0 14px 36px rgba(42,32,120,.09)}
+.chips{gap:8px;margin-top:22px}
+.chip{padding:7px 15px;font-size:13.5px}
+section{padding:88px 0}
+#comment{padding:40px 0 80px}
+.sec-head{margin-bottom:32px}
+.sec-head h2{font-size:clamp(28px,3.2vw,38px);letter-spacing:-.02em}
+.sec-head p{font-size:16.5px}
+.steps{padding:24px 28px;gap:18px}
+.step h3{font-size:16px;margin-bottom:3px}
+.authors{padding:64px;border-radius:28px}
+.authors h2{letter-spacing:-.02em;line-height:1.1}
+.authors p{line-height:1.6}
+.flow{gap:16px;margin-top:40px}
+.flow li{align-items:flex-start;padding:18px 20px;gap:14px}
+.flow i{margin-top:1px}
+.flow span{line-height:1.45;display:block;margin-top:3px}
+.promises{gap:28px;margin-top:40px;padding-top:36px}
+.promises b{margin-top:2px}
+.promises span{line-height:1.5}
+footer{padding:36px 0 calc(32px + env(safe-area-inset-bottom,0px))}
+footer nav{flex-wrap:wrap;gap:10px 24px}
+@media(max-width:900px){.bar{height:68px}.brand img{width:42px;height:42px}.authors{padding:44px 32px}section{padding:72px 0}}
+@media(max-width:560px){
+  .actions .btn{padding:11px 13px}.bagbtn{padding:6px 6px 6px 12px}
+  .hero-in{padding:28px 16px 40px}
+  .hero h1{font-size:34px}
+  .motto{font-size:16.5px;margin:16px auto 26px}
+  section{padding:56px 0}#comment{padding:24px 0 56px}
+  .steps{padding:20px}
+  .authors{padding:32px 22px;border-radius:24px}
+  .flow{margin-top:28px}.promises{margin-top:28px;padding-top:28px;gap:24px}
+  footer .wrap{flex-direction:column;align-items:flex-start;gap:18px}
+}
+@media(max-width:400px){.actions .btn{padding:10px 11px}}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
