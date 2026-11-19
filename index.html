@@ -408,7 +408,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 
 <header id="hdr">
   <div class="wrap bar">
-    <a class="brand" href="#top" aria-label="Bookstery, accueil"><img src="mark.png" alt=""><span><b>Book</b>stery</span></a>
+    <a class="brand" href="#top" aria-label="Bookstery, retour à l’accueil" data-tip="Retour à l’accueil"><img src="mark.png" alt=""><span><b>Book</b>stery</span></a>
     <div class="actions">
       <button class="btn ghost sell" type="button" data-sell aria-label="Vendre un livre">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5v14M8 5v14M12 5v14M17 5l3 14"/></svg>
@@ -526,7 +526,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 
 <footer>
   <div class="wrap">
-    <a class="brand" href="#top"><img src="mark.png" alt=""><span><b>Book</b>stery</span></a>
+    <a class="brand" href="#top" aria-label="Bookstery, retour à l’accueil"><img src="mark.png" alt=""><span><b>Book</b>stery</span></a>
     <nav aria-label="Pied de page"><a href="#comment">Comment ça marche</a><a href="#auteurs">Auteurs</a><a href="#top">Aide</a><a href="#top">Mentions légales</a></nav>
     <p class="legal">© 2026 Bookstery. Prototype.</p>
   </div>
@@ -1184,6 +1184,18 @@ $("payBtn").addEventListener("click",function(){
 });
 
 function renderAll(){renderGrid();renderBag();searchNote()}
+
+/* Clic sur Bookstery : retour à l’accueil (fenêtres fermées, filtres remis à zéro, haut de page) */
+function goHome(){
+  closeAll(true);
+  catTerm="";catGenre=null;catLimit=8;
+  document.querySelectorAll("[data-search] input").forEach(function(i){i.value=""});
+  $("chips").querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed","false")});
+  renderGrid();searchNote();
+  window.scrollTo({top:0,behavior:"smooth"});
+  var b=document.querySelector("header .brand");if(b)b.focus({preventScroll:true});
+}
+document.querySelectorAll(".brand").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();goHome()})});
 renderBag();loadCatalogue();
 
 /* Quote bubbles: soft fade in, 6 s visible, soft fade out, next quote */
