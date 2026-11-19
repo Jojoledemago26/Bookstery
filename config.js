@@ -16,5 +16,10 @@
  */
 window.BOOKSTERY_CONFIG = {
   SUPABASE_URL: "",
-  SUPABASE_ANON_KEY: ""
+  SUPABASE_ANON_KEY: "",
+
+  /* Facultatif : clé API Google Books (console.cloud.google.com > APIs > Books API).
+   * Sans clé, la recherche par ISBN marche quand même, avec une limite d'usage partagée ;
+   * en cas d'échec, le site essaie automatiquement Open Library. Restreins la clé à ton domaine. */
+  GOOGLE_BOOKS_API_KEY: ""
 };

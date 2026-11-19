@@ -159,6 +159,50 @@ footer nav a:hover{color:var(--ink)}
 .modal .x{position:absolute;right:16px;top:16px}
 .modal{max-height:calc(100dvh - 32px);overflow:auto}
 .modal .hint{display:block;font-weight:500;color:var(--muted);font-size:13px;margin-left:4px}
+/* ---------- Vendre un livre ---------- */
+.modal.wide{width:min(640px,calc(100% - 32px))}
+.modal select,.modal textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font:500 15px var(--sans);color:var(--ink);background:#fff}
+.modal textarea{resize:vertical;min-height:110px;line-height:1.5}
+.modal select:focus,.modal textarea:focus{outline:none;border-color:var(--maj);box-shadow:0 0 0 4px rgba(96,80,220,.14)}
+.isbn-row{display:flex;gap:10px}
+.isbn-row input{flex:1;min-width:0;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.modal .isbn-row .btn{width:auto;margin:0;flex:none}
+.isbn-status{min-height:1.4em;margin:8px 0 0!important;font-size:14px;font-weight:600;color:var(--muted)!important}
+.isbn-status.ok{color:var(--maj)!important}.isbn-status.err{color:#C0263A!important}
+.isbn-status.load::before{content:"";display:inline-block;width:12px;height:12px;margin-right:8px;border:2px solid var(--maj-l);border-top-color:var(--maj);border-radius:50%;vertical-align:-1px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.scanner{position:relative;margin-top:12px;border-radius:18px;overflow:hidden;background:var(--ink);aspect-ratio:4/3}
+.scanner[hidden]{display:none}
+.scanner video{width:100%;height:100%;object-fit:cover;display:block}
+.scan-frame{position:absolute;left:12%;right:12%;top:32%;bottom:32%;border:3px solid #fff;border-radius:14px;box-shadow:0 0 0 999px rgba(11,11,16,.45)}
+.scan-frame::after{content:"";position:absolute;left:6%;right:6%;top:50%;height:2px;background:#ff4d6d;box-shadow:0 0 10px #ff4d6d}
+.scan-tip{position:absolute;left:0;right:0;top:12px;text-align:center;color:#fff;font-weight:700;font-size:14px}
+.modal .scanner .btn{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);width:auto;margin:0}
+.photo-link{border:0;background:none;padding:0;margin-top:6px;color:var(--maj);font:700 13px var(--sans);text-decoration:underline;text-underline-offset:3px}
+.book{display:grid;grid-template-columns:120px 1fr;gap:20px;margin-top:10px;align-items:start}
+.cover-box{margin-top:12px;aspect-ratio:2/3;border-radius:6px 12px 12px 6px;background:var(--maj-xl);border:1.5px dashed var(--line);display:grid;place-items:center;overflow:hidden;color:var(--muted);font-size:13px;font-weight:600;text-align:center;padding:8px}
+.cover-box.has{border:0;padding:0;box-shadow:inset 5px 0 0 rgba(0,0,0,.15),0 10px 24px rgba(11,11,16,.18)}
+.modal .cover-box img{width:100%;height:100%;object-fit:cover;display:block}
+.modal .cover-box img[hidden],.cover-box span[hidden]{display:none}
+.cond{border:0;padding:0;margin:14px 0 0}
+.cond legend{font-weight:700;font-size:14px;padding:0;margin-bottom:8px}
+.cond-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cond-opts label{margin:0;display:flex;flex-direction:column;gap:2px;border:1.5px solid var(--line);border-radius:14px;padding:12px;cursor:pointer;font-weight:700;font-size:14px;transition:.2s}
+.cond-opts label span{font-weight:500;font-size:12px;color:var(--muted);line-height:1.35}
+.cond-opts input{position:absolute;opacity:0;width:1px;height:1px}
+.cond-opts label:hover{border-color:var(--maj)}
+.cond-opts label:has(input:checked){border-color:var(--maj);background:var(--maj-xl);box-shadow:inset 0 0 0 1px var(--maj)}
+.cond-opts label:has(input:focus-visible){outline:3px solid var(--maj);outline-offset:2px}
+.price-in{position:relative;max-width:200px}
+.modal .price-in input{padding-right:40px;font-weight:800;font-size:18px}
+.price-in span{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-weight:800;color:var(--muted)}
+.sell-note{margin:14px 0 0!important;font-size:13px;background:var(--maj-xl);border-radius:12px;padding:10px 14px}
+.sell-note button{border:0;background:none;padding:0;color:var(--maj);font:inherit;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.step-btn{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;border-radius:16px;padding:6px;margin:-6px;transition:background .2s}
+.step-btn:hover{background:#fff}.step-btn:hover h3{color:var(--maj)}
+.step-btn:focus-visible{outline:3px solid var(--maj);outline-offset:3px}
+.step-btn h3 small{font-size:13px;font-weight:700;color:var(--maj);margin-left:6px}
+@media(max-width:560px){.book{grid-template-columns:88px 1fr;gap:14px}.cond-opts{grid-template-columns:1fr}.modal.wide{padding:26px 20px}.sell-txt{display:none}.btn.sell{padding:12px 14px}}
 .gchips{display:flex;flex-wrap:wrap;gap:6px}
 .gchips .chip{padding:6px 12px;font-size:13px}
 .form-msg{min-height:1.4em;margin:12px 0 0!important;font-size:14px;font-weight:600}
@@ -210,6 +254,10 @@ body.authed .me{display:inline-flex}
   <div class="wrap bar">
     <a class="brand" href="#top" aria-label="Bookstery, accueil"><img src="mark.png" alt=""><span><b>Book</b>stery</span></a>
     <div class="actions">
+      <button class="btn ghost sell" type="button" data-sell aria-label="Vendre un livre">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5v14M8 5v14M12 5v14M17 5l3 14"/></svg>
+        <span class="sell-txt">Vendre un livre</span>
+      </button>
       <button class="bagbtn" id="bagBtn" type="button" aria-label="Ouvrir mon Bookster Bag, vide, 0,00 €">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
         <span class="lbl">Bookster Bag</span>
@@ -265,7 +313,7 @@ body.authed .me{display:inline-flex}
         <p>Trois gestes pour faire circuler les livres.</p>
       </div>
       <div class="steps">
-        <div class="step"><div class="num">1</div><div><h3>Vends tes livres</h3><p>Ceux qui dorment sur tes étagères.</p></div></div>
+        <button class="step step-btn" type="button" data-sell><div class="num">1</div><div><h3>Vends tes livres <small>→</small></h3><p>Ceux qui dorment sur tes étagères.</p></div></button>
         <svg class="arrow" width="28" height="14" viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 7h25M20 1l6 6-6 6"/></svg>
         <div class="step"><div class="num">2</div><div><h3>Trouve ta prochaine lecture</h3><p>Par titre, auteur ou genre.</p></div></div>
         <svg class="arrow" width="28" height="14" viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 7h25M20 1l6 6-6 6"/></svg>
@@ -369,6 +417,58 @@ body.authed .me{display:inline-flex}
   <button class="btn dark" type="button" id="logout">Se déconnecter</button>
 </div>
 
+<div class="modal wide" id="sell" role="dialog" aria-modal="true" aria-labelledby="sTitle" aria-hidden="true">
+  <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <img src="mark.png" alt="">
+  <h2 id="sTitle">Vendre un livre</h2>
+  <p>Saisis ou scanne l’ISBN : on remplit la fiche pour toi. Il ne te reste qu’à choisir l’état et ton prix.</p>
+  <form id="sellForm" novalidate>
+    <label for="isbn">ISBN <span class="hint">13 ou 10 chiffres, au dos du livre, sous le code-barres</span></label>
+    <div class="isbn-row">
+      <input id="isbn" inputmode="numeric" autocomplete="off" placeholder="Ex. 9782070612758" aria-describedby="isbnStatus">
+      <button class="btn dark" type="button" id="scanBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 8v8M10 8v8M13 8v8M17 8v8"/></svg>
+        Scanner
+      </button>
+    </div>
+    <p class="isbn-status" id="isbnStatus" aria-live="polite"></p>
+    <div class="scanner" id="scanner" hidden>
+      <video id="scanVideo" playsinline muted></video>
+      <div class="scan-frame" aria-hidden="true"></div>
+      <div class="scan-tip">Place le code-barres dans le cadre</div>
+      <button class="btn white" type="button" id="scanStop">Arrêter</button>
+    </div>
+    <button class="photo-link" type="button" id="photoBtn">Pas de caméra en direct ? Prends le code-barres en photo</button>
+    <input type="file" id="scanFile" accept="image/*" capture="environment" hidden>
+
+    <div class="book">
+      <div class="cover-box" id="coverBox"><img id="coverImg" alt="" hidden><span id="coverPh">La couverture apparaîtra ici</span></div>
+      <div>
+        <label for="bTitle">Titre</label><input id="bTitle" required maxlength="300">
+        <label for="bAuthor">Auteur</label><input id="bAuthor" maxlength="300">
+        <label for="bGenre">Genre littéraire</label><select id="bGenre"></select>
+      </div>
+    </div>
+    <label for="bResume">Résumé</label><textarea id="bResume" rows="4" maxlength="5000" placeholder="Le résumé de l’éditeur s’affichera ici. Tu peux le modifier."></textarea>
+
+    <fieldset class="cond">
+      <legend>État du livre</legend>
+      <div class="cond-opts">
+        <label><input type="radio" name="etat" value="comme_neuf">Comme neuf<span>Jamais lu ou presque, aucune marque.</span></label>
+        <label><input type="radio" name="etat" value="tres_bon">Très bon état<span>Lu avec soin, légères traces d’usage.</span></label>
+        <label><input type="radio" name="etat" value="bon">Bon état<span>Usure visible, mais complet et lisible.</span></label>
+      </div>
+    </fieldset>
+
+    <label for="bPrice">Ton prix <span class="hint">Tu le fixes librement</span></label>
+    <div class="price-in"><input id="bPrice" type="number" inputmode="decimal" min="0.5" max="999" step="0.01" placeholder="0,00"><span aria-hidden="true">€</span></div>
+
+    <p class="sell-note" id="sellNote" hidden></p>
+    <p class="form-msg" id="sellMsg" role="alert"></p>
+    <button class="btn" type="submit" id="sellSubmit">Publier mon annonce</button>
+  </form>
+</div>
+
 <div class="toast" id="toast" role="status"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -413,10 +513,11 @@ document.querySelectorAll("[data-search]").forEach(function(f){f.addEventListene
 /* Drawer / modal */
 var lastFocus;
 function open(el){closeAll(true);lastFocus=document.activeElement;$("scrim").classList.add("on");el.classList.add("on");el.setAttribute("aria-hidden","false");var f=el.querySelector("input")||el.querySelector("button");f&&setTimeout(function(){f.focus()},60)}
-function closeAll(keep){["drawer","modal","login","account"].forEach(function(id){$(id).classList.remove("on");$(id).setAttribute("aria-hidden","true")});$("scrim").classList.remove("on");if(!keep&&lastFocus)lastFocus.focus()}
+function closeAll(keep){if(window.stopScan)stopScan();["drawer","modal","login","account","sell"].forEach(function(id){$(id).classList.remove("on");$(id).setAttribute("aria-hidden","true")});$("scrim").classList.remove("on");if(!keep&&lastFocus)lastFocus.focus()}
 $("bagBtn").addEventListener("click",function(){open($("drawer"))});
 document.addEventListener("click",function(e){
   if(e.target.closest("[data-join]"))open($("modal"));
+  if(e.target.closest("[data-sell]"))openSell();
   if(e.target.closest("[data-login]"))open($("login"));
   if(e.target.closest("[data-close]"))closeAll();
   var t=e.target.closest("[data-toast]");if(t)toast(t.getAttribute("data-toast"));});
@@ -506,7 +607,7 @@ $("forgot").addEventListener("click",async function(){
 /* État connecté */
 var current=null;
 async function showUser(user){
-  current=user;document.body.classList.toggle("authed",!!user);
+  current=user;document.body.classList.toggle("authed",!!user);sellNote();
   if(!user)return;
   var md=user.user_metadata||{},p=null;
   try{var r=await sb.from("profiles").select("prenom, ville, genres_preferes").eq("id",user.id).maybeSingle();if(!r.error)p=r.data}catch(e){}
@@ -526,6 +627,213 @@ if(sb){
     setTimeout(function(){showUser(session?session.user:null);if(ev==="PASSWORD_RECOVERY")toast("Choisis un nouveau mot de passe depuis ton espace (bientôt disponible).")},0);
   });
 }
+
+/* ================= Vendre un livre ================= */
+var ETATS={comme_neuf:"Comme neuf",tres_bon:"Très bon état",bon:"Bon état"};
+$("bGenre").innerHTML='<option value="">Choisis un genre</option>'+GENRES.map(function(g){return'<option>'+g+'</option>'}).join("");
+
+/* --- ISBN : nettoyage et contrôle de la clé --- */
+function cleanIsbn(v){return String(v||"").toUpperCase().replace(/[^0-9X]/g,"")}
+function isbn13ok(s){if(!/^97[89]\d{10}$/.test(s))return false;for(var t=0,i=0;i<13;i++)t+=(+s[i])*(i%2?3:1);return t%10===0}
+function isbn10ok(s){if(!/^\d{9}[\dX]$/.test(s))return false;for(var t=0,i=0;i<10;i++)t+=(s[i]==="X"?10:+s[i])*(10-i);return t%11===0}
+function to13(s){for(var b="978"+s.slice(0,9),t=0,i=0;i<12;i++)t+=(+b[i])*(i%2?3:1);return b+((10-t%10)%10)}
+/* Renvoie l'ISBN-13 si la saisie est un ISBN valide, sinon null */
+function validIsbn(v){var s=cleanIsbn(v);if(isbn13ok(s))return s;if(isbn10ok(s))return to13(s);return null}
+
+function isbnStatus(txt,kind){var m=$("isbnStatus");m.textContent=txt||"";m.className="isbn-status"+(kind?" "+kind:"")}
+
+/* --- Genre : catégories Google Books / Open Library -> genres Bookstery --- */
+var GENRE_RULES=[
+  ["Manga",/manga/],
+  ["BD",/comic|graphic novel|bande[s]? dessin|bd\b/],
+  ["Jeunesse",/juvenile|young adult|children|jeunesse|enfant/],
+  ["Science-fiction",/science fiction|science-fiction|dystop/],
+  ["Fantasy",/fantasy|fantastique/],
+  ["Romance",/romance|love stor|sentimental/],
+  ["Thriller",/thriller|suspense/],
+  ["Polar",/mystery|detective|crime|policier|polar|noir/],
+  ["Poésie",/poetry|poésie|poesie|poèmes|poems/],
+  ["Scolaire",/study aids|education|textbook|mathemat|foreign language study|scolaire|manuel/],
+  ["Classiques",/classics|classique/],
+  ["Romans",/fiction|roman|novel|literary/]
+];
+function mapGenre(cats){var s=(cats||[]).join(" | ").toLowerCase();if(!s)return"";
+  for(var i=0;i<GENRE_RULES.length;i++)if(GENRE_RULES[i][1].test(s))return GENRE_RULES[i][0];return""}
+
+function plain(html){if(!html)return"";var d=new DOMParser().parseFromString("<body>"+html.replace(/<br\s*\/?>/gi,"\n").replace(/<\/p>/gi,"\n\n")+"</body>","text/html");return(d.body.textContent||"").replace(/\n{3,}/g,"\n\n").trim()}
+function httpsUrl(u){return u?String(u).replace(/^http:\/\//,"https://"):""}
+
+/* --- Interrogation de Google Books (puis Open Library en secours) --- */
+async function fromGoogle(isbn){
+  var key=CFG.GOOGLE_BOOKS_API_KEY?"&key="+encodeURIComponent(CFG.GOOGLE_BOOKS_API_KEY):"";
+  var r=await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:"+isbn+"&maxResults=1"+key);
+  if(!r.ok)throw new Error("google_"+r.status);
+  var j=await r.json();if(!j.items||!j.items.length)return null;
+  var v=j.items[0].volumeInfo||{},img=v.imageLinks||{};
+  var cover=httpsUrl(img.large||img.medium||img.thumbnail||img.smallThumbnail).replace(/&edge=curl/,"");
+  return{titre:[v.title,v.subtitle].filter(Boolean).join(" : "),auteur:(v.authors||[]).join(", "),resume:plain(v.description),couverture:cover,categories:v.categories||[]};
+}
+async function fromOpenLibrary(isbn){
+  var r=await fetch("https://openlibrary.org/api/books?bibkeys=ISBN:"+isbn+"&jscmd=data&format=json");
+  if(!r.ok)throw new Error("openlibrary_"+r.status);
+  var b=(await r.json())["ISBN:"+isbn];if(!b)return null;
+  var cats=(b.subjects||[]).map(function(x){return x.name||x});
+  return{titre:[b.title,b.subtitle].filter(Boolean).join(" : "),auteur:(b.authors||[]).map(function(a){return a.name}).join(", "),
+    resume:typeof b.notes==="string"?b.notes:(b.notes&&b.notes.value)||"",couverture:httpsUrl(b.cover&&(b.cover.large||b.cover.medium)),categories:cats};
+}
+
+var lookupSeq=0,lastIsbn=null,coverUrl="";
+function setCover(url){
+  var img=$("coverImg");coverUrl="";
+  if(!url){img.hidden=true;img.removeAttribute("src");$("coverPh").hidden=false;$("coverPh").textContent="Pas de couverture trouvée";$("coverBox").classList.remove("has");return}
+  img.onload=function(){coverUrl=url;img.hidden=false;$("coverPh").hidden=true;$("coverBox").classList.add("has")};
+  img.onerror=function(){img.hidden=true;$("coverPh").hidden=false;$("coverPh").textContent="Pas de couverture trouvée";$("coverBox").classList.remove("has")};
+  img.src=url;
+}
+function fill(b,isbn){
+  $("bTitle").value=b.titre||"";$("bAuthor").value=b.auteur||"";$("bResume").value=b.resume||"";
+  var g=mapGenre(b.categories);$("bGenre").value=g;
+  setCover(b.couverture||"https://covers.openlibrary.org/b/isbn/"+isbn+"-L.jpg?default=false");
+  return g;
+}
+async function lookup(isbn){
+  if(isbn===lastIsbn)return;lastIsbn=isbn;
+  var seq=++lookupSeq,book=null,failed=0;
+  isbnStatus("Recherche du livre…","load");
+  try{book=await fromGoogle(isbn)}catch(e){failed++;console.warn("Bookstery : Google Books indisponible",e)}
+  if(seq!==lookupSeq)return;
+  if(!book){try{book=await fromOpenLibrary(isbn)}catch(e){failed++;console.warn("Bookstery : Open Library indisponible",e)}}
+  if(seq!==lookupSeq)return;
+  if(!book){
+    lastIsbn=null;
+    isbnStatus(failed===2?"Impossible de joindre la base de livres. Remplis la fiche à la main ou réessaie.":"Aucun livre trouvé pour cet ISBN. Tu peux remplir la fiche à la main.","err");
+    return;
+  }
+  var g=fill(book,isbn);
+  isbnStatus("Livre trouvé : vérifie la fiche"+(g?"":", choisis le genre")+", puis indique l’état et ton prix.","ok");
+}
+
+var isbnTimer;
+$("isbn").addEventListener("input",function(){
+  clearTimeout(isbnTimer);var v=this.value,s=cleanIsbn(v),ok=validIsbn(v);
+  if(ok){isbnTimer=setTimeout(function(){lookup(ok)},250);return}
+  lastIsbn=null;lookupSeq++;
+  if(s.length>=13||(s.length===10&&!/^97/.test(s)))isbnStatus("Cet ISBN ne semble pas valide. Vérifie les chiffres.","err");
+  else isbnStatus("");
+});
+function useCode(code){var ok=validIsbn(code);
+  if(!ok){isbnStatus("Ce code-barres n’est pas un ISBN de livre. Essaie celui qui commence par 978 ou 979.","err");return false}
+  $("isbn").value=ok;lookup(ok);return true}
+
+/* --- Scan du code-barres : BarcodeDetector natif, sinon ZXing --- */
+var ZXING_URL="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js",zxingP=null;
+function loadZXing(){if(window.ZXing)return Promise.resolve(window.ZXing);
+  if(!zxingP)zxingP=new Promise(function(res,rej){var s=document.createElement("script");s.src=ZXING_URL;s.onload=function(){window.ZXing?res(window.ZXing):rej(new Error("zxing"))};s.onerror=function(){zxingP=null;rej(new Error("zxing"))};document.head.appendChild(s)});
+  return zxingP}
+async function nativeDetector(){
+  if(!("BarcodeDetector" in window))return null;
+  try{var f=await BarcodeDetector.getSupportedFormats();if(f.indexOf("ean_13")<0)return null;return new BarcodeDetector({formats:["ean_13","ean_8","upc_a","upc_e"]})}catch(e){return null}
+}
+function zxReader(Z){var h=new Map();h.set(Z.DecodeHintType.POSSIBLE_FORMATS,[Z.BarcodeFormat.EAN_13,Z.BarcodeFormat.EAN_8,Z.BarcodeFormat.UPC_A]);return new Z.BrowserMultiFormatReader(h)}
+
+var scan=null;
+window.stopScan=function(){
+  if(!scan)return;var s=scan;scan=null;
+  s.stopped=true;if(s.raf)cancelAnimationFrame(s.raf);
+  if(s.reader)try{s.reader.reset()}catch(e){}
+  if(s.stream)s.stream.getTracks().forEach(function(t){t.stop()});
+  var v=$("scanVideo");v.pause();v.srcObject=null;
+  $("scanner").hidden=true;$("scanBtn").disabled=false;
+};
+function scanFound(code){if(useCode(code)){if(navigator.vibrate)navigator.vibrate(60);stopScan()}}
+function cameraError(e){
+  stopScan();var n=e&&e.name;
+  if(n==="NotAllowedError"||n==="SecurityError")isbnStatus("Accès à la caméra refusé. Prends plutôt le code-barres en photo, ou saisis l’ISBN.","err");
+  else if(n==="NotFoundError"||n==="OverconstrainedError")isbnStatus("Aucune caméra trouvée. Prends le code-barres en photo, ou saisis l’ISBN.","err");
+  else isbnStatus("La caméra n’est pas disponible ici. Prends le code-barres en photo, ou saisis l’ISBN.","err");
+}
+$("scanBtn").addEventListener("click",async function(){
+  if(scan)return;
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)return cameraError();
+  var s=scan={};$("scanBtn").disabled=true;$("scanner").hidden=false;isbnStatus("Caméra en cours d’ouverture…","load");
+  var v=$("scanVideo");
+  try{
+    var det=await nativeDetector();
+    if(det){
+      s.stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1280}},audio:false});
+      if(s.stopped){s.stream.getTracks().forEach(function(t){t.stop()});return}
+      v.srcObject=s.stream;await v.play();isbnStatus("Vise le code-barres au dos du livre.");
+      var busyDet=false;
+      (function tick(){if(s.stopped)return;s.raf=requestAnimationFrame(tick);if(busyDet||v.readyState<2)return;busyDet=true;
+        det.detect(v).then(function(c){busyDet=false;if(!s.stopped&&c.length)scanFound(c[0].rawValue)}).catch(function(){busyDet=false})})();
+    }else{
+      var Z=await loadZXing();if(s.stopped)return;
+      s.reader=zxReader(Z);
+      await s.reader.decodeFromConstraints({video:{facingMode:{ideal:"environment"}}},v,function(res){if(res&&!s.stopped)scanFound(res.getText())});
+      if(!s.stopped)isbnStatus("Vise le code-barres au dos du livre.");
+    }
+  }catch(e){if(!s.stopped){if(e&&e.message==="zxing"){stopScan();isbnStatus("Le scanner n’a pas pu se charger. Saisis l’ISBN à la main.","err")}else cameraError(e)}}
+});
+$("scanStop").addEventListener("click",function(){stopScan();isbnStatus("");$("isbn").focus()});
+
+/* Photo du code-barres (marche aussi sans caméra en direct) */
+$("photoBtn").addEventListener("click",function(){stopScan();$("scanFile").click()});
+$("scanFile").addEventListener("change",async function(){
+  var f=this.files&&this.files[0];this.value="";if(!f)return;
+  isbnStatus("Lecture du code-barres…","load");var code=null,url=URL.createObjectURL(f);
+  try{
+    var det=await nativeDetector();
+    if(det){var bmp=await createImageBitmap(f),c=await det.detect(bmp);if(c.length)code=c[0].rawValue}
+    if(!code){var Z=await loadZXing();try{code=(await zxReader(Z).decodeFromImageUrl(url)).getText()}catch(e){}}
+  }catch(e){console.warn(e)}
+  finally{URL.revokeObjectURL(url)}
+  if(code)useCode(code);else isbnStatus("Code-barres illisible. Reprends la photo bien à plat et nette, ou saisis l’ISBN.","err");
+});
+
+/* --- Ouverture, connexion, publication --- */
+function sellNote(){
+  var n=$("sellNote");
+  if(!sb){n.hidden=false;n.textContent="Mode démo : l’annonce ne sera pas enregistrée tant que Supabase n’est pas configuré.";return}
+  if(!current){n.hidden=false;n.innerHTML='Tu devras être connecté·e pour publier. <button type="button" data-login>Se connecter</button> ou <button type="button" data-join>créer un compte</button>.';return}
+  n.hidden=true;
+}
+function resetSell(){
+  $("sellForm").reset();lastIsbn=null;lookupSeq++;isbnStatus("");setMsg("sellMsg","");
+  setCover(null);$("coverPh").textContent="La couverture apparaîtra ici";
+}
+var sellReturn=false;
+function openSell(){sellNote();open($("sell"))}
+/* Après connexion depuis le formulaire, on y revient avec la saisie intacte */
+document.addEventListener("click",function(e){if(e.target.closest("#sellNote [data-login],#sellNote [data-join],#sellMsg [data-login]"))sellReturn=true},true);
+
+$("sellForm").addEventListener("submit",async function(e){
+  e.preventDefault();
+  var titre=$("bTitle").value.trim(),auteur=$("bAuthor").value.trim(),resume=$("bResume").value.trim(),genre=$("bGenre").value;
+  var etatEl=this.querySelector('input[name="etat"]:checked'),etat=etatEl&&etatEl.value;
+  var raw=$("isbn").value.trim(),isbn=validIsbn(raw);
+  var prix=Math.round(parseFloat(String($("bPrice").value).replace(",","."))*100)/100;
+  if(raw&&!isbn)return setMsg("sellMsg","L’ISBN n’est pas valide. Corrige-le ou laisse le champ vide.","err");
+  if(!titre){$("bTitle").focus();return setMsg("sellMsg","Indique le titre du livre.","err")}
+  if(!genre){$("bGenre").focus();return setMsg("sellMsg","Choisis le genre littéraire.","err")}
+  if(!etat)return setMsg("sellMsg","Choisis l’état du livre.","err");
+  if(!(prix>=0.5&&prix<=999)){$("bPrice").focus();return setMsg("sellMsg","Fixe un prix entre 0,50 € et 999 €.","err")}
+  var annonce={isbn:isbn,titre:titre,auteur:auteur||null,resume:resume||null,couverture_url:coverUrl||null,genre:genre,etat:etat,prix:prix};
+  if(!sb){closeAll();resetSell();toast("Annonce « "+titre+" » à "+EUR.format(prix)+" prête ! (Mode démo : rien n’est enregistré.)");return}
+  if(!current){$("sellMsg").className="form-msg err";$("sellMsg").innerHTML='Connecte-toi pour publier ton annonce. <button type="button" class="forgot" style="display:inline;margin:0" data-login>Se connecter</button>';return}
+  var btn=$("sellSubmit");busy(btn,true,"Publication…");setMsg("sellMsg","");
+  try{
+    annonce.vendeur_id=current.id;
+    var r=await sb.from("annonces").insert(annonce).select("id").single();
+    if(r.error)throw r.error;
+    closeAll();resetSell();toast("Ton annonce « "+titre+" » est en ligne à "+EUR.format(prix)+". Merci, Bookster !");
+  }catch(err){
+    console.error("Bookstery : publication impossible",err);
+    var m=(err&&err.message||"").toLowerCase();
+    setMsg("sellMsg",(err&&err.code==="42P01")||m.indexOf("does not exist")>-1||m.indexOf("could not find the table")>-1?"La table des annonces n’existe pas encore dans Supabase (voir supabase/annonces.sql).":
+      (err&&err.code==="42501")||m.indexOf("row-level security")>-1?"Publication refusée : reconnecte-toi puis réessaie.":frErr(err),"err");
+  }finally{busy(btn,false)}
+});
+if(sb)sb.auth.onAuthStateChange(function(ev){if(ev==="SIGNED_IN"&&sellReturn){sellReturn=false;setTimeout(function(){closeAll(true);openSell()},300)}});
 
 /* Quote bubbles: soft fade in, 6 s visible, soft fade out, next quote */
 var qi=0,side=0,timer=null,FADE=900,SHOW=6000;
