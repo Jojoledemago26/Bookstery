@@ -6,7 +6,7 @@
 <title>Bookstery</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&display=swap" rel="stylesheet">
 <style>
 :root{
   --maj:#6050DC;--maj-d:#4A3BC4;--maj-l:#EEECFC;--maj-xl:#F7F6FE;
@@ -407,6 +407,77 @@ body.authed .me{display:inline-flex}
 .modal .au-item .btn{width:auto;margin:0;padding:8px 14px;font-size:13px}
 .au-empty{text-align:center;color:var(--muted);background:var(--maj-xl);border-radius:16px;padding:28px 16px;margin-top:10px}
 @media(max-width:560px){.au-row{grid-template-columns:1fr;gap:0}.cert dl{grid-template-columns:1fr;gap:2px}.cert dd{margin-bottom:8px}}
+
+/* ---------- Booksterbooks & QR ---------- */
+.bb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:6px}
+.bb-card{border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+.bb-qr{width:92px;height:92px;border-radius:10px;background:#fff;padding:6px;border:1px solid var(--line)}
+.bb-qr img,.bb-qr canvas{width:100%!important;height:100%!important;display:block}
+.bb-card b{display:block;color:var(--ink);font-size:15px;line-height:1.3}
+.bb-card span{display:block;font-size:12.5px;color:var(--muted);margin:2px 0 8px}
+.modal .bb-card .btn{width:auto;margin:0;padding:8px 14px;font-size:13px}
+.bb-new{display:inline-block!important;background:var(--maj);color:#fff!important;border-radius:999px;padding:1px 8px;font-weight:800;font-size:11px!important;margin:0 0 4px!important}
+.bb-empty{grid-column:1/-1;text-align:center;color:var(--muted);background:var(--maj-xl);border-radius:16px;padding:28px 16px}
+.bag-bb{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#E8F6EE;color:#1C5C3B;border-radius:14px;padding:10px 14px;font-size:13.5px;font-weight:700}
+.bag-bb button{border:0;background:#1C7A4A;color:#fff;border-radius:999px;padding:6px 12px;font:700 12.5px var(--sans)}
+
+/* ---------- Liseuse sécurisée ---------- */
+.lz{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;
+  --paper:#F5EEDC;--paper-2:#EFE6CF;--lz-ink:#2B2620;--lz-muted:#7D715E;--lz-rule:#E2D6BC;--lz-accent:#5A4BD1;--lz-wm:rgba(90,75,209,.14);
+  background:var(--paper);color:var(--lz-ink);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.lz.night{--paper:#17161C;--paper-2:#201F27;--lz-ink:#E4DED2;--lz-muted:#9C95A8;--lz-rule:#2D2B36;--lz-accent:#A99FFF;--lz-wm:rgba(169,159,255,.10);color-scheme:dark}
+.lz[hidden]{display:none}
+.lz-bar{position:relative;flex:none;display:flex;align-items:center;gap:12px;background:var(--paper);border-bottom:1px solid var(--lz-rule);
+  padding:calc(10px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+.lz-info{flex:1;min-width:0;text-align:center;display:flex;flex-direction:column;line-height:1.25}
+.lz-info b{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lz-info span{font-size:12.5px;color:var(--lz-muted);font-variant-numeric:tabular-nums}
+.lz-tools{display:flex;gap:6px}
+.lz-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--lz-rule);background:transparent;color:var(--lz-ink);border-radius:999px;padding:7px 12px;font:700 13px var(--sans);transition:background .2s}
+.lz-btn:hover{background:var(--paper-2)}
+.lz-btn[aria-pressed="true"]{background:var(--lz-ink);color:var(--paper);border-color:var(--lz-ink)}
+.lz-prog{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:transparent}
+.lz-prog i{display:block;height:100%;width:0;background:var(--lz-accent);transition:width .15s}
+.lz-scroll{flex:1;overflow:auto;overscroll-behavior:contain}
+.lz-page{max-width:40rem;margin:0 auto;padding:56px max(24px,env(safe-area-inset-right,0px)) calc(80px + env(safe-area-inset-bottom,0px)) max(24px,env(safe-area-inset-left,0px))}
+.lz-kicker{margin:0;font:800 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--lz-accent)}
+.lz h1{font:700 clamp(30px,5vw,44px)/1.12 "Literata",Georgia,serif;letter-spacing:-.015em;color:var(--lz-ink);margin:12px 0 10px;text-wrap:balance}
+.lz-author{margin:0;font:italic 400 18px "Literata",Georgia,serif;color:var(--lz-muted)}
+.lz-meta{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 34px;padding-bottom:22px;border-bottom:1px solid var(--lz-rule);font:600 13px var(--sans);color:var(--lz-muted)}
+.lz-meta span{background:var(--paper-2);border-radius:999px;padding:4px 11px}
+.lz-body{position:relative}
+.lz-body .wm{position:absolute;inset:0;pointer-events:none;background-repeat:repeat;z-index:1}
+.lz-text{font:400 var(--lzfs,19px)/1.78 "Literata",Georgia,serif;color:var(--lz-ink);hyphens:auto;-webkit-hyphens:auto;text-align:justify}
+.lz-text p{margin:0;text-indent:1.5em}
+.lz-text p:first-child{text-indent:0}
+.lz-text p:first-child::first-letter{float:left;font-size:3.3em;line-height:.9;padding:.06em .08em 0 0;font-weight:700;color:var(--lz-accent)}
+.lz-fin{text-align:center;margin:44px 0 0;font:italic 400 15px "Literata",Georgia,serif;color:var(--lz-muted)}
+.lz-fin::before{content:"❦";display:block;font-style:normal;font-size:22px;color:var(--lz-accent);margin-bottom:6px}
+.lz-end{margin-top:40px;background:var(--paper-2);border:1px solid var(--lz-rule);border-radius:22px;padding:28px}
+.lz-end h2{font:700 24px/1.2 "Literata",Georgia,serif;color:var(--lz-ink);margin:0}
+.lz-end>p{margin:8px 0 18px;color:var(--lz-muted);font-size:15px}
+.lz-end label{display:block;font-weight:700;font-size:14px;margin:14px 0 6px}
+.lz-end .hint{font-weight:500;color:var(--lz-muted);font-size:13px;margin-left:6px}
+.lz-end textarea{width:100%;border:1.5px solid var(--lz-rule);border-radius:14px;padding:12px 14px;font:400 15px/1.55 var(--sans);background:var(--paper);color:var(--lz-ink);resize:vertical;-webkit-user-select:text;user-select:text}
+.lz-end textarea:focus{outline:none;border-color:var(--lz-accent)}
+.lz-end .btn{width:100%;justify-content:center;margin-top:16px}
+.lz.night .lz-end .btn{background:var(--lz-accent);color:#17161C}
+.lz-follow{border:1.5px solid var(--lz-accent);background:transparent;color:var(--lz-accent);border-radius:999px;padding:9px 18px;font:800 14px var(--sans)}
+.lz-follow[aria-pressed="true"]{background:var(--lz-accent);color:var(--paper)}
+.stars{border:0;margin:16px 0 0;padding:0}
+.stars legend{font-weight:700;font-size:14px;padding:0;margin-bottom:4px}
+.stars-in{display:inline-flex;flex-direction:row-reverse;gap:2px}
+.stars-in input{position:absolute;opacity:0;width:1px;height:1px}
+.stars-in label{margin:0!important;font-size:34px!important;line-height:1;color:color-mix(in srgb,var(--lz-muted) 38%,transparent);cursor:pointer;transition:color .12s,transform .12s;padding:0 2px}
+.stars-in label:hover,.stars-in label:hover~label,.stars-in input:checked~label{color:#E8A317}
+.stars-in label:active{transform:scale(.9)}
+.stars-in input:focus-visible+label{outline:3px solid var(--lz-accent);outline-offset:2px;border-radius:6px}
+.lz-thanks{margin-top:16px;padding:16px 18px;border-radius:16px;background:var(--paper);border:1px solid var(--lz-rule);font-size:15px}
+.lz-thanks b{display:block;font-size:17px;margin-bottom:4px}
+.lz-lock{text-align:center;padding:40px 20px;background:var(--paper-2);border-radius:22px;border:1px solid var(--lz-rule)}
+.lz-lock .btn{margin-top:14px}
+@media(max-width:560px){.lz-btn span{display:none}.lz-btn{padding:7px 10px}.lz-page{padding-top:36px}.lz-text{text-align:left}.lz-end{padding:22px 18px}.bb-grid{grid-template-columns:1fr}}
+@media print{.lz{display:none!important}}
 /* ---------- Finitions : rythme, typographie, hiérarchie ---------- */
 body{color:var(--ink-2);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
 h1,h2,h3{color:var(--ink);text-wrap:balance}
@@ -658,7 +729,71 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
     <li><span>Ville</span><b id="aVille">—</b></li>
     <li><span>Genres préférés</span><b id="aGenres">—</b></li>
   </ul>
-  <button class="btn dark" type="button" id="logout">Se déconnecter</button>
+  <button class="btn" type="button" data-mesbb>Mes Booksterbooks</button>
+  <button class="btn dark" type="button" id="logout" style="margin-top:10px">Se déconnecter</button>
+</div>
+
+<div class="modal wide" id="commande" role="dialog" aria-modal="true" aria-labelledby="cmdTitre" aria-hidden="true">
+  <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <img src="mark.png" alt="">
+  <h2 id="cmdTitre">Commande confirmée</h2>
+  <p id="cmdSum"></p>
+  <div class="bb-grid" id="cmdBB"></div>
+  <p class="cert-legal" id="cmdNote"></p>
+</div>
+
+<div class="modal wide" id="mesbb" role="dialog" aria-modal="true" aria-labelledby="mbTitre" aria-hidden="true">
+  <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <img src="mark.png" alt="">
+  <h2 id="mbTitre">Mes Booksterbooks</h2>
+  <p>Tes cadeaux mystère, à lire dans la liseuse sécurisée. Scanne un QR code pour continuer sur ton téléphone.</p>
+  <div class="bb-grid" id="mbList"></div>
+</div>
+
+<div class="lz" id="liseuse" role="dialog" aria-modal="true" aria-labelledby="lzTitre" hidden>
+  <header class="lz-bar">
+    <button class="lz-btn" type="button" id="lzClose" aria-label="Fermer la liseuse"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg><span>Fermer</span></button>
+    <div class="lz-info"><b id="lzMini"></b><span id="lzLeft"></span></div>
+    <div class="lz-tools">
+      <button class="lz-btn" type="button" id="lzSmaller" aria-label="Texte plus petit">A−</button>
+      <button class="lz-btn" type="button" id="lzBigger" aria-label="Texte plus grand">A+</button>
+      <button class="lz-btn" type="button" id="lzNight" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg><span id="lzNightTxt">Mode nuit</span></button>
+    </div>
+    <div class="lz-prog" aria-hidden="true"><i id="lzProg"></i></div>
+  </header>
+  <div class="lz-scroll" id="lzScroll">
+    <article class="lz-page" id="lzPage">
+      <p class="lz-kicker" id="lzKicker"></p>
+      <h1 id="lzTitre"></h1>
+      <p class="lz-author" id="lzAuthor"></p>
+      <p class="lz-meta" id="lzMeta"></p>
+      <div class="lz-body" id="lzBody"><div class="wm" id="lzWm"></div><div class="lz-text" id="lzText"></div></div>
+      <p class="lz-fin" id="lzFin">Fin de l’extrait</p>
+      <section class="lz-end" id="lzEnd">
+        <h2>Tu as aimé ce texte ?</h2>
+        <p>Note l’auteur et laisse-lui un mot : il le reçoit directement par e-mail. Ton adresse ne lui est pas communiquée.</p>
+        <button class="lz-follow" type="button" id="lzFollow" aria-pressed="false">+ Suivre l’auteur</button>
+        <form id="lzForm" novalidate>
+          <fieldset class="stars" id="lzStars">
+            <legend>Ta note</legend>
+            <div class="stars-in">
+              <input type="radio" name="lzNote" id="lzN5" value="5"><label for="lzN5" title="5 étoiles">★</label>
+              <input type="radio" name="lzNote" id="lzN4" value="4"><label for="lzN4" title="4 étoiles">★</label>
+              <input type="radio" name="lzNote" id="lzN3" value="3"><label for="lzN3" title="3 étoiles">★</label>
+              <input type="radio" name="lzNote" id="lzN2" value="2"><label for="lzN2" title="2 étoiles">★</label>
+              <input type="radio" name="lzNote" id="lzN1" value="1"><label for="lzN1" title="1 étoile">★</label>
+            </div>
+          </fieldset>
+          <label for="lzCom">Ton commentaire pour l’auteur <span class="hint">Facultatif</span></label>
+          <textarea id="lzCom" rows="4" maxlength="2000" placeholder="Ce que tu as ressenti, un passage qui t’a marqué…"></textarea>
+          <p class="form-msg" id="lzMsg" role="alert"></p>
+          <button class="btn" type="submit" id="lzSubmit">Envoyer mon avis à l’auteur</button>
+        </form>
+        <div class="lz-thanks" id="lzThanks" hidden></div>
+      </section>
+      <div class="lz-lock" id="lzLock" hidden></div>
+    </article>
+  </div>
 </div>
 
 <div class="modal wide" id="sell" role="dialog" aria-modal="true" aria-labelledby="sTitle" aria-hidden="true">
@@ -761,6 +896,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 <div class="toast" id="toast" role="status"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="config.js"></script>
 <script>
 var QUOTES=[
@@ -784,7 +920,7 @@ new IntersectionObserver(function(e){var off=!e[0].isIntersecting;hdr.classList.
 /* Drawer / modal */
 var lastFocus;
 function open(el){closeAll(true);lastFocus=document.activeElement;$("scrim").classList.add("on");el.classList.add("on");el.setAttribute("aria-hidden","false");var f=el.querySelector("input")||el.querySelector("button");f&&setTimeout(function(){f.focus()},60)}
-function closeAll(keep){if(window.stopScan)stopScan();["drawer","modal","login","account","sell","auteur"].forEach(function(id){$(id).classList.remove("on");$(id).setAttribute("aria-hidden","true")});$("scrim").classList.remove("on");if(!keep&&lastFocus)lastFocus.focus()}
+function closeAll(keep){if(window.stopScan)stopScan();["drawer","modal","login","account","sell","auteur","commande","mesbb"].forEach(function(id){$(id).classList.remove("on");$(id).setAttribute("aria-hidden","true")});$("scrim").classList.remove("on");if(!keep&&lastFocus)lastFocus.focus()}
 $("bagBtn").addEventListener("click",function(){open($("drawer"))});
 document.addEventListener("click",function(e){
   if(e.target.closest("[data-join]"))open($("modal"));
@@ -882,7 +1018,7 @@ $("forgot").addEventListener("click",async function(){
 /* État connecté */
 var current=null;
 async function showUser(user){
-  current=user;document.body.classList.toggle("authed",!!user);sellNote();if(typeof renderAll==="function"&&!catLoading)renderAll();if(typeof auNote==="function")auNote();
+  current=user;document.body.classList.toggle("authed",!!user);sellNote();if(typeof renderAll==="function"&&!catLoading)renderAll();if(typeof auNote==="function")auNote();if(user&&typeof pendingToken!=="undefined"&&pendingToken){var pt=pendingToken;pendingToken=null;setTimeout(function(){openLiseuse(pt)},350)}
   if(!user)return;
   var md=user.user_metadata||{},p=null;
   try{var r=await sb.from("profiles").select("prenom, ville, genres_preferes").eq("id",user.id).maybeSingle();if(!r.error)p=r.data}catch(e){}
@@ -1288,7 +1424,7 @@ $("payBtn").addEventListener("click",function(){
   if(sb&&!current){$("payMsg").className="form-msg err";$("payMsg").innerHTML='Connecte-toi pour payer ta commande. <button type="button" class="forgot" style="display:inline;margin:0" data-login>Se connecter</button>';return}
   var genre=t.gifts?(giftGenre||t.genres[0]):"";
   setMsg("payMsg","");
-  toast("Commande de "+EUR.format(t.total)+(t.gifts?" avec "+t.gifts+" Booksterbook"+(t.gifts>1?"s":"")+" "+genre:"")+" prête. Le paiement en ligne arrive bientôt.");
+  checkout(t,genre);
 });
 
 function renderAll(){renderGrid();renderBag();searchNote()}
@@ -1461,6 +1597,195 @@ async function loadMesTextes(){
   box.querySelectorAll("[data-mes]").forEach(function(b){b.addEventListener("click",function(){var i=+b.getAttribute("data-mes"),c=Object.assign({},list[i]),t=$("mes"+i);
     if(!t.hidden){t.hidden=true;return}c.auteur=sb?authorName():"Mode démo";showCert(t,c,!sb,false,c.texte)})});
 }
+
+/* ================= Booksterbooks, QR codes et liseuse sécurisée ================= */
+var WPM=230; /* vitesse de lecture moyenne, en mots par minute */
+var DEMO_TEXTES=[
+  {genre:"Polar",titre:"Brouillard sur le quai Saint-Vincent",auteur:"Lou Ferrand (autrice fictive)",auteur_id:"demo-lou",texte:
+"Le brouillard était monté de la Saône vers six heures, comme chaque matin de novembre, et il avait avalé les péniches une à une. Le commissaire Adèle Vasseur aimait ce moment où la ville hésitait encore entre la nuit et le jour. Elle disait que c’était l’heure où les gens oubliaient de mentir.\n\nOn l’avait appelée pour un livre. Pas pour un corps, pas pour une vitrine brisée : pour un livre, abandonné sur un banc du quai Saint-Vincent, ouvert à la page cent douze. Le gardien du parc avait trouvé ça étrange, parce qu’entre les pages, quelqu’un avait glissé une clé ancienne, lourde, en laiton noirci.\n\nVasseur souleva le volume avec deux doigts gantés. Un roman d’occasion, la couverture usée aux coins, une étiquette de bouquiniste encore collée au dos. Au crayon, dans la marge, une phrase avait été soulignée trois fois : « Ce que l’on cache dans les livres finit toujours par être lu. »\n\nElle leva les yeux vers la colline de la Croix-Rousse, à peine visible dans le gris. Quelque part là-haut, une porte attendait sa clé. Et quelqu’un, elle en était certaine, attendait qu’on la trouve.\n\nLe jeune lieutenant Karim Ben Saïd arriva en courant, deux cafés à la main. « Le bouquiniste ouvre à neuf heures, dit-il. Il se souviendra peut-être de l’acheteur. » Vasseur referma le livre doucement, comme on ferme les yeux d’un témoin. « Il se souviendra surtout du vendeur », répondit-elle.\n\nCar sur la page de garde, d’une écriture appliquée, une dédicace venait de lui apparaître : « Pour A., qui saura quoi faire. » Elle n’avait jamais aimé les coïncidences. Celle-ci portait son initiale."},
+  {genre:"Romans",titre:"La librairie de la rue Mercière",auteur:"Mathis Garnier (auteur fictif)",auteur_id:"demo-mathis",texte:
+"Il y avait, rue Mercière, une librairie si étroite qu’on ne pouvait y entrer qu’à deux. Madame Roux l’avait appelée « La Seconde Page », parce que, disait-elle, la première page d’un livre appartient à celui qui l’a écrit, mais la seconde appartient déjà au lecteur.\n\nJules y venait chaque mercredi après l’école. Il ne lisait pas encore très bien, et il avait honte de buter sur les mots longs. Madame Roux ne le pressait jamais. Elle lui tendait un livre au hasard, s’asseyait sur le petit escabeau et attendait, les mains croisées sur son tablier.\n\nUn jour, elle lui donna un livre sans couverture. Les pages étaient jaunies, cornées, annotées par des mains différentes. « Celui-ci a eu beaucoup de vies, dit-elle. Chaque personne qui l’a lu y a laissé quelque chose. À toi de voir ce que tu y laisseras. »\n\nJules tourna les pages. Dans les marges, il découvrit un dessin de chat, un numéro de téléphone barré, une date de 1974, et, tout en bas d’un chapitre, une phrase écrite au stylo bleu : « Si tu lis ceci, c’est que tu n’es pas seul. »\n\nIl sentit quelque chose se dénouer dans sa poitrine. Ce soir-là, pour la première fois, il lut un chapitre entier sans s’arrêter. Et avant de rendre le livre, il prit un crayon et ajouta, d’une écriture encore maladroite, sous la phrase bleue : « Moi non plus. »\n\nMadame Roux ne dit rien. Elle remit le livre sur l’étagère, entre deux autres, là où quelqu’un d’autre, un jour, viendrait le chercher."}
+];
+var BB_KEY="bookstery.bb.v1",demoBB=[];
+try{demoBB=JSON.parse(localStorage.getItem(BB_KEY)||"[]")||[]}catch(e){demoBB=[]}
+function saveBB(){try{localStorage.setItem(BB_KEY,JSON.stringify(demoBB))}catch(e){}}
+function uuid(){return crypto.randomUUID?crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-8xxx-xxxxxxxxxxxx".replace(/x/g,function(){return(Math.random()*16|0).toString(16)})}
+function lireUrl(token){var base=(CFG.SITE_URL||location.href.split("#")[0]).replace(/#.*$/,"");return base+"#lire-"+token}
+function minutes(n){return Math.max(1,Math.round(n/WPM))}
+
+/* QR codes */
+function drawQR(el,text){el.innerHTML="";if(window.QRCode){try{new QRCode(el,{text:text,width:160,height:160,colorDark:"#0B0B10",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});return}catch(e){}}el.textContent="QR indisponible"}
+function bbCards(list,box){
+  if(!list.length){box.innerHTML='<p class="bb-empty">Pas encore de Booksterbook. Dès 10 € chez un même vendeur, un texte inédit t’est offert.</p>';return}
+  box.innerHTML=list.map(function(b,i){return'<div class="bb-card"><div class="bb-qr" id="'+box.id+'-qr'+i+'" title="Scanne pour lire sur ton téléphone"></div><div>'+(b.lu_at?"":'<span class="bb-new">Nouveau</span>')+'<b>'+esc(b.titre)+'</b><span>'+esc(b.genre||"")+(b.nb_mots?" · ≈ "+minutes(b.nb_mots)+" min":"")+'</span><button class="btn" type="button" data-lire="'+esc(b.token)+'">Lire</button></div></div>'}).join("");
+  list.forEach(function(b,i){drawQR($(box.id+"-qr"+i),lireUrl(b.token))});
+}
+async function mesBooksterbooks(){
+  if(!sb)return demoBB;
+  if(!current)return[];
+  var r=await sb.from("booksterbooks").select("token,lu_at,created_at,extraits(titre,genre,nb_mots)").order("created_at",{ascending:false});
+  if(r.error)throw r.error;
+  return(r.data||[]).map(function(b){var x=b.extraits||{};return{token:b.token,lu_at:b.lu_at,titre:x.titre||"Booksterbook",genre:x.genre,nb_mots:x.nb_mots}});
+}
+async function openMesBB(){
+  open($("mesbb"));var box=$("mbList");
+  if(sb&&!current){box.innerHTML='<p class="bb-empty">Connecte-toi pour retrouver tes Booksterbooks.</p>';return}
+  box.innerHTML='<p class="bb-empty">Chargement…</p>';
+  try{bbCards(await mesBooksterbooks(),box)}catch(e){box.innerHTML='<p class="bb-empty">Tes Booksterbooks n’ont pas pu être chargés. Réessaie dans un instant.</p>'}
+}
+document.addEventListener("click",function(e){
+  if(e.target.closest("[data-mesbb]"))openMesBB();
+  var l=e.target.closest("[data-lire]");if(l)openLiseuse(l.getAttribute("data-lire"));
+});
+
+/* --- Commande : remplace le simple message par la validation + QR codes --- */
+function showCommande(total,list,manquants,demo){
+  $("cmdSum").textContent="Total réglé : "+EUR.format(total)+". "+(list.length?(list.length>1?"Tes "+list.length+" Booksterbooks t’attendent":"Ton Booksterbook t’attend")+" : lis-le ici ou scanne le QR code avec ton téléphone.":"Merci pour ta commande !");
+  bbCards(list,$("cmdBB"));if(!list.length)$("cmdBB").innerHTML="";
+  $("cmdNote").textContent=(manquants>0?manquants+" Booksterbook"+(manquants>1?"s n’ont":" n’a")+" pas pu être attribué"+(manquants>1?"s":"")+" faute de texte disponible dans ce genre : nous te l’enverrons dès qu’un auteur en dépose un. ":"")+
+    (demo?"Mode démo : aucun paiement n’a eu lieu. ":"")+"Tu retrouves tes Booksterbooks à tout moment dans « Mes Booksterbooks ».";
+  open($("commande"));
+}
+async function checkout(t,genre){
+  var btn=$("payBtn");
+  if(!sb){
+    var pool=DEMO_TEXTES.filter(function(x){return x.genre===genre}).concat(DEMO_TEXTES.filter(function(x){return x.genre!==genre}));
+    var dejaTitres=demoBB.map(function(b){return b.titre});
+    var nouveaux=pool.filter(function(x){return dejaTitres.indexOf(x.titre)<0}).concat(pool).slice(0,t.gifts).map(function(x){return Object.assign({token:uuid(),nb_mots:nbMots(x.texte),created_at:new Date().toISOString(),lu_at:null},x)});
+    demoBB=nouveaux.concat(demoBB);saveBB();
+    bag=[];giftGenre=null;saveBag();renderAll();closeAll(true);showCommande(t.total,nouveaux,0,true);return;
+  }
+  busy(btn,true,"Validation…");setMsg("payMsg","");
+  try{
+    var r=await sb.functions.invoke("valider-commande",{body:{annonce_ids:bag.map(function(b){return b.id}),genre:genre||null}});
+    if(r.error){var body=null;try{body=await r.error.context.json()}catch(x){}return setMsg("payMsg",(body&&body.erreur)||"La commande n’a pas pu être validée. Réessaie.","err")}
+    var d=r.data;bag=[];giftGenre=null;saveBag();loadCatalogue();closeAll(true);
+    showCommande(Number(d.commande.total),(d.booksterbooks||[]).map(function(b){return{token:b.token,titre:b.titre,genre:b.genre,lu_at:null}}),d.manquants||0,false);
+  }catch(e){console.error(e);setMsg("payMsg","La commande n’a pas pu être validée. Réessaie.","err")}
+  finally{busy(btn,false)}
+}
+
+/* Raccourci vers les Booksterbooks depuis le Bag */
+var _renderBag=renderBag;
+renderBag=function(){_renderBag();
+  var n=sb?0:demoBB.filter(function(b){return!b.lu_at}).length;
+  if(n||(sb&&current)){var d=document.createElement("div");d.className="bag-bb";d.innerHTML='<span>'+(n?n+" Booksterbook"+(n>1?"s":"")+" à lire":"Tes Booksterbooks")+'</span><button type="button" data-mesbb>Ouvrir</button>';$("dBody").prepend(d)}
+};
+
+/* --- Liseuse --- */
+var LZ={token:null,data:null,read:false,fs:19};
+try{LZ.fs=+(localStorage.getItem("bookstery.lz.fs")||19)||19;if(localStorage.getItem("bookstery.lz.night")==="1")$("liseuse").classList.add("night")}catch(e){}
+function lzNightUI(){var on=$("liseuse").classList.contains("night");$("lzNight").setAttribute("aria-pressed",on);$("lzNightTxt").textContent=on?"Mode jour":"Mode nuit";lzWatermark()}
+$("lzNight").addEventListener("click",function(){$("liseuse").classList.toggle("night");try{localStorage.setItem("bookstery.lz.night",$("liseuse").classList.contains("night")?"1":"0")}catch(e){}lzNightUI()});
+function lzFont(d){LZ.fs=Math.min(26,Math.max(15,LZ.fs+d));$("lzText").style.setProperty("--lzfs",LZ.fs+"px");try{localStorage.setItem("bookstery.lz.fs",LZ.fs)}catch(e){}lzWatermark();lzScroll()}
+$("lzSmaller").addEventListener("click",function(){lzFont(-1)});$("lzBigger").addEventListener("click",function(){lzFont(1)});
+function lzWatermark(){
+  var night=$("liseuse").classList.contains("night"),who=current?(current.email||"Bookster"):"Lecteur Bookstery";
+  var t=esc("Bookstery · "+who+" · "+new Date().toLocaleDateString("fr-FR")).replace(/'/g,"&#39;");
+  var svg="<svg xmlns='http://www.w3.org/2000/svg' width='380' height='210'><text x='16' y='130' transform='rotate(-22 190 105)' font-family='Arial,sans-serif' font-size='14' font-weight='700' fill='"+(night?"rgba(169,159,255,0.10)":"rgba(90,75,209,0.11)")+"'>"+t+"</text></svg>";
+  $("lzWm").style.backgroundImage='url("data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)+'")';
+}
+function lzScroll(){
+  if(!LZ.data)return;
+  var sc=$("lzScroll"),body=$("lzBody"),top=body.offsetTop,h=body.offsetHeight,vh=sc.clientHeight;
+  var f=Math.min(1,Math.max(0,(sc.scrollTop-top+vh*.6)/h));
+  $("lzProg").style.width=(f*100)+"%";
+  var left=Math.round(LZ.data.nb_mots*(1-f)/WPM);
+  $("lzLeft").textContent=f>=.98?"Lecture terminée":"Encore ≈ "+Math.max(1,left)+" min";
+  if(f>=.98&&!LZ.read){LZ.read=true;markRead()}
+}
+$("lzScroll").addEventListener("scroll",lzScroll,{passive:true});
+async function markRead(){
+  if(!sb){demoBB.forEach(function(b){if(b.token===LZ.token&&!b.lu_at)b.lu_at=new Date().toISOString()});saveBB();return}
+  if(LZ.data&&!LZ.data.lu_at){try{await sb.from("booksterbooks").update({lu_at:new Date().toISOString()}).eq("token",LZ.token)}catch(e){}}
+}
+
+/* Blocage du clic droit, de la sélection et du copier-coller (sauf dans le champ commentaire) */
+(function(){
+  var lz=$("liseuse");
+  lz.addEventListener("click",function(e){if(e.target.closest("[data-login]")){var t=LZ.token;closeLiseuse();pendingToken=t}});
+  function inField(t){return t&&t.closest&&t.closest("textarea,input")}
+  function nope(msg){return function(e){if(inField(e.target))return;e.preventDefault();if(msg)toast("Ce texte est protégé : copie et clic droit sont désactivés.")}}
+  lz.addEventListener("contextmenu",nope(true));lz.addEventListener("copy",nope(true));lz.addEventListener("cut",nope(true));
+  lz.addEventListener("selectstart",nope(false));lz.addEventListener("dragstart",nope(false));
+  lz.addEventListener("keydown",function(e){if(e.key==="Escape"){closeLiseuse();return}if(inField(e.target))return;if((e.ctrlKey||e.metaKey)&&/^[acxsp]$/i.test(e.key)){e.preventDefault();toast("Ce texte est protégé : copie et impression sont désactivées.")}});
+})();
+
+function lzShow(d){
+  LZ.data=d;LZ.read=!!d.lu_at;
+  $("lzLock").hidden=true;["lzBody","lzFin","lzEnd","lzMeta"].forEach(function(i){$(i).hidden=false});
+  $("lzKicker").textContent="Booksterbook · "+(d.genre||"Texte inédit");
+  $("lzTitre").textContent=d.titre;$("lzMini").textContent=d.titre;
+  $("lzAuthor").textContent="par "+(d.auteur||"un auteur indépendant");
+  $("lzMeta").innerHTML='<span>≈ '+minutes(d.nb_mots)+' min de lecture</span><span>'+NF.format(d.nb_mots)+' mots</span><span>Texte protégé</span>';
+  $("lzText").innerHTML=normTexte(d.texte).split(/\n{2,}/).map(function(p){return"<p>"+esc(p).replace(/\n/g,"<br>")+"</p>"}).join("");
+  $("lzText").style.setProperty("--lzfs",LZ.fs+"px");
+  var prenom=(d.auteur||"").split(" (")[0].split(" ")[0]||"l’auteur";
+  $("lzFollow").textContent=d.suivi?"✓ Tu suis "+prenom:"+ Suivre "+prenom;$("lzFollow").setAttribute("aria-pressed",!!d.suivi);$("lzFollow").dataset.prenom=prenom;
+  $("lzForm").reset();setMsg("lzMsg","");
+  $("lzForm").hidden=!!d.avis;$("lzThanks").hidden=!d.avis;
+  if(d.avis)$("lzThanks").innerHTML="<b>Merci pour ton avis !</b>Tu as donné "+d.avis.note+" étoile"+(d.avis.note>1?"s":"")+" à ce texte.";
+  lzNightUI();$("lzScroll").scrollTop=0;requestAnimationFrame(lzScroll);
+}
+function lzLocked(html){
+  LZ.data=null;["lzBody","lzFin","lzEnd","lzMeta"].forEach(function(i){$(i).hidden=true});
+  $("lzKicker").textContent="Liseuse Bookstery";$("lzTitre").textContent="Ton Booksterbook";$("lzMini").textContent="Liseuse";$("lzAuthor").textContent="";$("lzLeft").textContent="";$("lzProg").style.width="0";
+  $("lzLock").innerHTML=html;$("lzLock").hidden=false;lzNightUI();
+}
+var pendingToken=null;
+async function openLiseuse(token){
+  closeAll(true);LZ.token=token;$("liseuse").hidden=false;document.documentElement.style.overflow="hidden";
+  setTimeout(function(){$("lzClose").focus()},50);
+  try{if(location.hash!=="#lire-"+token)history.replaceState(null,"","#lire-"+token)}catch(e){}
+  if(!sb){var b=demoBB.filter(function(x){return x.token===token})[0];
+    if(!b)return lzLocked("<p>Ce Booksterbook n’est pas sur cet appareil. Ouvre-le depuis le navigateur où tu as passé commande.</p>");
+    return lzShow(Object.assign({},b,{suivi:followsDemo(b.auteur_id),avis:b.avis||null}));}
+  if(!current){pendingToken=token;return lzLocked('<p>Connecte-toi pour ouvrir ton Booksterbook. Il est réservé au compte qui l’a reçu.</p><button class="btn" type="button" data-login>Se connecter</button>')}
+  lzLocked("<p>Ouverture de ton Booksterbook…</p>");
+  try{
+    var r=await sb.from("booksterbooks").select("id,token,lu_at,extrait_id,extraits(titre,genre,texte,nb_mots,auteur_id,auteur_nom)").eq("token",token).maybeSingle();
+    if(r.error||!r.data||!r.data.extraits)return lzLocked("<p>Ce Booksterbook est introuvable dans ton espace. Vérifie que tu es connecté avec le bon compte.</p>");
+    var x=r.data.extraits,av=await sb.from("avis").select("note").eq("booksterbook_id",r.data.id).maybeSingle(),ab=await sb.from("abonnements").select("auteur_id").eq("lecteur_id",current.id).eq("auteur_id",x.auteur_id).maybeSingle();
+    lzShow({titre:x.titre,genre:x.genre,texte:x.texte,nb_mots:x.nb_mots,auteur:x.auteur_nom||"un auteur indépendant",auteur_id:x.auteur_id,lu_at:r.data.lu_at,avis:av.data||null,suivi:!!ab.data});
+  }catch(e){console.error(e);lzLocked("<p>La liseuse n’a pas pu s’ouvrir. Vérifie ta connexion et réessaie.</p>")}
+}
+function closeLiseuse(){
+  if($("liseuse").hidden)return;$("liseuse").hidden=true;document.documentElement.style.overflow="";LZ.token=null;pendingToken=null;
+  try{if(/^#lire-/.test(location.hash))history.replaceState(null,"",location.pathname+location.search)}catch(e){}
+}
+$("lzClose").addEventListener("click",closeLiseuse);
+
+/* Suivre l’auteur */
+function followsDemo(id){try{return(JSON.parse(localStorage.getItem("bookstery.follow.v1")||"[]")).indexOf(id)>-1}catch(e){return false}}
+$("lzFollow").addEventListener("click",async function(){
+  if(!LZ.data)return;var on=this.getAttribute("aria-pressed")!=="true",id=LZ.data.auteur_id,b=this;
+  if(sb){if(!current)return;try{var r=on?await sb.from("abonnements").insert({lecteur_id:current.id,auteur_id:id}):await sb.from("abonnements").delete().eq("lecteur_id",current.id).eq("auteur_id",id);if(r.error&&r.error.code!=="23505")throw r.error}catch(e){return toast("Action impossible pour le moment. Réessaie.")}}
+  else{try{var l=JSON.parse(localStorage.getItem("bookstery.follow.v1")||"[]");l=l.filter(function(x){return x!==id});if(on)l.push(id);localStorage.setItem("bookstery.follow.v1",JSON.stringify(l))}catch(e){}}
+  LZ.data.suivi=on;b.setAttribute("aria-pressed",on);b.textContent=on?"✓ Tu suis "+b.dataset.prenom:"+ Suivre "+b.dataset.prenom;
+  toast(on?"Tu suis maintenant "+b.dataset.prenom+". Tu seras prévenu de ses prochains textes.":"Tu ne suis plus "+b.dataset.prenom+".");
+});
+
+/* Noter + commenter : l’avis part par e-mail à l’auteur */
+$("lzForm").addEventListener("submit",async function(e){
+  e.preventDefault();if(!LZ.data)return;
+  var n=this.querySelector('input[name="lzNote"]:checked'),note=n?+n.value:0,com=$("lzCom").value.trim(),btn=$("lzSubmit");
+  if(!note)return setMsg("lzMsg","Choisis une note de 1 à 5 étoiles.","err");
+  var thanks=function(mail){LZ.data.avis={note:note};$("lzForm").hidden=true;$("lzThanks").hidden=false;
+    $("lzThanks").innerHTML="<b>Merci, ton avis est parti !</b>"+(mail?"L’auteur vient de le recevoir par e-mail.":"Il est enregistré et sera transmis à l’auteur.")};
+  if(!sb){demoBB.forEach(function(b){if(b.token===LZ.token)b.avis={note:note}});saveBB();thanks(false);toast("Mode démo : l’avis n’est pas envoyé par e-mail.");return}
+  busy(btn,true,"Envoi…");setMsg("lzMsg","");
+  try{
+    var r=await sb.functions.invoke("envoyer-avis",{body:{token:LZ.token,note:note,commentaire:com,suivre:!!LZ.data.suivi}});
+    if(r.error){var body=null;try{body=await r.error.context.json()}catch(x){}return setMsg("lzMsg",(body&&body.erreur)||"Ton avis n’a pas pu être envoyé. Réessaie.","err")}
+    thanks(r.data&&r.data.email_envoye);
+  }catch(x){setMsg("lzMsg","Ton avis n’a pas pu être envoyé. Réessaie.","err")}
+  finally{busy(btn,false)}
+});
+
+/* Ouverture par lien ou QR code : #lire-<jeton> */
+function routeLire(){var m=location.hash.match(/^#lire-([0-9a-f-]{16,})$/i);if(m&&LZ.token!==m[1])openLiseuse(m[1])}
+window.addEventListener("hashchange",routeLire);
+setTimeout(routeLire,0);
 
 /* Quote bubbles: soft fade in, 6 s visible, soft fade out, next quote */
 var qi=0,side=0,timer=null,FADE=900,SHOW=6000;

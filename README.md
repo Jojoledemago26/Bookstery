@@ -10,6 +10,9 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/annonces.sql` — table des annonces de livres (à exécuter une fois dans Supabase > SQL Editor)
 - `supabase/extraits.sql` — tables des extraits d'auteurs et des dépôts refusés
 - `supabase/functions/deposer-extrait/` — fonction Edge : contrôle anti-IA, empreinte, horodatage
+- `supabase/liseuse.sql` — commandes, Booksterbooks, avis, abonnements
+- `supabase/functions/valider-commande/` — commande + tirage des Booksterbooks (jetons des QR codes)
+- `supabase/functions/envoyer-avis/` — avis du lecteur envoyé par e-mail à l'auteur (Resend)
 
 ## Lancer en local
 
@@ -54,3 +57,20 @@ supabase functions deploy deposer-extrait
 ```
 
 Les adresses et champs des API Pangram / ZeroGPT sont à vérifier dans la documentation de ton compte (variables `PANGRAM_API_URL`, `ZEROGPT_API_URL`).
+
+## Liseuse sécurisée
+
+- Accès : QR code / lien `#lire-<jeton>` affiché après la commande, ou « Mes Booksterbooks » (espace client, raccourci dans le Bag). Réservée au compte qui a reçu le Booksterbook.
+- Fond papier crème, **mode nuit**, taille du texte réglable, temps de lecture estimé (230 mots/min) et temps restant, barre de progression.
+- Clic droit, sélection, copier/couper, glisser, Ctrl+A/C/P bloqués ; impression masquée ; filigrane au nom du lecteur.
+- À la fin : note de 1 à 5 étoiles, commentaire envoyé **par e-mail à l'auteur** (son adresse reste privée), bouton **Suivre l'auteur**.
+
+Mise en route :
+
+```bash
+supabase secrets set RESEND_API_KEY=re_xxx MAIL_FROM="Bookstery <avis@ton-domaine.fr>"
+supabase functions deploy valider-commande
+supabase functions deploy envoyer-avis
+```
+
+Renseigne `SITE_URL` dans `config.js` pour que les QR codes pointent vers l'adresse publique du site.

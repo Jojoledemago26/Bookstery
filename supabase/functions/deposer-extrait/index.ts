@@ -132,7 +132,7 @@ Deno.serve(async (req) => {
   }
 
   const { data: ex, error } = await admin.from("extraits")
-    .insert({ auteur_id: user.id, titre, genre, texte, nb_mots: nbMots, sha256: empreinte, ai_score: score })
+    .insert({ auteur_id: user.id, auteur_nom: (user.user_metadata?.prenom as string | undefined) ?? null, titre, genre, texte, nb_mots: nbMots, sha256: empreinte, ai_score: score })
     .select("id, titre, genre, nb_mots, sha256, ai_score, created_at").single();
   if (error) { console.error(error); return json(500, { erreur: "Le dépôt n’a pas pu être enregistré. Réessaie." }); }
 

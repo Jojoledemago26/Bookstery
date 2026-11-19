@@ -21,5 +21,9 @@ window.BOOKSTERY_CONFIG = {
   /* Facultatif : clé API Google Books (console.cloud.google.com > APIs > Books API).
    * Sans clé, la recherche par ISBN marche quand même, avec une limite d'usage partagée ;
    * en cas d'échec, le site essaie automatiquement Open Library. Restreins la clé à ton domaine. */
-  GOOGLE_BOOKS_API_KEY: ""
+  GOOGLE_BOOKS_API_KEY: "",
+
+  /* Adresse publique du site (ex. https://jojoledemago26.github.io/Bookstery/) :
+   * utilisée dans les QR codes de la liseuse. Vide = adresse de la page en cours. */
+  SITE_URL: ""
 };
