@@ -478,6 +478,32 @@ body.authed .me{display:inline-flex}
 .lz-lock .btn{margin-top:14px}
 @media(max-width:560px){.lz-btn span{display:none}.lz-btn{padding:7px 10px}.lz-page{padding-top:36px}.lz-text{text-align:left}.lz-end{padding:22px 18px}.bb-grid{grid-template-columns:1fr}}
 @media print{.lz{display:none!important}}
+
+/* ---------- Démo guidée ---------- */
+.tour-cta{display:inline-flex;align-items:center;gap:10px;margin-top:26px;border:0;border-radius:999px;padding:11px 20px 11px 12px;background:var(--ink);color:#fff;font:700 14.5px var(--sans);box-shadow:0 10px 26px rgba(11,11,16,.18);transition:transform .15s,background .2s}
+.tour-cta span{width:26px;height:26px;border-radius:50%;background:var(--maj);display:grid;place-items:center;font-size:11px}
+.tour-cta:hover{background:var(--ink-2);transform:translateY(-1px)}
+.tour-cta[hidden]{display:none}
+.tour{position:fixed;z-index:80;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:min(360px,calc(100% - 32px));background:var(--ink);color:#fff;border-radius:22px;padding:16px 18px 18px;box-shadow:0 24px 60px rgba(11,11,16,.35);display:flex;flex-direction:column;gap:10px;transition:transform .25s}
+.tour[hidden]{display:none}
+.tour.ping{transform:scale(1.03)}
+.tour-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.tour-k{font-size:12px;font-weight:800;letter-spacing:.04em;color:#B8AFFF}
+.tour-x{border:0;background:rgba(255,255,255,.1);color:#fff;width:28px;height:28px;border-radius:50%;font:700 16px/1 var(--sans);margin-left:6px}
+.tour-x:hover{background:rgba(255,255,255,.2)}
+.tour-dots{display:flex;gap:5px}
+.tour-dots i{flex:1;height:4px;border-radius:999px;background:rgba(255,255,255,.15)}
+.tour-dots i.ok{background:#3DBE7A}.tour-dots i.on{background:var(--maj)}
+.tour-t{font-size:18px;line-height:1.25;letter-spacing:-.01em}
+.tour-p{margin:0;font-size:14px;line-height:1.5;color:rgba(255,255,255,.78)}
+.tour-act{display:flex;gap:8px;margin-top:4px}
+.tour-act .btn{padding:10px 16px;font-size:13.5px}
+.tour-act .btn.ghost{color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.25)}
+.tour-act .btn.ghost:hover{background:rgba(255,255,255,.08);color:#fff}
+.tour.min .tour-dots,.tour.min .tour-p,.tour.min .tour-act{display:none}
+.tour-hi{outline:3px solid var(--maj)!important;outline-offset:4px;border-radius:14px;animation:tourpulse 1.4s ease-in-out infinite}
+@keyframes tourpulse{0%,100%{box-shadow:0 0 0 0 rgba(96,80,220,.45)}50%{box-shadow:0 0 0 10px rgba(96,80,220,0)}}
+@media(max-width:560px){.tour{left:12px;right:12px;width:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));padding:14px 16px 16px}.tour-p{font-size:13.5px}.tour-cta{font-size:13.5px}}
 /* ---------- Finitions : rythme, typographie, hiérarchie ---------- */
 body{color:var(--ink-2);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
 h1,h2,h3{color:var(--ink);text-wrap:balance}
@@ -582,6 +608,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
       <p class="search-note" id="note" aria-live="polite"></p>
 
       <div class="chips" id="chips" role="group" aria-label="Genres"></div>
+      <button class="tour-cta" type="button" data-tour hidden><span aria-hidden="true">▶</span> Essaie la démo guidée : de la recherche à la liseuse</button>
     </div>
 
     <div class="quotes" id="quotes" aria-label="Citations sur la lecture">
@@ -1786,6 +1813,117 @@ $("lzForm").addEventListener("submit",async function(e){
 function routeLire(){var m=location.hash.match(/^#lire-([0-9a-f-]{16,})$/i);if(m&&LZ.token!==m[1])openLiseuse(m[1])}
 window.addEventListener("hashchange",routeLire);
 setTimeout(routeLire,0);
+
+/* ================= Démo guidée : le parcours d’un lecteur, pas à pas ================= */
+var TOUR=null;
+function tourDrawerOpen(){return $("drawer").classList.contains("on")}
+function lastBBToken(){return demoBB[0]&&demoBB[0].token}
+var STEPS=[
+  {t:"Recherche un livre",
+   x:"Tape un titre ou un auteur dans la barre de recherche, par exemple « Camus », ou touche un genre comme « BD ».",
+   hi:function(){return $("heroSearch")},
+   done:function(){return(catTerm||catGenre)&&filtered().length>0},
+   auto:function(){window.scrollTo({top:0,behavior:"smooth"});$("q").value="Camus";$("heroSearch").requestSubmit()}},
+  {t:"Ajoute-le à ton Bookster Bag",
+   x:"Dans les résultats, touche « Ajouter ». Le montant du Bag, en haut, se met à jour.",
+   hi:function(){return document.querySelector("#grid .add:not([disabled]):not([aria-pressed=\"true\"])")},
+   done:function(){return bag.length>0},
+   auto:function(){var b=filtered().filter(function(x){return!bagHas(x.id)})[0]||BOOKS[0];$("catalogue").scrollIntoView({behavior:"smooth"});addToBag(b.id)}},
+  {t:"Débloque ton premier Booksterbook",
+   x:"Ouvre ton Bag. Dès 10 € chez un même vendeur, un texte inédit t’est offert : ajoute un livre suggéré par l’encart violet.",
+   hi:function(){return tourDrawerOpen()?(document.querySelector(".nudge")||document.querySelector(".prog")):$("bagBtn")},
+   done:function(){return totals().gifts>0},
+   auto:function(){if(!tourDrawerOpen())open($("drawer"));
+     var g=groups().sort(function(a,b){return b.sub-a.sub})[0];if(!g)return;
+     var pool=BOOKS.filter(function(x){return x.vendeur_id===g.vid&&!bagHas(x.id)}).sort(function(a,b){return b.prix-a.prix}),sum=g.sub;
+     pool.forEach(function(x){if(sum<10){addToBag(x.id);sum=r2(sum+x.prix)}});}},
+  {t:"Choisis le genre de ton cadeau",
+   x:"Ton Bag mélange plusieurs genres : dans l’encart vert, choisis celui de ton Booksterbook mystère.",
+   hi:function(){return $("gPick")},
+   skip:function(){return totals().genres.length<=1},
+   done:function(){return totals().genres.length<=1||!!giftGenre},
+   auto:function(){if(!tourDrawerOpen())open($("drawer"));var i=$("gOpts").querySelector("input");if(i){i.checked=true;i.dispatchEvent(new Event("change",{bubbles:true}))}}},
+  {t:"Passe commande",
+   x:"Vérifie le récapitulatif (livres, Protection Acheteur de 5 % + 0,70 €, Booksterbooks offerts), puis touche « Passer au paiement ».",
+   hi:function(){return tourDrawerOpen()?$("payBtn"):$("bagBtn")},
+   done:function(){return lastBBToken()&&lastBBToken()!==TOUR.bb0},
+   auto:function(){if(!tourDrawerOpen())open($("drawer"));setTimeout(function(){$("payBtn").click()},250)}},
+  {t:"Ouvre ton Booksterbook",
+   x:"Voici ton QR code : scanné avec un téléphone, il ouvre la liseuse. Ici, touche « Lire ».",
+   hi:function(){return document.querySelector("#cmdBB [data-lire]")||document.querySelector("[data-lire]")},
+   done:function(){return!$("liseuse").hidden&&!!LZ.data},
+   auto:function(){var b=document.querySelector("#cmdBB [data-lire]");if(b)b.click();else openLiseuse(lastBBToken())}},
+  {t:"Lis dans la liseuse",
+   x:"Essaie le mode nuit et A+ pour agrandir le texte, puis fais défiler jusqu’à la fin. Le temps restant s’affiche en haut. Essaie aussi un clic droit sur le texte.",
+   hi:function(){return $("lzNight")},
+   done:function(){return LZ.read},
+   auto:function(){var s=$("lzScroll");s.scrollTo({top:s.scrollHeight,behavior:"smooth"})}},
+  {t:"Note l’auteur",
+   x:"Suis l’auteur, donne-lui des étoiles et laisse-lui un mot : en version réelle, il le reçoit directement par e-mail.",
+   hi:function(){return $("lzEnd")},
+   done:function(){return!!(LZ.data&&LZ.data.avis)},
+   auto:function(){$("lzEnd").scrollIntoView({behavior:"smooth"});if($("lzFollow").getAttribute("aria-pressed")!=="true")$("lzFollow").click();$("lzN5").checked=true;$("lzCom").value="Superbe ambiance, j’ai hâte de lire la suite !";setTimeout(function(){$("lzForm").requestSubmit()},400)}}
+];
+
+function tourEl(){
+  var el=$("tour");if(el)return el;
+  el=document.createElement("aside");el.id="tour";el.className="tour";el.setAttribute("aria-live","polite");el.setAttribute("aria-label","Démo guidée");
+  document.body.appendChild(el);
+  el.addEventListener("click",function(e){
+    if(e.target.closest("[data-tour-auto]")){var s=STEPS[TOUR.i];s.auto();}
+    if(e.target.closest("[data-tour-skip]"))tourGo(TOUR.i+1);
+    if(e.target.closest("[data-tour-quit]"))tourStop();
+    if(e.target.closest("[data-tour-restart]"))tourStart();
+    if(e.target.closest("[data-tour-min]")){el.classList.toggle("min")}
+  });
+  return el;
+}
+function tourHi(){
+  document.querySelectorAll(".tour-hi").forEach(function(n){n.classList.remove("tour-hi")});
+  if(!TOUR||TOUR.i>=STEPS.length)return;var n=STEPS[TOUR.i].hi();if(n)n.classList.add("tour-hi");
+}
+function tourRender(){
+  var el=tourEl(),i=TOUR.i;
+  if(i>=STEPS.length){
+    el.innerHTML='<div class="tour-top"><span class="tour-k">Démo guidée · terminée</span><button class="tour-x" type="button" data-tour-quit aria-label="Fermer la démo">×</button></div>'+
+      '<b class="tour-t">Bravo, tu as fait le parcours complet !</b><p class="tour-p">Tu as trouvé un livre, débloqué un Booksterbook à 10 €, choisi son genre, passé commande, ouvert ton cadeau par QR code dans la liseuse sécurisée et noté l’auteur.</p>'+
+      '<div class="tour-act"><button class="btn" type="button" data-tour-restart>Recommencer</button><button class="btn ghost" type="button" data-tour-quit>Fermer</button></div>';
+    tourHi();return;
+  }
+  var s=STEPS[i];
+  el.innerHTML='<div class="tour-top"><span class="tour-k">Démo guidée · étape '+(i+1)+' sur '+STEPS.length+'</span><span><button class="tour-x" type="button" data-tour-min aria-label="Réduire">–</button><button class="tour-x" type="button" data-tour-quit aria-label="Quitter la démo">×</button></span></div>'+
+    '<div class="tour-dots" aria-hidden="true">'+STEPS.map(function(_,k){return'<i class="'+(k<i?"ok":k===i?"on":"")+'"></i>'}).join("")+'</div>'+
+    '<b class="tour-t">'+s.t+'</b><p class="tour-p">'+s.x+'</p>'+
+    '<div class="tour-act"><button class="btn" type="button" data-tour-auto>Fais-le pour moi</button><button class="btn ghost" type="button" data-tour-skip>Passer</button></div>';
+  tourHi();
+}
+function tourGo(i){
+  while(i<STEPS.length&&STEPS[i].skip&&STEPS[i].skip())i++;
+  TOUR.i=i;tourRender();
+  if(i>=STEPS.length)toast("Démo terminée. Merci d’avoir testé Bookstery !");
+}
+function tourTick(){
+  if(!TOUR||TOUR.i>=STEPS.length)return;
+  var s=STEPS[TOUR.i];
+  if(s.done()){var el=$("tour");if(el)el.classList.add("ping");setTimeout(function(){if(el)el.classList.remove("ping")},500);tourGo(TOUR.i+1);return}
+  var n=s.hi();if(n&&!n.classList.contains("tour-hi"))tourHi();
+}
+function tourStart(){
+  if(sb){toast("La démo guidée fonctionne en mode démo, sans Supabase.");return}
+  closeLiseuse();closeAll(true);
+  bag=[];giftGenre=null;saveBag();
+  if(typeof goHome==="function")goHome();renderAll();
+  TOUR={i:0,bb0:lastBBToken()};var el=tourEl();el.hidden=false;el.classList.remove("min");
+  clearInterval(tourStart.h);tourStart.h=setInterval(tourTick,350);
+  tourGo(0);
+}
+function tourStop(){
+  clearInterval(tourStart.h);TOUR=null;var el=$("tour");if(el)el.hidden=true;
+  document.querySelectorAll(".tour-hi").forEach(function(n){n.classList.remove("tour-hi")});
+}
+document.addEventListener("click",function(e){if(e.target.closest("[data-tour]"))tourStart()});
+if(!sb){var tc=document.querySelector(".tour-cta");if(tc)tc.hidden=false}
+if(location.hash==="#demo")setTimeout(tourStart,300);
 
 /* Quote bubbles: soft fade in, 6 s visible, soft fade out, next quote */
 var qi=0,side=0,timer=null,FADE=900,SHOW=6000;
