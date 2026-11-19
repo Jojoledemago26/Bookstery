@@ -150,14 +150,13 @@ footer nav a:hover{color:var(--ink)}
 /* ---------- Drawer & modal ---------- */
 .scrim{position:fixed;inset:0;background:rgba(11,11,16,.45);opacity:0;pointer-events:none;transition:.25s;z-index:40}
 .scrim.on{opacity:1;pointer-events:auto}
-.drawer{position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);background:#fff;z-index:41;transform:translateX(100%);transition:transform .3s ease;display:flex;flex-direction:column;padding:calc(22px + env(safe-area-inset-top,0px)) 24px calc(22px + env(safe-area-inset-bottom,0px))}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;z-index:41;transform:translateX(100%);transition:transform .3s ease;display:flex;flex-direction:column;padding:calc(22px + env(safe-area-inset-top,0px)) 24px calc(22px + env(safe-area-inset-bottom,0px))}
 .drawer.on{transform:none}
 .dh{display:flex;align-items:center;justify-content:space-between}
 .dh h2{font-size:24px}
 .dempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted);gap:10px}
 .dempty .ico{width:64px;height:64px;border-radius:20px;background:var(--maj-l);color:var(--maj);display:grid;place-items:center}
 .dempty b{color:var(--ink);font-size:17px}
-.dsum{border-top:1.5px solid var(--ink);padding-top:16px;display:flex;justify-content:space-between;font-weight:800;font-size:20px}
 .icon{width:36px;height:36px;border-radius:50%;border:0;background:transparent;color:var(--muted);display:grid;place-items:center}
 .icon:hover{background:var(--maj-xl);color:var(--ink)}
 .modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-46%);opacity:0;pointer-events:none;transition:.25s;z-index:41;width:min(440px,calc(100% - 32px));background:#fff;border-radius:28px;padding:34px;box-shadow:0 30px 80px rgba(11,11,16,.3)}
@@ -263,6 +262,92 @@ body.authed .me{display:inline-flex}
   .promises{grid-template-columns:1fr}
 }
 
+
+/* ---------- Catalogue ---------- */
+.cat{padding:24px 0 72px}
+.cat-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.cat-head h2{font-size:clamp(26px,3vw,34px);letter-spacing:-.02em}
+.cat-head p{margin:8px 0 0;color:var(--muted)}
+.demo-pill{font-size:12px;font-weight:700;color:var(--muted);background:var(--maj-xl);border:1px solid var(--line);border-radius:999px;padding:5px 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:28px 20px}
+.book-card{display:flex;flex-direction:column;gap:10px;min-width:0}
+.bcover{position:relative;aspect-ratio:2/3;max-width:100%;border-radius:4px 12px 12px 4px;overflow:hidden;background:var(--c,#3E3A8F);color:#fff;box-shadow:inset 6px 0 0 rgba(0,0,0,.16),0 10px 24px rgba(28,22,80,.14);display:flex;flex-direction:column;justify-content:space-between;padding:16px 14px 14px 18px}
+.bcover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bcover b{font-size:17px;line-height:1.15;letter-spacing:-.01em;text-wrap:balance;overflow-wrap:anywhere}
+.bcover span{font-size:12px;font-weight:600;opacity:.82}
+.bcard-t{font-size:15.5px;font-weight:800;line-height:1.25;color:var(--ink);margin:2px 0 0;overflow-wrap:anywhere}
+.bcard-m{font-size:13px;color:var(--muted);line-height:1.4;margin:-4px 0 0}
+.bcard-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}
+.bprice{font-weight:800;font-size:18px;color:var(--ink);font-variant-numeric:tabular-nums}
+.add{border:0;border-radius:999px;padding:8px 14px;font:700 13.5px var(--sans);background:var(--maj-l);color:var(--maj-d);transition:background .2s,color .2s}
+.add:hover{background:var(--maj);color:#fff}
+.add[aria-pressed="true"]{background:var(--maj);color:#fff}
+.add[disabled]{background:var(--maj-xl);color:var(--muted);cursor:default}
+.etat{display:inline-block;font-size:11.5px;font-weight:700;color:var(--maj-d);background:var(--maj-xl);border-radius:999px;padding:2px 8px;margin-right:4px}
+.cat-empty{grid-column:1/-1;text-align:center;color:var(--muted);background:var(--maj-xl);border-radius:20px;padding:36px 20px}
+.cat-empty b{display:block;color:var(--ink);font-size:17px;margin-bottom:6px}
+.cat-more{display:flex;justify-content:center;margin-top:28px}
+.cat-more .btn[hidden]{display:none}
+
+/* ---------- Bookster Bag ---------- */
+.dh h2{display:flex;align-items:center;gap:10px}
+.dcount{font-size:13px;font-weight:800;color:var(--maj);background:var(--maj-l);border-radius:999px;padding:2px 10px}
+.dcount:empty{display:none}
+.dbody{flex:1;overflow:auto;margin:16px -24px 0;padding:2px 24px 16px;display:flex;flex-direction:column;gap:14px;overscroll-behavior:contain}
+.sg{border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:14px}
+.sg-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.sg-h b{font-size:15px;color:var(--ink)}.sg-h span{font-size:13px;color:var(--muted)}
+.sg-h .sub{font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;font-size:15px}
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.item{display:grid;grid-template-columns:38px 1fr auto auto;align-items:center;gap:12px}
+.mini{width:38px;height:56px;border-radius:2px 6px 6px 2px;background:var(--c,#3E3A8F);box-shadow:inset 3px 0 0 rgba(0,0,0,.18);overflow:hidden;position:relative}
+.mini img{width:100%;height:100%;object-fit:cover}
+.item-t{min-width:0}.item-t b{display:block;font-size:14px;line-height:1.3;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item-t span{font-size:12.5px;color:var(--muted)}
+.item .p{font-weight:800;font-size:14.5px;font-variant-numeric:tabular-nums}
+.rm{width:30px;height:30px}
+.prog{display:flex;flex-direction:column;gap:8px}
+.prog-l{font-size:13.5px;font-weight:700;color:var(--ink);margin:0}
+.prog-l em{font-style:normal;color:var(--maj)}
+.bar-t{position:relative;height:8px;border-radius:999px;background:var(--maj-l);margin:4px 7px 22px}
+.bar-t i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,var(--maj),#7C6CF0);transition:width .45s ease}
+.tk{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid #CFCAF6;transform:translate(-50%,-50%);display:grid;place-items:center;color:#fff}
+.tk.on{background:var(--maj);border-color:var(--maj)}
+.tk svg{width:9px;height:9px;opacity:0}.tk.on svg{opacity:1}
+.tk small{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-size:11.5px;font-weight:700;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.tk.on small{color:var(--maj-d)}
+.nudge{background:var(--maj-xl);border:1px solid var(--maj-l);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.nudge p{margin:0;font-size:13.5px;font-weight:700;color:var(--maj-d);line-height:1.4}
+.sugg{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.sugg li{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:10px;font-size:13px}
+.sugg li span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);font-weight:600}
+.sugg li em{font-style:normal;font-weight:800;font-variant-numeric:tabular-nums}
+.sugg .add{padding:5px 11px;font-size:12.5px}
+.dempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted);gap:10px;padding:24px 0}
+.dfoot{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:12px}
+.dfoot[hidden]{display:none}
+.gpick{border:0;margin:0;padding:12px 14px;border-radius:14px;background:#E8F6EE}
+.gpick legend{float:left;width:100%;padding:0;font-weight:800;font-size:14px;color:#1C5C3B}
+.gpick p{clear:both;margin:2px 0 10px;font-size:13px;color:#2F6B4B}
+.gpick.need{outline:2px solid #C0263A;outline-offset:2px}
+.gp-opts{display:flex;flex-wrap:wrap;gap:6px}
+.gp-opts label{position:relative;cursor:pointer}
+.gp-opts input{position:absolute;opacity:0;width:1px;height:1px}
+.gp-opts span{display:inline-block;border:1.5px solid #B9DEC9;background:#fff;color:#1C5C3B;border-radius:999px;padding:6px 13px;font-size:13px;font-weight:700;transition:.15s}
+.gp-opts input:checked+span{background:#1C7A4A;border-color:#1C7A4A;color:#fff}
+.gp-opts input:focus-visible+span{outline:3px solid var(--maj);outline-offset:2px}
+.gsingle{margin:0;font-size:13px;color:#2F6B4B;background:#E8F6EE;border-radius:12px;padding:9px 12px}
+.sum{margin:0;display:flex;flex-direction:column;gap:6px}
+.sum div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:14px}
+.sum dt{color:var(--muted)}.sum dt small{font-size:12px;opacity:.8;margin-left:4px}
+.sum dd{margin:0;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.sum .gift dd{color:#1C7A4A}
+.sum .tot{border-top:1.5px solid var(--ink);padding-top:10px;margin-top:4px}
+.sum .tot dt,.sum .tot dd{font-size:19px;font-weight:800;color:var(--ink)}
+.dfoot .form-msg{margin:0!important;min-height:0}
+.dfoot .form-msg:empty{display:none}
+.dfoot .btn{width:100%;justify-content:center}
+@media(max-width:560px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 14px}.bcover b{font-size:15px}.cat{padding:8px 0 56px}.drawer{padding-left:18px;padding-right:18px}.dbody{margin:14px -18px 0;padding:2px 18px 14px}}
 /* ---------- Finitions : rythme, typographie, hiérarchie ---------- */
 body{color:var(--ink-2);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
 h1,h2,h3{color:var(--ink);text-wrap:balance}
@@ -377,6 +462,20 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
     </div>
   </div>
 
+  <section id="catalogue" class="cat">
+    <div class="wrap">
+      <div class="cat-head">
+        <div>
+          <h2>Les derniers livres en vente</h2>
+          <p id="catSub">Des livres d’occasion vendus par des Booksters près de chez toi.</p>
+        </div>
+        <span class="demo-pill" id="catDemo" hidden>Exemples de démonstration</span>
+      </div>
+      <div class="grid" id="grid" aria-live="polite"></div>
+      <div class="cat-more"><button class="btn ghost" type="button" id="catMore" hidden>Voir plus de livres</button></div>
+    </div>
+  </section>
+
   <section id="comment">
     <div class="wrap">
       <div class="sec-head">
@@ -436,14 +535,24 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 <div class="scrim" id="scrim"></div>
 
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle" aria-hidden="true">
-  <div class="dh"><h2 id="dTitle">Bookster Bag</h2><button class="icon" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
-  <div class="dempty">
-    <div class="ico"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></div>
-    <b>Ton Bookster Bag est vide</b>
-    <span>Les premiers livres arrivent bientôt.</span>
-    <button class="btn" type="button" data-join style="margin-top:8px">Deviens un Bookster</button>
+  <div class="dh"><h2 id="dTitle">Bookster Bag <span class="dcount" id="dCount"></span></h2><button class="icon" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div class="dbody" id="dBody"></div>
+  <div class="dfoot" id="dFoot" hidden>
+    <fieldset class="gpick" id="gPick" hidden>
+      <legend>Genre de tes Booksterbooks</legend>
+      <p>Ton Bag mélange plusieurs genres : choisis celui de ton cadeau mystère.</p>
+      <div class="gp-opts" id="gOpts"></div>
+    </fieldset>
+    <p class="gsingle" id="gSingle" hidden></p>
+    <dl class="sum">
+      <div><dt id="sBooksLbl">Livres</dt><dd id="sBooks">0,00 €</dd></div>
+      <div><dt>Protection Acheteur <small>5&nbsp;% + 0,70&nbsp;€</small></dt><dd id="sFee">0,00 €</dd></div>
+      <div class="gift"><dt>Booksterbooks offerts</dt><dd id="sGift">0</dd></div>
+      <div class="tot"><dt>Total</dt><dd id="dTotal">0,00 €</dd></div>
+    </dl>
+    <p class="form-msg" id="payMsg" role="alert"></p>
+    <button class="btn" type="button" id="payBtn">Passer au paiement</button>
   </div>
-  <div class="dsum"><span>Total</span><span id="dTotal">0,00 €</span></div>
 </aside>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" aria-hidden="true">
@@ -563,28 +672,10 @@ function $(i){return document.getElementById(i)}
 var EUR=new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"});
 function toast(m){var t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove("show")},2800)}
 
-/* Bag amount in euros */
-$("bagAmt").textContent=EUR.format(0);$("dTotal").textContent=EUR.format(0);
-
 /* Header: mini search appears once the big one scrolls away */
 var hdr=$("hdr");
 new IntersectionObserver(function(e){var off=!e[0].isIntersecting;hdr.classList.toggle("scrolled",off);
 },{rootMargin:"-80px 0px 0px 0px"}).observe($("heroSearch"));
-
-/* Genres */
-var genre=null;
-$("chips").innerHTML=GENRES.map(function(g){return '<button class="chip" type="button" aria-pressed="false">'+g+'</button>'}).join("");
-$("chips").addEventListener("click",function(e){var b=e.target.closest(".chip");if(!b)return;
-  var on=b.getAttribute("aria-pressed")!=="true";
-  $("chips").querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed","false")});
-  b.setAttribute("aria-pressed",on);genre=on?b.textContent:null;
-  $("note").textContent=on?"Pas encore de livres « "+genre+" » : les premiers arrivent bientôt.":"";});
-
-/* Search (no books yet) */
-document.querySelectorAll("[data-search]").forEach(function(f){f.addEventListener("submit",function(e){e.preventDefault();
-  var v=f.querySelector("input").value.trim();
-  if(f.id!=="heroSearch"){$("q").value=v;window.scrollTo({top:0})}
-  $("note").textContent=v?"Aucun livre pour « "+v+" » pour l’instant : le catalogue ouvre bientôt.":"Tape un titre, un auteur ou un ISBN.";})});
 
 /* Drawer / modal */
 var lastFocus;
@@ -683,7 +774,7 @@ $("forgot").addEventListener("click",async function(){
 /* État connecté */
 var current=null;
 async function showUser(user){
-  current=user;document.body.classList.toggle("authed",!!user);sellNote();
+  current=user;document.body.classList.toggle("authed",!!user);sellNote();if(typeof renderAll==="function"&&!catLoading)renderAll();
   if(!user)return;
   var md=user.user_metadata||{},p=null;
   try{var r=await sb.from("profiles").select("prenom, ville, genres_preferes").eq("id",user.id).maybeSingle();if(!r.error)p=r.data}catch(e){}
@@ -901,7 +992,7 @@ $("sellForm").addEventListener("submit",async function(e){
     annonce.vendeur_id=current.id;
     var r=await sb.from("annonces").insert(annonce).select("id").single();
     if(r.error)throw r.error;
-    closeAll();resetSell();toast("Ton annonce « "+titre+" » est en ligne à "+EUR.format(prix)+". Merci, Bookster !");
+    closeAll();resetSell();loadCatalogue();toast("Ton annonce « "+titre+" » est en ligne à "+EUR.format(prix)+". Merci, Bookster !");
   }catch(err){
     console.error("Bookstery : publication impossible",err);
     var m=(err&&err.message||"").toLowerCase();
@@ -910,6 +1001,190 @@ $("sellForm").addEventListener("submit",async function(e){
   }finally{busy(btn,false)}
 });
 if(sb)sb.auth.onAuthStateChange(function(ev){if(ev==="SIGNED_IN"&&sellReturn){sellReturn=false;setTimeout(function(){closeAll(true);openSell()},300)}});
+
+/* ================= Catalogue & Bookster Bag ================= */
+var TIERS=[10,20,35];                 /* paliers Booksterbook, par vendeur */
+var FEE_RATE=0.05,FEE_FIXED=0.70;     /* Protection Acheteur : 5 % + 0,70 € sur le montant des livres */
+var ETAT_TXT={comme_neuf:"Comme neuf",tres_bon:"Très bon état",bon:"Bon état"};
+function r2(x){return Math.round((x+Number.EPSILON)*100)/100}
+function esc(t){return String(t==null?"":t).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function booksterbooks(sub){var n=0;for(var i=0;i<TIERS.length;i++)if(sub+1e-9>=TIERS[i])n++;return n}
+function protection(books){return books>0?r2(books*FEE_RATE+FEE_FIXED):0}
+function ordinal(n){return n===1?"1er":n+"e"}
+var COVERS=["#3E3A8F","#7A2E3B","#1F5C4A","#8A5A1E","#2D4E7A","#5B3A7A","#1E1E2A","#9A3F2A"];
+function coverColor(t){for(var h=0,i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))>>>0;return COVERS[h%COVERS.length]}
+function coverHtml(b,mini){
+  var c='style="--c:'+coverColor(b.titre||"")+'"';
+  var img=b.couverture_url?'<img src="'+esc(b.couverture_url)+'" alt="" loading="lazy" onerror="this.remove()">':"";
+  if(mini)return'<div class="mini" '+c+'>'+img+'</div>';
+  return'<div class="bcover" '+c+'><b>'+esc(b.titre)+'</b><span>'+esc(b.auteur||"")+'</span>'+img+'</div>';
+}
+
+/* Exemples affichés en mode démo (sans Supabase) */
+var DEMO_SELLERS={v1:{nom:"Margaux",ville:"Croix-Rousse"},v2:{nom:"Librairie du Canal",ville:"Lyon 7e"},v3:{nom:"Hugo",ville:"Villeurbanne"}};
+var DEMO_BOOKS=[
+  {id:"d1",titre:"L’Étranger",auteur:"Albert Camus",genre:"Classiques",etat:"tres_bon",prix:3.5,vendeur_id:"v1"},
+  {id:"d2",titre:"Les Rivières pourpres",auteur:"Jean-Christophe Grangé",genre:"Polar",etat:"bon",prix:3,vendeur_id:"v1"},
+  {id:"d3",titre:"Le Comte de Monte-Cristo, tome 1",auteur:"Alexandre Dumas",genre:"Classiques",etat:"tres_bon",prix:4.9,vendeur_id:"v1"},
+  {id:"d4",titre:"Dune",auteur:"Frank Herbert",genre:"Science-fiction",etat:"comme_neuf",prix:6.5,vendeur_id:"v1"},
+  {id:"d5",titre:"L’Arabe du futur, tome 1",auteur:"Riad Sattouf",genre:"BD",etat:"comme_neuf",prix:9.5,vendeur_id:"v2"},
+  {id:"d6",titre:"One Piece, tome 1",auteur:"Eiichirō Oda",genre:"Manga",etat:"tres_bon",prix:3.9,vendeur_id:"v2"},
+  {id:"d7",titre:"Blacksad, tome 1",auteur:"Díaz Canales et Guarnido",genre:"BD",etat:"bon",prix:8,vendeur_id:"v2"},
+  {id:"d8",titre:"Astérix le Gaulois",auteur:"Goscinny et Uderzo",genre:"BD",etat:"bon",prix:5,vendeur_id:"v2"},
+  {id:"d9",titre:"Harry Potter à l’école des sorciers",auteur:"J. K. Rowling",genre:"Jeunesse",etat:"tres_bon",prix:4,vendeur_id:"v3"},
+  {id:"d10",titre:"La Horde du Contrevent",auteur:"Alain Damasio",genre:"Fantasy",etat:"comme_neuf",prix:7,vendeur_id:"v3"},
+  {id:"d11",titre:"Alcools",auteur:"Guillaume Apollinaire",genre:"Poésie",etat:"bon",prix:2.5,vendeur_id:"v3"},
+  {id:"d12",titre:"Le Petit Prince",auteur:"Antoine de Saint-Exupéry",genre:"Jeunesse",etat:"tres_bon",prix:3,vendeur_id:"v3"}
+];
+
+var BOOKS=[],SELLERS={},catLimit=8,catTerm="",catGenre=null,catLoading=true;
+function sellerOf(vid){return SELLERS[vid]||{nom:"Un Bookster",ville:""}}
+
+async function loadCatalogue(){
+  catLoading=true;renderGrid();
+  if(!sb){BOOKS=DEMO_BOOKS.slice();SELLERS=DEMO_SELLERS;$("catDemo").hidden=false;catLoading=false;renderAll();return}
+  $("catDemo").hidden=true;
+  try{
+    var r=await sb.from("annonces").select("id,isbn,titre,auteur,genre,etat,prix,couverture_url,vendeur_id,created_at").eq("statut","en_vente").order("created_at",{ascending:false}).limit(60);
+    if(r.error)throw r.error;
+    BOOKS=(r.data||[]).map(function(b){b.prix=Number(b.prix);return b});
+    var ids=BOOKS.map(function(b){return b.vendeur_id}).filter(function(v,i,a){return a.indexOf(v)===i});
+    if(ids.length){try{var p=await sb.from("profiles").select("id,prenom,ville").in("id",ids);(p.data||[]).forEach(function(x){SELLERS[x.id]={nom:x.prenom||"Un Bookster",ville:x.ville||""}})}catch(e){}}
+  }catch(e){console.error("Bookstery : catalogue indisponible",e);BOOKS=[];$("catSub").textContent="Le catalogue n’a pas pu se charger. Recharge la page dans un instant."}
+  catLoading=false;renderAll();
+}
+
+function filtered(){
+  var t=catTerm.toLowerCase(),d=t.replace(/[^0-9x]/g,"");
+  return BOOKS.filter(function(b){
+    if(catGenre&&b.genre!==catGenre)return false;
+    if(!t)return true;
+    return(b.titre+" "+(b.auteur||"")).toLowerCase().indexOf(t)>-1||(d.length>=10&&b.isbn&&b.isbn.indexOf(d)>-1);
+  });
+}
+function addBtn(b,small){
+  if(current&&b.vendeur_id===current.id)return'<button class="add" type="button" disabled>Ton annonce</button>';
+  var inBag=bagHas(b.id);
+  return'<button class="add" type="button" data-add="'+esc(b.id)+'" aria-pressed="'+inBag+'">'+(inBag?(small?"Ajouté":"Dans ton Bag ✓"):(small?"+ Ajouter":"Ajouter"))+'</button>';
+}
+function renderGrid(){
+  var g=$("grid");
+  if(catLoading){g.innerHTML='<p class="cat-empty">Chargement des livres…</p>';$("catMore").hidden=true;return}
+  var list=filtered();
+  if(!BOOKS.length){g.innerHTML='<div class="cat-empty"><b>Aucun livre en vente pour l’instant</b>Sois le premier Bookster à proposer un livre. <button class="btn" type="button" data-sell style="margin:14px auto 0">Vendre un livre</button></div>';$("catMore").hidden=true;return}
+  if(!list.length){g.innerHTML='<div class="cat-empty"><b>Aucun livre ne correspond</b>Essaie un autre titre, un autre auteur ou un autre genre.</div>';$("catMore").hidden=true;return}
+  g.innerHTML=list.slice(0,catLimit).map(function(b){var s=sellerOf(b.vendeur_id);
+    return'<article class="book-card">'+coverHtml(b)+'<h3 class="bcard-t">'+esc(b.titre)+'</h3><p class="bcard-m"><span class="etat">'+(ETAT_TXT[b.etat]||"")+'</span>'+esc(s.nom)+(s.ville?" · "+esc(s.ville):"")+'</p><div class="bcard-row"><span class="bprice">'+EUR.format(b.prix)+'</span>'+addBtn(b)+'</div></article>'}).join("");
+  $("catMore").hidden=list.length<=catLimit;
+}
+$("catMore").addEventListener("click",function(){catLimit+=8;renderGrid()});
+
+/* Genres et recherche filtrent le catalogue */
+$("chips").innerHTML=GENRES.map(function(g){return'<button class="chip" type="button" aria-pressed="false">'+g+'</button>'}).join("");
+$("chips").addEventListener("click",function(e){var b=e.target.closest(".chip");if(!b)return;
+  var on=b.getAttribute("aria-pressed")!=="true";
+  $("chips").querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed","false")});
+  b.setAttribute("aria-pressed",on);catGenre=on?b.textContent:null;catLimit=8;renderGrid();searchNote();});
+document.querySelectorAll("[data-search]").forEach(function(f){f.addEventListener("submit",function(e){e.preventDefault();
+  catTerm=f.querySelector("input").value.trim();catLimit=8;renderGrid();searchNote();
+  if(catTerm||catGenre)$("catalogue").scrollIntoView({behavior:"smooth"})})});
+function searchNote(){
+  if(!catTerm&&!catGenre){$("note").textContent="";return}
+  var n=filtered().length,what=(catTerm?"« "+catTerm+" »":"")+(catTerm&&catGenre?" en ":"")+(catGenre||"");
+  $("note").textContent=n?n+" livre"+(n>1?"s":"")+" pour "+what+".":"Aucun livre pour "+what+" pour l’instant.";
+}
+
+/* --- Le Bag (gardé dans ce navigateur) --- */
+var BAG_KEY="bookstery.bag.v1",bag=[],giftGenre=null;
+try{var saved=JSON.parse(localStorage.getItem(BAG_KEY)||"null");if(saved&&Array.isArray(saved.items)){bag=saved.items;giftGenre=saved.genre||null}}catch(e){}
+function saveBag(){try{localStorage.setItem(BAG_KEY,JSON.stringify({items:bag,genre:giftGenre}))}catch(e){}}
+function bagHas(id){return bag.some(function(b){return String(b.id)===String(id)})}
+function findBook(id){for(var i=0;i<BOOKS.length;i++)if(String(BOOKS[i].id)===String(id))return BOOKS[i];return null}
+
+function groups(){
+  var by={},order=[];
+  bag.forEach(function(b){if(!by[b.vendeur_id]){by[b.vendeur_id]={vid:b.vendeur_id,items:[],sub:0};order.push(b.vendeur_id)}by[b.vendeur_id].items.push(b);by[b.vendeur_id].sub=r2(by[b.vendeur_id].sub+b.prix)});
+  return order.map(function(v){var g=by[v];g.gifts=booksterbooks(g.sub);g.next=TIERS[g.gifts]||null;g.missing=g.next?r2(g.next-g.sub):0;return g});
+}
+function totals(){
+  var gs=groups(),books=0,gifts=0;gs.forEach(function(g){books=r2(books+g.sub);gifts+=g.gifts});
+  var fee=protection(books),genres=bag.map(function(b){return b.genre}).filter(function(v,i,a){return v&&a.indexOf(v)===i});
+  return{groups:gs,books:books,fee:fee,total:r2(books+fee),gifts:gifts,genres:genres};
+}
+
+function addToBag(id){
+  var b=findBook(id);if(!b||bagHas(id))return;
+  if(current&&b.vendeur_id===current.id)return toast("C’est ton annonce : tu ne peux pas l’acheter.");
+  bag.push({id:b.id,titre:b.titre,auteur:b.auteur||"",genre:b.genre||"",etat:b.etat||"",prix:Number(b.prix),vendeur_id:b.vendeur_id,couverture_url:b.couverture_url||""});
+  saveBag();renderAll();
+  var g=groups().filter(function(x){return x.vid===b.vendeur_id})[0],nom=sellerOf(b.vendeur_id).nom;
+  toast(g.next?"Ajouté ! Plus que "+EUR.format(g.missing)+" chez "+nom+" pour ton "+ordinal(g.gifts+1)+" Booksterbook.":"Ajouté ! 3 Booksterbooks débloqués chez "+nom+".");
+}
+function removeFromBag(id){bag=bag.filter(function(b){return String(b.id)!==String(id)});saveBag();renderAll()}
+document.addEventListener("click",function(e){
+  var a=e.target.closest("[data-add]");if(a){var id=a.getAttribute("data-add");bagHas(id)?open($("drawer")):addToBag(id)}
+  var r=e.target.closest("[data-rm]");if(r)removeFromBag(r.getAttribute("data-rm"));
+});
+
+var CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>';
+function suggestions(g){
+  var inBag={};bag.forEach(function(b){inBag[b.id]=1});
+  return BOOKS.filter(function(b){return b.vendeur_id===g.vid&&!inBag[b.id]})
+    .sort(function(a,b){var ma=a.prix>=g.missing,mb=b.prix>=g.missing;return ma!==mb?(ma?-1:1):(ma?a.prix-b.prix:b.prix-a.prix)}).slice(0,3);
+}
+function groupHtml(g){
+  var s=sellerOf(g.vid),max=TIERS[TIERS.length-1];
+  var label=g.gifts===0?"Aucun Booksterbook débloqué pour l’instant":g.gifts+" Booksterbook"+(g.gifts>1?"s":"")+" débloqué"+(g.gifts>1?"s":"");
+  var after=g.next&&g.gifts>0?' · <em>plus que '+EUR.format(g.missing)+' pour le '+ordinal(g.gifts+1)+'</em>':(!g.next?' · <em>le maximum chez ce vendeur</em>':"");
+  var ticks=TIERS.map(function(t,i){return'<span class="tk'+(g.gifts>i?" on":"")+'" style="left:'+(t/max*100)+'%">'+CHECK+'<small>'+t+' €</small></span>'}).join("");
+  var nudge="";
+  if(g.gifts===0){
+    var sg=suggestions(g);
+    nudge='<div class="nudge"><p>Plus que '+EUR.format(g.missing)+' chez ce vendeur pour débloquer ton 1er Booksterbook !</p>'+
+      (sg.length?'<ul class="sugg">'+sg.map(function(b){return'<li><span>'+esc(b.titre)+'</span><em>'+EUR.format(b.prix)+'</em>'+addBtn(b,true)+'</li>'}).join("")+'</ul>':"")+'</div>';
+  }
+  return'<section class="sg" aria-label="Livres de '+esc(s.nom)+'"><div class="sg-h"><div><b>'+esc(s.nom)+'</b>'+(s.ville?' <span>· '+esc(s.ville)+'</span>':"")+'</div><span class="sub">'+EUR.format(g.sub)+'</span></div>'+
+    '<ul class="items">'+g.items.map(function(b){return'<li class="item">'+coverHtml(b,true)+'<div class="item-t"><b>'+esc(b.titre)+'</b><span>'+esc(ETAT_TXT[b.etat]||b.genre||"")+'</span></div><span class="p">'+EUR.format(b.prix)+'</span><button class="icon rm" type="button" data-rm="'+esc(b.id)+'" aria-label="Retirer '+esc(b.titre)+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></li>'}).join("")+'</ul>'+
+    '<div class="prog"><p class="prog-l">'+label+after+'</p><div class="bar-t" role="progressbar" aria-label="Progression Booksterbook chez '+esc(s.nom)+'" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+Math.min(g.sub,max)+'"><i style="width:'+(Math.min(g.sub,max)/max*100)+'%"></i>'+ticks+'</div></div>'+nudge+'</section>';
+}
+function renderBag(){
+  var t=totals(),n=bag.length;
+  $("bagAmt").textContent=EUR.format(t.total);
+  $("bagBtn").setAttribute("aria-label","Ouvrir mon Bookster Bag, "+(n?n+" livre"+(n>1?"s":""):"vide")+", "+EUR.format(t.total));
+  $("dCount").textContent=n?n+" livre"+(n>1?"s":""):"";
+  if(!n){
+    $("dBody").innerHTML='<div class="dempty"><div class="ico"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></div><b>Ton Bookster Bag est vide</b><span>Dès 10 € chez un même vendeur, un Booksterbook mystère t’est offert.</span><a class="btn" href="#catalogue" data-close style="margin-top:8px">Voir les livres</a></div>';
+    $("dFoot").hidden=true;return;
+  }
+  $("dBody").innerHTML=t.groups.map(groupHtml).join("");
+  $("dFoot").hidden=false;
+  /* Choix du genre du cadeau mystère quand le Bag mélange plusieurs genres */
+  if(giftGenre&&t.genres.indexOf(giftGenre)<0)giftGenre=null;
+  var needPick=t.gifts>0&&t.genres.length>1;
+  $("gPick").hidden=!needPick;
+  if(needPick)$("gOpts").innerHTML=t.genres.map(function(g,i){return'<label><input type="radio" name="giftGenre" id="gg'+i+'" value="'+esc(g)+'"'+(g===giftGenre?" checked":"")+'><span>'+esc(g)+'</span></label>'}).join("");
+  else $("gPick").classList.remove("need");
+  var single=t.gifts>0&&t.genres.length===1;
+  $("gSingle").hidden=!single;
+  if(single)$("gSingle").textContent="Ton"+(t.gifts>1?"s":"")+" Booksterbook"+(t.gifts>1?"s":"")+" sera"+(t.gifts>1?"ont":"")+" du genre "+t.genres[0]+", comme ton Bag.";
+  $("sBooksLbl").textContent="Livres ("+n+")";$("sBooks").textContent=EUR.format(t.books);
+  $("sFee").textContent=EUR.format(t.fee);
+  $("sGift").textContent=t.gifts?t.gifts+" offert"+(t.gifts>1?"s":""):"0";
+  $("dTotal").textContent=EUR.format(t.total);
+}
+$("gOpts").addEventListener("change",function(e){if(e.target.name==="giftGenre"){giftGenre=e.target.value;saveBag();$("gPick").classList.remove("need");setMsg("payMsg","")}});
+
+$("payBtn").addEventListener("click",function(){
+  var t=totals();if(!bag.length)return;
+  if(t.gifts>0&&t.genres.length>1&&!giftGenre){$("gPick").classList.add("need");$("gPick").scrollIntoView({block:"nearest",behavior:"smooth"});return setMsg("payMsg","Choisis le genre de ton cadeau mystère avant de payer.","err")}
+  if(sb&&!current){$("payMsg").className="form-msg err";$("payMsg").innerHTML='Connecte-toi pour payer ta commande. <button type="button" class="forgot" style="display:inline;margin:0" data-login>Se connecter</button>';return}
+  var genre=t.gifts?(giftGenre||t.genres[0]):"";
+  setMsg("payMsg","");
+  toast("Commande de "+EUR.format(t.total)+(t.gifts?" avec "+t.gifts+" Booksterbook"+(t.gifts>1?"s":"")+" "+genre:"")+" prête. Le paiement en ligne arrive bientôt.");
+});
+
+function renderAll(){renderGrid();renderBag();searchNote()}
+renderBag();loadCatalogue();
 
 /* Quote bubbles: soft fade in, 6 s visible, soft fade out, next quote */
 var qi=0,side=0,timer=null,FADE=900,SHOW=6000;
