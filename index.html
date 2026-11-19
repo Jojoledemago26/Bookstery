@@ -1022,7 +1022,7 @@ var QUOTES=[
  ["Une bibliothèque est une chambre d’amis.","Tahar Ben Jelloun"],
  ["J’ai toujours imaginé que le Paradis serait une sorte de bibliothèque.","Jorge Luis Borges"]
 ];
-var GENRES=["Romans","Nouvelles","Polar","Thriller","Fantasy","Science-fiction","Romance","BD","Manga","Poésie","Jeunesse","Classiques","Scolaire"];
+var GENRES=["BD","Classiques","Fantasy","Jeunesse","Manga","Nouvelles","Poésie","Polar","Romance","Romans","Science-fiction","Scolaire","Thriller"].sort(new Intl.Collator("fr",{sensitivity:"base"}).compare);
 function $(i){return document.getElementById(i)}
 var EUR=new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"});
 function toast(m){var t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove("show")},2800)}
