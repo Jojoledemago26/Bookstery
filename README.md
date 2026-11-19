@@ -12,6 +12,8 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/functions/deposer-extrait/` — fonction Edge : contrôle anti-IA, empreinte, horodatage
 - `supabase/liseuse.sql` — commandes, Booksterbooks, avis, abonnements
 - `supabase/localisation.sql` — ville et région des annonces (filtre de localisation)
+- `supabase/moderation.sql` — journal des refus de modération
+- `supabase/functions/deposer-extrait/moderation.ts` — modération stricte par Claude Haiku 5.5
 - `supabase/functions/valider-commande/` — commande + tirage des Booksterbooks (jetons des QR codes)
 - `supabase/functions/envoyer-avis/` — avis du lecteur envoyé par e-mail à l'auteur (Resend)
 
@@ -83,3 +85,21 @@ Renseigne `SITE_URL` dans `config.js` pour que les QR codes pointent vers l'adre
 - Filtre de localisation : **Lyon / Ma ville / Ma région / Toute la France** (ville et région demandées une fois, gardées dans le navigateur).
 - Tri : nouveautés, titre de A à Z, prix croissant ou décroissant.
 - « Vendre un livre » demande maintenant la ville et la région du livre.
+
+## Modération automatique des manuscrits
+
+Avant tout enregistrement, la fonction `deposer-extrait` envoie le texte à un modèle Claude léger (Claude Haiku 5.5, réponse JSON imposée) qui refuse :
+
+1. **contenu interdit** : haine, racisme, antisémitisme, violence gratuite ou glorifiée, terrorisme, contenu illégal, pornographie (la fiction peut raconter un crime, comme dans un polar, sans en faire l'apologie) ;
+2. **texte pas en français** ;
+3. **texte non littéraire** : recette, spam, liste, article, texte incohérent ;
+4. **texte illisible** ou bourré de fautes graves.
+
+L'auteur reçoit un message bienveillant (et un conseil personnalisé pour une relecture). Le texte reste dans le formulaire. Si la vérification est indisponible, rien n'est déposé. Ordre des contrôles : modération → détecteur d'IA → empreinte et horodatage.
+
+```bash
+supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
+supabase functions deploy deposer-extrait
+```
+
+En mode démo, une simulation simplifiée (langue, recette ou liste, écriture SMS) montre les messages de refus ; le contrôle des contenus interdits n'existe que côté serveur.

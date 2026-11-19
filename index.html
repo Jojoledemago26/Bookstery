@@ -381,6 +381,11 @@ body.authed .me{display:inline-flex}
 .refus{border:1.5px solid #F2B8C0;background:#FDF1F3;border-radius:18px;padding:18px 20px;color:#7A1626}
 .refus b{display:block;font-size:17px;margin-bottom:6px;color:#9B1C2E}
 .refus .score{font-size:34px;font-weight:800;letter-spacing:-.02em;color:#C0263A;font-variant-numeric:tabular-nums}
+.refus.soft{border-color:#F1D9A6;background:#FFF8EA;color:#6B4A12}
+.refus.soft b{color:#8A5A0B}
+.refus-tip{margin:12px 0 0!important;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.7);font-size:14px;color:inherit!important}
+.refus-tip span{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.modal .refus .btn{width:auto;margin-top:14px;padding:9px 16px;font-size:13.5px}
 .cert{position:relative;border:1.5px solid var(--ink);border-radius:18px;padding:22px 22px 18px;background:#fff;background-image:repeating-linear-gradient(135deg,transparent 0 14px,rgba(96,80,220,.035) 14px 15px)}
 .cert-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:14px;margin-bottom:14px}
 .cert-h small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--maj)}
@@ -995,6 +1000,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
     </form>
 
     <ol class="au-steps" id="auSteps" hidden>
+      <li id="stMod"><span class="dot"></span><div><b>Vérification du contenu</b><small>Texte littéraire, en français, lisible et conforme à notre charte.</small></div></li>
       <li id="stIA"><span class="dot"></span><div><b>Analyse anti-IA</b><small>Le texte doit contenir au plus 50&nbsp;% d’écriture générée par IA.</small></div></li>
       <li id="stHash"><span class="dot"></span><div><b>Empreinte numérique SHA-256</b><small>Une signature unique qui change si un seul caractère change.</small></div></li>
       <li id="stTime"><span class="dot"></span><div><b>Horodatage et certificat</b><small>La date et l’heure du dépôt sont fixées par le serveur.</small></div></li>
@@ -1694,7 +1700,38 @@ function openAuteur(){auNote();auTab(false);open($("auteur"))}
 
 /* Étapes visuelles */
 function step(id,state){var li=$(id);li.className=state||""}
-function resetSteps(){["stIA","stHash","stTime"].forEach(function(i){step(i,"")})}
+function resetSteps(){["stMod","stIA","stHash","stTime"].forEach(function(i){step(i,"")});$("stMod").querySelector("small").textContent="Texte littéraire, en français, lisible et conforme à notre charte."}
+
+/* Refus de modération : messages bienveillants, le texte reste dans le formulaire pour être relu */
+var MOD_MSG={
+  contenu_interdit:"Ton texte ne peut pas être publié sur Bookstery : il contient des passages contraires à notre charte (haine, violence gratuite, contenu sexuel explicite, terrorisme ou incitation à des actes illégaux). Les Booksterbooks sont offerts à des lecteurs de tous horizons : merci de proposer un autre texte.",
+  pas_en_francais:"Pour l’instant, Bookstery accueille uniquement des textes écrits en français. Si tu as une version française de ton extrait, n’hésite pas à la déposer !",
+  pas_litteraire:"Ton envoi ne ressemble pas à une œuvre littéraire (nouvelle, extrait de roman, conte, poésie…). Bookstery accueille uniquement des textes de création : dépose plutôt un extrait de ton histoire.",
+  illisible_ou_fautes:"Ton extrait mérite une relecture avant d’être offert aux lecteurs : nous y avons repéré de nombreuses fautes ou des passages difficiles à lire. Prends le temps de le relire, ou de le faire relire par un proche, puis dépose-le à nouveau. On a hâte de te lire !"};
+var MOD_TITRE={contenu_interdit:"Ce texte ne peut pas être publié",pas_en_francais:"Un texte en français, s’il te plaît",pas_litteraire:"Ce n’est pas encore une histoire",illisible_ou_fautes:"Encore une petite relecture ?"};
+function showModRefus(motif,msg,conseil){
+  var hard=motif==="contenu_interdit";
+  $("auResult").innerHTML='<div class="refus'+(hard?"":" soft")+'"><b>'+(MOD_TITRE[motif]||"Ton texte n’a pas été déposé")+'</b><p style="margin:6px 0 0;color:inherit">'+esc(msg||MOD_MSG[motif]||"")+'</p>'+
+    (conseil?'<p class="refus-tip"><span>Conseil</span>'+esc(conseil)+'</p>':"")+
+    (hard?"":'<button class="btn ghost" type="button" id="auRelire">Relire mon extrait</button>')+'</div>';
+  $("auResult").hidden=false;$("auResult").scrollIntoView({behavior:"smooth",block:"nearest"});
+  var b=$("auRelire");if(b)b.addEventListener("click",function(){$("exTexte").focus();$("exTexte").scrollIntoView({behavior:"smooth",block:"center"})});
+}
+/* Mode démo uniquement : simulation simplifiée (la vraie vérification se fait côté serveur, par un modèle d’IA) */
+function demoModeration(t){
+  var words=t.toLowerCase().match(/[a-zàâäçéèêëîïôöùûüœæ']+/g)||[],n=words.length||1;
+  var fr={"le":1,"la":1,"les":1,"de":1,"des":1,"du":1,"et":1,"un":1,"une":1,"est":1,"que":1,"qui":1,"dans":1,"pour":1,"pas":1,"il":1,"elle":1,"je":1,"ne":1,"se":1,"sur":1,"au":1,"en":1,"à":1,"on":1,"avait":1,"était":1};
+  var frRatio=words.filter(function(w){return fr[w]}).length/n;
+  if(frRatio<0.12)return"pas_en_francais";
+  var lines=t.split(/\n/).filter(function(l){return l.trim()}),listLines=lines.filter(function(l){return/^\s*([-•*]|\d+[.)])\s/.test(l)}).length;
+  var recette=(t.toLowerCase().match(/ingrédients|préchauffe|cuillère|grammes|mélangez|faites cuire|\d+\s?(g|cl|ml)\b/g)||[]).length;
+  var uniq=Object.keys(words.reduce(function(a,w){a[w]=1;return a},{})).length/n;
+  if(recette>=3||(lines.length>5&&listLines/lines.length>0.4))return"pas_litteraire";
+  var sms=(t.toLowerCase().match(/\b(pk|pq|tkt|jsp|slt|mdr|bcp|stp|koi|ki|c t|g fé)\b/g)||[]).length,punct=(t.match(/[.!?…;]/g)||[]).length;
+  if(sms>=5||n/(punct||1)>60)return"illisible_ou_fautes";
+  if(uniq<0.08)return"pas_litteraire";
+  return null;
+}
 var wait=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
 
 /* --- Certificat --- */
@@ -1768,16 +1805,21 @@ $("auForm").addEventListener("submit",async function(e){
   try{
     var local=await sha256Hex(texte);
     if(!sb){
+      step("stMod","run");await wait(600);var dm=demoModeration(texte);
+      if(dm){step("stMod","fail");showModRefus(dm,null,null);return}
+      step("stMod","done");$("stMod").querySelector("small").textContent="Simulation simplifiée en mode démo : la vérification complète se fait côté serveur.";
       step("stIA","fail");$("stIA").querySelector("small").textContent="Non lancée en mode démo : le détecteur demande une clé côté serveur.";
       step("stHash","run");await wait(450);step("stHash","done");step("stTime","run");await wait(450);step("stTime","done");
       if(!local){step("stHash","fail");return setMsg("auMsg","Ton navigateur ne peut pas calculer l’empreinte ici : ouvre le site en https.","err")}
       var c={id:(crypto.randomUUID?crypto.randomUUID():String(Date.now())),titre:titre,genre:genre,nb_mots:n,sha256:local,ai_score:null,created_at:new Date().toISOString(),auteur:"Mode démo"};
       demoDepots.unshift(Object.assign({texte:texte},c));showCert($("auResult"),c,true,false,texte);return;
     }
-    step("stIA","run");
+    step("stMod","run");
     var r=await sb.functions.invoke("deposer-extrait",{body:{titre:titre,genre:genre,texte:texte,certifie:true}});
     var data=r.data,err=r.error;
     if(err){var body=null;try{if(err.context&&typeof err.context.json==="function")body=await err.context.json()}catch(x){}
+      if(body&&body.refus&&body.type==="moderation"){step("stMod","fail");showModRefus(body.motif,body.erreur,body.conseil);return}
+      if(body&&body.refus){step("stMod","done");}
       step("stIA","fail");
       if(body&&body.refus){
         $("auResult").innerHTML='<div class="refus"><b>Dépôt refusé</b><div class="score">'+Math.round(body.ai_score*100)+' % IA</div><p style="margin:6px 0 0;color:inherit">Le détecteur d’IA estime que plus de 50 % de ce texte a été généré par une intelligence artificielle. Bookstery publie uniquement des textes écrits par leurs auteurs. Ton texte n’a pas été déposé.</p></div>';
@@ -1787,7 +1829,7 @@ $("auForm").addEventListener("submit",async function(e){
     }
     var cert=data&&data.certificat;if(!cert)throw new Error("réponse vide");
     $("stIA").querySelector("small").textContent=Math.round(cert.ai_score*100)+" % de texte IA détecté : sous le seuil de 50 %.";
-    step("stIA","done");step("stHash","run");await wait(350);step("stHash","done");step("stTime","run");await wait(350);step("stTime","done");
+    step("stMod","done");step("stIA","done");step("stHash","run");await wait(350);step("stHash","done");step("stTime","run");await wait(350);step("stTime","done");
     cert.auteur=authorName();
     showCert($("auResult"),cert,false,cert.sha256===local,texte);
     $("auForm").reset();calib();toast("Texte déposé et horodaté. Ton certificat est prêt.");

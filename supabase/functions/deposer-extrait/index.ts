@@ -2,13 +2,17 @@
 //
 // 1. vérifie l'auteur connecté, le titre, le genre et le calibrage (1 000 à 5 000 mots) ;
 // 2. calcule l'empreinte SHA-256 du texte ;
-// 3. fait analyser le texte par un détecteur d’IA (Pangram ou ZeroGPT) : au-delà de 50 % de texte IA, le dépôt est refusé ;
-// 4. enregistre l'extrait ; la base fixe l'horodatage (created_at) ;
-// 5. renvoie le certificat d'horodatage.
+// 3. modération stricte par un modèle Claude léger (moderation.ts) : contenu interdit,
+//    texte non littéraire, illisible ou bourré de fautes, ou pas en français → refus immédiat ;
+// 4. fait analyser le texte par un détecteur d’IA (Pangram ou ZeroGPT) : au-delà de 50 % de texte IA, le dépôt est refusé ;
+// 5. enregistre l'extrait ; la base fixe l'horodatage (created_at) ;
+// 6. renvoie le certificat d'horodatage.
 //
 // Détecteur d'IA au choix (secret AI_DETECTOR) : "pangram" (par défaut) ou "zerogpt".
 //
-// Déploiement avec Pangram :
+// Déploiement : modération (obligatoire) + détecteur d'IA
+//   supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
+// avec Pangram :
 //   supabase secrets set PANGRAM_API_KEY=ta_cle_pangram
 // ou avec ZeroGPT :
 //   supabase secrets set AI_DETECTOR=zerogpt ZEROGPT_API_KEY=ta_cle_zerogpt
@@ -17,6 +21,7 @@
 // Facultatif : PANGRAM_API_URL / ZEROGPT_API_URL pour changer l'adresse des API.
 
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
+import { MESSAGES, moderer, type Moderation } from "./moderation.ts";
 
 const MIN_MOTS = 1000;
 const MAX_MOTS = 5000;
@@ -117,6 +122,23 @@ Deno.serve(async (req) => {
       : "Ce texte a déjà été déposé sur Bookstery." });
   }
 
+  // Modération stricte AVANT tout enregistrement
+  let mod: Moderation;
+  try { mod = await moderer(titre, genre, texte); }
+  catch (e) {
+    console.error("modération", e);
+    return json(503, { erreur: "La vérification du contenu est indisponible pour le moment. Ton texte n’a pas été déposé : réessaie dans quelques minutes." });
+  }
+  if (mod.decision === "refuse" && mod.motif !== "aucun") {
+    await admin.from("depots_refuses").insert({ auteur_id: user.id, sha256: empreinte, nb_mots: nbMots, ai_score: null, motif: mod.motif, categories: mod.categories });
+    return json(422, {
+      refus: true, type: "moderation", motif: mod.motif,
+      erreur: MESSAGES[mod.motif],
+      // Le conseil personnalisé n'est renvoyé que pour les refus « à corriger », jamais pour un contenu interdit
+      conseil: mod.motif === "illisible_ou_fautes" || mod.motif === "pas_litteraire" ? mod.explication : null,
+    });
+  }
+
   let score: number;
   try { score = await analyserIA(texte); }
   catch (e) {
@@ -125,8 +147,8 @@ Deno.serve(async (req) => {
   }
 
   if (score > SEUIL_IA) {
-    await admin.from("depots_refuses").insert({ auteur_id: user.id, sha256: empreinte, nb_mots: nbMots, ai_score: score });
-    return json(422, { refus: true, ai_score: score, seuil: SEUIL_IA,
+    await admin.from("depots_refuses").insert({ auteur_id: user.id, sha256: empreinte, nb_mots: nbMots, ai_score: score, motif: "texte_ia" });
+    return json(422, { refus: true, type: "ia", ai_score: score, seuil: SEUIL_IA,
       detecteur: DETECTEUR,
       erreur: `Dépôt refusé : le détecteur d’IA estime à ${Math.round(score * 100)} % la part de texte générée par IA (maximum autorisé : 50 %).` });
   }
