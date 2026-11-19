@@ -11,6 +11,7 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/extraits.sql` — tables des extraits d'auteurs et des dépôts refusés
 - `supabase/functions/deposer-extrait/` — fonction Edge : contrôle anti-IA, empreinte, horodatage
 - `supabase/liseuse.sql` — commandes, Booksterbooks, avis, abonnements
+- `supabase/localisation.sql` — ville et région des annonces (filtre de localisation)
 - `supabase/functions/valider-commande/` — commande + tirage des Booksterbooks (jetons des QR codes)
 - `supabase/functions/envoyer-avis/` — avis du lecteur envoyé par e-mail à l'auteur (Resend)
 
@@ -74,3 +75,11 @@ supabase functions deploy envoyer-avis
 ```
 
 Renseigne `SITE_URL` dans `config.js` pour que les QR codes pointent vers l'adresse publique du site.
+
+## Catalogue : fiche livre et filtres
+
+- Clic sur une couverture ou un titre : **fiche du livre** (genre, état, prix, vendeur et ville, résumé) avec **« Dans sa bibliothèque »** : tous les autres livres du même vendeur, l'avancement vers le prochain Booksterbook chez lui et un bouton « Tout ajouter » pour acheter le lot.
+- Bulles de genre cliquables partout (accueil, catalogue, cartes, fiche), dont le nouveau genre **Nouvelles**.
+- Filtre de localisation : **Lyon / Ma ville / Ma région / Toute la France** (ville et région demandées une fois, gardées dans le navigateur).
+- Tri : nouveautés, titre de A à Z, prix croissant ou décroissant.
+- « Vendre un livre » demande maintenant la ville et la région du livre.

@@ -21,7 +21,7 @@ import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 const MIN_MOTS = 1000;
 const MAX_MOTS = 5000;
 const SEUIL_IA = 0.5; // refus si le taux d'IA est strictement supérieur à 50 %
-const GENRES = ["Romans", "Polar", "Thriller", "Fantasy", "Science-fiction", "Romance", "BD", "Manga", "Poésie", "Jeunesse", "Classiques", "Scolaire"];
+const GENRES = ["Romans", "Nouvelles", "Polar", "Thriller", "Fantasy", "Science-fiction", "Romance", "BD", "Manga", "Poésie", "Jeunesse", "Classiques", "Scolaire"];
 
 // ⚠️ Adresses, en-têtes et champs de réponse à vérifier dans la documentation de ton compte.
 const DETECTEUR = (Deno.env.get("AI_DETECTOR") ?? "pangram").toLowerCase();

@@ -504,6 +504,61 @@ body.authed .me{display:inline-flex}
 .tour-hi{outline:3px solid var(--maj)!important;outline-offset:4px;border-radius:14px;animation:tourpulse 1.4s ease-in-out infinite}
 @keyframes tourpulse{0%,100%{box-shadow:0 0 0 0 rgba(96,80,220,.45)}50%{box-shadow:0 0 0 10px rgba(96,80,220,0)}}
 @media(max-width:560px){.tour{left:12px;right:12px;width:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));padding:14px 16px 16px}.tour-p{font-size:13.5px}.tour-cta{font-size:13.5px}}
+
+/* ---------- Filtres du catalogue ---------- */
+.cat-tools{display:flex;flex-direction:column;gap:14px;margin:-8px 0 28px}
+.cat-chips{justify-content:flex-start;margin:0}
+.cat-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px;background:var(--maj-xl);border-radius:999px;padding:4px}
+.seg button{border:0;background:transparent;border-radius:999px;padding:8px 14px;font:700 13.5px var(--sans);color:var(--muted);white-space:nowrap}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(28,22,80,.1)}
+.sort{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--muted)}
+.sort select{border:1.5px solid var(--line);border-radius:999px;padding:8px 32px 8px 14px;font:700 13.5px var(--sans);color:var(--ink);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235E5E6B' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;-webkit-appearance:none;appearance:none}
+.loc-ask{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;background:var(--maj-xl);border-radius:16px;padding:12px 14px}
+.loc-ask[hidden]{display:none}
+.loc-ask label{font-size:13px;font-weight:700;color:var(--ink);align-self:center}
+.loc-ask input,.loc-ask select{border:1.5px solid var(--line);border-radius:12px;padding:9px 12px;font:500 14px var(--sans);background:#fff;min-width:0}
+.loc-ask .btn{padding:9px 16px;font-size:13.5px}
+.card-open{all:unset;cursor:pointer;display:block;border-radius:4px 12px 12px 4px}
+.card-open:focus-visible{outline:3px solid var(--maj);outline-offset:3px}
+.card-open:hover .bcover{transform:translateY(-3px);box-shadow:inset 6px 0 0 rgba(0,0,0,.16),0 16px 30px rgba(28,22,80,.2)}
+.bcover{transition:transform .2s,box-shadow .2s}
+.bcard-t button{all:unset;cursor:pointer}.bcard-t button:hover{color:var(--maj)}
+.bcard-t button:focus-visible{outline:3px solid var(--maj);outline-offset:2px;border-radius:4px}
+.bcard-tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.bcard-tags .etat{margin:0}
+.gtag{border:1.5px solid var(--maj-l);background:#fff;color:var(--maj-d);border-radius:999px;padding:1px 9px;font:700 11.5px/1.6 var(--sans);cursor:pointer;transition:.15s}
+.gtag:hover{background:var(--maj);border-color:var(--maj);color:#fff}
+.bcard-m{margin:0!important}
+
+/* ---------- Fiche livre ---------- */
+.modal.fiche{width:min(720px,calc(100% - 32px))}
+.f-top{display:grid;grid-template-columns:170px 1fr;gap:24px;align-items:start;margin-top:6px}
+.f-top .bcover{width:100%}
+.f-info{display:flex;flex-direction:column;gap:8px;min-width:0}
+.modal.fiche h2{font-size:clamp(24px,3vw,30px);margin:4px 0 0}
+.f-auteur{margin:0!important;font-size:16px;color:var(--muted)}
+.f-seller{display:flex;align-items:center;gap:6px;margin:4px 0 0!important;font-size:14px;color:var(--ink-2)}
+.f-seller svg{color:var(--maj);flex:none}
+.f-buy{display:flex;align-items:center;gap:14px;margin-top:10px}
+.f-price{font-size:26px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.f-buy .add{padding:11px 20px;font-size:14.5px}
+.f-resume{margin:20px 0 0!important;color:var(--ink-2)!important;line-height:1.6;font-size:15px}
+.f-lib{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+.f-lib-h{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.f-lib h3{font-size:19px}.f-lib h3 span{font-size:13.5px;font-weight:600;color:var(--muted);margin-left:6px}
+.modal .f-lib-h .btn{width:auto;margin:0;padding:9px 16px;font-size:13.5px}
+.f-prog{margin:10px 0 16px!important;font-size:14px;color:var(--maj-d)!important;background:var(--maj-xl);border-radius:12px;padding:10px 14px}
+.f-shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:16px 14px}
+.f-mini{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f-mini .bcover{padding:10px 9px 9px 12px}.f-mini .bcover b{font-size:13px}.f-mini .bcover span{font-size:10.5px}
+.f-mini>b{font-size:13px;line-height:1.3;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.f-mini-r{display:flex;align-items:center;justify-content:space-between;gap:6px;font-weight:800;font-size:13.5px;font-variant-numeric:tabular-nums}
+.f-mini .add{padding:5px 10px;font-size:12px;white-space:nowrap}
+.f-mini-r{flex-wrap:wrap}
+.f-empty{color:var(--muted)!important;font-size:14px}
+@media(max-width:560px){.f-top{grid-template-columns:110px 1fr;gap:16px}.f-price{font-size:22px}.seg{width:100%;display:grid;grid-template-columns:1fr 1fr;border-radius:18px}.seg button{padding:9px 6px;font-size:12.5px;border-radius:14px;overflow:hidden;text-overflow:ellipsis}.cat-row{flex-direction:column;align-items:stretch}.sort{justify-content:space-between}.f-shelf{grid-template-columns:repeat(3,minmax(0,1fr))}}
 /* ---------- Finitions : rythme, typographie, hiérarchie ---------- */
 body{color:var(--ink-2);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
 h1,h2,h3{color:var(--ink);text-wrap:balance}
@@ -627,6 +682,30 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
           <p id="catSub">Des livres d’occasion vendus par des Booksters près de chez toi.</p>
         </div>
         <span class="demo-pill" id="catDemo" hidden>Exemples de démonstration</span>
+      </div>
+      <div class="cat-tools">
+        <div class="chips cat-chips" id="catChips" role="group" aria-label="Filtrer par genre"></div>
+        <div class="cat-row">
+          <div class="seg" id="locSeg" role="group" aria-label="Où chercher">
+            <button type="button" data-loc="lyon">Lyon</button>
+            <button type="button" data-loc="ville">Ma ville</button>
+            <button type="button" data-loc="region">Ma région</button>
+            <button type="button" data-loc="france" aria-pressed="true">Toute la France</button>
+          </div>
+          <label class="sort" for="catSort">Trier par
+            <select id="catSort">
+              <option value="recent">Nouveautés</option>
+              <option value="az">Titre, de A à Z</option>
+              <option value="prix-asc">Prix croissant</option>
+              <option value="prix-desc">Prix décroissant</option>
+            </select>
+          </label>
+        </div>
+        <form class="loc-ask" id="locAsk" hidden novalidate>
+          <label for="locVille">Ta ville</label><input id="locVille" autocomplete="address-level2" placeholder="Ex. Grenoble">
+          <label for="locRegion">Ta région</label><select id="locRegion"></select>
+          <button class="btn" type="submit">Valider</button>
+        </form>
       </div>
       <div class="grid" id="grid" aria-live="polite"></div>
       <div class="cat-more"><button class="btn ghost" type="button" id="catMore" hidden>Voir plus de livres</button></div>
@@ -777,6 +856,11 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
   <div class="bb-grid" id="mbList"></div>
 </div>
 
+<div class="modal wide fiche" id="fiche" role="dialog" aria-modal="true" aria-labelledby="fTitre" aria-hidden="true">
+  <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <div id="ficheBody"></div>
+</div>
+
 <div class="lz" id="liseuse" role="dialog" aria-modal="true" aria-labelledby="lzTitre" hidden>
   <header class="lz-bar">
     <button class="lz-btn" type="button" id="lzClose" aria-label="Fermer la liseuse"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg><span>Fermer</span></button>
@@ -866,6 +950,10 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
       </div>
     </fieldset>
 
+    <div class="au-row">
+      <div><label for="bVille">Ville du livre</label><input id="bVille" autocomplete="address-level2" placeholder="Ex. Lyon 7e"></div>
+      <div><label for="bRegion">Région</label><select id="bRegion"></select></div>
+    </div>
     <label for="bPrice">Ton prix <span class="hint">Tu le fixes librement</span></label>
     <div class="price-in"><input id="bPrice" type="number" inputmode="decimal" min="0.5" max="999" step="0.01" placeholder="0,00"><span aria-hidden="true">€</span></div>
 
@@ -934,7 +1022,7 @@ var QUOTES=[
  ["Une bibliothèque est une chambre d’amis.","Tahar Ben Jelloun"],
  ["J’ai toujours imaginé que le Paradis serait une sorte de bibliothèque.","Jorge Luis Borges"]
 ];
-var GENRES=["Romans","Polar","Thriller","Fantasy","Science-fiction","Romance","BD","Manga","Poésie","Jeunesse","Classiques","Scolaire"];
+var GENRES=["Romans","Nouvelles","Polar","Thriller","Fantasy","Science-fiction","Romance","BD","Manga","Poésie","Jeunesse","Classiques","Scolaire"];
 function $(i){return document.getElementById(i)}
 var EUR=new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"});
 function toast(m){var t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove("show")},2800)}
@@ -947,7 +1035,7 @@ new IntersectionObserver(function(e){var off=!e[0].isIntersecting;hdr.classList.
 /* Drawer / modal */
 var lastFocus;
 function open(el){closeAll(true);lastFocus=document.activeElement;$("scrim").classList.add("on");el.classList.add("on");el.setAttribute("aria-hidden","false");var f=el.querySelector("input")||el.querySelector("button");f&&setTimeout(function(){f.focus()},60)}
-function closeAll(keep){if(window.stopScan)stopScan();["drawer","modal","login","account","sell","auteur","commande","mesbb"].forEach(function(id){$(id).classList.remove("on");$(id).setAttribute("aria-hidden","true")});$("scrim").classList.remove("on");if(!keep&&lastFocus)lastFocus.focus()}
+function closeAll(keep){if(window.stopScan)stopScan();["drawer","modal","login","account","sell","auteur","commande","mesbb","fiche"].forEach(function(id){$(id).classList.remove("on");$(id).setAttribute("aria-hidden","true")});$("scrim").classList.remove("on");if(!keep&&lastFocus)lastFocus.focus()}
 $("bagBtn").addEventListener("click",function(){open($("drawer"))});
 document.addEventListener("click",function(e){
   if(e.target.closest("[data-join]"))open($("modal"));
@@ -1240,7 +1328,7 @@ function resetSell(){
   setCover(null);$("coverPh").textContent="La couverture apparaîtra ici";
 }
 var sellReturn=false;
-function openSell(){sellNote();open($("sell"))}
+function openSell(){sellNote();if(typeof prefillSellLoc==="function")prefillSellLoc();open($("sell"))}
 /* Après connexion depuis le formulaire, on y revient avec la saisie intacte */
 document.addEventListener("click",function(e){if(e.target.closest("#sellNote [data-login],#sellNote [data-join],#sellMsg [data-login]"))sellReturn=true},true);
 
@@ -1255,7 +1343,9 @@ $("sellForm").addEventListener("submit",async function(e){
   if(!genre){$("bGenre").focus();return setMsg("sellMsg","Choisis le genre littéraire.","err")}
   if(!etat)return setMsg("sellMsg","Choisis l’état du livre.","err");
   if(!(prix>=0.5&&prix<=999)){$("bPrice").focus();return setMsg("sellMsg","Fixe un prix entre 0,50 € et 999 €.","err")}
-  var annonce={isbn:isbn,titre:titre,auteur:auteur||null,resume:resume||null,couverture_url:coverUrl||null,genre:genre,etat:etat,prix:prix};
+  var ville=$("bVille").value.trim(),region=$("bRegion").value;
+  if(!ville){$("bVille").focus();return setMsg("sellMsg","Indique la ville où se trouve le livre.","err")}
+  var annonce={isbn:isbn,titre:titre,auteur:auteur||null,resume:resume||null,couverture_url:coverUrl||null,genre:genre,etat:etat,prix:prix,ville:ville,region:region||regionOf(ville)||null};
   if(!sb){closeAll();resetSell();toast("Annonce « "+titre+" » à "+EUR.format(prix)+" prête ! (Mode démo : rien n’est enregistré.)");return}
   if(!current){$("sellMsg").className="form-msg err";$("sellMsg").innerHTML='Connecte-toi pour publier ton annonce. <button type="button" class="forgot" style="display:inline;margin:0" data-login>Se connecter</button>';return}
   var btn=$("sellSubmit");busy(btn,true,"Publication…");setMsg("sellMsg","");
@@ -1292,46 +1382,84 @@ function coverHtml(b,mini){
 }
 
 /* Exemples affichés en mode démo (sans Supabase) */
-var DEMO_SELLERS={v1:{nom:"Margaux",ville:"Croix-Rousse"},v2:{nom:"Librairie du Canal",ville:"Lyon 7e"},v3:{nom:"Hugo",ville:"Villeurbanne"}};
+var DEMO_SELLERS={
+  v1:{nom:"Margaux",ville:"Lyon 4e",region:"Auvergne-Rhône-Alpes"},
+  v2:{nom:"Librairie du Canal",ville:"Lyon 7e",region:"Auvergne-Rhône-Alpes"},
+  v3:{nom:"Hugo",ville:"Villeurbanne",region:"Auvergne-Rhône-Alpes"},
+  v4:{nom:"Inès",ville:"Grenoble",region:"Auvergne-Rhône-Alpes"},
+  v5:{nom:"Bouquinerie du Marais",ville:"Paris 3e",region:"Île-de-France"}};
 var DEMO_BOOKS=[
-  {id:"d1",titre:"L’Étranger",auteur:"Albert Camus",genre:"Classiques",etat:"tres_bon",prix:3.5,vendeur_id:"v1"},
+  {id:"d13",titre:"Nouvelles orientales",auteur:"Marguerite Yourcenar",genre:"Nouvelles",etat:"tres_bon",prix:4.2,vendeur_id:"v1",resume:"Dix récits inspirés des légendes des Balkans, de la Grèce, de l’Inde et du Japon."},
+  {id:"d1",titre:"L’Étranger",auteur:"Albert Camus",genre:"Classiques",etat:"tres_bon",prix:3.5,vendeur_id:"v1",resume:"Meursault, employé de bureau à Alger, assiste à l’enterrement de sa mère sans verser une larme."},
+  {id:"d14",titre:"Boule de suif et autres nouvelles",auteur:"Guy de Maupassant",genre:"Nouvelles",etat:"bon",prix:3.2,vendeur_id:"v5"},
   {id:"d2",titre:"Les Rivières pourpres",auteur:"Jean-Christophe Grangé",genre:"Polar",etat:"bon",prix:3,vendeur_id:"v1"},
+  {id:"d15",titre:"Le Seigneur des anneaux, tome 1",auteur:"J. R. R. Tolkien",genre:"Fantasy",etat:"tres_bon",prix:6,vendeur_id:"v4"},
   {id:"d3",titre:"Le Comte de Monte-Cristo, tome 1",auteur:"Alexandre Dumas",genre:"Classiques",etat:"tres_bon",prix:4.9,vendeur_id:"v1"},
-  {id:"d4",titre:"Dune",auteur:"Frank Herbert",genre:"Science-fiction",etat:"comme_neuf",prix:6.5,vendeur_id:"v1"},
   {id:"d5",titre:"L’Arabe du futur, tome 1",auteur:"Riad Sattouf",genre:"BD",etat:"comme_neuf",prix:9.5,vendeur_id:"v2"},
+  {id:"d16",titre:"Persepolis, tome 1",auteur:"Marjane Satrapi",genre:"BD",etat:"tres_bon",prix:7.5,vendeur_id:"v5"},
+  {id:"d4",titre:"Dune",auteur:"Frank Herbert",genre:"Science-fiction",etat:"comme_neuf",prix:6.5,vendeur_id:"v1"},
   {id:"d6",titre:"One Piece, tome 1",auteur:"Eiichirō Oda",genre:"Manga",etat:"tres_bon",prix:3.9,vendeur_id:"v2"},
+  {id:"d17",titre:"Contes du lundi",auteur:"Alphonse Daudet",genre:"Nouvelles",etat:"bon",prix:2.8,vendeur_id:"v4"},
   {id:"d7",titre:"Blacksad, tome 1",auteur:"Díaz Canales et Guarnido",genre:"BD",etat:"bon",prix:8,vendeur_id:"v2"},
+  {id:"d18",titre:"Les Misérables, tome 1",auteur:"Victor Hugo",genre:"Classiques",etat:"bon",prix:5.5,vendeur_id:"v5"},
   {id:"d8",titre:"Astérix le Gaulois",auteur:"Goscinny et Uderzo",genre:"BD",etat:"bon",prix:5,vendeur_id:"v2"},
   {id:"d9",titre:"Harry Potter à l’école des sorciers",auteur:"J. K. Rowling",genre:"Jeunesse",etat:"tres_bon",prix:4,vendeur_id:"v3"},
   {id:"d10",titre:"La Horde du Contrevent",auteur:"Alain Damasio",genre:"Fantasy",etat:"comme_neuf",prix:7,vendeur_id:"v3"},
   {id:"d11",titre:"Alcools",auteur:"Guillaume Apollinaire",genre:"Poésie",etat:"bon",prix:2.5,vendeur_id:"v3"},
   {id:"d12",titre:"Le Petit Prince",auteur:"Antoine de Saint-Exupéry",genre:"Jeunesse",etat:"tres_bon",prix:3,vendeur_id:"v3"}
 ];
+DEMO_BOOKS.forEach(function(b,i){b.rang=i});
 
-var BOOKS=[],SELLERS={},catLimit=8,catTerm="",catGenre=null,catLoading=true;
-function sellerOf(vid){return SELLERS[vid]||{nom:"Un Bookster",ville:""}}
+var BOOKS=[],SELLERS={},catLimit=8,catTerm="",catGenre=null,catLoading=true,catLoc="france",catSort="recent";
+function sellerOf(vid){return SELLERS[vid]||{nom:"Un Bookster",ville:"",region:""}}
+
+/* --- Localisation --- */
+var REGIONS=["Auvergne-Rhône-Alpes","Bourgogne-Franche-Comté","Bretagne","Centre-Val de Loire","Corse","Grand Est","Hauts-de-France","Île-de-France","Normandie","Nouvelle-Aquitaine","Occitanie","Pays de la Loire","Provence-Alpes-Côte d’Azur","Outre-mer"];
+var VILLE_REGION={"lyon":0,"villeurbanne":0,"grenoble":0,"saint-etienne":0,"clermont-ferrand":0,"annecy":0,"chambery":0,"valence":0,"vienne":0,"bron":0,"venissieux":0,"caluire-et-cuire":0,
+  "dijon":1,"besancon":1,"rennes":2,"brest":2,"orleans":3,"tours":3,"ajaccio":4,"bastia":4,"strasbourg":5,"reims":5,"metz":5,"nancy":5,"mulhouse":5,"lille":6,"amiens":6,"roubaix":6,
+  "paris":7,"versailles":7,"boulogne-billancourt":7,"montreuil":7,"saint-denis":7,"rouen":8,"caen":8,"le havre":8,"bordeaux":9,"limoges":9,"poitiers":9,"la rochelle":9,"toulouse":10,"montpellier":10,"nimes":10,"perpignan":10,
+  "nantes":11,"angers":11,"le mans":11,"marseille":12,"nice":12,"toulon":12,"aix-en-provence":12,"avignon":12};
+function normVille(v){return String(v||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+\d+\s*(e|er|eme)?(\b.*)?$/,"").trim()}
+function regionOf(v){var k=VILLE_REGION[normVille(v)];return k==null?"":REGIONS[k]}
+function locOf(b){var s=sellerOf(b.vendeur_id);var ville=b.ville||s.ville||"";return{ville:ville,region:b.region||s.region||regionOf(ville)}}
+var myLoc={ville:"",region:""};
+try{var ml=JSON.parse(localStorage.getItem("bookstery.loc")||"null");if(ml)myLoc=ml}catch(e){}
+function myLocation(){
+  if(!myLoc.ville&&current&&current.user_metadata&&current.user_metadata.ville){myLoc.ville=current.user_metadata.ville;myLoc.region=regionOf(myLoc.ville)}
+  return myLoc;
+}
 
 async function loadCatalogue(){
   catLoading=true;renderGrid();
   if(!sb){BOOKS=DEMO_BOOKS.slice();SELLERS=DEMO_SELLERS;$("catDemo").hidden=false;catLoading=false;renderAll();return}
   $("catDemo").hidden=true;
   try{
-    var r=await sb.from("annonces").select("id,isbn,titre,auteur,genre,etat,prix,couverture_url,vendeur_id,created_at").eq("statut","en_vente").order("created_at",{ascending:false}).limit(60);
+    var r=await sb.from("annonces").select("id,isbn,titre,auteur,resume,genre,etat,prix,couverture_url,vendeur_id,ville,region,created_at").eq("statut","en_vente").order("created_at",{ascending:false}).limit(60);
     if(r.error)throw r.error;
     BOOKS=(r.data||[]).map(function(b){b.prix=Number(b.prix);return b});
     var ids=BOOKS.map(function(b){return b.vendeur_id}).filter(function(v,i,a){return a.indexOf(v)===i});
-    if(ids.length){try{var p=await sb.from("profiles").select("id,prenom,ville").in("id",ids);(p.data||[]).forEach(function(x){SELLERS[x.id]={nom:x.prenom||"Un Bookster",ville:x.ville||""}})}catch(e){}}
+    if(ids.length){try{var p=await sb.from("profiles").select("id,prenom,ville").in("id",ids);(p.data||[]).forEach(function(x){SELLERS[x.id]={nom:x.prenom||"Un Bookster",ville:x.ville||"",region:regionOf(x.ville)}})}catch(e){}}
   }catch(e){console.error("Bookstery : catalogue indisponible",e);BOOKS=[];$("catSub").textContent="Le catalogue n’a pas pu se charger. Recharge la page dans un instant."}
   catLoading=false;renderAll();
 }
 
 function filtered(){
-  var t=catTerm.toLowerCase(),d=t.replace(/[^0-9x]/g,"");
-  return BOOKS.filter(function(b){
+  var t=catTerm.toLowerCase(),d=t.replace(/[^0-9x]/g,""),me=myLocation();
+  var list=BOOKS.filter(function(b){
     if(catGenre&&b.genre!==catGenre)return false;
+    if(catLoc!=="france"){var l=locOf(b);
+      if(catLoc==="lyon"&&normVille(l.ville)!=="lyon")return false;
+      if(catLoc==="ville"&&(!me.ville||normVille(l.ville)!==normVille(me.ville)))return false;
+      if(catLoc==="region"&&(!me.region||l.region!==me.region))return false;}
     if(!t)return true;
     return(b.titre+" "+(b.auteur||"")).toLowerCase().indexOf(t)>-1||(d.length>=10&&b.isbn&&b.isbn.indexOf(d)>-1);
   });
+  var coll=new Intl.Collator("fr",{sensitivity:"base",ignorePunctuation:true});
+  if(catSort==="az")list.sort(function(a,b){return coll.compare(a.titre.replace(/^(l’|l'|le |la |les |un |une )/i,""),b.titre.replace(/^(l’|l'|le |la |les |un |une )/i,""))});
+  else if(catSort==="prix-asc")list.sort(function(a,b){return a.prix-b.prix});
+  else if(catSort==="prix-desc")list.sort(function(a,b){return b.prix-a.prix});
+  else list.sort(function(a,b){return a.rang!=null?a.rang-b.rang:String(b.created_at).localeCompare(String(a.created_at))});
+  return list;
 }
 function addBtn(b,small){
   if(current&&b.vendeur_id===current.id)return'<button class="add" type="button" disabled>Ton annonce</button>';
@@ -1343,19 +1471,38 @@ function renderGrid(){
   if(catLoading){g.innerHTML='<p class="cat-empty">Chargement des livres…</p>';$("catMore").hidden=true;return}
   var list=filtered();
   if(!BOOKS.length){g.innerHTML='<div class="cat-empty"><b>Aucun livre en vente pour l’instant</b>Sois le premier Bookster à proposer un livre. <button class="btn" type="button" data-sell style="margin:14px auto 0">Vendre un livre</button></div>';$("catMore").hidden=true;return}
-  if(!list.length){g.innerHTML='<div class="cat-empty"><b>Aucun livre ne correspond</b>Essaie un autre titre, un autre auteur ou un autre genre.</div>';$("catMore").hidden=true;return}
+  if(!list.length){g.innerHTML='<div class="cat-empty"><b>Aucun livre ne correspond</b>'+(catLoc!=="france"?'Élargis la zone de recherche à « Toute la France », ou essaie un autre genre.':'Essaie un autre titre, un autre auteur ou un autre genre.')+'</div>';$("catMore").hidden=true;return}
   g.innerHTML=list.slice(0,catLimit).map(function(b){var s=sellerOf(b.vendeur_id);
-    return'<article class="book-card">'+coverHtml(b)+'<h3 class="bcard-t">'+esc(b.titre)+'</h3><p class="bcard-m"><span class="etat">'+(ETAT_TXT[b.etat]||"")+'</span>'+esc(s.nom)+(s.ville?" · "+esc(s.ville):"")+'</p><div class="bcard-row"><span class="bprice">'+EUR.format(b.prix)+'</span>'+addBtn(b)+'</div></article>'}).join("");
+    var l=locOf(b);
+    return'<article class="book-card"><button class="card-open" type="button" data-fiche="'+esc(b.id)+'" aria-label="Voir la fiche de '+esc(b.titre)+'">'+coverHtml(b)+'</button><div class="bcard-tags">'+(b.genre?'<button class="gtag" type="button" data-genre="'+esc(b.genre)+'">'+esc(b.genre)+'</button>':"")+'<span class="etat">'+(ETAT_TXT[b.etat]||"")+'</span></div><h3 class="bcard-t"><button type="button" data-fiche="'+esc(b.id)+'">'+esc(b.titre)+'</button></h3><p class="bcard-m">'+esc(s.nom)+(l.ville?" · "+esc(l.ville):"")+'</p><div class="bcard-row"><span class="bprice">'+EUR.format(b.prix)+'</span>'+addBtn(b)+'</div></article>'}).join("");
   $("catMore").hidden=list.length<=catLimit;
 }
 $("catMore").addEventListener("click",function(){catLimit+=8;renderGrid()});
 
 /* Genres et recherche filtrent le catalogue */
-$("chips").innerHTML=GENRES.map(function(g){return'<button class="chip" type="button" aria-pressed="false">'+g+'</button>'}).join("");
-$("chips").addEventListener("click",function(e){var b=e.target.closest(".chip");if(!b)return;
-  var on=b.getAttribute("aria-pressed")!=="true";
-  $("chips").querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed","false")});
-  b.setAttribute("aria-pressed",on);catGenre=on?b.textContent:null;catLimit=8;renderGrid();searchNote();});
+function renderChips(){["chips","catChips"].forEach(function(id){$(id).innerHTML=GENRES.map(function(g){return'<button class="chip" type="button" data-chip="'+g+'" aria-pressed="'+(g===catGenre)+'">'+g+'</button>'}).join("")})}
+function setGenre(g,scroll){catGenre=g;catLimit=8;renderChips();renderGrid();searchNote();if(scroll)$("catalogue").scrollIntoView({behavior:"smooth"})}
+renderChips();
+["chips","catChips"].forEach(function(id){$(id).addEventListener("click",function(e){var b=e.target.closest("[data-chip]");if(!b)return;var g=b.getAttribute("data-chip");setGenre(catGenre===g?null:g)})});
+document.addEventListener("click",function(e){var t=e.target.closest("[data-genre]");if(t){var g=t.getAttribute("data-genre");closeAll(true);setGenre(g,true)}});
+
+/* Localisation et tri */
+$("locRegion").innerHTML=$("bRegion").innerHTML='<option value="">Choisis ta région</option>'+REGIONS.map(function(r){return"<option>"+r+"</option>"}).join("");
+function locUI(){document.querySelectorAll("#locSeg [data-loc]").forEach(function(b){var k=b.getAttribute("data-loc"),me=myLocation();b.setAttribute("aria-pressed",k===catLoc);
+  if(k==="ville")b.textContent=me.ville?"Ma ville · "+me.ville.replace(/\s+\d+.*$/,""):"Ma ville";
+  if(k==="region")b.textContent=me.region?"Ma région · "+({"Auvergne-Rhône-Alpes":"AURA","Provence-Alpes-Côte d’Azur":"PACA","Bourgogne-Franche-Comté":"BFC","Centre-Val de Loire":"Centre"}[me.region]||me.region):"Ma région";})}
+$("locSeg").addEventListener("click",function(e){var b=e.target.closest("[data-loc]");if(!b)return;var k=b.getAttribute("data-loc"),me=myLocation();
+  if((k==="ville"&&!me.ville)||(k==="region"&&!me.region)){$("locAsk").hidden=false;$("locAsk").dataset.want=k;$("locVille").value=me.ville||"";$("locRegion").value=me.region||"";$("locVille").focus();return}
+  $("locAsk").hidden=true;catLoc=k;catLimit=8;locUI();renderGrid();searchNote()});
+$("locVille").addEventListener("input",function(){var r=regionOf(this.value);if(r)$("locRegion").value=r});
+$("locAsk").addEventListener("submit",function(e){e.preventDefault();var v=$("locVille").value.trim(),r=$("locRegion").value||regionOf(v),want=this.dataset.want;
+  if(want==="ville"&&!v)return $("locVille").focus();if(want==="region"&&!r)return $("locRegion").focus();
+  myLoc={ville:v,region:r};try{localStorage.setItem("bookstery.loc",JSON.stringify(myLoc))}catch(x){}
+  this.hidden=true;catLoc=want;catLimit=8;locUI();renderGrid();searchNote();prefillSellLoc()});
+$("catSort").addEventListener("change",function(){catSort=this.value;renderGrid()});
+function prefillSellLoc(){var me=myLocation();if(!$("bVille").value&&me.ville)$("bVille").value=me.ville;if(!$("bRegion").value&&me.region)$("bRegion").value=me.region}
+$("bVille").addEventListener("input",function(){var r=regionOf(this.value);if(r)$("bRegion").value=r});
+locUI();prefillSellLoc();
 document.querySelectorAll("[data-search]").forEach(function(f){f.addEventListener("submit",function(e){e.preventDefault();
   catTerm=f.querySelector("input").value.trim();catLimit=8;renderGrid();searchNote();
   if(catTerm||catGenre)$("catalogue").scrollIntoView({behavior:"smooth"})})});
@@ -1456,13 +1603,51 @@ $("payBtn").addEventListener("click",function(){
 
 function renderAll(){renderGrid();renderBag();searchNote()}
 
+/* ================= Fiche livre + « Dans sa bibliothèque » ================= */
+var ficheId=null,ficheFetched={};
+function sellerBooks(vid){return BOOKS.filter(function(x){return x.vendeur_id===vid})}
+async function fetchSellerBooks(vid){
+  if(!sb||ficheFetched[vid])return;ficheFetched[vid]=1;
+  try{var r=await sb.from("annonces").select("id,isbn,titre,auteur,resume,genre,etat,prix,couverture_url,vendeur_id,ville,region,created_at").eq("vendeur_id",vid).eq("statut","en_vente").order("created_at",{ascending:false}).limit(40);
+    (r.data||[]).forEach(function(b){if(!findBook(b.id)){b.prix=Number(b.prix);BOOKS.push(b)}});if(ficheId)renderFiche()}catch(e){}
+}
+function openFiche(id){var b=findBook(id);if(!b)return;ficheId=id;renderFiche();open($("fiche"));fetchSellerBooks(b.vendeur_id)}
+function renderFiche(){
+  var b=findBook(ficheId);if(!b)return;
+  var s=sellerOf(b.vendeur_id),l=locOf(b),own=current&&b.vendeur_id===current.id;
+  var others=sellerBooks(b.vendeur_id).filter(function(x){return String(x.id)!==String(b.id)});
+  var g=groups().filter(function(x){return x.vid===b.vendeur_id})[0],sub=g?g.sub:0,gifts=booksterbooks(sub),next=TIERS[gifts];
+  var prog=next?(sub?"Tu as "+EUR.format(sub)+" chez "+esc(s.nom)+" : plus que <b>"+EUR.format(r2(next-sub))+"</b> pour ton "+ordinal(gifts+1)+" Booksterbook.":"Dès <b>10 €</b> chez "+esc(s.nom)+", un Booksterbook mystère t’est offert. Regroupe tes achats !"):"<b>3 Booksterbooks débloqués</b> chez "+esc(s.nom)+", le maximum.";
+  var lot=sellerBooks(b.vendeur_id).filter(function(x){return!bagHas(x.id)}),lotSum=r2(lot.reduce(function(a,x){return a+x.prix},0));
+  $("ficheBody").innerHTML=
+    '<div class="f-top">'+coverHtml(b)+'<div class="f-info">'+
+      '<div class="bcard-tags">'+(b.genre?'<button class="gtag" type="button" data-genre="'+esc(b.genre)+'">'+esc(b.genre)+'</button>':"")+'<span class="etat">'+(ETAT_TXT[b.etat]||"")+'</span></div>'+
+      '<h2 id="fTitre">'+esc(b.titre)+'</h2><p class="f-auteur">'+esc(b.auteur||"")+'</p>'+
+      '<p class="f-seller"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Vendu par <b>'+esc(s.nom)+'</b>'+(l.ville?" · "+esc(l.ville):"")+'</p>'+
+      '<div class="f-buy"><span class="f-price">'+EUR.format(b.prix)+'</span>'+(own?'<button class="add" type="button" disabled>Ton annonce</button>':addBtn(b))+'</div>'+
+    '</div></div>'+
+    (b.resume?'<p class="f-resume">'+esc(b.resume)+'</p>':"")+
+    '<section class="f-lib" aria-labelledby="fLibT">'+
+      '<div class="f-lib-h"><h3 id="fLibT">Dans sa bibliothèque <span>'+others.length+' autre'+(others.length>1?"s":"")+' livre'+(others.length>1?"s":"")+'</span></h3>'+
+      (lot.length>1&&!own?'<button class="btn" type="button" data-lot="'+esc(b.vendeur_id)+'">Tout ajouter · '+lot.length+' livres · '+EUR.format(lotSum)+'</button>':"")+'</div>'+
+      '<p class="f-prog">'+prog+'</p>'+
+      (others.length?'<div class="f-shelf">'+others.map(function(x){return'<div class="f-mini">'+'<button class="card-open" type="button" data-fiche="'+esc(x.id)+'" aria-label="Voir '+esc(x.titre)+'">'+coverHtml(x)+'</button><b>'+esc(x.titre)+'</b><div class="f-mini-r"><span>'+EUR.format(x.prix)+'</span>'+addBtn(x,true)+'</div></div>'}).join("")+'</div>':'<p class="f-empty">C’est le seul livre en vente chez '+esc(s.nom)+' pour l’instant.</p>')+
+    '</section>';
+}
+document.addEventListener("click",function(e){
+  var f=e.target.closest("[data-fiche]");if(f){var id=f.getAttribute("data-fiche");if($("fiche").classList.contains("on")){ficheId=id;renderFiche();$("fiche").scrollTop=0}else openFiche(id)}
+  var lot=e.target.closest("[data-lot]");if(lot){var vid=lot.getAttribute("data-lot"),n=0;sellerBooks(vid).forEach(function(x){if(!bagHas(x.id)&&!(current&&x.vendeur_id===current.id)){bag.push({id:x.id,titre:x.titre,auteur:x.auteur||"",genre:x.genre||"",etat:x.etat||"",prix:Number(x.prix),vendeur_id:x.vendeur_id,couverture_url:x.couverture_url||""});n++}});
+    saveBag();renderAll();var g=groups().filter(function(x){return x.vid===vid})[0];toast(n+" livre"+(n>1?"s":"")+" ajouté"+(n>1?"s":"")+" : "+(g&&g.gifts?g.gifts+" Booksterbook"+(g.gifts>1?"s":"")+" débloqué"+(g.gifts>1?"s":"")+" chez "+sellerOf(vid).nom+" !":"lot ajouté à ton Bag."))}
+});
+var _renderAllF=renderAll;
+renderAll=function(){_renderAllF();if(ficheId&&$("fiche").classList.contains("on"))renderFiche()};
+
 /* Clic sur Bookstery : retour à l’accueil (fenêtres fermées, filtres remis à zéro, haut de page) */
 function goHome(){
   closeAll(true);
   catTerm="";catGenre=null;catLimit=8;
   document.querySelectorAll("[data-search] input").forEach(function(i){i.value=""});
-  $("chips").querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed","false")});
-  renderGrid();searchNote();
+  renderChips();renderGrid();searchNote();
   window.scrollTo({top:0,behavior:"smooth"});
   var b=document.querySelector("header .brand");if(b)b.focus({preventScroll:true});
 }
