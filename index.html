@@ -348,6 +348,65 @@ body.authed .me{display:inline-flex}
 .dfoot .form-msg:empty{display:none}
 .dfoot .btn{width:100%;justify-content:center}
 @media(max-width:560px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 14px}.bcover b{font-size:15px}.cat{padding:8px 0 56px}.drawer{padding-left:18px;padding-right:18px}.dbody{margin:14px -18px 0;padding:2px 18px 14px}}
+
+/* ---------- Espace auteur ---------- */
+.a-kicker{display:inline-block;background:var(--maj-l);color:var(--maj-d);border-radius:999px;padding:4px 12px;font-weight:800;font-size:12.5px}
+#auteur h2{margin-top:12px}
+.au-tabs{display:flex;gap:4px;background:var(--maj-xl);border-radius:999px;padding:4px;margin:4px 0 6px}
+.au-tabs button{flex:1;border:0;background:transparent;border-radius:999px;padding:9px 12px;font:700 14px var(--sans);color:var(--muted)}
+.au-tabs button[aria-selected="true"]{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(28,22,80,.1)}
+.au-row{display:grid;grid-template-columns:1.6fr 1fr;gap:12px}
+#auteur textarea{min-height:200px;font:400 15px/1.65 Georgia,"Times New Roman",serif}
+.calib{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.calib-bar{position:relative;height:8px;border-radius:999px;background:var(--maj-xl);overflow:hidden}
+.calib-ok{position:absolute;top:0;bottom:0;left:16.67%;right:16.67%;background:#E8F6EE}
+.calib-bar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:999px;background:var(--maj);transition:width .25s}
+.calib-bar.ok i{background:#1C7A4A}.calib-bar.over i{background:#C0263A}
+.calib-info{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.calib-info b{color:var(--ink);font-variant-numeric:tabular-nums}
+.calib-info .ok{color:#1C7A4A;font-weight:700}.calib-info .over{color:#C0263A;font-weight:700}
+.check{display:flex!important;gap:10px;align-items:flex-start;font-weight:600!important;font-size:14px!important;margin-top:16px!important;line-height:1.45}
+.modal .check input{width:18px;height:18px;flex:none;margin:1px 0 0;accent-color:var(--maj)}
+.au-steps{list-style:none;margin:20px 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.au-steps li{display:flex;gap:12px;align-items:flex-start;opacity:.45;transition:opacity .2s}
+.au-steps li.run,.au-steps li.done,.au-steps li.fail{opacity:1}
+.au-steps b{display:block;font-size:14.5px;color:var(--ink)}.au-steps small{color:var(--muted);font-size:13px}
+.dot{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--line);margin-top:1px;display:grid;place-items:center}
+.run .dot{border-color:var(--maj-l);border-top-color:var(--maj);animation:spin .8s linear infinite}
+.done .dot{background:#1C7A4A;border-color:#1C7A4A}
+.done .dot::after{content:"";width:8px;height:4px;border:solid #fff;border-width:0 0 2.5px 2.5px;transform:rotate(-45deg) translate(1px,-1px)}
+.fail .dot{background:#C0263A;border-color:#C0263A}
+.fail .dot::after{content:"!";color:#fff;font-weight:800;font-size:13px}
+.au-result{margin-top:20px;display:flex;flex-direction:column;gap:16px}
+.refus{border:1.5px solid #F2B8C0;background:#FDF1F3;border-radius:18px;padding:18px 20px;color:#7A1626}
+.refus b{display:block;font-size:17px;margin-bottom:6px;color:#9B1C2E}
+.refus .score{font-size:34px;font-weight:800;letter-spacing:-.02em;color:#C0263A;font-variant-numeric:tabular-nums}
+.cert{position:relative;border:1.5px solid var(--ink);border-radius:18px;padding:22px 22px 18px;background:#fff;background-image:repeating-linear-gradient(135deg,transparent 0 14px,rgba(96,80,220,.035) 14px 15px)}
+.cert-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:14px;margin-bottom:14px}
+.cert-h small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--maj)}
+.cert-h b{display:block;font-size:19px;color:var(--ink);margin-top:2px}
+.cert-no{font:700 12.5px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);white-space:nowrap}
+.cert dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:14px}
+.cert dt{color:var(--muted)}.cert dd{margin:0;color:var(--ink);font-weight:600;min-width:0;overflow-wrap:anywhere}
+.cert .hash{font:600 12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all}
+.cert .ia{color:#1C7A4A}
+.cert-demo{position:absolute;top:14px;right:-6px;background:#C0263A;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px 0 0 6px}
+.cert-act{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.modal .cert-act .btn{width:auto;margin:0;padding:9px 16px;font-size:13.5px}
+.cert-legal{margin:12px 0 0!important;font-size:12px!important;color:var(--muted)}
+/* Lecture protégée : filigrane + copie bloquée */
+.protected{position:relative;border:1px solid var(--line);border-radius:16px;background:#FFFEFB;max-height:320px;overflow:auto;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.protected .ptext{padding:22px 24px;font:400 16px/1.75 Georgia,"Times New Roman",serif;color:#24222E}
+.protected .ptext p{margin:0 0 1em}
+.protected .wm{position:absolute;left:0;top:0;right:0;pointer-events:none;background-repeat:repeat;opacity:1;z-index:1}
+.p-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--muted);margin:0 0 -6px!important}
+@media print{.protected{display:none!important}}
+.au-list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.au-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.au-item b{display:block;color:var(--ink);font-size:15px}.au-item span{font-size:13px;color:var(--muted)}
+.modal .au-item .btn{width:auto;margin:0;padding:8px 14px;font-size:13px}
+.au-empty{text-align:center;color:var(--muted);background:var(--maj-xl);border-radius:16px;padding:28px 16px;margin-top:10px}
+@media(max-width:560px){.au-row{grid-template-columns:1fr;gap:0}.cert dl{grid-template-columns:1fr;gap:2px}.cert dd{margin-bottom:8px}}
 /* ---------- Finitions : rythme, typographie, hiérarchie ---------- */
 body{color:var(--ink-2);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
 h1,h2,h3{color:var(--ink);text-wrap:balance}
@@ -500,7 +559,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
             <span class="a-eyebrow">Auteurs</span>
             <h2>Ton texte, <span>cadeau mystère</span> de toute une communauté.</h2>
             <p>Envoie une nouvelle, un extrait ou ton manuscrit : il sera glissé en surprise dans les Bookster Bags des lecteurs. Des Booksters qui ne te connaissent pas encore vont l’ouvrir, te lire, et parler de toi.</p>
-            <button class="btn" type="button" data-toast="L’envoi de manuscrits ouvrira bientôt. Merci de ton intérêt !">Envoyer mon texte</button>
+            <button class="btn" type="button" data-auteur>Envoyer mon texte</button>
           </div>
         </div>
         <ol class="flow" aria-label="Le parcours de ton texte">
@@ -654,6 +713,51 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
   </form>
 </div>
 
+<div class="modal wide" id="auteur" role="dialog" aria-modal="true" aria-labelledby="auTitle" aria-hidden="true">
+  <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <span class="a-kicker">Espace auteur</span>
+  <h2 id="auTitle">Dépose ton extrait</h2>
+  <p>Ton texte reçoit un certificat d’horodatage dès son dépôt. Chaque envoi est vérifié par un détecteur d’IA : au-delà de 50&nbsp;% de texte généré par IA, il est refusé.</p>
+
+  <div class="au-tabs" role="tablist">
+    <button type="button" role="tab" id="tabDepot" aria-selected="true" aria-controls="auDepot">Nouveau dépôt</button>
+    <button type="button" role="tab" id="tabMes" aria-selected="false" aria-controls="auMes">Mes textes déposés</button>
+  </div>
+
+  <div id="auDepot" role="tabpanel" aria-labelledby="tabDepot">
+    <form id="auForm" novalidate>
+      <div class="au-row">
+        <div><label for="exTitre">Titre</label><input id="exTitre" maxlength="200" required></div>
+        <div><label for="exGenre">Genre</label><select id="exGenre" required></select></div>
+      </div>
+      <label for="exTexte">Ton extrait <span class="hint">Entre 1&nbsp;000 et 5&nbsp;000 mots, soit 4 à 20 pages environ</span></label>
+      <textarea id="exTexte" rows="9" placeholder="Colle ici ta nouvelle, ton extrait ou le début de ton manuscrit."></textarea>
+      <div class="calib">
+        <div class="calib-bar" aria-hidden="true"><span class="calib-ok"></span><i id="calibFill"></i></div>
+        <div class="calib-info"><b id="calibCount">0 mot</b><span id="calibTxt">Ton extrait doit faire au moins 1&nbsp;000 mots.</span></div>
+      </div>
+      <button class="photo-link" type="button" id="exImport">Importer un fichier texte (.txt)</button>
+      <input type="file" id="exFile" accept=".txt,.md,text/plain" hidden>
+      <label class="check"><input type="checkbox" id="exCert"> Je certifie être l’auteur de ce texte et l’avoir écrit moi-même.</label>
+      <p class="sell-note" id="auNote" hidden></p>
+      <p class="form-msg" id="auMsg" role="alert"></p>
+      <button class="btn" type="submit" id="auSubmit">Analyser et déposer mon texte</button>
+    </form>
+
+    <ol class="au-steps" id="auSteps" hidden>
+      <li id="stIA"><span class="dot"></span><div><b>Analyse anti-IA</b><small>Le texte doit contenir au plus 50&nbsp;% d’écriture générée par IA.</small></div></li>
+      <li id="stHash"><span class="dot"></span><div><b>Empreinte numérique SHA-256</b><small>Une signature unique qui change si un seul caractère change.</small></div></li>
+      <li id="stTime"><span class="dot"></span><div><b>Horodatage et certificat</b><small>La date et l’heure du dépôt sont fixées par le serveur.</small></div></li>
+    </ol>
+
+    <div class="au-result" id="auResult" hidden></div>
+  </div>
+
+  <div id="auMes" role="tabpanel" aria-labelledby="tabMes" hidden>
+    <div id="auList" class="au-list"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -680,11 +784,12 @@ new IntersectionObserver(function(e){var off=!e[0].isIntersecting;hdr.classList.
 /* Drawer / modal */
 var lastFocus;
 function open(el){closeAll(true);lastFocus=document.activeElement;$("scrim").classList.add("on");el.classList.add("on");el.setAttribute("aria-hidden","false");var f=el.querySelector("input")||el.querySelector("button");f&&setTimeout(function(){f.focus()},60)}
-function closeAll(keep){if(window.stopScan)stopScan();["drawer","modal","login","account","sell"].forEach(function(id){$(id).classList.remove("on");$(id).setAttribute("aria-hidden","true")});$("scrim").classList.remove("on");if(!keep&&lastFocus)lastFocus.focus()}
+function closeAll(keep){if(window.stopScan)stopScan();["drawer","modal","login","account","sell","auteur"].forEach(function(id){$(id).classList.remove("on");$(id).setAttribute("aria-hidden","true")});$("scrim").classList.remove("on");if(!keep&&lastFocus)lastFocus.focus()}
 $("bagBtn").addEventListener("click",function(){open($("drawer"))});
 document.addEventListener("click",function(e){
   if(e.target.closest("[data-join]"))open($("modal"));
   if(e.target.closest("[data-sell]"))openSell();
+  if(e.target.closest("[data-auteur]"))openAuteur();
   if(e.target.closest("[data-login]"))open($("login"));
   if(e.target.closest("[data-close]"))closeAll();
   var t=e.target.closest("[data-toast]");if(t)toast(t.getAttribute("data-toast"));});
@@ -777,7 +882,7 @@ $("forgot").addEventListener("click",async function(){
 /* État connecté */
 var current=null;
 async function showUser(user){
-  current=user;document.body.classList.toggle("authed",!!user);sellNote();if(typeof renderAll==="function"&&!catLoading)renderAll();
+  current=user;document.body.classList.toggle("authed",!!user);sellNote();if(typeof renderAll==="function"&&!catLoading)renderAll();if(typeof auNote==="function")auNote();
   if(!user)return;
   var md=user.user_metadata||{},p=null;
   try{var r=await sb.from("profiles").select("prenom, ville, genres_preferes").eq("id",user.id).maybeSingle();if(!r.error)p=r.data}catch(e){}
@@ -1200,6 +1305,159 @@ function goHome(){
 }
 document.querySelectorAll(".brand").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();goHome()})});
 renderBag();loadCatalogue();
+
+/* ================= Espace auteur ================= */
+var EX_MIN=1000,EX_MAX=5000,EX_SEUIL_IA=0.5,demoDepots=[];
+$("exGenre").innerHTML='<option value="">Choisis un genre</option>'+GENRES.map(function(g){return'<option>'+g+'</option>'}).join("");
+function normTexte(t){return String(t||"").normalize("NFC").replace(/\r\n?/g,"\n").trim()}
+function nbMots(t){t=String(t||"").trim();return t?t.split(/\s+/).length:0}
+var NF=new Intl.NumberFormat("fr-FR");
+async function sha256Hex(t){if(!window.crypto||!crypto.subtle)return null;var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")}
+
+/* Calibrage en direct */
+function calib(){
+  var n=nbMots($("exTexte").value),bar=document.querySelector(".calib-bar"),txt=$("calibTxt");
+  $("calibCount").textContent=NF.format(n)+" mot"+(n>1?"s":"");
+  $("calibFill").style.width=Math.min(n/6000*100,100)+"%";
+  bar.classList.toggle("ok",n>=EX_MIN&&n<=EX_MAX);bar.classList.toggle("over",n>EX_MAX);
+  if(n<EX_MIN){txt.className="";txt.textContent="Encore "+NF.format(EX_MIN-n)+" mot"+(EX_MIN-n>1?"s":"")+" pour atteindre le minimum."}
+  else if(n<=EX_MAX){txt.className="ok";txt.textContent="Extrait calibré : prêt à être déposé."}
+  else{txt.className="over";txt.textContent=NF.format(n-EX_MAX)+" mot"+(n-EX_MAX>1?"s":"")+" de trop : raccourcis ton extrait."}
+  return n;
+}
+$("exTexte").addEventListener("input",calib);
+$("exImport").addEventListener("click",function(){$("exFile").click()});
+$("exFile").addEventListener("change",function(){var f=this.files&&this.files[0];this.value="";if(!f)return;
+  if(f.size>2e6)return setMsg("auMsg","Ce fichier est trop lourd pour un extrait (2 Mo maximum).","err");
+  var r=new FileReader();r.onload=function(){$("exTexte").value=String(r.result||"");calib();setMsg("auMsg","")};r.onerror=function(){setMsg("auMsg","Ce fichier n’a pas pu être lu. Colle plutôt ton texte.","err")};r.readAsText(f,"utf-8")});
+
+/* Onglets */
+function auTab(mes){$("tabDepot").setAttribute("aria-selected",!mes);$("tabMes").setAttribute("aria-selected",mes);$("auDepot").hidden=mes;$("auMes").hidden=!mes;if(mes)loadMesTextes()}
+$("tabDepot").addEventListener("click",function(){auTab(false)});
+$("tabMes").addEventListener("click",function(){auTab(true)});
+
+function auNote(){
+  var n=$("auNote");
+  if(!sb){n.hidden=false;n.textContent="Mode démo : l’analyse anti-IA n’est pas lancée et le certificat n’a pas de valeur. Configure Supabase et la fonction de dépôt pour l’activer.";return}
+  if(!current){n.hidden=false;n.innerHTML='Connecte-toi pour déposer ton texte. <button type="button" data-login>Se connecter</button> ou <button type="button" data-join>créer un compte</button>.';return}
+  n.hidden=true;
+}
+function openAuteur(){auNote();auTab(false);open($("auteur"))}
+
+/* Étapes visuelles */
+function step(id,state){var li=$(id);li.className=state||""}
+function resetSteps(){["stIA","stHash","stTime"].forEach(function(i){step(i,"")})}
+var wait=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+
+/* --- Certificat --- */
+function authorName(){var md=current&&current.user_metadata||{};return(md.prenom?md.prenom+" · ":"")+(current&&current.email||"")}
+function certNo(id){return"BKS-"+String(id).replace(/-/g,"").slice(0,10).toUpperCase()}
+function frDate(iso){return new Date(iso).toLocaleString("fr-FR",{timeZone:"Europe/Paris",dateStyle:"long",timeStyle:"medium"})}
+function certHtml(c,demo,verified){
+  return'<div class="cert">'+(demo?'<span class="cert-demo">DÉMO</span>':"")+
+   '<div class="cert-h"><div><small>Certificat d’horodatage</small><b>'+esc(c.titre)+'</b></div><span class="cert-no">N° '+certNo(c.id)+'</span></div>'+
+   '<dl><dt>Auteur</dt><dd>'+esc(c.auteur||"—")+'</dd>'+
+   '<dt>Genre</dt><dd>'+esc(c.genre)+'</dd>'+
+   '<dt>Longueur</dt><dd>'+NF.format(c.nb_mots)+' mots</dd>'+
+   '<dt>Déposé le</dt><dd>'+esc(frDate(c.created_at))+' (heure de Paris)<br><span class="hash">'+esc(new Date(c.created_at).toISOString())+'</span></dd>'+
+   '<dt>Empreinte SHA-256</dt><dd class="hash">'+esc(c.sha256)+(verified?'<br><span class="ia">✓ identique à l’empreinte calculée sur ton appareil</span>':"")+'</dd>'+
+   '<dt>Analyse anti-IA</dt><dd class="ia">'+(c.ai_score==null?"Non lancée (mode démo)":Math.round(c.ai_score*100)+" % de texte IA détecté"+(c.detecteur?" ("+(c.detecteur==="zerogpt"?"ZeroGPT":"Pangram")+")":"")+" · seuil 50 %")+'</dd></dl>'+
+   '<div class="cert-act"><button class="btn ghost" type="button" data-copyhash="'+esc(c.sha256)+'">Copier l’empreinte</button><button class="btn dark" type="button" data-certdl="'+esc(c.id)+'">Télécharger le certificat</button></div>'+
+   '<p class="cert-legal">L’empreinte prouve que ce texte exact existait à cette date : pour vérifier, recalcule le SHA-256 du texte et compare. Pour une protection juridique renforcée, tu peux aussi faire une enveloppe e-Soleau à l’INPI.</p></div>';
+}
+var certs={};
+document.addEventListener("click",function(e){
+  var h=e.target.closest("[data-copyhash]");
+  if(h){var v=h.getAttribute("data-copyhash");try{navigator.clipboard.writeText(v).then(function(){toast("Empreinte copiée.")},function(){toast("Copie impossible ici : sélectionne l’empreinte à la main.")})}catch(x){toast("Copie impossible ici : sélectionne l’empreinte à la main.")}}
+  var d=e.target.closest("[data-certdl]");
+  if(d){var c=certs[d.getAttribute("data-certdl")];if(!c)return;
+    var html='<!doctype html><meta charset="utf-8"><title>Certificat '+certNo(c.id)+'</title><body style="font-family:system-ui;max-width:640px;margin:40px auto;padding:0 16px;color:#111"><h1 style="font-size:22px">Bookstery · Certificat d’horodatage</h1><p><b>N°</b> '+certNo(c.id)+'</p><p><b>Titre</b> '+esc(c.titre)+'</p><p><b>Auteur</b> '+esc(c.auteur||"")+'</p><p><b>Genre</b> '+esc(c.genre)+'</p><p><b>Longueur</b> '+c.nb_mots+' mots</p><p><b>Déposé le</b> '+esc(frDate(c.created_at))+' (Paris) · '+new Date(c.created_at).toISOString()+'</p><p><b>Empreinte SHA-256</b><br><code style="word-break:break-all">'+c.sha256+'</code></p><p><b>Analyse anti-IA</b> '+(c.ai_score==null?"non lancée (démo)":Math.round(c.ai_score*100)+" % IA (seuil 50 %)")+'</p></body>';
+    var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([html],{type:"text/html"}));a.download="certificat-"+certNo(c.id)+".html";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);
+    toast("Si le téléchargement ne démarre pas, copie l’empreinte : elle suffit à prouver ton dépôt.")}
+});
+
+/* --- Lecture protégée : filigrane nominatif + copie bloquée --- */
+function wmUrl(label){
+  var t=esc(label).replace(/'/g,"&#39;");
+  var svg="<svg xmlns='http://www.w3.org/2000/svg' width='360' height='190'><text x='10' y='120' transform='rotate(-22 180 95)' font-family='Arial,sans-serif' font-size='14' font-weight='700' fill='rgba(96,80,220,0.18)'>"+t+"</text></svg>";
+  return'url("data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)+'")';
+}
+function protectedHtml(texte){
+  return'<p class="p-label">Aperçu protégé · copie désactivée · filigrane nominatif</p><div class="protected" tabindex="0" aria-label="Extrait protégé"><div class="wm"></div><div class="ptext">'+
+    normTexte(texte).split(/\n{2,}/).map(function(p){return"<p>"+esc(p).replace(/\n/g,"<br>")+"</p>"}).join("")+'</div></div>';
+}
+function armProtected(root){
+  root.querySelectorAll(".protected").forEach(function(el){
+    var wm=el.querySelector(".wm"),who=current?(current.email||"Bookster"):"Lecteur anonyme";
+    wm.style.backgroundImage=wmUrl("Bookstery · "+who+" · "+new Date().toLocaleDateString("fr-FR"));
+    wm.style.height=el.querySelector(".ptext").offsetHeight+"px";
+    ["copy","cut","contextmenu","dragstart","selectstart"].forEach(function(ev){el.addEventListener(ev,function(e){e.preventDefault();if(ev==="copy"||ev==="cut"||ev==="contextmenu")toast("Ce texte est protégé : la copie est désactivée.")})});
+    el.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&/^[acxsp]$/i.test(e.key)){e.preventDefault();toast("Ce texte est protégé : la copie est désactivée.")}});
+  });
+}
+document.addEventListener("copy",function(e){var s=window.getSelection&&window.getSelection();if(s&&s.anchorNode&&s.anchorNode.parentElement&&s.anchorNode.parentElement.closest(".protected"))e.preventDefault()});
+
+function showCert(target,c,demo,verified,texte){
+  certs[c.id]=c;
+  target.innerHTML=certHtml(c,demo,verified)+(texte?protectedHtml(texte):"");
+  target.hidden=false;armProtected(target);
+  target.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* --- Dépôt --- */
+$("auForm").addEventListener("submit",async function(e){
+  e.preventDefault();
+  var titre=$("exTitre").value.trim(),genre=$("exGenre").value,texte=normTexte($("exTexte").value),n=nbMots(texte),btn=$("auSubmit");
+  if(!titre){$("exTitre").focus();return setMsg("auMsg","Donne un titre à ton extrait.","err")}
+  if(!genre){$("exGenre").focus();return setMsg("auMsg","Choisis le genre de ton extrait.","err")}
+  if(n<EX_MIN||n>EX_MAX){$("exTexte").focus();return setMsg("auMsg","Ton extrait doit faire entre 1 000 et 5 000 mots (il en fait "+NF.format(n)+").","err")}
+  if(!$("exCert").checked)return setMsg("auMsg","Coche la case pour certifier que tu es l’auteur du texte.","err");
+  if(sb&&!current){$("auMsg").className="form-msg err";$("auMsg").innerHTML='Connecte-toi pour déposer ton texte. <button type="button" class="forgot" style="display:inline;margin:0" data-login>Se connecter</button>';return}
+  setMsg("auMsg","");$("auResult").hidden=true;$("auSteps").hidden=false;resetSteps();busy(btn,true,"Analyse en cours…");
+  try{
+    var local=await sha256Hex(texte);
+    if(!sb){
+      step("stIA","fail");$("stIA").querySelector("small").textContent="Non lancée en mode démo : le détecteur demande une clé côté serveur.";
+      step("stHash","run");await wait(450);step("stHash","done");step("stTime","run");await wait(450);step("stTime","done");
+      if(!local){step("stHash","fail");return setMsg("auMsg","Ton navigateur ne peut pas calculer l’empreinte ici : ouvre le site en https.","err")}
+      var c={id:(crypto.randomUUID?crypto.randomUUID():String(Date.now())),titre:titre,genre:genre,nb_mots:n,sha256:local,ai_score:null,created_at:new Date().toISOString(),auteur:"Mode démo"};
+      demoDepots.unshift(Object.assign({texte:texte},c));showCert($("auResult"),c,true,false,texte);return;
+    }
+    step("stIA","run");
+    var r=await sb.functions.invoke("deposer-extrait",{body:{titre:titre,genre:genre,texte:texte,certifie:true}});
+    var data=r.data,err=r.error;
+    if(err){var body=null;try{if(err.context&&typeof err.context.json==="function")body=await err.context.json()}catch(x){}
+      step("stIA","fail");
+      if(body&&body.refus){
+        $("auResult").innerHTML='<div class="refus"><b>Dépôt refusé</b><div class="score">'+Math.round(body.ai_score*100)+' % IA</div><p style="margin:6px 0 0;color:inherit">Le détecteur d’IA estime que plus de 50 % de ce texte a été généré par une intelligence artificielle. Bookstery publie uniquement des textes écrits par leurs auteurs. Ton texte n’a pas été déposé.</p></div>';
+        $("auResult").hidden=false;return;
+      }
+      return setMsg("auMsg",(body&&body.erreur)||"Le dépôt n’a pas pu aboutir. Vérifie ta connexion et réessaie.","err");
+    }
+    var cert=data&&data.certificat;if(!cert)throw new Error("réponse vide");
+    $("stIA").querySelector("small").textContent=Math.round(cert.ai_score*100)+" % de texte IA détecté : sous le seuil de 50 %.";
+    step("stIA","done");step("stHash","run");await wait(350);step("stHash","done");step("stTime","run");await wait(350);step("stTime","done");
+    cert.auteur=authorName();
+    showCert($("auResult"),cert,false,cert.sha256===local,texte);
+    $("auForm").reset();calib();toast("Texte déposé et horodaté. Ton certificat est prêt.");
+  }catch(x){console.error("Bookstery : dépôt impossible",x);setMsg("auMsg","Le dépôt n’a pas pu aboutir. Réessaie dans un instant.","err")}
+  finally{busy(btn,false)}
+});
+
+/* --- Mes textes déposés --- */
+async function loadMesTextes(){
+  var box=$("auList"),list=[];
+  if(sb&&!current){box.innerHTML='<p class="au-empty">Connecte-toi pour retrouver tes textes déposés et leurs certificats.</p>';return}
+  if(!sb)list=demoDepots;
+  else{box.innerHTML='<p class="au-empty">Chargement…</p>';
+    var r=await sb.from("extraits").select("id,titre,genre,nb_mots,sha256,ai_score,created_at,texte").order("created_at",{ascending:false});
+    if(r.error){box.innerHTML='<p class="au-empty">Tes textes n’ont pas pu être chargés. Réessaie dans un instant.</p>';return}
+    list=r.data||[];}
+  if(!list.length){box.innerHTML='<p class="au-empty">Aucun texte déposé pour l’instant. Ton premier certificat t’attend dans « Nouveau dépôt ».</p>';return}
+  box.innerHTML=list.map(function(c,i){return'<div class="au-item"><div><b>'+esc(c.titre)+'</b><span>'+esc(c.genre)+' · '+NF.format(c.nb_mots)+' mots · '+esc(frDate(c.created_at))+'</span></div><button class="btn ghost" type="button" data-mes="'+i+'">Certificat</button></div><div class="au-result" id="mes'+i+'" hidden></div>'}).join("");
+  box.querySelectorAll("[data-mes]").forEach(function(b){b.addEventListener("click",function(){var i=+b.getAttribute("data-mes"),c=Object.assign({},list[i]),t=$("mes"+i);
+    if(!t.hidden){t.hidden=true;return}c.auteur=sb?authorName():"Mode démo";showCert(t,c,!sb,false,c.texte)})});
+}
 
 /* Quote bubbles: soft fade in, 6 s visible, soft fade out, next quote */
 var qi=0,side=0,timer=null,FADE=900,SHOW=6000;

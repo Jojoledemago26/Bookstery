@@ -8,6 +8,8 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `config.js` — configuration Supabase (laisser vide pour le mode démo ; n'y mettre que la clé *anon/publishable*, jamais la clé `service_role`)
 - `logo.png`, `mark.png` — logos
 - `supabase/annonces.sql` — table des annonces de livres (à exécuter une fois dans Supabase > SQL Editor)
+- `supabase/extraits.sql` — tables des extraits d'auteurs et des dépôts refusés
+- `supabase/functions/deposer-extrait/` — fonction Edge : contrôle anti-IA, empreinte, horodatage
 
 ## Lancer en local
 
@@ -34,3 +36,21 @@ Bouton « Vendre un livre » (en-tête) ou étape 1 de « Comment ça marche » 
   Sous 10 € : « Plus que X € chez ce vendeur pour débloquer ton 1er Booksterbook ! » et des suggestions du même vendeur.
 - Si le Bag mélange plusieurs genres, l'acheteur choisit le genre de son cadeau mystère avant de payer.
 - Le Bag est gardé dans le navigateur. Le paiement en ligne n'est pas encore branché.
+
+## Espace auteur
+
+Bouton « Envoyer mon texte » (section Auteurs) :
+
+1. L'auteur saisit le titre, le genre et colle (ou importe en .txt) un extrait **calibré entre 1 000 et 5 000 mots**, avec jauge en direct.
+2. La fonction Edge `deposer-extrait` fait analyser le texte par un détecteur d'IA : **au-delà de 50 % de texte IA, le dépôt est refusé** (la tentative est journalisée sans le texte).
+3. Sinon, l'extrait est enregistré avec son empreinte SHA-256 ; la base fixe l'horodatage. Un **certificat d'horodatage** est affiché (copie de l'empreinte, téléchargement HTML).
+4. Les textes sont affichés en **lecture protégée** : copie, clic droit et glisser bloqués, impression masquée, filigrane au nom du lecteur.
+
+Mise en route :
+
+```bash
+supabase secrets set PANGRAM_API_KEY=ta_cle            # ou : AI_DETECTOR=zerogpt ZEROGPT_API_KEY=ta_cle
+supabase functions deploy deposer-extrait
+```
+
+Les adresses et champs des API Pangram / ZeroGPT sont à vérifier dans la documentation de ton compte (variables `PANGRAM_API_URL`, `ZEROGPT_API_URL`).
