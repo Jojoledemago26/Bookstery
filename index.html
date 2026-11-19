@@ -571,6 +571,34 @@ body.authed .me{display:inline-flex}
 .f-mini-r{flex-wrap:wrap}
 .f-empty{color:var(--muted)!important;font-size:14px}
 @media(max-width:560px){.f-top{grid-template-columns:110px 1fr;gap:16px}.f-price{font-size:22px}.seg{width:100%;display:grid;grid-template-columns:1fr 1fr;border-radius:18px}.seg button{padding:9px 6px;font-size:12.5px;border-radius:14px;overflow:hidden;text-overflow:ellipsis}.cat-row{flex-direction:column;align-items:stretch}.sort{justify-content:space-between}.f-shelf{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* ---------- Signalement ---------- */
+.lz-report-link{text-align:center;margin:22px 0 0}
+.lz-report-link button{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--lz-muted);font:600 13.5px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.lz-report-link button:hover{color:#C0263A}
+.lz-sheet{position:absolute;inset:0;z-index:30;background:rgba(11,11,16,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+.lz-sheet[hidden]{display:none}
+.lz-sheet-in{position:relative;width:min(520px,100%);max-height:100%;overflow:auto;background:var(--paper);color:var(--lz-ink);border-radius:24px;padding:26px 24px 22px;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.lz-sheet-x{position:absolute;right:14px;top:14px;width:34px;height:34px;justify-content:center;padding:0;font-size:18px}
+.lz-sheet-in h2{font:700 22px/1.2 "Literata",Georgia,serif;margin:0 40px 6px 0}
+.lz-sheet-in>p{margin:0 0 14px;color:var(--lz-muted);font-size:14px}
+.rep-opts{border:0;margin:0;padding:0;display:grid;gap:6px}
+.rep-opts legend{font-weight:800;font-size:14px;padding:0;margin-bottom:6px}
+.rep-opts.need{outline:2px solid #C0263A;outline-offset:4px;border-radius:12px}
+.rep-opts label{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--lz-rule);border-radius:14px;padding:10px 12px;cursor:pointer;transition:.15s}
+.rep-opts label:hover{border-color:var(--lz-accent)}
+.rep-opts label:has(input:checked){border-color:var(--lz-accent);background:var(--paper-2)}
+.rep-opts input{margin:3px 0 0;accent-color:var(--lz-accent);flex:none}
+.rep-opts span{font-size:12.5px;color:var(--lz-muted);line-height:1.4}
+.rep-opts b{display:block;font-size:14px;color:var(--lz-ink)}
+.rep-lbl{display:block;font-weight:700;font-size:14px;margin:14px 0 6px}
+.rep-lbl .hint{font-weight:500;color:var(--lz-muted);font-size:13px;margin-left:6px}
+.lz-sheet textarea{width:100%;border:1.5px solid var(--lz-rule);border-radius:14px;padding:10px 12px;font:400 14.5px/1.5 var(--sans);background:var(--paper-2);color:var(--lz-ink);resize:vertical;-webkit-user-select:text;user-select:text}
+.lz-sheet textarea:focus{outline:none;border-color:var(--lz-accent)}
+.lz-sheet .btn{width:100%;justify-content:center;margin-top:14px;background:#C0263A}
+.lz-sheet .btn:hover{background:#A11E30}
+.lz-sheet .form-msg{margin:10px 0 0!important}
+.lz-reported{text-align:center;font-size:13px;color:var(--lz-muted);margin:22px 0 0}
 /* ---------- Finitions : rythme, typographie, hiérarchie ---------- */
 body{color:var(--ink-2);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
 h1,h2,h3{color:var(--ink);text-wrap:balance}
@@ -880,10 +908,33 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
     <div class="lz-tools">
       <button class="lz-btn" type="button" id="lzSmaller" aria-label="Texte plus petit">A−</button>
       <button class="lz-btn" type="button" id="lzBigger" aria-label="Texte plus grand">A+</button>
+      <button class="lz-btn" type="button" id="lzReport" data-report><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg><span>Signaler</span></button>
       <button class="lz-btn" type="button" id="lzNight" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg><span id="lzNightTxt">Mode nuit</span></button>
     </div>
     <div class="lz-prog" aria-hidden="true"><i id="lzProg"></i></div>
   </header>
+  <div class="lz-sheet" id="lzSheet" hidden>
+    <form class="lz-sheet-in" id="repForm" role="dialog" aria-modal="true" aria-labelledby="repTitre" novalidate>
+      <button class="lz-btn lz-sheet-x" type="button" id="repClose" aria-label="Fermer">×</button>
+      <h2 id="repTitre">Signaler ce texte</h2>
+      <p>Aide-nous à garder Bookstery sûr et respectueux. Ton signalement est anonyme pour l’auteur.</p>
+      <fieldset class="rep-opts" id="repOpts">
+        <legend>Pourquoi signales-tu ce texte ?</legend>
+        <label><input type="radio" name="repRaison" value="haine"><span><b>Haine ou discrimination</b>Racisme, antisémitisme, propos visant un groupe.</span></label>
+        <label><input type="radio" name="repRaison" value="violence"><span><b>Violence gratuite</b>Violence complaisante, glorifiée ou incitation.</span></label>
+        <label><input type="radio" name="repRaison" value="sexuel"><span><b>Contenu sexuel explicite</b>Pornographie ou scène inappropriée.</span></label>
+        <label><input type="radio" name="repRaison" value="illegal"><span><b>Contenu illégal ou dangereux</b>Terrorisme, apologie de crime, mode d’emploi.</span></label>
+        <label><input type="radio" name="repRaison" value="plagiat"><span><b>Plagiat</b>Ce texte appartient à un autre auteur.</span></label>
+        <label><input type="radio" name="repRaison" value="ia"><span><b>Texte généré par IA</b>Il ne semble pas écrit par une personne.</span></label>
+        <label><input type="radio" name="repRaison" value="qualite"><span><b>Illisible ou hors sujet</b>Pas une œuvre littéraire, pas en français, bourré de fautes.</span></label>
+        <label><input type="radio" name="repRaison" value="autre"><span><b>Autre raison</b>Précise-la ci-dessous.</span></label>
+      </fieldset>
+      <label for="repCom" class="rep-lbl">Précisions <span class="hint" id="repHint">Facultatif</span></label>
+      <textarea id="repCom" rows="3" maxlength="1000" placeholder="Un passage, une source, ce qui t’a gêné…"></textarea>
+      <p class="form-msg" id="repMsg" role="alert"></p>
+      <button class="btn" type="submit" id="repSubmit">Envoyer le signalement</button>
+    </form>
+  </div>
   <div class="lz-scroll" id="lzScroll">
     <article class="lz-page" id="lzPage">
       <p class="lz-kicker" id="lzKicker"></p>
@@ -914,6 +965,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
         </form>
         <div class="lz-thanks" id="lzThanks" hidden></div>
       </section>
+      <p class="lz-report-link" id="lzReportLink"><button type="button" data-report><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>Signaler ce texte</button></p>
       <div class="lz-lock" id="lzLock" hidden></div>
     </article>
   </div>
@@ -1997,12 +2049,12 @@ async function markRead(){
   function nope(msg){return function(e){if(inField(e.target))return;e.preventDefault();if(msg)toast("Ce texte est protégé : copie et clic droit sont désactivés.")}}
   lz.addEventListener("contextmenu",nope(true));lz.addEventListener("copy",nope(true));lz.addEventListener("cut",nope(true));
   lz.addEventListener("selectstart",nope(false));lz.addEventListener("dragstart",nope(false));
-  lz.addEventListener("keydown",function(e){if(e.key==="Escape"){closeLiseuse();return}if(inField(e.target))return;if((e.ctrlKey||e.metaKey)&&/^[acxsp]$/i.test(e.key)){e.preventDefault();toast("Ce texte est protégé : copie et impression sont désactivées.")}});
+  lz.addEventListener("keydown",function(e){if(e.key==="Escape"){if(!$("lzSheet").hidden){closeReport();return}closeLiseuse();return}if(inField(e.target))return;if((e.ctrlKey||e.metaKey)&&/^[acxsp]$/i.test(e.key)){e.preventDefault();toast("Ce texte est protégé : copie et impression sont désactivées.")}});
 })();
 
 function lzShow(d){
   LZ.data=d;LZ.read=!!d.lu_at;
-  $("lzLock").hidden=true;["lzBody","lzFin","lzEnd","lzMeta"].forEach(function(i){$(i).hidden=false});
+  $("lzLock").hidden=true;["lzBody","lzFin","lzEnd","lzMeta","lzReportLink"].forEach(function(i){$(i).hidden=false});
   $("lzKicker").textContent="Booksterbook · "+(d.genre||"Texte inédit");
   $("lzTitre").textContent=d.titre;$("lzMini").textContent=d.titre;
   $("lzAuthor").textContent="par "+(d.auteur||"un auteur indépendant");
@@ -2011,13 +2063,14 @@ function lzShow(d){
   $("lzText").style.setProperty("--lzfs",LZ.fs+"px");
   var prenom=(d.auteur||"").split(" (")[0].split(" ")[0]||"l’auteur";
   $("lzFollow").textContent=d.suivi?"✓ Tu suis "+prenom:"+ Suivre "+prenom;$("lzFollow").setAttribute("aria-pressed",!!d.suivi);$("lzFollow").dataset.prenom=prenom;
-  $("lzForm").reset();setMsg("lzMsg","");
+  $("lzForm").reset();setMsg("lzMsg","");closeReport();
+  $("lzReportLink").innerHTML=d.signale?'<span class="lz-reported">Tu as signalé ce texte. Merci, notre équipe l’examine.</span>':'<button type="button" data-report><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>Signaler ce texte</button>';
   $("lzForm").hidden=!!d.avis;$("lzThanks").hidden=!d.avis;
   if(d.avis)$("lzThanks").innerHTML="<b>Merci pour ton avis !</b>Tu as donné "+d.avis.note+" étoile"+(d.avis.note>1?"s":"")+" à ce texte.";
   lzNightUI();$("lzScroll").scrollTop=0;requestAnimationFrame(lzScroll);
 }
 function lzLocked(html){
-  LZ.data=null;["lzBody","lzFin","lzEnd","lzMeta"].forEach(function(i){$(i).hidden=true});
+  LZ.data=null;["lzBody","lzFin","lzEnd","lzMeta","lzReportLink"].forEach(function(i){$(i).hidden=true});
   $("lzKicker").textContent="Liseuse Bookstery";$("lzTitre").textContent="Ton Booksterbook";$("lzMini").textContent="Liseuse";$("lzAuthor").textContent="";$("lzLeft").textContent="";$("lzProg").style.width="0";
   $("lzLock").innerHTML=html;$("lzLock").hidden=false;lzNightUI();
 }
@@ -2035,7 +2088,8 @@ async function openLiseuse(token){
     var r=await sb.from("booksterbooks").select("id,token,lu_at,extrait_id,extraits(titre,genre,texte,nb_mots,auteur_id,auteur_nom)").eq("token",token).maybeSingle();
     if(r.error||!r.data||!r.data.extraits)return lzLocked("<p>Ce Booksterbook est introuvable dans ton espace. Vérifie que tu es connecté avec le bon compte.</p>");
     var x=r.data.extraits,av=await sb.from("avis").select("note").eq("booksterbook_id",r.data.id).maybeSingle(),ab=await sb.from("abonnements").select("auteur_id").eq("lecteur_id",current.id).eq("auteur_id",x.auteur_id).maybeSingle();
-    lzShow({titre:x.titre,genre:x.genre,texte:x.texte,nb_mots:x.nb_mots,auteur:x.auteur_nom||"un auteur indépendant",auteur_id:x.auteur_id,lu_at:r.data.lu_at,avis:av.data||null,suivi:!!ab.data});
+    var sg=await sb.from("signalements").select("id").eq("extrait_id",r.data.extrait_id).eq("lecteur_id",current.id).maybeSingle();
+    lzShow({extrait_id:r.data.extrait_id,signale:!!sg.data,titre:x.titre,genre:x.genre,texte:x.texte,nb_mots:x.nb_mots,auteur:x.auteur_nom||"un auteur indépendant",auteur_id:x.auteur_id,lu_at:r.data.lu_at,avis:av.data||null,suivi:!!ab.data});
   }catch(e){console.error(e);lzLocked("<p>La liseuse n’a pas pu s’ouvrir. Vérifie ta connexion et réessaie.</p>")}
 }
 function closeLiseuse(){
@@ -2071,6 +2125,38 @@ $("lzForm").addEventListener("submit",async function(e){
   finally{busy(btn,false)}
 });
 
+
+/* --- Signaler un texte (raison obligatoire) --- */
+var REP_KEY="bookstery.reports.v1";
+function demoReports(){try{return JSON.parse(localStorage.getItem(REP_KEY)||"[]")}catch(e){return[]}}
+function openReport(){
+  if(!LZ.data)return;
+  $("repForm").reset();$("repOpts").classList.remove("need");setMsg("repMsg","");$("repHint").textContent="Facultatif";
+  $("repSubmit").disabled=!!LZ.data.signale;if(LZ.data.signale)setMsg("repMsg","Tu as déjà signalé ce texte. Merci, notre équipe l’examine.","ok");
+  $("lzSheet").hidden=false;setTimeout(function(){var f=$("repOpts").querySelector("input");if(f)f.focus()},50);
+}
+function closeReport(){$("lzSheet").hidden=true}
+document.addEventListener("click",function(e){if(e.target.closest("[data-report]"))openReport()});
+$("repClose").addEventListener("click",closeReport);
+$("lzSheet").addEventListener("click",function(e){if(e.target===this)closeReport()});
+$("repOpts").addEventListener("change",function(){this.classList.remove("need");setMsg("repMsg","");var v=(this.querySelector("input:checked")||{}).value;$("repHint").textContent=v==="autre"?"Obligatoire":"Facultatif"});
+$("repForm").addEventListener("submit",async function(e){
+  e.preventDefault();
+  var r=this.querySelector('input[name="repRaison"]:checked'),raison=r&&r.value,com=$("repCom").value.trim(),btn=$("repSubmit");
+  if(!raison){$("repOpts").classList.add("need");return setMsg("repMsg","Choisis la raison de ton signalement.","err")}
+  if(raison==="autre"&&com.length<5){$("repCom").focus();return setMsg("repMsg","Précise la raison de ton signalement en quelques mots.","err")}
+  var done=function(){LZ.data.signale=true;closeReport();$("lzReportLink").innerHTML='<span class="lz-reported">Tu as signalé ce texte. Merci, notre équipe l’examine.</span>';toast("Signalement envoyé. Merci de veiller sur la communauté !")};
+  if(!sb){var l=demoReports();l.push({token:LZ.token,raison:raison,commentaire:com,date:new Date().toISOString()});try{localStorage.setItem(REP_KEY,JSON.stringify(l))}catch(x){}
+    demoBB.forEach(function(b){if(b.token===LZ.token)b.signale=true});saveBB();done();return}
+  if(!current)return setMsg("repMsg","Connecte-toi pour signaler ce texte.","err");
+  busy(btn,true,"Envoi…");
+  try{
+    var q=await sb.from("signalements").insert({extrait_id:LZ.data.extrait_id,lecteur_id:current.id,raison:raison,commentaire:com||null});
+    if(q.error){if(q.error.code==="23505"){done();return}throw q.error}
+    done();
+  }catch(x){console.error(x);setMsg("repMsg","Ton signalement n’a pas pu être envoyé. Réessaie dans un instant.","err")}
+  finally{busy(btn,false)}
+});
 /* Ouverture par lien ou QR code : #lire-<jeton> */
 function routeLire(){var m=location.hash.match(/^#lire-([0-9a-f-]{16,})$/i);if(m&&LZ.token!==m[1])openLiseuse(m[1])}
 window.addEventListener("hashchange",routeLire);

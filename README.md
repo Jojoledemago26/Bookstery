@@ -13,6 +13,7 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/liseuse.sql` — commandes, Booksterbooks, avis, abonnements
 - `supabase/localisation.sql` — ville et région des annonces (filtre de localisation)
 - `supabase/moderation.sql` — journal des refus de modération
+- `supabase/signalements.sql` — signalements des lecteurs + retrait automatique
 - `supabase/functions/deposer-extrait/moderation.ts` — modération stricte par Claude Haiku 5.5
 - `supabase/functions/valider-commande/` — commande + tirage des Booksterbooks (jetons des QR codes)
 - `supabase/functions/envoyer-avis/` — avis du lecteur envoyé par e-mail à l'auteur (Resend)
@@ -103,3 +104,7 @@ supabase functions deploy deposer-extrait
 ```
 
 En mode démo, une simulation simplifiée (langue, recette ou liste, écriture SMS) montre les messages de refus ; le contrôle des contenus interdits n'existe que côté serveur.
+
+## Signaler un texte
+
+Dans la liseuse : bouton **Signaler** (barre du haut) et lien « Signaler ce texte » en fin de lecture. Le lecteur doit choisir une raison (haine ou discrimination, violence gratuite, contenu sexuel explicite, contenu illégal ou dangereux, plagiat, texte généré par IA, illisible ou hors sujet, autre — précision obligatoire pour « autre »). Un seul signalement par lecteur et par texte, anonyme pour l'auteur. À partir de 3 signalements graves de lecteurs différents, le texte n'est plus offert en attendant la vérification de l'équipe.
