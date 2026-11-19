@@ -53,6 +53,15 @@ header.scrolled .mini-search{opacity:1;transform:none;pointer-events:auto}
 .bagbtn:hover{background:var(--maj-d)}.bagbtn:active{transform:scale(.97)}
 .bagbtn .amt{background:#fff;color:var(--maj);font-weight:800;border-radius:999px;padding:5px 12px;font-variant-numeric:tabular-nums}
 
+.tip{position:relative}
+.tip::after{content:attr(data-tip);position:absolute;top:calc(100% + 10px);right:0;background:var(--ink);color:#fff;font:700 13px/1 var(--sans);padding:9px 12px;border-radius:10px;white-space:nowrap;box-shadow:0 10px 24px rgba(11,11,16,.2);opacity:0;transform:translateY(-3px);pointer-events:none;transition:opacity .12s,transform .12s;z-index:30}
+.tip::before{content:"";position:absolute;top:calc(100% + 5px);right:18px;width:10px;height:10px;background:var(--ink);transform:rotate(45deg);opacity:0;transition:opacity .12s;z-index:30}
+.tip:hover::after,.tip:focus-visible::after{opacity:1;transform:none}
+.tip:hover::before,.tip:focus-visible::before{opacity:1}
+.login.tip::after,.login.tip::before{background:#fff;color:var(--ink)}
+.login.tip::after{box-shadow:0 10px 24px rgba(11,11,16,.16),0 0 0 1.5px var(--line)}
+.login.tip::before{box-shadow:-1.5px -1.5px 0 0 var(--line)}
+
 /* ---------- Hero ---------- */
 .hero{position:relative;overflow:hidden;background:radial-gradient(1200px 500px at 50% -10%,var(--maj-l),#fff 70%)}
 .hero-in{position:relative;z-index:2;max-width:720px;margin:0 auto;padding:56px 24px 64px;text-align:center}
@@ -270,12 +279,12 @@ body.authed .me{display:inline-flex}
         <span class="lbl">Bookster Bag</span>
         <span class="amt" id="bagAmt">0,00&nbsp;€</span>
       </button>
-      <button class="btn dark join" type="button" data-join aria-label="Deviens un Bookster">
+      <button class="btn dark join tip" type="button" data-join data-tip="Se créer un compte" aria-label="Deviens un Bookster : se créer un compte">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="8" r="4"/><path d="M3 21a7 7 0 0 1 14 0M19 8v6M16 11h6"/></svg>
         <span class="join-txt">Deviens un Bookster</span>
       </button>
       <span class="sep" aria-hidden="true"></span>
-      <button class="btn ghost login" type="button" data-login aria-label="Se connecter">
+      <button class="btn ghost login tip" type="button" data-login data-tip="Se connecter" aria-label="Se connecter">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
         <span class="login-txt">Se connecter</span>
       </button>
