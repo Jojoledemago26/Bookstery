@@ -789,6 +789,14 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 #locSeg button:hover{background:var(--maj-xl);color:var(--maj)}
 #locSeg button[aria-pressed="true"]{background:var(--maj);color:#fff;box-shadow:0 4px 10px rgba(96,80,220,.3)}
 @media(max-width:560px){.loc-wrap{width:100%}.loc-k{width:100%}}
+/* Filtre de lieu : effet de clic et de sélection */
+#locSeg button{cursor:pointer;transition:transform .18s ease,background .2s,color .2s,box-shadow .2s}
+#locSeg button:hover{transform:translateY(-2px)}
+#locSeg button:active{transform:scale(.94)}
+#locSeg button[aria-pressed="true"]::before{content:"✓";display:inline-block;margin-right:6px;font-weight:900;animation:locCheck .3s ease}
+#locSeg button.pop{animation:locPop .35s cubic-bezier(.3,1.6,.5,1)}
+@keyframes locPop{0%{transform:scale(.9)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes locCheck{from{opacity:0;transform:scale(.3) rotate(-30deg)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1885,7 +1893,7 @@ $("locRegion").innerHTML=$("bRegion").innerHTML='<option value="">Choisis ta ré
 function locUI(){document.querySelectorAll("#locSeg [data-loc]").forEach(function(b){var k=b.getAttribute("data-loc"),me=myLocation();b.setAttribute("aria-pressed",k===catLoc);
   if(k==="ville")b.textContent=me.ville?"Ma ville · "+me.ville.replace(/\s+\d+.*$/,""):"Ma ville";
   if(k==="region")b.textContent=me.region?"Ma région · "+({"Auvergne-Rhône-Alpes":"AURA","Provence-Alpes-Côte d’Azur":"PACA","Bourgogne-Franche-Comté":"BFC","Centre-Val de Loire":"Centre"}[me.region]||me.region):"Ma région";})}
-$("locSeg").addEventListener("click",function(e){var b=e.target.closest("[data-loc]");if(!b)return;var k=b.getAttribute("data-loc"),me=myLocation();
+$("locSeg").addEventListener("click",function(e){var b=e.target.closest("[data-loc]");if(!b)return;b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop");var k=b.getAttribute("data-loc"),me=myLocation();
   if((k==="ville"&&!me.ville)||(k==="region"&&!me.region)){$("locAsk").hidden=false;$("locAsk").dataset.want=k;$("locVille").value=me.ville||"";$("locRegion").value=me.region||"";$("locVille").focus();return}
   $("locAsk").hidden=true;catLoc=k;catLimit=8;locUI();renderGrid();searchNote()});
 $("locVille").addEventListener("input",function(){var r=regionOf(this.value);if(r)$("locRegion").value=r});
