@@ -780,6 +780,15 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 .motto{max-width:none;text-align:center;letter-spacing:.005em}
 .motto span{display:block;text-wrap:balance}
 .motto b{font-weight:600;color:var(--ink-2)}
+/* Filtre de localisation : encadré bleu Majorelle, détaché des genres */
+.cat-row{margin-top:10px;padding-top:16px;border-top:1px solid var(--line)}
+.loc-wrap{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap}
+.loc-k{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:800;color:var(--maj)}
+#locSeg{background:#fff;border:2px solid var(--maj);box-shadow:0 6px 18px rgba(96,80,220,.14);padding:3px}
+#locSeg button{color:var(--maj-d)}
+#locSeg button:hover{background:var(--maj-xl);color:var(--maj)}
+#locSeg button[aria-pressed="true"]{background:var(--maj);color:#fff;box-shadow:0 4px 10px rgba(96,80,220,.3)}
+@media(max-width:560px){.loc-wrap{width:100%}.loc-k{width:100%}}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -854,12 +863,12 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
       <div class="cat-tools">
         <div class="chips cat-chips" id="catChips" role="group" aria-label="Filtrer par genre"></div>
         <div class="cat-row">
-          <div class="seg" id="locSeg" role="group" aria-label="Où chercher">
+          <div class="loc-wrap"><span class="loc-k" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Où&nbsp;?</span><div class="seg" id="locSeg" role="group" aria-label="Où chercher">
             <button type="button" data-loc="lyon">Lyon</button>
             <button type="button" data-loc="ville">Ma ville</button>
             <button type="button" data-loc="region">Ma région</button>
             <button type="button" data-loc="france" aria-pressed="true">Toute la France</button>
-          </div>
+          </div></div>
           <label class="sort" for="catSort">Trier par
             <select id="catSort">
               <option value="recent">Nouveautés</option>
