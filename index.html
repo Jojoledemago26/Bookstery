@@ -735,9 +735,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 .chip-on span{margin-left:4px;opacity:.8;font-weight:700}
 .chip-all[aria-pressed="false"]{border-color:var(--maj-l);color:var(--maj-d)}
 /* Vendre un livre : 3 méthodes, photos réelles, paiement sécurisé */
-.sell-k{display:flex;align-items:center;gap:10px;margin:22px 0 10px!important;font-weight:800;font-size:15px;color:var(--ink)!important}
-.sell-k i{flex:none;width:24px;height:24px;border-radius:50%;background:var(--maj);color:#fff;display:grid;place-items:center;font-style:normal;font-size:12.5px}
-.sell-k .req{font-size:11.5px;font-weight:800;color:#9B1C2E;background:#FDF1F3;border-radius:999px;padding:2px 9px}
+.req{font-size:11.5px;font-weight:800;color:#9B1C2E;background:#FDF1F3;border-radius:999px;padding:2px 9px}
 .sm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .sm-card{display:flex;flex-direction:column;gap:8px;border:1.5px solid var(--line);border-radius:16px;padding:14px;background:#fff;text-align:left}
 .sm-scan{cursor:pointer;flex-direction:row;align-items:center;font:inherit;color:var(--ink);transition:border-color .2s,background .2s,transform .2s}
@@ -752,6 +750,8 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 .sm-links{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
 .modal #manualBtn{font-size:14px}
 .sm-sub{color:var(--muted)!important;font-weight:600!important}
+.modal .ph-label{margin-top:16px}
+.req{margin-left:6px}
 .ph-help{font-size:13.5px!important;margin:0 0 10px!important;line-height:1.5}
 .ph-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .modal .ph-slot{position:relative;margin:0;aspect-ratio:4/3;border:1.5px dashed #CFCAF6;border-radius:16px;background:var(--maj-xl);overflow:hidden;cursor:pointer;display:grid;place-items:center;transition:border-color .2s,transform .2s}
@@ -1179,18 +1179,15 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
   <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   <img src="mark.png" alt="">
   <h2 id="sTitle">Vendre un livre</h2>
-  <p>Trois façons d’ajouter ton livre&nbsp;: on remplit la fiche pour toi, tu ajoutes tes photos, ton prix, et c’est en ligne.</p>
+  <p>Scanne le code-barres ou entre l’ISBN&nbsp;: on remplit la fiche pour toi. Il ne te reste qu’à ajouter tes photos, choisir l’état et ton prix.</p>
   <form id="sellForm" novalidate>
-    <p class="sell-k"><i>1</i>Trouve ton livre</p>
-    <div class="sm-grid">
-      <button class="sm-card sm-scan" type="button" id="scanBtn">
-        <span class="sm-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 8v8M10 8v8M13 8v8M17 8v8"/></svg></span>
-        <span class="sm-t"><b>Scanner le code-barres</b><small>Avec la caméra de ton téléphone</small></span>
+    <label for="isbn">Entrer le code ISBN manuellement <span class="hint">10 ou 13 chiffres, au dos du livre, sous le code-barres</span></label>
+    <div class="isbn-row">
+      <input id="isbn" inputmode="numeric" autocomplete="off" placeholder="Ex. 9782070612758" aria-describedby="isbnStatus">
+      <button class="btn dark" type="button" id="scanBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 8v8M10 8v8M13 8v8M17 8v8"/></svg>
+        Scanner le code-barres
       </button>
-      <div class="sm-card sm-isbn">
-        <label for="isbn"><b>Entrer le code ISBN manuellement</b><small>10 ou 13 chiffres, au dos du livre</small></label>
-        <input id="isbn" inputmode="numeric" autocomplete="off" placeholder="Ex. 9782070612758" aria-describedby="isbnStatus">
-      </div>
     </div>
     <p class="isbn-status" id="isbnStatus" aria-live="polite"></p>
     <div class="scanner" id="scanner" hidden>
@@ -1200,13 +1197,11 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
       <button class="btn white" type="button" id="scanStop">Arrêter</button>
     </div>
     <div class="sm-links">
+      <button class="photo-link" type="button" id="photoBtn">Pas de caméra en direct&nbsp;? Prends le code-barres en photo</button>
       <button class="photo-link" type="button" id="manualBtn">Livre ancien sans code-barres&nbsp;? Remplir manuellement</button>
-      <button class="photo-link sm-sub" type="button" id="photoBtn">Pas de caméra en direct&nbsp;? Prends le code-barres en photo</button>
     </div>
     <input type="file" id="scanFile" accept="image/*" capture="environment" hidden>
 
-    <div id="sellDetails" hidden>
-    <p class="sell-k"><i>2</i>Vérifie la fiche</p>
     <div class="book">
       <div class="cover-box" id="coverBox"><img id="coverImg" alt="" hidden><span id="coverPh">La couverture apparaîtra ici</span></div>
       <div>
@@ -1217,14 +1212,13 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
     </div>
     <label for="bResume">Résumé</label><textarea id="bResume" rows="4" maxlength="5000" placeholder="Le résumé de l’éditeur s’affichera ici. Tu peux le modifier."></textarea>
 
-    <p class="sell-k"><i>3</i>Photos réelles de ton exemplaire <span class="req">obligatoire</span></p>
+    <label class="ph-label">Photo réelle de ton exemplaire <span class="req">obligatoire</span></label>
     <p class="ph-help">Prends <b>ton</b> livre en photo, chez toi, recto et verso. Ça prouve que tu l’as bien en main et ça montre son état réel aux acheteurs. Les images trouvées sur internet ne sont pas acceptées.</p>
     <div class="ph-grid">
       <label class="ph-slot" id="phRectoBox" data-k="Recto"><input type="file" id="phRecto" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" capture="environment"><img id="phRectoImg" alt="Photo recto de ton exemplaire" hidden><span class="ph-ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><b>Recto</b><small>La couverture</small></span></label>
       <label class="ph-slot" id="phVersoBox" data-k="Verso"><input type="file" id="phVerso" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" capture="environment"><img id="phVersoImg" alt="Photo verso de ton exemplaire" hidden><span class="ph-ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><b>Verso</b><small>Le dos du livre</small></span></label>
     </div>
 
-    <p class="sell-k"><i>4</i>État, lieu et prix</p>
     <fieldset class="cond">
       <legend>État du livre</legend>
       <div class="cond-opts">
@@ -1241,7 +1235,6 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
     <label for="bPrice">Ton prix <span class="hint">Tu le fixes librement</span></label>
     <div class="price-in"><input id="bPrice" type="number" inputmode="decimal" min="0.5" max="999" step="0.01" placeholder="0,00"><span aria-hidden="true">€</span></div>
     <div class="safe-pay"><span class="sp-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><p><b>Paiement sécurisé</b>Tu reçois <b>100&nbsp;% de ton prix</b> dès que l’acheteur confirme la réception. Aucun frais pour toi&nbsp;: la Protection Acheteur est payée par l’acheteur.</p></div>
-    </div>
 
     <p class="sell-note" id="sellNote" hidden></p>
     <p class="form-msg" id="sellMsg" role="alert"></p>
@@ -1548,7 +1541,7 @@ function setCover(url){
   img.onerror=function(){img.hidden=true;$("coverPh").hidden=false;$("coverPh").textContent="Pas de couverture trouvée";$("coverBox").classList.remove("has")};
   img.src=url;
 }
-function showDetails(){$("sellDetails").hidden=false}
+function showDetails(){}
 function fill(b,isbn){showDetails();
   $("bTitle").value=b.titre||"";$("bAuthor").value=b.auteur||"";$("bResume").value=b.resume||"";
   var g=mapGenre(b.categories);$("bGenre").value=g;
@@ -1659,7 +1652,7 @@ function sellNote(){
 function resetSell(){
   $("sellForm").reset();lastIsbn=null;lookupSeq++;isbnStatus("");setMsg("sellMsg","");
   setCover(null);$("coverPh").textContent="La couverture apparaîtra ici";
-  $("sellDetails").hidden=true;resetPhotos();
+  resetPhotos();
 }
 /* Méthode 3 : livre ancien sans code-barres */
 $("manualBtn").addEventListener("click",function(){stopScan();lastIsbn=null;lookupSeq++;$("isbn").value="";
@@ -1711,7 +1704,6 @@ $("sellForm").addEventListener("submit",async function(e){
   var raw=$("isbn").value.trim(),isbn=validIsbn(raw);
   var prix=Math.round(parseFloat(String($("bPrice").value).replace(",","."))*100)/100;
   if(raw&&!isbn)return setMsg("sellMsg","L’ISBN n’est pas valide. Corrige-le, ou clique sur « Remplir manuellement ».","err");
-  if($("sellDetails").hidden)return setMsg("sellMsg","Commence par scanner le code-barres, entrer l’ISBN ou remplir la fiche manuellement.","err");
   if(!titre){$("bTitle").focus();return setMsg("sellMsg","Indique le titre du livre.","err")}
   if(!genre){$("bGenre").focus();return setMsg("sellMsg","Choisis le genre littéraire.","err")}
   if(!sellPhotos.recto||!sellPhotos.verso){["recto","verso"].forEach(function(k){if(!sellPhotos[k])$(k==="recto"?"phRectoBox":"phVersoBox").classList.add("need")});
