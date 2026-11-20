@@ -45,7 +45,7 @@ Bouton « Vendre un livre » (en-tête) :
 
 - Catalogue « Les derniers livres en vente » : annonces Supabase (exemples lyonnais en mode démo), filtrées par la recherche et les genres.
 - Protection Acheteur ajoutée automatiquement : 5 % du montant des livres + 0,70 €.
-- **Bookster Drops (commande en cours)** : chaque tranche de 10 € de livres dans le panier, tous vendeurs confondus, débloque un Drop (manuscrit mystère offert). Jauge animée en haut du panier, qui fête chaque Drop et indique le montant manquant avec des suggestions.
+- **Mystery Drops (commande en cours)** : chaque tranche de 10 € de livres dans le panier, tous vendeurs confondus, débloque un Mystery Drop (manuscrit mystère offert) : 10 € = 1 … 50 € = 5, maximum 5 par commande. Jauge animée en haut du panier, qui fête chaque Drop et indique le montant manquant avec des suggestions.
 - **Statut Bookster VIP (fidélité)** : cumul `total_spent_books` des livres achetés sur toutes les commandes ; barre bleu Majorelle de 0 à 50 € en bas du panier et dans « Mon espace » ; à 50 €, `is_vip_jury = true` et badge doré (vote du prochain Golden Book). Côté Supabase : `supabase/vip.sql`.
   Sous 10 € : « Plus que X € chez ce vendeur pour débloquer ton 1er manuscrit mystère ! » et des suggestions du même vendeur.
 - Si le Bag mélange plusieurs genres, l'acheteur choisit le genre de son cadeau mystère avant de payer.

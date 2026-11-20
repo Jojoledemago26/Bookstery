@@ -1,6 +1,6 @@
 // Bookstery : validation d'une commande et attribution des manuscrits mystères.
 //
-// Recalcule tout côté serveur (prix, Protection Acheteur, Bookster Drops : 1 par tranche de 10 €),
+// Recalcule tout côté serveur (prix, Protection Acheteur, Mystery Drops : 1 par tranche de 10 €),
 // réserve les livres, tire au sort les extraits offerts dans le genre choisi
 // et renvoie les jetons d'accès à la liseuse (pour les QR codes).
 //
@@ -11,9 +11,10 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 
-const DROP_STEP = 10; // commande en cours : chaque tranche de 10 € de livres = 1 Bookster Drop (manuscrit mystère offert)
+const DROP_STEP = 10; // commande en cours : chaque tranche de 10 € de livres = 1 Mystery Drop (manuscrit mystère offert)
 const r2 = (x: number) => Math.round((x + Number.EPSILON) * 100) / 100;
-const booksterbooks = (livres: number) => Math.floor((livres + 1e-9) / DROP_STEP);
+const DROP_MAX = 5;   // 50 € = 5 Mystery Drops, le maximum par commande
+const booksterbooks = (livres: number) => Math.min(DROP_MAX, Math.floor((livres + 1e-9) / DROP_STEP));
 const protection = (livres: number) => (livres > 0 ? r2(livres * 0.05 + 0.7) : 0);
 
 // Familles de genres (même liste que dans index.html) : si aucun texte n'existe

@@ -974,8 +974,8 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .dv-steps li.mec{background:linear-gradient(135deg,#FFF8E6,#FFE7AE)}.dv-steps li.mec b{color:#B26E00}
 .dv-badge{display:flex;gap:12px;align-items:center;margin-top:14px;background:rgba(255,255,255,.12);border-radius:16px;padding:12px 14px}
 .dv-badge>span{font-size:26px}.dv-badge b{display:block;font-size:14.5px}.dv-badge small{display:block;font-size:12.5px;opacity:.85}
-@media(max-width:560px){.dv-steps{grid-template-columns:repeat(3,1fr)}.dv-steps li.mec{grid-column:span 2}.dg-m small em{display:none}.dg-m{width:44px}.dg-ms{height:34px}}
-/* ---------- Bookster Drops (commande) et statut Bookster VIP (fidélité) ---------- */
+@media(max-width:560px){.dv-steps{grid-template-columns:repeat(3,1fr)}.dv-steps li.mec{grid-column:span 2}.dg-m small em{font-size:9.5px}.dg-m{width:52px}}
+/* ---------- Mystery Drops (commande) et statut Bookster VIP (fidélité) ---------- */
 .drop-box{border:1.5px solid var(--maj-l);background:linear-gradient(180deg,#fff,var(--maj-xl));border-radius:18px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:10px}
 .vip-box{border-radius:18px;padding:14px 16px;background:#fff;border:1.5px solid var(--maj);box-shadow:0 10px 24px -14px rgba(96,80,220,.45)}
 .vip-t{margin:0 0 4px!important;font-size:14px;font-weight:800;color:var(--ink)}.vip-t b{color:var(--maj-d)}
@@ -996,6 +996,9 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .vip-pill{display:inline-block;vertical-align:middle;font-size:12px;font-weight:800;letter-spacing:.01em;color:#7A4E00;background:linear-gradient(135deg,#FFE7AE,#F5C451);border-radius:999px;padding:4px 10px;margin-left:6px}
 #aVip{margin:4px 0 16px}
 #cmdVip{margin:14px 0 0}
+.dg-m small em{white-space:normal;line-height:1.15}
+.drop-max{background:#E8F6EE;color:#1C5C3B;border-radius:14px;padding:10px 14px;font-size:13.5px;font-weight:700}
+.dv-steps li.max{background:linear-gradient(135deg,#fff,#E9E5FF)}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1110,16 +1113,16 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
         <div class="drop-txt">
           <span class="drop-k">⚡ Le Bookstery Drop</span>
           <h2 id="dropT">Remplis ton panier, <span>débloque des manuscrits mystères.</span></h2>
-          <p>Chaque tranche de 10&nbsp;€ de livres dans ton panier débloque tout de suite un <b>Bookster Drop</b>&nbsp;: un manuscrit mystère d’un auteur indépendant offert avec ta commande. Et tes achats s’additionnent pour devenir <b>Bookster VIP</b>&nbsp;!</p>
+          <p>Chaque tranche de 10&nbsp;€ de livres dans ton panier débloque tout de suite un <b>Mystery Drop</b>&nbsp;: un manuscrit mystère d’un auteur indépendant offert avec ta commande, jusqu’à 5 dès 50&nbsp;€. Et tes achats s’additionnent pour devenir <b>Bookster VIP</b>&nbsp;!</p>
           <a class="btn" href="#catalogue">Remplir mon panier</a>
         </div>
         <div class="drop-viz" aria-hidden="true">
           <ol class="dv-steps">
-            <li><b>10&nbsp;€</b><span>1 Drop</span></li>
-            <li><b>20&nbsp;€</b><span>2 Drops</span></li>
-            <li><b>30&nbsp;€</b><span>3 Drops</span></li>
-            <li><b>40&nbsp;€</b><span>4 Drops</span></li>
-            <li><b>…</b><span>et ainsi de suite</span></li>
+            <li><b>10&nbsp;€</b><span>1 Mystery Drop</span></li>
+            <li><b>20&nbsp;€</b><span>2 Mystery Drops</span></li>
+            <li><b>30&nbsp;€</b><span>3 Mystery Drops</span></li>
+            <li><b>40&nbsp;€</b><span>4 Mystery Drops</span></li>
+            <li class="max"><b>50&nbsp;€</b><span>5 Mystery Drops (max)</span></li>
           </ol>
           <div class="dv-badge"><span>👑</span><div><b>Statut Bookster VIP</b><small>Dès 50&nbsp;€ de livres achetés au total, toutes commandes confondues&nbsp;: badge doré sur ton profil et vote pour le prochain Golden Book.</small></div></div>
           <p class="dv-note">Tous vendeurs confondus&nbsp;: chaque livre compte.</p>
@@ -1193,7 +1196,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
             <h3>Ton texte part dans le Bookstery Drop</h3>
             <p>À chaque commande, des manuscrits mystères se glissent dans les Bookster Bags. Le tien en fait partie&nbsp;!</p>
             <ul class="fp-list">
-              <li><b>La jauge du Drop</b><span>Chaque tranche de 10&nbsp;€ de livres dans le panier débloque un Bookster Drop&nbsp;: un manuscrit mystère offert.</span></li>
+              <li><b>La jauge du Drop</b><span>Chaque tranche de 10&nbsp;€ de livres dans le panier débloque un Mystery Drop&nbsp;: un manuscrit mystère offert, jusqu’à 5 dès 50&nbsp;€.</span></li>
               <li><b>Le bon lecteur</b><span>Ton texte va à ceux qui aiment déjà ton genre.</span></li>
               <li><b>Un QR code dans le colis</b><span>Il ouvre ton texte dans la liseuse protégée.</span></li>
             </ul>
@@ -1206,8 +1209,8 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
                 <div class="mk-item"><i style="background:#2b4c7e"></i>Les Rivières pourpres<em>3,00&nbsp;€</em></div>
                 <div class="mk-item"><i style="background:#1e1e2a"></i>Le Comte de Monte-Cristo<em>4,90&nbsp;€</em></div>
                 <div class="mk-drop-h"><b>⚡ Jauge du Bookstery Drop</b><span>11,40&nbsp;€</span></div>
-                <div class="mk-gauge"><span style="width:38%"></span><i style="left:33.3%">10&nbsp;€</i><i style="left:66.6%">20&nbsp;€</i><i style="left:100%">30&nbsp;€</i></div>
-                <small class="mk-small">1er Bookster Drop débloqué 🎉 · Plus que 8,60&nbsp;€ pour le 2e</small>
+                <div class="mk-gauge"><span style="width:23%"></span><i style="left:20%">10&nbsp;€</i><i style="left:40%">20&nbsp;€</i><i style="left:60%">30&nbsp;€</i><i style="left:80%">40&nbsp;€</i><i style="left:100%">50&nbsp;€</i></div>
+                <small class="mk-small">1er Mystery Drop débloqué 🎉 · Plus que 8,60&nbsp;€ pour le 2e</small>
                 <div class="mk-gift"><span class="mk-gift-i">🎁</span><div><b>Manuscrit mystère · Romans</b><span>«&nbsp;La dernière marée&nbsp;»… c’est ton texte&nbsp;!</span></div></div>
               </div>
             </div>
@@ -2032,13 +2035,13 @@ $("sellForm").addEventListener("submit",async function(e){
 if(sb)sb.auth.onAuthStateChange(function(ev){if(ev==="SIGNED_IN"&&sellReturn){sellReturn=false;setTimeout(function(){closeAll(true);openSell()},300)}});
 
 /* ================= Catalogue & Bookster Bag ================= */
-var DROP_STEP=10;                     /* commande en cours : chaque tranche de 10 € de livres dans le panier = 1 Bookster Drop (manuscrit mystère offert) */
+var DROP_STEP=10,DROP_MAX=5;                     /* commande en cours : chaque tranche de 10 € de livres dans le panier = 1 Mystery Drop (manuscrit mystère offert) */
 var VIP_SEUIL=50;                     /* fidélité : 50 € de livres achetés au total = statut Bookster VIP (jury du Golden Book) */
 var FEE_RATE=0.05,FEE_FIXED=0.70;     /* Protection Acheteur : 5 % + 0,70 € sur le montant des livres */
 var ETAT_TXT={comme_neuf:"Comme neuf",tres_bon:"Très bon état",bon:"Bon état"};
 function r2(x){return Math.round((x+Number.EPSILON)*100)/100}
 function esc(t){return String(t==null?"":t).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-function booksterbooks(sub){return Math.floor((sub+1e-9)/DROP_STEP)}
+function booksterbooks(sub){return Math.min(DROP_MAX,Math.floor((sub+1e-9)/DROP_STEP))}
 function protection(books){return books>0?r2(books*FEE_RATE+FEE_FIXED):0}
 function ordinal(n){return n===1?"1er":n+"e"}
 var COVERS=["#3E3A8F","#7A2E3B","#1F5C4A","#8A5A1E","#2D4E7A","#5B3A7A","#1E1E2A","#9A3F2A"];
@@ -2206,9 +2209,9 @@ function groups(){
   return order.map(function(v){return by[v]});
 }
 function totals(){
-  var gs=groups(),books=0;gs.forEach(function(g){books=r2(books+g.sub)});var gifts=booksterbooks(books),next=(gifts+1)*DROP_STEP;
+  var gs=groups(),books=0;gs.forEach(function(g){books=r2(books+g.sub)});var gifts=booksterbooks(books),next=gifts<DROP_MAX?(gifts+1)*DROP_STEP:null;
   var fee=protection(books),genres=bag.map(function(b){return b.genre}).filter(function(v,i,a){return v&&a.indexOf(v)===i});
-  return{groups:gs,books:books,fee:fee,total:r2(books+fee),gifts:gifts,next:next,missing:r2(next-books),genres:genres};
+  return{groups:gs,books:books,fee:fee,total:r2(books+fee),gifts:gifts,next:next,missing:next?r2(next-books):0,genres:genres};
 }
 
 function addToBag(id){
@@ -2217,8 +2220,8 @@ function addToBag(id){
   bag.push({id:b.id,titre:b.titre,auteur:b.auteur||"",genre:b.genre||"",etat:b.etat||"",prix:Number(b.prix),vendeur_id:b.vendeur_id,couverture_url:b.couverture_url||""});
   saveBag();renderAll();
   var t=totals(),before=booksterbooks(r2(t.books-Number(b.prix)));
-  if(t.gifts>before)toast("🎉 "+ordinal(t.gifts)+" Bookster Drop débloqué ! Plus que "+EUR.format(t.missing)+" pour le suivant.");
-  else toast("Ajouté ! Plus que "+EUR.format(t.missing)+" dans ton panier pour ton "+ordinal(t.gifts+1)+" Bookster Drop.");
+  if(t.gifts>before)toast("🎉 "+ordinal(t.gifts)+" Mystery Drop débloqué !"+(t.next?" Plus que "+EUR.format(t.missing)+" pour le suivant.":" C’est le maximum : 5 Mystery Drops."));
+  else toast(t.next?"Ajouté ! Plus que "+EUR.format(t.missing)+" dans ton panier pour ton "+ordinal(t.gifts+1)+" Mystery Drop.":"Ajouté ! Tu as déjà le maximum : 5 Mystery Drops.");
 }
 function removeFromBag(id){bag=bag.filter(function(b){return String(b.id)!==String(id)});saveBag();renderAll()}
 document.addEventListener("click",function(e){
@@ -2275,7 +2278,7 @@ function suggestions(missing){
   return BOOKS.filter(function(b){return!inBag[b.id]&&!(current&&b.vendeur_id===current.id)})
     .sort(function(a,b){var sa=sellers[a.vendeur_id]?0:1,sb2=sellers[b.vendeur_id]?0:1;if(sa!==sb2)return sa-sb2;var ma=a.prix>=missing,mb=b.prix>=missing;return ma!==mb?(ma?-1:1):(ma?a.prix-b.prix:b.prix-a.prix)}).slice(0,3);
 }
-function drops(n){return n+" Bookster Drop"+(n>1?"s":"")}
+function drops(n){return n+" Mystery Drop"+(n>1?"s":"")}
 var GAUGE_PREV={};
 /* Jauge générique : valeur en €, échelle 0 → end, jalons [{v,label,em,mark}] */
 function gaugeHtml(key,value,end,marks,aria,cls){
@@ -2296,16 +2299,16 @@ function groupHtml(g){
   return'<section class="sg" aria-label="Livres de '+esc(s.nom)+'"><div class="sg-h"><div><b>'+esc(s.nom)+'</b>'+(s.ville?' <span>· '+esc(s.ville)+'</span>':"")+'</div><span class="sub">'+EUR.format(g.sub)+'</span></div>'+
     '<ul class="items">'+g.items.map(function(b){return'<li class="item">'+coverHtml(b,true)+'<div class="item-t"><b>'+esc(b.titre)+'</b><span>'+esc(ETAT_TXT[b.etat]||b.genre||"")+'</span></div><span class="p">'+EUR.format(b.prix)+'</span><button class="icon rm" type="button" data-rm="'+esc(b.id)+'" aria-label="Retirer '+esc(b.titre)+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></li>'}).join("")+'</ul></section>';
 }
-/* 1) Commande en cours : chaque tranche de 10 € dans le panier = 1 Bookster Drop immédiat */
+/* 1) Commande en cours : chaque tranche de 10 € dans le panier = 1 Mystery Drop immédiat */
 function dropBlockHtml(t){
-  var end=Math.max(30,(t.gifts+2)*DROP_STEP),marks=[];
-  for(var v=DROP_STEP;v<=end;v+=DROP_STEP){var n=v/DROP_STEP;marks.push({v:v,label:v+" €",em:n+" Drop"+(n>1?"s":""),mark:n})}
-  var label=t.gifts===0?"Aucun Bookster Drop débloqué pour l’instant":"<b>"+drops(t.gifts)+"</b> débloqué"+(t.gifts>1?"s":"")+" · "+t.gifts+" manuscrit"+(t.gifts>1?"s":"")+" mystère"+(t.gifts>1?"s":"")+" offert"+(t.gifts>1?"s":"");
-  var sg=suggestions(t.missing);
-  return'<section class="drop-box" aria-label="Bookster Drops de ta commande"><p class="prog-l"><span class="drop-k">⚡ Bookster Drops de ta commande</span>'+label+'</p>'+
-    gaugeHtml("cart",t.books,end,marks,"Bookster Drops de ta commande : "+EUR.format(t.books)+", "+drops(t.gifts))+
-    '<div class="nudge"><p>Plus que <b>'+EUR.format(t.missing)+'</b> dans ton panier pour ton '+ordinal(t.gifts+1)+' Bookster Drop !</p>'+
-    (sg.length?'<ul class="sugg">'+sg.map(function(b){return'<li><span>'+esc(b.titre)+'</span><em>'+EUR.format(b.prix)+'</em>'+addBtn(b,true)+'</li>'}).join("")+'</ul>':"")+'</div></section>';
+  var end=DROP_STEP*DROP_MAX,marks=[];
+  for(var v=DROP_STEP;v<=end;v+=DROP_STEP){var n=v/DROP_STEP;marks.push({v:v,label:v+" €",em:n+" Mystery<br>Drop"+(n>1?"s":""),mark:n})}
+  var label=t.gifts===0?"Aucun Mystery Drop débloqué pour l’instant":"<b>"+drops(t.gifts)+"</b> débloqué"+(t.gifts>1?"s":"")+" · "+t.gifts+" manuscrit"+(t.gifts>1?"s":"")+" mystère"+(t.gifts>1?"s":"")+" offert"+(t.gifts>1?"s":"");
+  var sg=t.next?suggestions(t.missing):[];
+  return'<section class="drop-box" aria-label="Mystery Drops de ta commande"><p class="prog-l"><span class="drop-k">⚡ Mystery Drops de ta commande</span>'+label+'</p>'+
+    gaugeHtml("cart",t.books,end,marks,"Mystery Drops de ta commande : "+EUR.format(t.books)+", "+drops(t.gifts))+
+    (t.next?'<div class="nudge"><p>Plus que <b>'+EUR.format(t.missing)+'</b> dans ton panier pour ton '+ordinal(t.gifts+1)+' Mystery Drop !</p>'+
+    (sg.length?'<ul class="sugg">'+sg.map(function(b){return'<li><span>'+esc(b.titre)+'</span><em>'+EUR.format(b.prix)+'</em>'+addBtn(b,true)+'</li>'}).join("")+'</ul>':"")+'</div>':'<div class="drop-max">🎉 Maximum atteint : <b>5 Mystery Drops</b> offerts avec cette commande !</div>')+'</section>';
 }
 /* 2) Fidélité : cumul de tous les achats de livres → statut Bookster VIP à 50 € */
 var vipState={total:0,jury:false};
@@ -2382,7 +2385,7 @@ function renderFiche(){
   var b=findBook(ficheId);if(!b)return;
   var s=sellerOf(b.vendeur_id),l=locOf(b),own=current&&b.vendeur_id===current.id;
   var others=sellerBooks(b.vendeur_id).filter(function(x){return String(x.id)!==String(b.id)});
-    var tt=totals(),prog=(tt.books?"Ton panier : <b>"+EUR.format(tt.books)+"</b>, "+drops(tt.gifts)+". ":"")+"Plus que <b>"+EUR.format(tt.missing)+"</b> pour ton "+ordinal(tt.gifts+1)+" Bookster Drop : chaque tranche de 10 € de livres t’offre un manuscrit mystère.";
+    var tt=totals(),prog=(tt.books?"Ton panier : <b>"+EUR.format(tt.books)+"</b>, "+drops(tt.gifts)+". ":"")+(tt.next?"Plus que <b>"+EUR.format(tt.missing)+"</b> pour ton "+ordinal(tt.gifts+1)+" Mystery Drop : chaque tranche de 10 € de livres t’offre un manuscrit mystère, jusqu’à 5.":"Maximum atteint : 5 Mystery Drops pour cette commande.");
   var lot=sellerBooks(b.vendeur_id).filter(function(x){return!bagHas(x.id)}),lotSum=r2(lot.reduce(function(a,x){return a+x.prix},0));
   $("ficheBody").innerHTML=
     '<div class="f-top">'+coverHtml(b)+'<div class="f-info">'+
@@ -2892,7 +2895,7 @@ var STEPS=[
    done:function(){return bag.length>0},
    auto:function(){var b=filtered().filter(function(x){return!bagHas(x.id)})[0]||BOOKS[0];$("catalogue").scrollIntoView({behavior:"smooth"});addToBag(b.id)}},
   {t:"Débloque ton premier manuscrit mystère",
-   x:"Ouvre ton Bag. Chaque tranche de 10 € de livres dans ton panier t’offre un Bookster Drop : ajoute un livre suggéré par l’encart violet.",
+   x:"Ouvre ton Bag. Chaque tranche de 10 € de livres dans ton panier t’offre un Mystery Drop : ajoute un livre suggéré par l’encart violet.",
    hi:function(){return tourDrawerOpen()?(document.querySelector(".nudge")||document.querySelector(".prog")):$("bagBtn")},
    done:function(){return totals().gifts>0},
    auto:function(){if(!tourDrawerOpen())open($("drawer"));
@@ -3024,7 +3027,7 @@ var AIDE_FAQ=[
  {k:"bookstery c est quoi qu est ce que presentation principe plateforme concept",a:"Bookstery est une plateforme lyonnaise, éthique et circulaire : tu achètes et vends des **livres d’occasion** entre Booksters, et chaque achat peut t’offrir un **manuscrit mystère**, un texte inédit d’un auteur indépendant. Une seconde vie aux livres, et une première aux auteurs !"},
  {k:"acheter commander achat panier bag ajouter commande payer paiement passer",a:"Pour acheter :\n• clique sur « **Ajouter** » sous un livre (ou dans sa fiche) ;\n• ouvre ton **Bookster Bag** en haut ;\n• touche « **Passer au paiement** ».\nIl faut un compte Bookster pour commander."},
  {k:"protection acheteur frais commission 5 0,70 70 centimes cout",a:"La **Protection Acheteur** est de 5 % du montant des livres + 0,70 €. Elle est payée par l’acheteur : le vendeur, lui, ne paie **aucun frais** et reçoit 100 % de son prix."},
- {k:"drop drops bookster bookstery drop manuscrit mystere mysteres cadeau jauge palier offert gratuit 10 20 30 40",a:"Le **Bookstery Drop** glisse des manuscrits mystères (textes inédits d’auteurs indépendants) dans ta commande : **chaque tranche de 10 € de livres dans ton panier** débloque tout de suite un **Bookster Drop**, tous vendeurs confondus.\n• 10 € : 1 Drop · 20 € : 2 · 30 € : 3, et ainsi de suite.\nLe panier t’indique combien il te manque pour le suivant."},
+ {k:"drop drops mystery bookstery drop manuscrit mystere mysteres cadeau jauge palier offert gratuit 10 20 30 40 50 maximum",a:"Le **Bookstery Drop** glisse des manuscrits mystères (textes inédits d’auteurs indépendants) dans ta commande : **chaque tranche de 10 € de livres dans ton panier** débloque tout de suite un **Mystery Drop**, tous vendeurs confondus :\n• 10 € = 1 Mystery Drop · 20 € = 2 · 30 € = 3 · 40 € = 4\n• 50 € = 5 Mystery Drops (le maximum par commande).\nLe panier t’indique combien il te manque pour le suivant."},
  {k:"vip bookster vip statut badge dore jury golden book vote fidelite cumul 50 recompense profil mecene",a:"Le statut **Bookster VIP** 👑 récompense ta fidélité : tous tes achats de livres s’additionnent, commande après commande. Dès **50 € cumulés**, tu passes VIP automatiquement : badge doré sur ton profil, et tu peux **voter pour le prochain Golden Book**. Ta progression s’affiche en bas de ton panier et dans ton espace."},
  {k:"genre cadeau choisir genre secours famille aucun texte",a:"Si ton Bag mélange plusieurs genres, tu choisis celui de ton cadeau avant de payer. S’il n’existe pas encore de texte dans ce genre, on prend un texte de la **même famille** (par exemple Thriller → Polar) ; sinon, tu choisis parmi **tes genres préférés**."},
  {k:"liseuse lire lis lit lecture qr code ouvrir mode nuit manuscrit mystere",a:"Après ta commande, chaque manuscrit mystère a un **QR code** : scanne-le avec ton téléphone pour l’ouvrir dans la liseuse. Tu le retrouves aussi dans « **Mes manuscrits mystères** » (ton espace, ou le raccourci dans le Bag). Fond crème ou **mode nuit**, temps de lecture estimé, et à la fin tu peux noter l’auteur, lui écrire et le suivre."},
