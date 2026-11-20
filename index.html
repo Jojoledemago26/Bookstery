@@ -891,6 +891,51 @@ body.help-hidden .help-fab{opacity:0;pointer-events:none;transform:scale(.8)}
 .hp-mini.writing .plume{animation:plWrite .5s ease-in-out infinite alternate;transform-origin:20% 90%}
 @keyframes plWrite{from{transform:rotate(-8deg) translateX(-1px)}to{transform:rotate(8deg) translateX(1px)}}
 @media(max-width:560px){.help-fab .hf-ico{width:42px;height:42px}}
+/* ---------- Accueil plus pro : atouts, Bookstery Drop, pied de page ---------- */
+.vprops{position:relative;z-index:3;list-style:none;margin:8px auto 36px;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.vprops li{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px 20px;box-shadow:0 10px 30px -18px rgba(28,22,80,.25);transition:transform .2s,box-shadow .2s}
+.vprops li:hover{transform:translateY(-3px);box-shadow:0 18px 36px -18px rgba(96,80,220,.35)}
+.vp-ico{flex:none;width:44px;height:44px;border-radius:14px;background:var(--maj-l);color:var(--maj);display:grid;place-items:center}
+.vprops b{display:block;font-size:15.5px;line-height:1.3;color:var(--ink)}
+.vprops span:not(.vp-ico){display:block;margin-top:4px;font-size:13.5px;line-height:1.45;color:var(--muted)}
+.drop{padding:8px 0 24px}
+.drop-card{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;border-radius:32px;padding:48px;color:#fff;
+  background:radial-gradient(600px 300px at 90% 0%,rgba(169,159,255,.35),transparent 60%),linear-gradient(135deg,#6050DC,#3B2DB0);box-shadow:0 30px 60px -30px rgba(96,80,220,.6)}
+.drop-k{display:inline-block;font-size:13px;font-weight:800;background:rgba(255,255,255,.16);border-radius:999px;padding:5px 12px}
+.drop-card h2{color:#fff;margin:14px 0 12px;font-size:clamp(26px,3.2vw,38px);line-height:1.12}
+.drop-card h2 span{display:block;color:#D9D4FF}
+.drop-card p{margin:0 0 22px;opacity:.88;font-size:16.5px;line-height:1.6;max-width:34em}
+.drop-card .btn{background:#fff;color:var(--maj-d);text-decoration:none}
+.drop-card .btn:hover{background:var(--maj-l)}
+.drop-viz{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:24px;padding:26px}
+.dv-gauge{height:12px;border-radius:99px;background:rgba(255,255,255,.18);overflow:hidden}
+.dv-gauge span{display:block;height:100%;width:62%;border-radius:99px;background:linear-gradient(90deg,#fff,#D9D4FF);animation:dvFill 2.4s ease-out both}
+@keyframes dvFill{from{width:0}}
+.dv-tiers{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.dv-tiers li{background:#fff;color:var(--ink);border-radius:16px;padding:14px 12px;text-align:center}
+.dv-tiers b{display:block;font-size:20px;color:var(--maj)}
+.dv-tiers span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.dv-note{margin:14px 0 0!important;font-size:13px!important;opacity:.85}
+footer .ft{display:grid;grid-template-columns:1.2fr 2fr;gap:32px 48px;align-items:start}
+footer .ft-brand .brand span{display:inline!important}
+.ft-brand p{margin:12px 0 0;color:var(--muted);font-size:14px;max-width:26em;line-height:1.55}
+.ft-cols{display:grid!important;grid-template-columns:repeat(3,1fr);gap:24px}
+.ft-cols div{display:flex;flex-direction:column;gap:8px}
+.ft-cols b{font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);margin-bottom:2px}
+.ft-cols a{color:var(--muted);font-size:14px}.ft-cols a:hover{color:var(--maj)}
+footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px}
+@media(max-width:900px){
+  .vprops{grid-template-columns:1fr;gap:10px;margin:4px auto 28px}
+  .drop-card{grid-template-columns:1fr;gap:24px;padding:32px 24px;border-radius:26px}
+  footer .ft{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .vprops li{padding:14px 16px}
+  .drop-card{padding:26px 18px}
+  .drop-viz{padding:18px}
+  .dv-tiers{gap:6px}.dv-tiers li{padding:12px 6px}.dv-tiers b{font-size:17px}.dv-tiers span{font-size:11.5px}
+  .ft-cols{grid-template-columns:1fr 1fr}
+}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -953,6 +998,14 @@ body.help-hidden .help-fab{opacity:0;pointer-events:none;transform:scale(.8)}
     </div>
   </div>
 
+  <div class="wrap">
+    <ul class="vprops" aria-label="Pourquoi Bookstery">
+      <li><span class="vp-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5Z"/><path d="M8 7h7M8 11h5"/></svg></span><div><b>Des livres d’occasion près de chez toi</b><span>Vendus par des Booksters, avec photos réelles de chaque exemplaire.</span></div></li>
+      <li><span class="vp-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1.5S10 8 12 8Zm0 0c2-4 6-4 6-1.5S14 8 12 8Z"/></svg></span><div><b>Un manuscrit mystère offert dès 10&nbsp;€</b><span>Un texte inédit d’un auteur indépendant glissé dans ton panier.</span></div></li>
+      <li><span class="vp-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span><div><b>Paiement sécurisé</b><span>Protection Acheteur sur chaque commande, vendeurs payés à la réception.</span></div></li>
+    </ul>
+  </div>
+
   <section id="catalogue" class="cat">
     <div class="wrap">
       <div class="cat-head">
@@ -988,6 +1041,28 @@ body.help-hidden .help-fab{opacity:0;pointer-events:none;transform:scale(.8)}
       </div>
       <div class="grid" id="grid" aria-live="polite"></div>
       <div class="cat-more"><button class="btn ghost" type="button" id="catMore" hidden>Voir plus de livres</button></div>
+    </div>
+  </section>
+
+  <section class="drop" id="drop" aria-labelledby="dropT">
+    <div class="wrap">
+      <div class="drop-card">
+        <div class="drop-txt">
+          <span class="drop-k">⚡ Le Bookstery Drop</span>
+          <h2 id="dropT">Remplis ton panier, <span>débloque des manuscrits mystères.</span></h2>
+          <p>Chez chaque vendeur, ta jauge se remplit à chaque livre. À chaque palier, un texte inédit d’un auteur indépendant rejoint ta commande&nbsp;: à lire dans la liseuse, et à noter.</p>
+          <a class="btn" href="#catalogue">Remplir mon panier</a>
+        </div>
+        <div class="drop-viz" aria-hidden="true">
+          <div class="dv-gauge"><span></span></div>
+          <ol class="dv-tiers">
+            <li><b>10&nbsp;€</b><span>1 manuscrit offert</span></li>
+            <li><b>20&nbsp;€</b><span>2 manuscrits offerts</span></li>
+            <li><b>35&nbsp;€</b><span>3 manuscrits offerts</span></li>
+          </ol>
+          <p class="dv-note">Par vendeur&nbsp;: regroupe tes achats grâce à «&nbsp;Dans sa bibliothèque&nbsp;».</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1114,10 +1189,17 @@ body.help-hidden .help-fab{opacity:0;pointer-events:none;transform:scale(.8)}
 </main>
 
 <footer>
-  <div class="wrap">
-    <a class="brand" href="#top" aria-label="Bookstery, retour à l’accueil"><img src="mark.png" alt=""><span><b>Book</b>stery</span></a>
-    <nav aria-label="Pied de page"><a href="#comment">Comment ça marche</a><a href="#auteurs">Auteurs</a><a href="#aide" data-aide>Aide</a><a href="#top">Mentions légales</a></nav>
-    <p class="legal">© 2026 Bookstery. Prototype.</p>
+  <div class="wrap ft">
+    <div class="ft-brand">
+      <a class="brand" href="#top" aria-label="Bookstery, retour à l’accueil"><img src="mark.png" alt=""><span><b>Book</b>stery</span></a>
+      <p>Une seconde vie aux livres, et une première aux auteurs. 100&nbsp;% éthique, circulaire et lyonnais.</p>
+    </div>
+    <nav class="ft-cols" aria-label="Pied de page">
+      <div><b>Acheter</b><a href="#catalogue">Derniers livres en vente</a><a href="#drop">Le Bookstery Drop</a><a href="#comment">Comment ça marche</a></div>
+      <div><b>Vendre &amp; écrire</b><a href="#top" data-sell>Vendre un livre</a><a href="#auteurs">Espace auteur</a><a href="#top" data-auteur>Envoyer mon texte</a></div>
+      <div><b>Aide</b><a href="#aide" data-aide>Demander à Plume</a><a href="#top">Mentions légales</a></div>
+    </nav>
+    <p class="legal">© 2026 Bookstery · Fait avec soin à Lyon.</p>
   </div>
 </footer>
 
@@ -1921,7 +2003,8 @@ var DEMO_BOOKS=[
 ];
 DEMO_BOOKS.forEach(function(b,i){b.rang=i});
 
-var BOOKS=[],SELLERS={},catLimit=8,catTerm="",catGenre=null,catLoading=true,catLoc="france",catSort="recent";
+function catStep(){return window.innerWidth<560?6:12}
+var BOOKS=[],SELLERS={},catLimit=catStep(),catTerm="",catGenre=null,catLoading=true,catLoc="france",catSort="recent";
 function sellerOf(vid){return SELLERS[vid]||{nom:"Un Bookster",ville:"",region:""}}
 
 /* --- Localisation --- */
@@ -1988,7 +2071,7 @@ function renderGrid(){
     return'<article class="book-card"><button class="card-open" type="button" data-fiche="'+esc(b.id)+'" aria-label="Voir la fiche de '+esc(b.titre)+'">'+coverHtml(b)+'</button><div class="bcard-tags">'+(b.genre?'<button class="gtag" type="button" data-genre="'+esc(b.genre)+'">'+esc(b.genre)+'</button>':"")+'<span class="etat">'+(ETAT_TXT[b.etat]||"")+'</span></div><h3 class="bcard-t"><button type="button" data-fiche="'+esc(b.id)+'">'+esc(b.titre)+'</button></h3><p class="bcard-m">'+esc(s.nom)+(l.ville?" · "+esc(l.ville):"")+'</p><div class="bcard-row"><span class="bprice">'+EUR.format(b.prix)+'</span>'+addBtn(b)+'</div></article>'}).join("");
   $("catMore").hidden=list.length<=catLimit;
 }
-$("catMore").addEventListener("click",function(){catLimit+=8;renderGrid()});
+$("catMore").addEventListener("click",function(){catLimit+=catStep();renderGrid()});
 
 /* Genres et recherche filtrent le catalogue */
 var heroAll=false;
@@ -2002,7 +2085,7 @@ function renderChips(){
   /* Section « Les derniers livres en vente » : si un genre est actif, seules « Tous les genres » et ce genre restent */
   $("catChips").innerHTML=allChipHtml()+(catGenre?chipHtml(catGenre):GENRES.map(chipHtml).join(""));
 }
-function setGenre(g,scroll){catGenre=g;catLimit=8;renderChips();renderGrid();searchNote();if(scroll)$("catalogue").scrollIntoView({behavior:"smooth"})}
+function setGenre(g,scroll){catGenre=g;catLimit=catStep();renderChips();renderGrid();searchNote();if(scroll)$("catalogue").scrollIntoView({behavior:"smooth"})}
 renderChips();
 $("chips").addEventListener("click",function(e){if(e.target.closest("[data-more]")){heroAll=!heroAll;renderChips();var m=$("chips").querySelector("[data-more]");if(m)m.focus()}});
 ["chips","catChips"].forEach(function(id){$(id).addEventListener("click",function(e){var b=e.target.closest("[data-chip]");if(!b)return;var g=b.getAttribute("data-chip")||null;setGenre(catGenre===g?null:g)})});
@@ -2015,18 +2098,18 @@ function locUI(){document.querySelectorAll("#locSeg [data-loc]").forEach(functio
   if(k==="region")b.textContent=me.region?"Ma région · "+({"Auvergne-Rhône-Alpes":"AURA","Provence-Alpes-Côte d’Azur":"PACA","Bourgogne-Franche-Comté":"BFC","Centre-Val de Loire":"Centre"}[me.region]||me.region):"Ma région";})}
 $("locSeg").addEventListener("click",function(e){var b=e.target.closest("[data-loc]");if(!b)return;b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop");var k=b.getAttribute("data-loc"),me=myLocation();
   if((k==="ville"&&!me.ville)||(k==="region"&&!me.region)){$("locAsk").hidden=false;$("locAsk").dataset.want=k;$("locVille").value=me.ville||"";$("locRegion").value=me.region||"";$("locVille").focus();return}
-  $("locAsk").hidden=true;catLoc=k;catLimit=8;locUI();renderGrid();searchNote()});
+  $("locAsk").hidden=true;catLoc=k;catLimit=catStep();locUI();renderGrid();searchNote()});
 $("locVille").addEventListener("input",function(){var r=regionOf(this.value);if(r)$("locRegion").value=r});
 $("locAsk").addEventListener("submit",function(e){e.preventDefault();var v=$("locVille").value.trim(),r=$("locRegion").value||regionOf(v),want=this.dataset.want;
   if(want==="ville"&&!v)return $("locVille").focus();if(want==="region"&&!r)return $("locRegion").focus();
   myLoc={ville:v,region:r};try{localStorage.setItem("bookstery.loc",JSON.stringify(myLoc))}catch(x){}
-  this.hidden=true;catLoc=want;catLimit=8;locUI();renderGrid();searchNote();prefillSellLoc()});
+  this.hidden=true;catLoc=want;catLimit=catStep();locUI();renderGrid();searchNote();prefillSellLoc()});
 $("catSort").addEventListener("change",function(){catSort=this.value;renderGrid()});
 function prefillSellLoc(){var me=myLocation();if(!$("bVille").value&&me.ville)$("bVille").value=me.ville;if(!$("bRegion").value&&me.region)$("bRegion").value=me.region}
 $("bVille").addEventListener("input",function(){var r=regionOf(this.value);if(r)$("bRegion").value=r});
 locUI();prefillSellLoc();
 document.querySelectorAll("[data-search]").forEach(function(f){f.addEventListener("submit",function(e){e.preventDefault();
-  catTerm=f.querySelector("input").value.trim();catLimit=8;renderGrid();searchNote();
+  catTerm=f.querySelector("input").value.trim();catLimit=catStep();renderGrid();searchNote();
   if(catTerm||catGenre)$("catalogue").scrollIntoView({behavior:"smooth"})})});
 function searchNote(){
   if(!catTerm&&!catGenre){$("note").textContent="";return}
@@ -2217,7 +2300,7 @@ renderAll=function(){_renderAllF();if(ficheId&&$("fiche").classList.contains("on
 /* Clic sur Bookstery : retour à l’accueil (fenêtres fermées, filtres remis à zéro, haut de page) */
 function goHome(){
   closeAll(true);
-  catTerm="";catGenre=null;catLimit=8;
+  catTerm="";catGenre=null;catLimit=catStep();
   document.querySelectorAll("[data-search] input").forEach(function(i){i.value=""});
   renderChips();renderGrid();searchNote();
   window.scrollTo({top:0,behavior:"smooth"});
