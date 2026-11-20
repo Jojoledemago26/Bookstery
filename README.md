@@ -13,7 +13,7 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/liseuse.sql` — commandes, manuscrits mystères, avis, abonnements
 - `supabase/photos-annonces.sql` — photos réelles recto/verso obligatoires (colonnes, stockage « photos-annonces », contrôles)
 - `supabase/vendeur-pro.sql` — statut du vendeur (particulier / professionnel) affiché sur les annonces
-- `supabase/badge-mecene.sql` — badge Mécène Bookster sur le profil (50 € chez un vendeur)
+- `supabase/vip.sql` — statut Bookster VIP : cumul des achats et badge à 50 €
 - `supabase/genres-disponibles.sql` — genres où des manuscrits mystères existent (genre de secours du cadeau)
 - `supabase/localisation.sql` — ville et région des annonces (filtre de localisation)
 - `supabase/moderation.sql` — journal des refus de modération
@@ -45,7 +45,8 @@ Bouton « Vendre un livre » (en-tête) :
 
 - Catalogue « Les derniers livres en vente » : annonces Supabase (exemples lyonnais en mode démo), filtrées par la recherche et les genres.
 - Protection Acheteur ajoutée automatiquement : 5 % du montant des livres + 0,70 €.
-- Jauge dynamique du Bookstery Drop **par vendeur** : 10 € → 1 Bookster Drop (manuscrit mystère offert), 20 € → 2, 30 € → 3, 40 € → 4, 50 € → 5 + badge **Mécène Bookster**. La jauge s'anime à chaque ajout, fête chaque palier franchi et indique le montant manquant avec des suggestions du même vendeur. Côté Supabase : `supabase/badge-mecene.sql`.
+- **Bookster Drops (commande en cours)** : chaque tranche de 10 € de livres dans le panier, tous vendeurs confondus, débloque un Drop (manuscrit mystère offert). Jauge animée en haut du panier, qui fête chaque Drop et indique le montant manquant avec des suggestions.
+- **Statut Bookster VIP (fidélité)** : cumul `total_spent_books` des livres achetés sur toutes les commandes ; barre bleu Majorelle de 0 à 50 € en bas du panier et dans « Mon espace » ; à 50 €, `is_vip_jury = true` et badge doré (vote du prochain Golden Book). Côté Supabase : `supabase/vip.sql`.
   Sous 10 € : « Plus que X € chez ce vendeur pour débloquer ton 1er manuscrit mystère ! » et des suggestions du même vendeur.
 - Si le Bag mélange plusieurs genres, l'acheteur choisit le genre de son cadeau mystère avant de payer.
 - Genre de secours : s'il n'existe aucun texte dans ce genre, le manuscrit mystère vient de la même famille (Imaginaire, Polar & Thriller, Littérature, Jeunesse) ; sinon le Bookster choisit parmi ses genres préférés (ou les genres disponibles) avant de payer.

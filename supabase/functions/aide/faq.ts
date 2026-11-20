@@ -13,7 +13,8 @@ Bookstery est une plateforme lyonnaise, éthique et circulaire, qui donne une se
 
 # Bookstery Drop et manuscrits mystères
 - Le Bookstery Drop glisse des manuscrits mystères (textes inédits d'auteurs indépendants) dans les Bookster Bags.
-- La jauge du Bookstery Drop se remplit par vendeur : tous les 10 € d'achats chez un même vendeur, l'acheteur débloque un « Bookster Drop » (un manuscrit mystère offert) : 10 € = 1 Drop, 20 € = 2, 30 € = 3, 40 € = 4, 50 € = 5 Drops + le badge Mécène Bookster (affiché sur son profil). Tant qu'un palier n'est pas atteint, le panier indique le montant manquant et propose des livres du même vendeur.
+- Commande en cours : chaque tranche de 10 € de livres dans le panier (tous vendeurs confondus) débloque immédiatement un « Bookster Drop » (un manuscrit mystère offert) : 10 € = 1 Drop, 20 € = 2, 30 € = 3, etc. Le panier indique le montant manquant pour le Drop suivant et suggère des livres.
+- Fidélité, statut Bookster VIP : tous les achats de livres s'additionnent au fil des commandes (montant des livres, hors Protection Acheteur). Une barre de progression de 0 à 50 € s'affiche en bas du panier et dans « Mon espace ». Dès 50 € cumulés, le compte passe automatiquement Bookster VIP : badge doré sur le profil et droit de vote pour le prochain Golden Book.
 - Si le Bag mélange plusieurs genres, l'acheteur choisit le genre de son cadeau avant de payer.
 - Genre de secours : s'il n'existe aucun texte dans ce genre, le manuscrit vient de la même famille (Imaginaire : Fantasy, Fantastique, Science-fiction, Horreur ; Polar & Thriller ; Littérature : Romans, Romance, Roman historique, Feel-good, Aventure, Humour, Classiques, Nouvelles, Théâtre, Poésie ; Jeunesse : Jeunesse, Young Adult, Contes & Légendes). Sinon, le Bookster choisit parmi ses genres préférés.
 

@@ -965,11 +965,6 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .dgauge.lvl .dg-track{animation:dgGlow 1s ease}
 @keyframes dgGlow{50%{box-shadow:0 0 0 4px rgba(96,80,220,.18)}}
 .prog-l b{color:var(--maj-d)}
-.mec-tag{display:inline-block;font-size:12px;font-weight:800;color:#8A5A0B;background:#FFF4D6;border-radius:999px;padding:1px 8px;margin-left:2px}
-.mecene{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,#FFF8E6,#FFEFC7);border:1px solid #F1D9A6;border-radius:16px;padding:12px 14px;color:#6B4A12}
-.mecene>span{font-size:28px;line-height:1;animation:dgPop .8s cubic-bezier(.3,1.6,.5,1)}
-.mecene b{display:block;font-size:14.5px;color:#7A4E00}.mecene small{display:block;font-size:12.5px}
-#cmdMecene{margin:14px 0 0}
 .dv-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;position:relative}
 .dv-steps li{background:#fff;color:var(--ink);border-radius:14px;padding:12px 6px;text-align:center;animation:dvIn .5s ease both}
 .dv-steps li:nth-child(2){animation-delay:.1s}.dv-steps li:nth-child(3){animation-delay:.2s}.dv-steps li:nth-child(4){animation-delay:.3s}.dv-steps li:nth-child(5){animation-delay:.4s}
@@ -980,6 +975,27 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .dv-badge{display:flex;gap:12px;align-items:center;margin-top:14px;background:rgba(255,255,255,.12);border-radius:16px;padding:12px 14px}
 .dv-badge>span{font-size:26px}.dv-badge b{display:block;font-size:14.5px}.dv-badge small{display:block;font-size:12.5px;opacity:.85}
 @media(max-width:560px){.dv-steps{grid-template-columns:repeat(3,1fr)}.dv-steps li.mec{grid-column:span 2}.dg-m small em{display:none}.dg-m{width:44px}.dg-ms{height:34px}}
+/* ---------- Bookster Drops (commande) et statut Bookster VIP (fidélité) ---------- */
+.drop-box{border:1.5px solid var(--maj-l);background:linear-gradient(180deg,#fff,var(--maj-xl));border-radius:18px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:10px}
+.vip-box{border-radius:18px;padding:14px 16px;background:#fff;border:1.5px solid var(--maj);box-shadow:0 10px 24px -14px rgba(96,80,220,.45)}
+.vip-t{margin:0 0 4px!important;font-size:14px;font-weight:800;color:var(--ink)}.vip-t b{color:var(--maj-d)}
+.vip-msg{margin:2px 0 0!important;font-size:12.5px!important;color:var(--muted)!important;line-height:1.45}
+.vip-next{margin:8px 0 0!important;font-size:13px!important;font-weight:700;color:var(--maj-d)!important}
+.vipg .dg-track{height:14px}
+.vipg .dg-fill{background:var(--maj)}
+.vipg .dg-ms{height:40px}
+.vipg .dg-m:last-child{transform:translateX(-85%)}
+.vip-prev{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,rgba(96,80,220,.35) 0 6px,rgba(96,80,220,.18) 6px 12px);border-radius:0 999px 999px 0;z-index:0}
+.dg-fill{z-index:1}
+.vip-box.gold{display:flex;gap:14px;align-items:center;border:1px solid #E9C46A;background:linear-gradient(135deg,#FFF8E6,#FFE9B0);box-shadow:0 12px 26px -14px rgba(178,110,0,.45)}
+.vip-box.gold b{display:block;font-size:15px;color:#7A4E00}.vip-box.gold small{display:block;font-size:12.5px;color:#6B4A12;line-height:1.45}
+.vip-box.gold small b{display:inline;font-size:inherit}
+.vip-cum{margin-top:4px;opacity:.85}
+.vip-badge{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:24px;background:linear-gradient(135deg,#F5C451,#E39B1B);box-shadow:0 0 0 3px #fff,0 6px 16px rgba(178,110,0,.4)}
+.vip-box.pop .vip-badge{animation:dgPop .8s cubic-bezier(.3,1.6,.5,1)}
+.vip-pill{display:inline-block;vertical-align:middle;font-size:12px;font-weight:800;letter-spacing:.01em;color:#7A4E00;background:linear-gradient(135deg,#FFE7AE,#F5C451);border-radius:999px;padding:4px 10px;margin-left:6px}
+#aVip{margin:4px 0 16px}
+#cmdVip{margin:14px 0 0}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1094,7 +1110,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
         <div class="drop-txt">
           <span class="drop-k">⚡ Le Bookstery Drop</span>
           <h2 id="dropT">Remplis ton panier, <span>débloque des manuscrits mystères.</span></h2>
-          <p>Chez chaque vendeur, ta jauge se remplit à chaque livre. Tous les 10&nbsp;€, tu débloques un <b>Bookster Drop</b>&nbsp;: un manuscrit mystère d’un auteur indépendant offert avec ta commande. Jusqu’à 5 Drops, et le badge Mécène à 50&nbsp;€&nbsp;!</p>
+          <p>Chaque tranche de 10&nbsp;€ de livres dans ton panier débloque tout de suite un <b>Bookster Drop</b>&nbsp;: un manuscrit mystère d’un auteur indépendant offert avec ta commande. Et tes achats s’additionnent pour devenir <b>Bookster VIP</b>&nbsp;!</p>
           <a class="btn" href="#catalogue">Remplir mon panier</a>
         </div>
         <div class="drop-viz" aria-hidden="true">
@@ -1103,10 +1119,10 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
             <li><b>20&nbsp;€</b><span>2 Drops</span></li>
             <li><b>30&nbsp;€</b><span>3 Drops</span></li>
             <li><b>40&nbsp;€</b><span>4 Drops</span></li>
-            <li class="mec"><b>50&nbsp;€</b><span>5 Drops + 🏅</span></li>
+            <li><b>…</b><span>et ainsi de suite</span></li>
           </ol>
-          <div class="dv-badge"><span>🏅</span><div><b>Badge Mécène Bookster</b><small>Dès 50&nbsp;€ chez un vendeur&nbsp;: 5 Bookster Drops et un badge sur ton profil.</small></div></div>
-          <p class="dv-note">Par vendeur&nbsp;: regroupe tes achats grâce à «&nbsp;Dans sa bibliothèque&nbsp;».</p>
+          <div class="dv-badge"><span>👑</span><div><b>Statut Bookster VIP</b><small>Dès 50&nbsp;€ de livres achetés au total, toutes commandes confondues&nbsp;: badge doré sur ton profil et vote pour le prochain Golden Book.</small></div></div>
+          <p class="dv-note">Tous vendeurs confondus&nbsp;: chaque livre compte.</p>
         </div>
       </div>
     </div>
@@ -1177,7 +1193,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
             <h3>Ton texte part dans le Bookstery Drop</h3>
             <p>À chaque commande, des manuscrits mystères se glissent dans les Bookster Bags. Le tien en fait partie&nbsp;!</p>
             <ul class="fp-list">
-              <li><b>La jauge du Drop</b><span>Tous les 10&nbsp;€ chez un même vendeur, le lecteur débloque un Bookster Drop&nbsp;: un manuscrit mystère offert, jusqu’à 5 dès 50&nbsp;€.</span></li>
+              <li><b>La jauge du Drop</b><span>Chaque tranche de 10&nbsp;€ de livres dans le panier débloque un Bookster Drop&nbsp;: un manuscrit mystère offert.</span></li>
               <li><b>Le bon lecteur</b><span>Ton texte va à ceux qui aiment déjà ton genre.</span></li>
               <li><b>Un QR code dans le colis</b><span>Il ouvre ton texte dans la liseuse protégée.</span></li>
             </ul>
@@ -1190,7 +1206,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
                 <div class="mk-item"><i style="background:#2b4c7e"></i>Les Rivières pourpres<em>3,00&nbsp;€</em></div>
                 <div class="mk-item"><i style="background:#1e1e2a"></i>Le Comte de Monte-Cristo<em>4,90&nbsp;€</em></div>
                 <div class="mk-drop-h"><b>⚡ Jauge du Bookstery Drop</b><span>11,40&nbsp;€</span></div>
-                <div class="mk-gauge"><span style="width:23%"></span><i style="left:20%">10&nbsp;€</i><i style="left:40%">20&nbsp;€</i><i style="left:60%">30&nbsp;€</i><i style="left:80%">40&nbsp;€</i><i style="left:100%">50&nbsp;€</i></div>
+                <div class="mk-gauge"><span style="width:38%"></span><i style="left:33.3%">10&nbsp;€</i><i style="left:66.6%">20&nbsp;€</i><i style="left:100%">30&nbsp;€</i></div>
                 <small class="mk-small">1er Bookster Drop débloqué 🎉 · Plus que 8,60&nbsp;€ pour le 2e</small>
                 <div class="mk-gift"><span class="mk-gift-i">🎁</span><div><b>Manuscrit mystère · Romans</b><span>«&nbsp;La dernière marée&nbsp;»… c’est ton texte&nbsp;!</span></div></div>
               </div>
@@ -1316,14 +1332,14 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 <div class="modal" id="account" role="dialog" aria-modal="true" aria-labelledby="aTitle" aria-hidden="true">
   <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   <img src="mark.png" alt="">
-  <h2 id="aTitle">Mon espace Bookster</h2>
+  <h2 id="aTitle">Mon espace Bookster <span class="vip-pill" id="aVipPill" hidden>👑 Bookster VIP</span></h2>
   <p id="aHello">Bienvenue !</p>
+  <div id="aVip"></div>
   <ul class="me-list">
     <li><span>Prénom</span><b id="aPrenom">—</b></li>
     <li><span>E-mail</span><b id="aEmail">—</b></li>
     <li><span>Ville</span><b id="aVille">—</b></li>
     <li><span>Genres préférés</span><b id="aGenres">—</b></li>
-    <li id="aBadgeRow" hidden><span>Badge</span><b id="aBadge">🏅 Mécène Bookster</b></li>
   </ul>
   <button class="btn" type="button" data-mesbb>Mes manuscrits mystères</button>
   <button class="btn dark" type="button" id="logout" style="margin-top:10px">Se déconnecter</button>
@@ -1335,7 +1351,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
   <h2 id="cmdTitre">Commande confirmée</h2>
   <p id="cmdSum"></p>
   <div class="bb-grid" id="cmdBB"></div>
-  <div class="mecene" id="cmdMecene" hidden><span aria-hidden="true">🏅</span><div><b>Tu deviens Mécène Bookster !</b><small>50 € chez un même vendeur : 5 Bookster Drops et un badge sur ton profil. Merci de faire vivre les livres et les auteurs.</small></div></div>
+  <div id="cmdVip"></div>
   <p class="cert-legal" id="cmdNote"></p>
 </div>
 
@@ -1709,7 +1725,7 @@ $("forgot").addEventListener("click",async function(){
 /* État connecté */
 var current=null;
 async function showUser(user){
-  current=user;if(!user)myGenres=[];document.body.classList.toggle("authed",!!user);sellNote();if(typeof renderAll==="function"&&!catLoading)renderAll();if(typeof auNote==="function")auNote();if(user&&typeof pendingToken!=="undefined"&&pendingToken){var pt=pendingToken;pendingToken=null;setTimeout(function(){openLiseuse(pt)},350)}
+  current=user;if(!user){myGenres=[];if(sb){vipState.total=0;vipState.jury=false}}document.body.classList.toggle("authed",!!user);sellNote();if(typeof renderAll==="function"&&!catLoading)renderAll();if(typeof auNote==="function")auNote();if(user&&typeof pendingToken!=="undefined"&&pendingToken){var pt=pendingToken;pendingToken=null;setTimeout(function(){openLiseuse(pt)},350)}
   if(!user)return;
   var md=user.user_metadata||{},p=null;
   try{var r=await sb.from("profiles").select("prenom, ville, genres_preferes").eq("id",user.id).maybeSingle();if(!r.error)p=r.data}catch(e){}
@@ -1720,7 +1736,7 @@ async function showUser(user){
   $("aPrenom").textContent=prenom||"—";$("aEmail").textContent=user.email||"—";$("aVille").textContent=ville||"—";
   $("aGenres").textContent=genres&&genres.length?genres.join(", "):"—";
   myGenres=Array.isArray(genres)?genres:[];
-  try{var bg=await sb.from("profiles").select("badge_mecene").eq("id",user.id).maybeSingle();myBadge=!!(bg.data&&bg.data.badge_mecene)}catch(e){}badgeUI();if(typeof renderBag==="function"&&bag.length)renderBag();
+  try{var vp=await sb.from("profiles").select("total_spent_books,is_vip_jury").eq("id",user.id).maybeSingle();if(!vp.error&&vp.data){vipState.total=Number(vp.data.total_spent_books)||0;vipState.jury=!!vp.data.is_vip_jury}}catch(e){}vipUI();if(typeof renderBag==="function"&&bag.length)renderBag();
 }
 $("meBtn").addEventListener("click",function(){open($("account"))});
 $("logout").addEventListener("click",async function(){if(!sb)return;busy(this,true,"Déconnexion…");try{await sb.auth.signOut()}finally{busy(this,false);closeAll();toast("À bientôt, Bookster !")}});
@@ -2016,13 +2032,13 @@ $("sellForm").addEventListener("submit",async function(e){
 if(sb)sb.auth.onAuthStateChange(function(ev){if(ev==="SIGNED_IN"&&sellReturn){sellReturn=false;setTimeout(function(){closeAll(true);openSell()},300)}});
 
 /* ================= Catalogue & Bookster Bag ================= */
-var TIERS=[10,20,30,40,50];           /* paliers du Bookstery Drop, par vendeur : 1 à 5 Bookster Drops (= manuscrits mystères offerts) */
-var MECENE=50;                        /* à 50 € chez un vendeur : badge Mécène Bookster */
+var DROP_STEP=10;                     /* commande en cours : chaque tranche de 10 € de livres dans le panier = 1 Bookster Drop (manuscrit mystère offert) */
+var VIP_SEUIL=50;                     /* fidélité : 50 € de livres achetés au total = statut Bookster VIP (jury du Golden Book) */
 var FEE_RATE=0.05,FEE_FIXED=0.70;     /* Protection Acheteur : 5 % + 0,70 € sur le montant des livres */
 var ETAT_TXT={comme_neuf:"Comme neuf",tres_bon:"Très bon état",bon:"Bon état"};
 function r2(x){return Math.round((x+Number.EPSILON)*100)/100}
 function esc(t){return String(t==null?"":t).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-function booksterbooks(sub){var n=0;for(var i=0;i<TIERS.length;i++)if(sub+1e-9>=TIERS[i])n++;return n}
+function booksterbooks(sub){return Math.floor((sub+1e-9)/DROP_STEP)}
 function protection(books){return books>0?r2(books*FEE_RATE+FEE_FIXED):0}
 function ordinal(n){return n===1?"1er":n+"e"}
 var COVERS=["#3E3A8F","#7A2E3B","#1F5C4A","#8A5A1E","#2D4E7A","#5B3A7A","#1E1E2A","#9A3F2A"];
@@ -2187,12 +2203,12 @@ function findBook(id){for(var i=0;i<BOOKS.length;i++)if(String(BOOKS[i].id)===St
 function groups(){
   var by={},order=[];
   bag.forEach(function(b){if(!by[b.vendeur_id]){by[b.vendeur_id]={vid:b.vendeur_id,items:[],sub:0};order.push(b.vendeur_id)}by[b.vendeur_id].items.push(b);by[b.vendeur_id].sub=r2(by[b.vendeur_id].sub+b.prix)});
-  return order.map(function(v){var g=by[v];g.gifts=booksterbooks(g.sub);g.next=TIERS[g.gifts]||null;g.missing=g.next?r2(g.next-g.sub):0;return g});
+  return order.map(function(v){return by[v]});
 }
 function totals(){
-  var gs=groups(),books=0,gifts=0;gs.forEach(function(g){books=r2(books+g.sub);gifts+=g.gifts});
+  var gs=groups(),books=0;gs.forEach(function(g){books=r2(books+g.sub)});var gifts=booksterbooks(books),next=(gifts+1)*DROP_STEP;
   var fee=protection(books),genres=bag.map(function(b){return b.genre}).filter(function(v,i,a){return v&&a.indexOf(v)===i});
-  return{groups:gs,books:books,fee:fee,total:r2(books+fee),gifts:gifts,genres:genres};
+  return{groups:gs,books:books,fee:fee,total:r2(books+fee),gifts:gifts,next:next,missing:r2(next-books),genres:genres};
 }
 
 function addToBag(id){
@@ -2200,10 +2216,9 @@ function addToBag(id){
   if(current&&b.vendeur_id===current.id)return toast("C’est ton annonce : tu ne peux pas l’acheter.");
   bag.push({id:b.id,titre:b.titre,auteur:b.auteur||"",genre:b.genre||"",etat:b.etat||"",prix:Number(b.prix),vendeur_id:b.vendeur_id,couverture_url:b.couverture_url||""});
   saveBag();renderAll();
-  var g=groups().filter(function(x){return x.vid===b.vendeur_id})[0],nom=sellerOf(b.vendeur_id).nom;
-  var before=booksterbooks(r2(g.sub-Number(b.prix)));
-  if(g.gifts>before)toast(g.gifts===TIERS.length?"🏅 5 Bookster Drops chez "+nom+" : badge Mécène Bookster débloqué !":"🎉 "+ordinal(g.gifts)+" Bookster Drop débloqué chez "+nom+(g.next?" ! Plus que "+EUR.format(g.missing)+" pour le suivant.":" !"));
-  else toast(g.next?"Ajouté ! Plus que "+EUR.format(g.missing)+" chez "+nom+" pour ton "+ordinal(g.gifts+1)+" Bookster Drop"+(g.next===MECENE?" et le badge Mécène 🏅":"")+".":"Ajouté !");
+  var t=totals(),before=booksterbooks(r2(t.books-Number(b.prix)));
+  if(t.gifts>before)toast("🎉 "+ordinal(t.gifts)+" Bookster Drop débloqué ! Plus que "+EUR.format(t.missing)+" pour le suivant.");
+  else toast("Ajouté ! Plus que "+EUR.format(t.missing)+" dans ton panier pour ton "+ordinal(t.gifts+1)+" Bookster Drop.");
 }
 function removeFromBag(id){bag=bag.filter(function(b){return String(b.id)!==String(id)});saveBag();renderAll()}
 document.addEventListener("click",function(e){
@@ -2221,8 +2236,7 @@ var GENRE_FAMILLES={
   "Jeunesse":["Jeunesse","Young Adult","Contes & Légendes"]
 };
 function familleDe(g){for(var f in GENRE_FAMILLES)if(GENRE_FAMILLES[f].indexOf(g)>-1)return f;return null}
-var GENRES_DISPO=null,myGenres=[],myBadge=false;
-function badgeUI(){var on=myBadge;if(!sb){try{on=localStorage.getItem("bookstery.mecene")==="1"}catch(e){}}var r=$("aBadgeRow");if(r)r.hidden=!on}
+var GENRES_DISPO=null,myGenres=[];
 function demoDispo(){var m={};(typeof DEMO_TEXTES!=="undefined"&&DEMO_TEXTES||[]).forEach(function(x){m[x.genre]=(m[x.genre]||0)+1});return m}
 async function loadDispo(){
   if(!sb){GENRES_DISPO=demoDispo();return}
@@ -2256,39 +2270,62 @@ function renderSecours(t){
 }
 
 var CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>';
-function suggestions(g){
-  var inBag={};bag.forEach(function(b){inBag[b.id]=1});
-  return BOOKS.filter(function(b){return b.vendeur_id===g.vid&&!inBag[b.id]})
-    .sort(function(a,b){var ma=a.prix>=g.missing,mb=b.prix>=g.missing;return ma!==mb?(ma?-1:1):(ma?a.prix-b.prix:b.prix-a.prix)}).slice(0,3);
+function suggestions(missing){
+  var inBag={},sellers={};bag.forEach(function(b){inBag[b.id]=1;sellers[b.vendeur_id]=1});
+  return BOOKS.filter(function(b){return!inBag[b.id]&&!(current&&b.vendeur_id===current.id)})
+    .sort(function(a,b){var sa=sellers[a.vendeur_id]?0:1,sb2=sellers[b.vendeur_id]?0:1;if(sa!==sb2)return sa-sb2;var ma=a.prix>=missing,mb=b.prix>=missing;return ma!==mb?(ma?-1:1):(ma?a.prix-b.prix:b.prix-a.prix)}).slice(0,3);
 }
 function drops(n){return n+" Bookster Drop"+(n>1?"s":"")}
 var GAUGE_PREV={};
-function gaugeHtml(g,compact){
-  var max=TIERS[TIERS.length-1],pct=Math.min(g.sub,max)/max*100,from=GAUGE_PREV[g.vid]==null?0:GAUGE_PREV[g.vid];
-  var ms=TIERS.map(function(t,i){var on=g.gifts>i,last=t===MECENE;
-    return'<li class="dg-m'+(on?" on":"")+(last?" mec":"")+'" style="left:'+(t/max*100)+'%"><span class="dg-dot">'+(last?"🏅":(on?CHECK:(i+1)))+'</span><small><b>'+t+' €</b>'+(compact?"":"<em>"+(last?"5 + badge":(i+1)+" Drop"+(i?"s":""))+"</em>")+'</small></li>'}).join("");
-  return'<div class="dgauge" data-vid="'+esc(g.vid)+'" data-from="'+from+'" data-to="'+pct+'" role="progressbar" aria-label="Jauge du Bookstery Drop chez '+esc(sellerOf(g.vid).nom)+'" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+Math.min(g.sub,max)+'" aria-valuetext="'+EUR.format(g.sub)+', '+drops(g.gifts)+' débloqué'+(g.gifts>1?"s":"")+'">'+
+/* Jauge générique : valeur en €, échelle 0 → end, jalons [{v,label,em,mark}] */
+function gaugeHtml(key,value,end,marks,aria,cls){
+  var prev=GAUGE_PREV[key]==null?0:GAUGE_PREV[key],pct=Math.min(value,end)/end*100,from=Math.min(prev,end)/end*100;
+  var ms=marks.map(function(m){var on=value+1e-9>=m.v;
+    return'<li class="dg-m'+(on?" on":"")+(m.cls?" "+m.cls:"")+'" style="left:'+(m.v/end*100)+'%"><span class="dg-dot">'+(on?(m.onIcon||CHECK):m.mark)+'</span><small><b>'+m.label+'</b>'+(m.em?"<em>"+m.em+"</em>":"")+'</small></li>'}).join("");
+  return'<div class="dgauge'+(cls?" "+cls:"")+'" data-key="'+key+'" data-val="'+value+'" data-from="'+from+'" data-to="'+pct+'" role="progressbar" aria-label="'+esc(aria)+'" aria-valuemin="0" aria-valuemax="'+end+'" aria-valuenow="'+Math.min(value,end)+'">'+
     '<div class="dg-track"><i class="dg-fill" style="width:'+from+'%"></i></div><ol class="dg-ms">'+ms+'</ol></div>';
 }
-/* Anime chaque jauge de sa valeur précédente vers la nouvelle, et fête les paliers franchis */
+/* Anime chaque jauge de sa valeur précédente vers la nouvelle, et fête les jalons franchis */
 function animateGauges(root){(root||document).querySelectorAll(".dgauge").forEach(function(el){
-  var f=el.querySelector(".dg-fill"),to=parseFloat(el.getAttribute("data-to")),from=parseFloat(el.getAttribute("data-from")),vid=el.getAttribute("data-vid");
+  var f=el.querySelector(".dg-fill"),to=parseFloat(el.getAttribute("data-to")),from=parseFloat(el.getAttribute("data-from"));
   requestAnimationFrame(function(){requestAnimationFrame(function(){f.style.width=to+"%"})});
-  if(to>from){var max=TIERS[TIERS.length-1];el.querySelectorAll(".dg-m.on").forEach(function(m,i){var t=TIERS[i]/max*100;if(t>from&&t<=to){m.classList.add("pop");el.classList.add("lvl")}})}
-  GAUGE_PREV[vid]=to;})}
+  if(to>from)el.querySelectorAll(".dg-m.on").forEach(function(m){var l=parseFloat(m.style.left);if(l>from&&l<=to){m.classList.add("pop");el.classList.add("lvl")}});
+  GAUGE_PREV[el.getAttribute("data-key")]=parseFloat(el.getAttribute("data-val"));})}
 function groupHtml(g){
   var s=sellerOf(g.vid);
-  var label=g.gifts===0?"Aucun Bookster Drop débloqué pour l’instant":"<b>"+drops(g.gifts)+"</b> débloqué"+(g.gifts>1?"s":"")+" · "+g.gifts+" manuscrit"+(g.gifts>1?"s":"")+" mystère"+(g.gifts>1?"s":"")+" offert"+(g.gifts>1?"s":"");
-  var nudge="";
-  if(g.next){
-    var sg=suggestions(g),isMec=g.next===MECENE;
-    nudge='<div class="nudge"><p>Plus que <b>'+EUR.format(g.missing)+'</b> chez '+esc(s.nom)+' pour ton '+ordinal(g.gifts+1)+' Bookster Drop'+(isMec?' <span class="mec-tag">+ badge Mécène Bookster 🏅</span>':"")+' !</p>'+
-      (sg.length?'<ul class="sugg">'+sg.map(function(b){return'<li><span>'+esc(b.titre)+'</span><em>'+EUR.format(b.prix)+'</em>'+addBtn(b,true)+'</li>'}).join("")+'</ul>':"")+'</div>';
-  }else nudge='<div class="mecene"><span aria-hidden="true">🏅</span><div><b>Badge Mécène Bookster débloqué !</b><small>5 Bookster Drops : merci de faire vivre les livres et les auteurs.</small></div></div>';
   return'<section class="sg" aria-label="Livres de '+esc(s.nom)+'"><div class="sg-h"><div><b>'+esc(s.nom)+'</b>'+(s.ville?' <span>· '+esc(s.ville)+'</span>':"")+'</div><span class="sub">'+EUR.format(g.sub)+'</span></div>'+
-    '<ul class="items">'+g.items.map(function(b){return'<li class="item">'+coverHtml(b,true)+'<div class="item-t"><b>'+esc(b.titre)+'</b><span>'+esc(ETAT_TXT[b.etat]||b.genre||"")+'</span></div><span class="p">'+EUR.format(b.prix)+'</span><button class="icon rm" type="button" data-rm="'+esc(b.id)+'" aria-label="Retirer '+esc(b.titre)+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></li>'}).join("")+'</ul>'+
-    '<div class="prog"><p class="prog-l"><span class="drop-k">⚡ Jauge du Bookstery Drop</span>'+label+'</p>'+gaugeHtml(g)+'</div>'+nudge+'</section>';
+    '<ul class="items">'+g.items.map(function(b){return'<li class="item">'+coverHtml(b,true)+'<div class="item-t"><b>'+esc(b.titre)+'</b><span>'+esc(ETAT_TXT[b.etat]||b.genre||"")+'</span></div><span class="p">'+EUR.format(b.prix)+'</span><button class="icon rm" type="button" data-rm="'+esc(b.id)+'" aria-label="Retirer '+esc(b.titre)+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></li>'}).join("")+'</ul></section>';
 }
+/* 1) Commande en cours : chaque tranche de 10 € dans le panier = 1 Bookster Drop immédiat */
+function dropBlockHtml(t){
+  var end=Math.max(30,(t.gifts+2)*DROP_STEP),marks=[];
+  for(var v=DROP_STEP;v<=end;v+=DROP_STEP){var n=v/DROP_STEP;marks.push({v:v,label:v+" €",em:n+" Drop"+(n>1?"s":""),mark:n})}
+  var label=t.gifts===0?"Aucun Bookster Drop débloqué pour l’instant":"<b>"+drops(t.gifts)+"</b> débloqué"+(t.gifts>1?"s":"")+" · "+t.gifts+" manuscrit"+(t.gifts>1?"s":"")+" mystère"+(t.gifts>1?"s":"")+" offert"+(t.gifts>1?"s":"");
+  var sg=suggestions(t.missing);
+  return'<section class="drop-box" aria-label="Bookster Drops de ta commande"><p class="prog-l"><span class="drop-k">⚡ Bookster Drops de ta commande</span>'+label+'</p>'+
+    gaugeHtml("cart",t.books,end,marks,"Bookster Drops de ta commande : "+EUR.format(t.books)+", "+drops(t.gifts))+
+    '<div class="nudge"><p>Plus que <b>'+EUR.format(t.missing)+'</b> dans ton panier pour ton '+ordinal(t.gifts+1)+' Bookster Drop !</p>'+
+    (sg.length?'<ul class="sugg">'+sg.map(function(b){return'<li><span>'+esc(b.titre)+'</span><em>'+EUR.format(b.prix)+'</em>'+addBtn(b,true)+'</li>'}).join("")+'</ul>':"")+'</div></section>';
+}
+/* 2) Fidélité : cumul de tous les achats de livres → statut Bookster VIP à 50 € */
+var vipState={total:0,jury:false};
+function vipLoad(){if(!sb){try{var v=JSON.parse(localStorage.getItem("bookstery.vip")||"null");if(v){vipState.total=Number(v.total)||0;vipState.jury=!!v.jury}}catch(e){}}}
+function vipSaveDemo(){try{localStorage.setItem("bookstery.vip",JSON.stringify(vipState))}catch(e){}}
+function isVip(){return vipState.jury||vipState.total+1e-9>=VIP_SEUIL}
+function vipHtml(extra,key){
+  var cum=r2(vipState.total),proj=r2(cum+(extra||0));
+  if(isVip())return'<section class="vip-box gold"><span class="vip-badge" aria-hidden="true">👑</span><div><b>Badge Bookster VIP</b><small>Tu fais partie du jury : tu peux voter pour le prochain <b>Golden Book</b>. Merci de faire vivre les livres !</small><small class="vip-cum">'+EUR.format(cum)+' de livres achetés depuis ton arrivée.</small></div></section>';
+  var marks=[{v:VIP_SEUIL,label:VIP_SEUIL+" €",em:"VIP",mark:"👑",onIcon:"👑",cls:"mec"}];
+  var reste=r2(Math.max(0,VIP_SEUIL-cum));
+  var prev=extra>0?'<i class="vip-prev" style="left:'+(Math.min(cum,VIP_SEUIL)/VIP_SEUIL*100)+'%;width:'+((Math.min(proj,VIP_SEUIL)-Math.min(cum,VIP_SEUIL))/VIP_SEUIL*100)+'%"></i>':"";
+  return'<section class="vip-box" aria-label="Progression Bookster VIP"><p class="vip-t"><span aria-hidden="true">👑</span> Progression Bookster VIP : <b>'+EUR.format(cum)+' / '+VIP_SEUIL+' €</b></p>'+
+    gaugeHtml(key||"vip",cum,VIP_SEUIL,marks,"Progression Bookster VIP : "+EUR.format(cum)+" sur "+VIP_SEUIL+" €","vipg").replace('<i class="dg-fill"',prev+'<i class="dg-fill"')+
+    '<p class="vip-msg">(plus que <b>'+EUR.format(reste)+'</b> cumulés pour débloquer ton badge Bookster VIP et voter pour le prochain Golden Book)</p>'+
+    (extra>0?(proj+1e-9>=VIP_SEUIL?'<p class="vip-next">✨ Avec ce panier, tu deviens <b>Bookster VIP</b> !</p>':'<p class="vip-next">Avec ce panier : '+EUR.format(proj)+' / '+VIP_SEUIL+' € cumulés.</p>'):"")+'</section>';
+}
+function vipUI(){var box=$("aVip");if(box){box.innerHTML=vipHtml(0,"vipAccount");animateGauges(box)}var hb=$("aVipPill");if(hb)hb.hidden=!isVip()}
+
+
 function renderBag(){
   var t=totals(),n=bag.length;
   $("bagAmt").textContent=EUR.format(t.total);
@@ -2298,7 +2335,7 @@ function renderBag(){
     $("dBody").innerHTML='<div class="dempty"><div class="ico"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></div><b>Ton Bookster Bag est vide</b><span>Dès 10 € chez un même vendeur, un manuscrit mystère t’est offert.</span><a class="btn" href="#catalogue" data-close style="margin-top:8px">Voir les livres</a></div>';
     $("dFoot").hidden=true;return;
   }
-  $("dBody").innerHTML=t.groups.map(groupHtml).join("");animateGauges($("dBody"));
+  $("dBody").innerHTML=dropBlockHtml(t)+t.groups.map(groupHtml).join("")+vipHtml(t.books,"vipBag");animateGauges($("dBody"));
   $("dFoot").hidden=false;
   /* Choix du genre du cadeau mystère quand le Bag mélange plusieurs genres */
   if(giftGenre&&t.genres.indexOf(giftGenre)<0)giftGenre=null;
@@ -2345,8 +2382,7 @@ function renderFiche(){
   var b=findBook(ficheId);if(!b)return;
   var s=sellerOf(b.vendeur_id),l=locOf(b),own=current&&b.vendeur_id===current.id;
   var others=sellerBooks(b.vendeur_id).filter(function(x){return String(x.id)!==String(b.id)});
-  var g=groups().filter(function(x){return x.vid===b.vendeur_id})[0],sub=g?g.sub:0,gifts=booksterbooks(sub),next=TIERS[gifts];
-  var prog=next?(sub?"Tu as "+EUR.format(sub)+" chez "+esc(s.nom)+" : plus que <b>"+EUR.format(r2(next-sub))+"</b> pour ton "+ordinal(gifts+1)+" Bookster Drop"+(next===MECENE?" et le badge Mécène 🏅":"")+".":"Dès <b>10 €</b> chez "+esc(s.nom)+", ton 1er Bookster Drop : un manuscrit mystère offert. Regroupe tes achats, jusqu’à 5 Drops dès 50 € !"):"<b>5 Bookster Drops et badge Mécène 🏅</b> chez "+esc(s.nom)+" : le maximum.";
+    var tt=totals(),prog=(tt.books?"Ton panier : <b>"+EUR.format(tt.books)+"</b>, "+drops(tt.gifts)+". ":"")+"Plus que <b>"+EUR.format(tt.missing)+"</b> pour ton "+ordinal(tt.gifts+1)+" Bookster Drop : chaque tranche de 10 € de livres t’offre un manuscrit mystère.";
   var lot=sellerBooks(b.vendeur_id).filter(function(x){return!bagHas(x.id)}),lotSum=r2(lot.reduce(function(a,x){return a+x.prix},0));
   $("ficheBody").innerHTML=
     '<div class="f-top">'+coverHtml(b)+'<div class="f-info">'+
@@ -2369,7 +2405,7 @@ function renderFiche(){
 document.addEventListener("click",function(e){
   var f=e.target.closest("[data-fiche]");if(f){var id=f.getAttribute("data-fiche");if($("fiche").classList.contains("on")){ficheId=id;renderFiche();$("fiche").scrollTop=0}else openFiche(id)}
   var lot=e.target.closest("[data-lot]");if(lot){var vid=lot.getAttribute("data-lot"),n=0;sellerBooks(vid).forEach(function(x){if(!bagHas(x.id)&&!(current&&x.vendeur_id===current.id)){bag.push({id:x.id,titre:x.titre,auteur:x.auteur||"",genre:x.genre||"",etat:x.etat||"",prix:Number(x.prix),vendeur_id:x.vendeur_id,couverture_url:x.couverture_url||""});n++}});
-    saveBag();renderAll();var g=groups().filter(function(x){return x.vid===vid})[0];toast(n+" livre"+(n>1?"s":"")+" ajouté"+(n>1?"s":"")+" : "+(g&&g.gifts?g.gifts+" manuscrit"+(g.gifts>1?"s":"")+" mystère"+(g.gifts>1?"s":"")+" débloqué"+(g.gifts>1?"s":"")+" chez "+sellerOf(vid).nom+" !":"lot ajouté à ton Bag."))}
+    saveBag();renderAll();var tt=totals();toast(n+" livre"+(n>1?"s":"")+" ajouté"+(n>1?"s":"")+" : "+(tt.gifts?drops(tt.gifts)+" dans ton panier !":"lot ajouté à ton Bag."))}
 });
 var _renderAllF=renderAll;
 renderAll=function(){_renderAllF();if(ficheId&&$("fiche").classList.contains("on"))renderFiche()};
@@ -2651,12 +2687,12 @@ document.addEventListener("click",function(e){
 });
 
 /* --- Commande : remplace le simple message par la validation + QR codes --- */
-function showCommande(total,list,manquants,demo,mecene){
+function showCommande(total,list,manquants,demo,devientVip){
   $("cmdSum").textContent="Total réglé : "+EUR.format(total)+". "+(list.length?(list.length>1?"Tes "+list.length+" manuscrits mystères t’attendent":"Ton manuscrit mystère t’attend")+" : lis-le ici ou scanne le QR code avec ton téléphone.":"Merci pour ta commande !");
   bbCards(list,$("cmdBB"));if(!list.length)$("cmdBB").innerHTML="";
   $("cmdNote").textContent=(manquants>0?manquants+" manuscrit"+(manquants>1?"s mystères n’ont":" mystère n’a")+" pas pu être attribué"+(manquants>1?"s":"")+" faute de texte disponible dans ce genre : nous te l’enverrons dès qu’un auteur en dépose un. ":"")+
     (demo?"Mode démo : aucun paiement n’a eu lieu. ":"")+"Tu retrouves tes manuscrits mystères à tout moment dans « Mes manuscrits mystères ».";
-  var mb=$("cmdMecene");if(mb)mb.hidden=!mecene;
+  $("cmdVip").innerHTML=devientVip?'<section class="vip-box gold pop"><span class="vip-badge" aria-hidden="true">👑</span><div><b>Bienvenue parmi les Bookster VIP !</b><small>Tu as atteint 50 € de livres achetés : ton badge doré est sur ton profil et tu peux voter pour le prochain <b>Golden Book</b>.</small></div></section>':vipHtml(0,"vipCmd");animateGauges($("cmdVip"));
   open($("commande"));
 }
 /* Ordre de tirage : genre exact, puis sa famille, puis le genre de secours choisi, puis le reste */
@@ -2671,15 +2707,15 @@ async function checkout(t,genre,secours){
     var dejaTitres=demoBB.map(function(b){return b.titre});
     var nouveaux=pool.filter(function(x){return dejaTitres.indexOf(x.titre)<0}).concat(pool).slice(0,t.gifts).map(function(x){return Object.assign({token:uuid(),nb_mots:nbMots(x.texte),created_at:new Date().toISOString(),lu_at:null},x)});
     demoBB=nouveaux.concat(demoBB);saveBB();
-    var mec=t.groups.some(function(g){return g.sub+1e-9>=MECENE});if(mec){try{localStorage.setItem("bookstery.mecene","1")}catch(e){}}
-    bag=[];giftGenre=null;giftSecours=null;saveBag();renderAll();closeAll(true);showCommande(t.total,nouveaux,0,true,mec);badgeUI();return;
+    var wasVip=isVip();vipState.total=r2(vipState.total+t.books);if(vipState.total+1e-9>=VIP_SEUIL)vipState.jury=true;vipSaveDemo();
+    bag=[];giftGenre=null;giftSecours=null;saveBag();renderAll();closeAll(true);showCommande(t.total,nouveaux,0,true,!wasVip&&isVip());vipUI();return;
   }
   busy(btn,true,"Validation…");setMsg("payMsg","");
   try{
     var r=await sb.functions.invoke("valider-commande",{body:{annonce_ids:bag.map(function(b){return b.id}),genre:genre||null,genre_secours:secours||null}});
     if(r.error){var body=null;try{body=await r.error.context.json()}catch(x){}return setMsg("payMsg",(body&&body.erreur)||"La commande n’a pas pu être validée. Réessaie.","err")}
     var d=r.data;bag=[];giftGenre=null;giftSecours=null;saveBag();loadDispo();loadCatalogue();closeAll(true);
-    showCommande(Number(d.commande.total),(d.booksterbooks||[]).map(function(b){return{token:b.token,titre:b.titre,genre:b.genre,lu_at:null}}),d.manquants||0,false,!!d.mecene);if(d.mecene){myBadge=true;badgeUI()}
+    showCommande(Number(d.commande.total),(d.booksterbooks||[]).map(function(b){return{token:b.token,titre:b.titre,genre:b.genre,lu_at:null}}),d.manquants||0,false,(function(){var was=isVip();if(d.vip){vipState.total=Number(d.vip.total_spent_books)||vipState.total;vipState.jury=!!d.vip.is_vip_jury}return!was&&isVip()})());vipUI();
   }catch(e){console.error(e);setMsg("payMsg","La commande n’a pas pu être validée. Réessaie.","err")}
   finally{busy(btn,false)}
 }
@@ -2856,12 +2892,11 @@ var STEPS=[
    done:function(){return bag.length>0},
    auto:function(){var b=filtered().filter(function(x){return!bagHas(x.id)})[0]||BOOKS[0];$("catalogue").scrollIntoView({behavior:"smooth"});addToBag(b.id)}},
   {t:"Débloque ton premier manuscrit mystère",
-   x:"Ouvre ton Bag. Dès 10 € chez un même vendeur, un texte inédit t’est offert : ajoute un livre suggéré par l’encart violet.",
+   x:"Ouvre ton Bag. Chaque tranche de 10 € de livres dans ton panier t’offre un Bookster Drop : ajoute un livre suggéré par l’encart violet.",
    hi:function(){return tourDrawerOpen()?(document.querySelector(".nudge")||document.querySelector(".prog")):$("bagBtn")},
    done:function(){return totals().gifts>0},
    auto:function(){if(!tourDrawerOpen())open($("drawer"));
-     var g=groups().sort(function(a,b){return b.sub-a.sub})[0];if(!g)return;
-     var pool=BOOKS.filter(function(x){return x.vendeur_id===g.vid&&!bagHas(x.id)}).sort(function(a,b){return b.prix-a.prix}),sum=g.sub;
+     var sum=totals().books,pool=suggestions(r2(10-sum)).concat(BOOKS.filter(function(x){return!bagHas(x.id)}));
      pool.forEach(function(x){if(sum<10){addToBag(x.id);sum=r2(sum+x.prix)}});}},
   {t:"Choisis le genre de ton cadeau",
    x:"Ton Bag mélange plusieurs genres : dans l’encart vert, choisis celui de ton manuscrit mystère.",
@@ -2989,8 +3024,8 @@ var AIDE_FAQ=[
  {k:"bookstery c est quoi qu est ce que presentation principe plateforme concept",a:"Bookstery est une plateforme lyonnaise, éthique et circulaire : tu achètes et vends des **livres d’occasion** entre Booksters, et chaque achat peut t’offrir un **manuscrit mystère**, un texte inédit d’un auteur indépendant. Une seconde vie aux livres, et une première aux auteurs !"},
  {k:"acheter commander achat panier bag ajouter commande payer paiement passer",a:"Pour acheter :\n• clique sur « **Ajouter** » sous un livre (ou dans sa fiche) ;\n• ouvre ton **Bookster Bag** en haut ;\n• touche « **Passer au paiement** ».\nIl faut un compte Bookster pour commander."},
  {k:"protection acheteur frais commission 5 0,70 70 centimes cout",a:"La **Protection Acheteur** est de 5 % du montant des livres + 0,70 €. Elle est payée par l’acheteur : le vendeur, lui, ne paie **aucun frais** et reçoit 100 % de son prix."},
- {k:"drop drops bookster bookstery drop manuscrit mystere mysteres cadeau jauge palier offert gratuit 10 20 30 40 50",a:"Le **Bookstery Drop** glisse des manuscrits mystères (textes inédits d’auteurs indépendants) dans ton Bag. La jauge se remplit **par vendeur** : tous les 10 € chez un même vendeur, tu débloques un **Bookster Drop** (un manuscrit offert) :\n• 10 € : 1 Drop · 20 € : 2 · 30 € : 3 · 40 € : 4 ;\n• 50 € : 5 Drops + le **badge Mécène Bookster** 🏅.\nAstuce : regroupe tes achats chez un vendeur grâce à « Dans sa bibliothèque »."},
- {k:"mecene badge macene 50 recompense profil",a:"Le **badge Mécène Bookster** 🏅 se débloque quand tu atteins **50 € d’achats chez un même vendeur** dans une commande : tu reçois 5 Bookster Drops et le badge s’affiche sur ton profil. Merci de faire vivre les livres et les auteurs !"},
+ {k:"drop drops bookster bookstery drop manuscrit mystere mysteres cadeau jauge palier offert gratuit 10 20 30 40",a:"Le **Bookstery Drop** glisse des manuscrits mystères (textes inédits d’auteurs indépendants) dans ta commande : **chaque tranche de 10 € de livres dans ton panier** débloque tout de suite un **Bookster Drop**, tous vendeurs confondus.\n• 10 € : 1 Drop · 20 € : 2 · 30 € : 3, et ainsi de suite.\nLe panier t’indique combien il te manque pour le suivant."},
+ {k:"vip bookster vip statut badge dore jury golden book vote fidelite cumul 50 recompense profil mecene",a:"Le statut **Bookster VIP** 👑 récompense ta fidélité : tous tes achats de livres s’additionnent, commande après commande. Dès **50 € cumulés**, tu passes VIP automatiquement : badge doré sur ton profil, et tu peux **voter pour le prochain Golden Book**. Ta progression s’affiche en bas de ton panier et dans ton espace."},
  {k:"genre cadeau choisir genre secours famille aucun texte",a:"Si ton Bag mélange plusieurs genres, tu choisis celui de ton cadeau avant de payer. S’il n’existe pas encore de texte dans ce genre, on prend un texte de la **même famille** (par exemple Thriller → Polar) ; sinon, tu choisis parmi **tes genres préférés**."},
  {k:"liseuse lire lis lit lecture qr code ouvrir mode nuit manuscrit mystere",a:"Après ta commande, chaque manuscrit mystère a un **QR code** : scanne-le avec ton téléphone pour l’ouvrir dans la liseuse. Tu le retrouves aussi dans « **Mes manuscrits mystères** » (ton espace, ou le raccourci dans le Bag). Fond crème ou **mode nuit**, temps de lecture estimé, et à la fin tu peux noter l’auteur, lui écrire et le suivre."},
  {k:"copier coller copie capture proteger protection texte filigrane",a:"Dans la liseuse, le copier-coller et le clic droit sont bloqués et un filigrane protège le texte : c’est pour respecter le travail des auteurs."},
@@ -3054,6 +3089,8 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("helpPan
   /* Petit « Besoin d'aide ? » au premier passage */
   setTimeout(function(){if($("helpPanel").hidden){$("helpFab").classList.add("hello");setTimeout(function(){$("helpFab").classList.remove("hello")},4000)}},6000);
 })();
+
+vipLoad();if(typeof renderBag==="function"&&bag.length)renderBag();
 </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 // Bookstery : validation d'une commande et attribution des manuscrits mystères.
 //
-// Recalcule tout côté serveur (prix, Protection Acheteur, paliers par vendeur),
+// Recalcule tout côté serveur (prix, Protection Acheteur, Bookster Drops : 1 par tranche de 10 €),
 // réserve les livres, tire au sort les extraits offerts dans le genre choisi
 // et renvoie les jetons d'accès à la liseuse (pour les QR codes).
 //
@@ -11,10 +11,9 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 
-const PALIERS = [10, 20, 30, 40, 50]; // 1 à 5 Bookster Drops (manuscrits mystères) par vendeur
-const MECENE = 50;                     // badge Mécène Bookster
+const DROP_STEP = 10; // commande en cours : chaque tranche de 10 € de livres = 1 Bookster Drop (manuscrit mystère offert)
 const r2 = (x: number) => Math.round((x + Number.EPSILON) * 100) / 100;
-const booksterbooks = (sous: number) => PALIERS.filter((p) => sous + 1e-9 >= p).length;
+const booksterbooks = (livres: number) => Math.floor((livres + 1e-9) / DROP_STEP);
 const protection = (livres: number) => (livres > 0 ? r2(livres * 0.05 + 0.7) : 0);
 
 // Familles de genres (même liste que dans index.html) : si aucun texte n'existe
@@ -58,13 +57,13 @@ Deno.serve(async (req) => {
   }
   if (annonces.some((a) => a.vendeur_id === user.id)) return json(400, { erreur: "Tu ne peux pas acheter tes propres annonces." });
 
-  // Paliers par vendeur
+  // Montant des livres (par vendeur pour le contrôle, puis total)
   const parVendeur = new Map<string, number>();
   for (const a of annonces) parVendeur.set(a.vendeur_id, r2((parVendeur.get(a.vendeur_id) ?? 0) + Number(a.prix)));
   let nb = 0, livres = 0;
-  for (const s of parVendeur.values()) { nb += booksterbooks(s); livres = r2(livres + s); }
+  for (const s of parVendeur.values()) livres = r2(livres + s);
+  nb = booksterbooks(livres);
   const prot = protection(livres);
-  const mecene = [...parVendeur.values()].some((s) => s + 1e-9 >= MECENE);
 
   // Genre du cadeau
   const genres = [...new Set(annonces.map((a) => a.genre).filter(Boolean))];
@@ -116,7 +115,10 @@ Deno.serve(async (req) => {
     }
   }
 
-  if (mecene) await admin.from("profiles").update({ badge_mecene: true }).eq("id", user.id);
+  // Fidélité : cumul des livres achetés → statut Bookster VIP (jury du Golden Book) à 50 €
+  let vip: { total_spent_books: number; is_vip_jury: boolean } | null = null;
+  const { data: v, error: e3 } = await admin.rpc("ajouter_achats_livres", { p_user: user.id, p_montant: livres });
+  if (e3) console.error("vip", e3); else vip = Array.isArray(v) ? v[0] ?? null : v;
 
-  return json(200, { commande, booksterbooks: offerts, manquants: nb - offerts.length, mecene });
+  return json(200, { commande, booksterbooks: offerts, manquants: nb - offerts.length, vip });
 });
