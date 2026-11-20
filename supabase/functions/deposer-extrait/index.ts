@@ -26,7 +26,7 @@ import { MESSAGES, moderer, type Moderation } from "./moderation.ts";
 const MIN_MOTS = 1000;
 const MAX_MOTS = 5000;
 const SEUIL_IA = 0.5; // refus si le taux d'IA est strictement supérieur à 50 %
-const GENRES = ["BD", "Classiques", "Fantasy", "Jeunesse", "Manga", "Nouvelles", "Poésie", "Polar", "Romance", "Romans", "Science-fiction", "Scolaire", "Thriller"];
+const GENRES = ["Aventure", "Contes & Légendes", "Fantastique", "Fantasy", "Feel-good", "Horreur", "Humour", "Jeunesse", "Nouvelles", "Polar", "Poésie", "Roman historique", "Romance", "Romans", "Science-fiction", "Thriller", "Théâtre", "Young Adult"];
 
 // ⚠️ Adresses, en-têtes et champs de réponse à vérifier dans la documentation de ton compte.
 const DETECTEUR = (Deno.env.get("AI_DETECTOR") ?? "pangram").toLowerCase();

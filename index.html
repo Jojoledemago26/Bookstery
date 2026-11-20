@@ -726,6 +726,11 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 .book-card .bcover{transition:box-shadow .25s ease}
 .book-card:hover .bcover{box-shadow:inset 6px 0 0 rgba(0,0,0,.16),0 22px 40px -12px rgba(28,22,80,.30)}
 @media(hover:none){.book-card:hover{transform:none}}
+/* Étiquettes de genre qui se soulèvent au survol */
+.chip,.gtag{transition:transform .2s ease,box-shadow .2s ease,background .2s,border-color .2s,color .2s}
+.chip:hover,.gtag:hover{transform:translateY(-3px);box-shadow:0 8px 18px -6px rgba(96,80,220,.35)}
+.chip-more{border-style:dashed;border-color:var(--maj);color:var(--maj);font-weight:700}
+@media(hover:none){.chip:hover,.gtag:hover{transform:none;box-shadow:none}}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1245,7 +1250,13 @@ var QUOTES=[
  ["Une bibliothèque est une chambre d’amis.","Tahar Ben Jelloun"],
  ["J’ai toujours imaginé que le Paradis serait une sorte de bibliothèque.","Jorge Luis Borges"]
 ];
-var GENRES=["BD","Classiques","Fantasy","Jeunesse","Manga","Nouvelles","Poésie","Polar","Romance","Romans","Science-fiction","Scolaire","Thriller"].sort(new Intl.Collator("fr",{sensitivity:"base"}).compare);
+var GENRE_SORT=new Intl.Collator("fr",{sensitivity:"base"}).compare;
+/* Tous les genres du catalogue (livres d'occasion), par ordre alphabétique */
+var GENRES=["Art & Photographie","Aventure","BD","Biographies & Mémoires","Classiques","Comics","Contes & Légendes","Cuisine","Développement personnel","Économie & Entreprise","Essais","Fantastique","Fantasy","Feel-good","Histoire","Horreur","Humour","Jeunesse","Langues & Dictionnaires","Loisirs créatifs","Manga","Musique & Cinéma","Nature & Animaux","Nouvelles","Philosophie","Poésie","Polar","Psychologie","Religion & Spiritualité","Roman historique","Romance","Romans","Santé & Bien-être","Science-fiction","Sciences","Scolaire","Société & Politique","Sport","Théâtre","Thriller","Voyage","Young Adult"].sort(GENRE_SORT);
+/* Genres proposés aux auteurs pour leurs textes (fiction et création littéraire) */
+var GENRES_AUTEUR=["Aventure","Contes & Légendes","Fantastique","Fantasy","Feel-good","Horreur","Humour","Jeunesse","Nouvelles","Poésie","Polar","Roman historique","Romance","Romans","Science-fiction","Théâtre","Thriller","Young Adult"].sort(GENRE_SORT);
+/* Genres affichés d'emblée sous la barre de recherche ; « Tous les genres » déplie le reste */
+var GENRES_TOP=["BD","Classiques","Fantasy","Jeunesse","Manga","Nouvelles","Poésie","Polar","Romance","Romans","Science-fiction","Thriller"].sort(GENRE_SORT);
 function $(i){return document.getElementById(i)}
 var EUR=new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"});
 function toast(m){var t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove("show")},2800)}
@@ -1394,15 +1405,43 @@ function isbnStatus(txt,kind){var m=$("isbnStatus");m.textContent=txt||"";m.clas
 /* --- Genre : catégories Google Books / Open Library -> genres Bookstery --- */
 var GENRE_RULES=[
   ["Manga",/manga/],
+  ["Comics",/superhero|super-héros|marvel|dc comics/],
   ["BD",/comic|graphic novel|bande[s]? dessin|bd\b/],
-  ["Jeunesse",/juvenile|young adult|children|jeunesse|enfant/],
+  ["Young Adult",/young adult/],
+  ["Jeunesse",/juvenile|children|jeunesse|enfant/],
   ["Science-fiction",/science fiction|science-fiction|dystop/],
-  ["Fantasy",/fantasy|fantastique/],
+  ["Horreur",/horror|horreur|épouvante/],
+  ["Fantasy",/fantasy/],
+  ["Fantastique",/fantastique|supernatural|paranormal/],
   ["Romance",/romance|love stor|sentimental/],
+  ["Roman historique",/historical fiction|roman historique/],
   ["Thriller",/thriller|suspense/],
   ["Polar",/mystery|detective|crime|policier|polar|noir/],
+  ["Aventure",/action & adventure|adventure|aventure/],
+  ["Contes & Légendes",/fairy tale|folklore|mytholog|conte|légende/],
   ["Poésie",/poetry|poésie|poesie|poèmes|poems/],
-  ["Scolaire",/study aids|education|textbook|mathemat|foreign language study|scolaire|manuel/],
+  ["Théâtre",/drama|théâtre|theatre|plays/],
+  ["Humour",/humor|humour/],
+  ["Biographies & Mémoires",/biograph|autobiograph|memoir|mémoires/],
+  ["Cuisine",/cooking|cuisine|recipes|recettes|gastronom/],
+  ["Développement personnel",/self-help|personal growth|développement personnel/],
+  ["Psychologie",/psycholog/],
+  ["Philosophie",/philosoph/],
+  ["Religion & Spiritualité",/religion|spiritual|bible|body, mind|ésotér/],
+  ["Santé & Bien-être",/health|fitness|santé|bien-être|médecine|medical/],
+  ["Économie & Entreprise",/business|economics|économie|management|finance/],
+  ["Société & Politique",/political science|social science|politique|société|sociolog/],
+  ["Histoire",/history|histoire/],
+  ["Langues & Dictionnaires",/language arts|dictionar|foreign language|dictionnaire/],
+  ["Scolaire",/study aids|education|textbook|scolaire|manuel/],
+  ["Sciences",/science|mathemat|technolog|nature science/],
+  ["Nature & Animaux",/nature|pets|animaux|gardening|jardin/],
+  ["Voyage",/travel|voyage|guide/],
+  ["Sport",/sports|sport/],
+  ["Loisirs créatifs",/crafts|hobbies|loisirs|bricolage/],
+  ["Musique & Cinéma",/music|musique|performing arts|cinéma|film/],
+  ["Art & Photographie",/\bart\b|arts|photograph|architecture|design/],
+  ["Essais",/essays|essai|literary criticism/],
   ["Classiques",/classics|classique/],
   ["Romans",/fiction|roman|novel|literary/]
 ];
@@ -1703,9 +1742,16 @@ function renderGrid(){
 $("catMore").addEventListener("click",function(){catLimit+=8;renderGrid()});
 
 /* Genres et recherche filtrent le catalogue */
-function renderChips(){["chips","catChips"].forEach(function(id){$(id).innerHTML=GENRES.map(function(g){return'<button class="chip" type="button" data-chip="'+g+'" aria-pressed="'+(g===catGenre)+'">'+g+'</button>'}).join("")})}
+var heroAll=false;
+function chipHtml(g){return'<button class="chip" type="button" data-chip="'+esc(g)+'" aria-pressed="'+(g===catGenre)+'">'+esc(g)+'</button>'}
+function renderChips(){
+  var hero=heroAll?GENRES:GENRES_TOP.concat(catGenre&&GENRES_TOP.indexOf(catGenre)<0?[catGenre]:[]).sort(GENRE_SORT);
+  $("chips").innerHTML=hero.map(chipHtml).join("")+'<button class="chip chip-more" type="button" data-more aria-expanded="'+heroAll+'">'+(heroAll?"Moins de genres ↑":"Tous les genres ("+GENRES.length+") ↓")+'</button>';
+  $("catChips").innerHTML=GENRES.map(chipHtml).join("");
+}
 function setGenre(g,scroll){catGenre=g;catLimit=8;renderChips();renderGrid();searchNote();if(scroll)$("catalogue").scrollIntoView({behavior:"smooth"})}
 renderChips();
+$("chips").addEventListener("click",function(e){if(e.target.closest("[data-more]")){heroAll=!heroAll;renderChips();var m=$("chips").querySelector("[data-more]");if(m)m.focus()}});
 ["chips","catChips"].forEach(function(id){$(id).addEventListener("click",function(e){var b=e.target.closest("[data-chip]");if(!b)return;var g=b.getAttribute("data-chip");setGenre(catGenre===g?null:g)})});
 document.addEventListener("click",function(e){var t=e.target.closest("[data-genre]");if(t){var g=t.getAttribute("data-genre");closeAll(true);setGenre(g,true)}});
 
@@ -1879,7 +1925,7 @@ renderBag();loadCatalogue();
 
 /* ================= Espace auteur ================= */
 var EX_MIN=1000,EX_MAX=5000,EX_SEUIL_IA=0.5,demoDepots=[];
-$("exGenre").innerHTML='<option value="">Choisis un genre</option>'+GENRES.map(function(g){return'<option>'+g+'</option>'}).join("");
+$("exGenre").innerHTML='<option value="">Choisis un genre</option>'+GENRES_AUTEUR.map(function(g){return'<option>'+g+'</option>'}).join("");
 function normTexte(t){return String(t||"").normalize("NFC").replace(/\r\n?/g,"\n").trim()}
 function nbMots(t){t=String(t||"").trim();return t?t.split(/\s+/).length:0}
 var NF=new Intl.NumberFormat("fr-FR");
