@@ -11,6 +11,7 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/extraits.sql` — tables des extraits d'auteurs et des dépôts refusés
 - `supabase/functions/deposer-extrait/` — fonction Edge : contrôle anti-IA, empreinte, horodatage
 - `supabase/liseuse.sql` — commandes, manuscrits mystères, avis, abonnements
+- `supabase/genres-disponibles.sql` — genres où des manuscrits mystères existent (genre de secours du cadeau)
 - `supabase/localisation.sql` — ville et région des annonces (filtre de localisation)
 - `supabase/moderation.sql` — journal des refus de modération
 - `supabase/signalements.sql` — signalements des lecteurs + retrait automatique
@@ -42,6 +43,7 @@ Bouton « Vendre un livre » (en-tête) ou étape 1 de « Comment ça marche » 
 - Manuscrits mystères offerts **par vendeur** (jauge du Bookstery Drop) : dès 10 € → 1, dès 20 € → 2, dès 35 € → 3, avec barre de progression.
   Sous 10 € : « Plus que X € chez ce vendeur pour débloquer ton 1er manuscrit mystère ! » et des suggestions du même vendeur.
 - Si le Bag mélange plusieurs genres, l'acheteur choisit le genre de son cadeau mystère avant de payer.
+- Genre de secours : s'il n'existe aucun texte dans ce genre, le manuscrit mystère vient de la même famille (Imaginaire, Polar & Thriller, Littérature, Jeunesse) ; sinon le Bookster choisit parmi ses genres préférés (ou les genres disponibles) avant de payer.
 - Le Bag est gardé dans le navigateur. Le paiement en ligne n'est pas encore branché.
 
 ## Espace auteur

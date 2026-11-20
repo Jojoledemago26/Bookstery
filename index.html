@@ -731,6 +731,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 .chip:hover,.gtag:hover{transform:translateY(-3px);box-shadow:0 8px 18px -6px rgba(96,80,220,.35)}
 .chip-more{border-style:dashed;border-color:var(--maj);color:var(--maj);font-weight:700}
 @media(hover:none){.chip:hover,.gtag:hover{transform:none;box-shadow:none}}
+.gfam{background:var(--maj-xl)!important;color:var(--maj-d)!important}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -973,6 +974,12 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
       <div class="gp-opts" id="gOpts"></div>
     </fieldset>
     <p class="gsingle" id="gSingle" hidden></p>
+    <p class="gsingle gfam" id="gFamille" hidden></p>
+    <fieldset class="gpick" id="gSecours" hidden>
+      <legend id="gSecTitre">Pas encore de texte dans ce genre</legend>
+      <p id="gSecTxt">Choisis parmi tes genres préférés&nbsp;: ton manuscrit mystère viendra de là.</p>
+      <div class="gp-opts" id="gSecOpts"></div>
+    </fieldset>
     <dl class="sum">
       <div><dt id="sBooksLbl">Livres</dt><dd id="sBooks">0,00 €</dd></div>
       <div><dt>Protection Acheteur <small>5&nbsp;% + 0,70&nbsp;€</small></dt><dd id="sFee">0,00 €</dd></div>
@@ -1367,7 +1374,7 @@ $("forgot").addEventListener("click",async function(){
 /* État connecté */
 var current=null;
 async function showUser(user){
-  current=user;document.body.classList.toggle("authed",!!user);sellNote();if(typeof renderAll==="function"&&!catLoading)renderAll();if(typeof auNote==="function")auNote();if(user&&typeof pendingToken!=="undefined"&&pendingToken){var pt=pendingToken;pendingToken=null;setTimeout(function(){openLiseuse(pt)},350)}
+  current=user;if(!user)myGenres=[];document.body.classList.toggle("authed",!!user);sellNote();if(typeof renderAll==="function"&&!catLoading)renderAll();if(typeof auNote==="function")auNote();if(user&&typeof pendingToken!=="undefined"&&pendingToken){var pt=pendingToken;pendingToken=null;setTimeout(function(){openLiseuse(pt)},350)}
   if(!user)return;
   var md=user.user_metadata||{},p=null;
   try{var r=await sb.from("profiles").select("prenom, ville, genres_preferes").eq("id",user.id).maybeSingle();if(!r.error)p=r.data}catch(e){}
@@ -1377,6 +1384,7 @@ async function showUser(user){
   $("aHello").textContent=prenom?"Bonjour "+prenom+", content de te revoir !":"Bienvenue !";
   $("aPrenom").textContent=prenom||"—";$("aEmail").textContent=user.email||"—";$("aVille").textContent=ville||"—";
   $("aGenres").textContent=genres&&genres.length?genres.join(", "):"—";
+  myGenres=Array.isArray(genres)?genres:[];if(typeof renderBag==="function"&&bag.length)renderBag();
 }
 $("meBtn").addEventListener("click",function(){open($("account"))});
 $("logout").addEventListener("click",async function(){if(!sb)return;busy(this,true,"Déconnexion…");try{await sb.auth.signOut()}finally{busy(this,false);closeAll();toast("À bientôt, Bookster !")}});
@@ -1782,7 +1790,7 @@ function searchNote(){
 }
 
 /* --- Le Bag (gardé dans ce navigateur) --- */
-var BAG_KEY="bookstery.bag.v1",bag=[],giftGenre=null;
+var BAG_KEY="bookstery.bag.v1",bag=[],giftGenre=null,giftSecours=null;
 try{var saved=JSON.parse(localStorage.getItem(BAG_KEY)||"null");if(saved&&Array.isArray(saved.items)){bag=saved.items;giftGenre=saved.genre||null}}catch(e){}
 function saveBag(){try{localStorage.setItem(BAG_KEY,JSON.stringify({items:bag,genre:giftGenre}))}catch(e){}}
 function bagHas(id){return bag.some(function(b){return String(b.id)===String(id)})}
@@ -1812,6 +1820,49 @@ document.addEventListener("click",function(e){
   var a=e.target.closest("[data-add]");if(a){var id=a.getAttribute("data-add");bagHas(id)?open($("drawer")):addToBag(id)}
   var r=e.target.closest("[data-rm]");if(r)removeFromBag(r.getAttribute("data-rm"));
 });
+
+/* ---------- Genre de secours du cadeau mystère ----------
+   1) un texte du genre exact ; 2) sinon un texte de la même famille (genre parent) ;
+   3) sinon le Bookster choisit parmi ses genres préférés (ou les genres disponibles). */
+var GENRE_FAMILLES={
+  "Imaginaire":["Fantasy","Fantastique","Science-fiction","Horreur"],
+  "Polar & Thriller":["Polar","Thriller"],
+  "Littérature":["Romans","Romance","Roman historique","Feel-good","Aventure","Humour","Classiques","Nouvelles","Théâtre","Poésie"],
+  "Jeunesse":["Jeunesse","Young Adult","Contes & Légendes"]
+};
+function familleDe(g){for(var f in GENRE_FAMILLES)if(GENRE_FAMILLES[f].indexOf(g)>-1)return f;return null}
+var GENRES_DISPO=null,myGenres=[];
+function demoDispo(){var m={};(typeof DEMO_TEXTES!=="undefined"&&DEMO_TEXTES||[]).forEach(function(x){m[x.genre]=(m[x.genre]||0)+1});return m}
+async function loadDispo(){
+  if(!sb){GENRES_DISPO=demoDispo();return}
+  try{var r=await sb.rpc("genres_disponibles");if(!r.error&&r.data){var m={};r.data.forEach(function(x){m[x.genre]=Number(x.nb)||0});GENRES_DISPO=m;if(typeof renderBag==="function")renderBag()}}catch(e){}
+}
+function giftCible(t){return t.gifts?(t.genres.length>1?giftGenre:t.genres[0])||null:null}
+function resolveGift(genre){
+  var d=GENRES_DISPO;if(!genre||!d)return{mode:"exact"};
+  if(d[genre]>0)return{mode:"exact"};
+  var f=familleDe(genre);
+  if(f){var proches=GENRE_FAMILLES[f].filter(function(g){return d[g]>0});if(proches.length)return{mode:"famille",famille:f,proches:proches}}
+  var dispo=Object.keys(d).filter(function(g){return d[g]>0}).sort(GENRE_SORT);
+  var prefs=myGenres.filter(function(g){return d[g]>0});
+  if(prefs.length)return{mode:"choix",options:prefs,prefs:true};
+  if(dispo.length)return{mode:"choix",options:dispo,prefs:false};
+  return{mode:"aucun"};
+}
+function renderSecours(t){
+  var genre=giftCible(t),r=resolveGift(genre);
+  if(r.mode==="famille"||r.mode==="choix")$("gSingle").hidden=true;
+  $("gFamille").hidden=r.mode!=="famille";
+  if(r.mode==="famille")$("gFamille").textContent="Pas encore de texte en "+genre+" : ton manuscrit mystère sera choisi dans la même famille, "+r.famille+" ("+r.proches.slice(0,3).join(", ")+(r.proches.length>3?"…":"")+").";
+  $("gSecours").hidden=r.mode!=="choix";
+  if(r.mode==="choix"){
+    if(giftSecours&&r.options.indexOf(giftSecours)<0)giftSecours=null;
+    $("gSecTitre").textContent="Pas encore de texte en "+genre;
+    $("gSecTxt").textContent=r.prefs?"Choisis parmi tes genres préférés : ton manuscrit mystère viendra de là.":"Choisis un autre genre pour ton manuscrit mystère :";
+    $("gSecOpts").innerHTML=r.options.map(function(g,i){return'<label><input type="radio" name="giftSecours" id="gs'+i+'" value="'+esc(g)+'"'+(g===giftSecours?" checked":"")+'><span>'+esc(g)+'</span></label>'}).join("");
+  }else{giftSecours=null;$("gSecours").classList.remove("need")}
+  return r;
+}
 
 var CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>';
 function suggestions(g){
@@ -1854,20 +1905,24 @@ function renderBag(){
   var single=t.gifts>0&&t.genres.length===1;
   $("gSingle").hidden=!single;
   if(single)$("gSingle").textContent=(t.gifts>1?"Tes":"Ton")+" manuscrit"+(t.gifts>1?"s":"")+" mystère"+(t.gifts>1?"s":"")+" sera"+(t.gifts>1?"ont":"")+" du genre "+t.genres[0]+", comme ton Bag.";
+  renderSecours(t);
   $("sBooksLbl").textContent="Livres ("+n+")";$("sBooks").textContent=EUR.format(t.books);
   $("sFee").textContent=EUR.format(t.fee);
   $("sGift").textContent=t.gifts?t.gifts+" offert"+(t.gifts>1?"s":""):"0";
   $("dTotal").textContent=EUR.format(t.total);
 }
-$("gOpts").addEventListener("change",function(e){if(e.target.name==="giftGenre"){giftGenre=e.target.value;saveBag();$("gPick").classList.remove("need");setMsg("payMsg","")}});
+$("gOpts").addEventListener("change",function(e){if(e.target.name==="giftGenre"){giftGenre=e.target.value;saveBag();$("gPick").classList.remove("need");setMsg("payMsg","");renderSecours(totals())}});
+$("gSecOpts").addEventListener("change",function(e){if(e.target.name==="giftSecours"){giftSecours=e.target.value;$("gSecours").classList.remove("need");setMsg("payMsg","")}});
 
 $("payBtn").addEventListener("click",function(){
   var t=totals();if(!bag.length)return;
   if(t.gifts>0&&t.genres.length>1&&!giftGenre){$("gPick").classList.add("need");$("gPick").scrollIntoView({block:"nearest",behavior:"smooth"});return setMsg("payMsg","Choisis le genre de ton cadeau mystère avant de payer.","err")}
   if(sb&&!current){$("payMsg").className="form-msg err";$("payMsg").innerHTML='Connecte-toi pour payer ta commande. <button type="button" class="forgot" style="display:inline;margin:0" data-login>Se connecter</button>';return}
   var genre=t.gifts?(giftGenre||t.genres[0]):"";
+  var rs=resolveGift(genre);
+  if(t.gifts>0&&rs.mode==="choix"&&!giftSecours){$("gSecours").classList.add("need");$("gSecours").scrollIntoView({block:"nearest",behavior:"smooth"});return setMsg("payMsg","Pas encore de texte dans ce genre : choisis un genre de secours pour ton cadeau mystère.","err")}
   setMsg("payMsg","");
-  checkout(t,genre);
+  checkout(t,genre,rs.mode==="choix"?giftSecours:null);
 });
 
 function renderAll(){renderGrid();renderBag();searchNote()}
@@ -2181,20 +2236,25 @@ function showCommande(total,list,manquants,demo){
     (demo?"Mode démo : aucun paiement n’a eu lieu. ":"")+"Tu retrouves tes manuscrits mystères à tout moment dans « Mes manuscrits mystères ».";
   open($("commande"));
 }
-async function checkout(t,genre){
+/* Ordre de tirage : genre exact, puis sa famille, puis le genre de secours choisi, puis le reste */
+function ordreTirage(list,genre,secours){
+  var f=familleDe(genre),fam=f?GENRE_FAMILLES[f]:[],rang=function(x){return x.genre===genre?0:fam.indexOf(x.genre)>-1?1:(secours&&x.genre===secours)?2:3};
+  return list.map(function(x){return[rang(x),Math.random(),x]}).sort(function(a,b){return a[0]-b[0]||a[1]-b[1]}).map(function(a){return a[2]});
+}
+async function checkout(t,genre,secours){
   var btn=$("payBtn");
   if(!sb){
-    var pool=DEMO_TEXTES.filter(function(x){return x.genre===genre}).concat(DEMO_TEXTES.filter(function(x){return x.genre!==genre}));
+    var pool=ordreTirage(DEMO_TEXTES,genre,secours);
     var dejaTitres=demoBB.map(function(b){return b.titre});
     var nouveaux=pool.filter(function(x){return dejaTitres.indexOf(x.titre)<0}).concat(pool).slice(0,t.gifts).map(function(x){return Object.assign({token:uuid(),nb_mots:nbMots(x.texte),created_at:new Date().toISOString(),lu_at:null},x)});
     demoBB=nouveaux.concat(demoBB);saveBB();
-    bag=[];giftGenre=null;saveBag();renderAll();closeAll(true);showCommande(t.total,nouveaux,0,true);return;
+    bag=[];giftGenre=null;giftSecours=null;saveBag();renderAll();closeAll(true);showCommande(t.total,nouveaux,0,true);return;
   }
   busy(btn,true,"Validation…");setMsg("payMsg","");
   try{
-    var r=await sb.functions.invoke("valider-commande",{body:{annonce_ids:bag.map(function(b){return b.id}),genre:genre||null}});
+    var r=await sb.functions.invoke("valider-commande",{body:{annonce_ids:bag.map(function(b){return b.id}),genre:genre||null,genre_secours:secours||null}});
     if(r.error){var body=null;try{body=await r.error.context.json()}catch(x){}return setMsg("payMsg",(body&&body.erreur)||"La commande n’a pas pu être validée. Réessaie.","err")}
-    var d=r.data;bag=[];giftGenre=null;saveBag();loadCatalogue();closeAll(true);
+    var d=r.data;bag=[];giftGenre=null;giftSecours=null;saveBag();loadDispo();loadCatalogue();closeAll(true);
     showCommande(Number(d.commande.total),(d.booksterbooks||[]).map(function(b){return{token:b.token,titre:b.titre,genre:b.genre,lu_at:null}}),d.manquants||0,false);
   }catch(e){console.error(e);setMsg("payMsg","La commande n’a pas pu être validée. Réessaie.","err")}
   finally{busy(btn,false)}
@@ -2492,6 +2552,9 @@ cycle();
   [1,2,3].forEach(function(n){$("fb"+n).addEventListener("click",function(){show(this.getAttribute("aria-expanded")==="true"?0:n,true)})});
   $("flowPanel").addEventListener("click",function(e){var g=e.target.closest("[data-fpgo]");if(g){var n=+g.getAttribute("data-fpgo");show(n,true);$("fb"+n).focus({preventScroll:true});}});
 })();
+
+/* Genres pour lesquels des manuscrits mystères existent (pour le genre de secours) */
+loadDispo().then(function(){if(typeof renderBag==="function"&&bag.length)renderBag()});
 </script>
 </body>
 </html>

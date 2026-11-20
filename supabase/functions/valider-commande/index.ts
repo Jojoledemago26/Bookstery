@@ -16,6 +16,16 @@ const r2 = (x: number) => Math.round((x + Number.EPSILON) * 100) / 100;
 const booksterbooks = (sous: number) => PALIERS.filter((p) => sous + 1e-9 >= p).length;
 const protection = (livres: number) => (livres > 0 ? r2(livres * 0.05 + 0.7) : 0);
 
+// Familles de genres (même liste que dans index.html) : si aucun texte n'existe
+// dans le sous-genre demandé, on pioche dans sa famille (genre parent).
+const FAMILLES: Record<string, string[]> = {
+  "Imaginaire": ["Fantasy", "Fantastique", "Science-fiction", "Horreur"],
+  "Polar & Thriller": ["Polar", "Thriller"],
+  "Littérature": ["Romans", "Romance", "Roman historique", "Feel-good", "Aventure", "Humour", "Classiques", "Nouvelles", "Théâtre", "Poésie"],
+  "Jeunesse": ["Jeunesse", "Young Adult", "Contes & Légendes"],
+};
+const famille = (g: string | null) => (g ? Object.values(FAMILLES).find((f) => f.includes(g)) ?? [] : []);
+
 const cors = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -33,7 +43,7 @@ Deno.serve(async (req) => {
   const { data: { user } } = await userClient.auth.getUser();
   if (!user) return json(401, { erreur: "Connecte-toi pour valider ta commande." });
 
-  let body: { annonce_ids?: string[]; genre?: string | null };
+  let body: { annonce_ids?: string[]; genre?: string | null; genre_secours?: string | null };
   try { body = await req.json(); } catch { return json(400, { erreur: "Requête illisible." }); }
   const ids = [...new Set(body.annonce_ids ?? [])];
   if (!ids.length || ids.length > 50) return json(400, { erreur: "Ton Bag est vide." });
@@ -78,7 +88,11 @@ Deno.serve(async (req) => {
   }).select("id, total, created_at").single();
   if (e2) { await admin.from("annonces").update({ statut: "en_vente" }).in("id", ids); return json(500, { erreur: "Commande impossible pour le moment." }); }
 
-  // Tirage des extraits : genre choisi d'abord, d'autres genres si besoin ; jamais ses propres textes ni un texte déjà reçu
+  // Genre de secours choisi par le Bookster quand ni le genre ni sa famille n'ont de texte
+  const secours = typeof body.genre_secours === "string" && body.genre_secours.length <= 60 ? body.genre_secours : null;
+
+  // Tirage des extraits : genre exact, puis même famille, puis genre de secours, puis le reste ;
+  // jamais ses propres textes ni un texte déjà reçu
   const offerts: { token: string; titre: string; genre: string }[] = [];
   if (nb > 0) {
     const { data: deja } = await admin.from("booksterbooks").select("extrait_id").eq("lecteur_id", user.id);
@@ -86,7 +100,9 @@ Deno.serve(async (req) => {
     const { data: pool } = await admin.from("extraits").select("id, titre, genre")
       .in("statut", ["depose", "publie"]).neq("auteur_id", user.id).limit(500);
     const dispo = (pool ?? []).filter((x) => !exclus.has(x.id)).sort(() => Math.random() - 0.5);
-    const choisis = [...dispo.filter((x) => x.genre === genre), ...dispo.filter((x) => x.genre !== genre)].slice(0, nb);
+    const fam = famille(genre);
+    const rang = (x: { genre: string }) => (x.genre === genre ? 0 : fam.includes(x.genre) ? 1 : secours && x.genre === secours ? 2 : 3);
+    const choisis = [...dispo].sort((a, b) => rang(a) - rang(b)).slice(0, nb);
     if (choisis.length) {
       const { data: bb } = await admin.from("booksterbooks")
         .insert(choisis.map((x) => ({ commande_id: commande.id, lecteur_id: user.id, extrait_id: x.id })))
