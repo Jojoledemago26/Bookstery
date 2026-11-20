@@ -776,6 +776,10 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 .f-photos img{width:100%;height:100%;object-fit:cover;display:block}
 .f-photos small{display:block;margin-top:6px;font-size:12.5px;color:var(--muted)}
 @media(max-width:560px){.sm-grid{grid-template-columns:1fr}}
+/* Phrase sous le slogan : deux lignes centrées, « et une première aux auteurs » sur sa propre ligne */
+.motto{max-width:none;text-align:center;letter-spacing:.005em}
+.motto span{display:block;text-wrap:balance}
+.motto b{font-weight:600;color:var(--ink-2)}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -816,7 +820,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
     <div class="hero-in">
       <img class="hero-logo" src="mark.png" alt="Logo Bookstery">
       <h1>Rejoignez les <em>Booksters</em> et faites tourner les livres.</h1>
-      <p class="motto">La première plateforme qui donne une seconde vie aux livres, et une première aux auteurs.</p>
+      <p class="motto"><span>La première plateforme qui donne une seconde vie aux livres,</span> <span>et une première <b>aux auteurs</b>.</span></p>
 
       <form class="search big-search" role="search" id="heroSearch" data-search>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
