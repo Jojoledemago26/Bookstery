@@ -109,7 +109,7 @@ Deno.serve(async (req) => {
   const nbMots = compterMots(texte);
   if (!titre || titre.length > 200) return json(400, { erreur: "Indique un titre (200 caractères maximum)." });
   if (!GENRES.includes(genre)) return json(400, { erreur: "Choisis un genre dans la liste." });
-  if (!body.certifie) return json(400, { erreur: "Certifie que tu es l’auteur du texte." });
+  if (body.certifie !== true) return json(400, { erreur: "Certifie sur l’honneur être l’auteur unique de ce texte original et inédit." });
   if (nbMots < MIN_MOTS || nbMots > MAX_MOTS) return json(400, { erreur: `Ton extrait doit faire entre ${MIN_MOTS} et ${MAX_MOTS} mots (il en fait ${nbMots}).` });
 
   const empreinte = await sha256(texte);
@@ -122,7 +122,7 @@ Deno.serve(async (req) => {
       : "Ce texte a déjà été déposé sur Bookstery." });
   }
 
-  // Modération stricte AVANT tout enregistrement
+  // Modération stricte AVANT tout enregistrement : contenu, anti-plagiat (œuvre déjà publiée), langue, qualité
   let mod: Moderation;
   try { mod = await moderer(titre, genre, texte); }
   catch (e) {
@@ -130,10 +130,11 @@ Deno.serve(async (req) => {
     return json(503, { erreur: "La vérification du contenu est indisponible pour le moment. Ton texte n’a pas été déposé : réessaie dans quelques minutes." });
   }
   if (mod.decision === "refuse" && mod.motif !== "aucun") {
-    await admin.from("depots_refuses").insert({ auteur_id: user.id, sha256: empreinte, nb_mots: nbMots, ai_score: null, motif: mod.motif, categories: mod.categories });
+    await admin.from("depots_refuses").insert({ auteur_id: user.id, sha256: empreinte, nb_mots: nbMots, ai_score: null, motif: mod.motif, categories: mod.motif === "plagiat" && mod.oeuvre_source ? [mod.oeuvre_source] : mod.categories });
     return json(422, {
       refus: true, type: "moderation", motif: mod.motif,
       erreur: MESSAGES[mod.motif],
+      oeuvre: mod.motif === "plagiat" ? mod.oeuvre_source || null : null,
       // Le conseil personnalisé n'est renvoyé que pour les refus « à corriger », jamais pour un contenu interdit
       conseil: mod.motif === "illisible_ou_fautes" || mod.motif === "pas_litteraire" ? mod.explication : null,
     });

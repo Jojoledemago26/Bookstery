@@ -96,9 +96,12 @@ Renseigne `SITE_URL` dans `config.js` pour que les QR codes pointent vers l'adre
 Avant tout enregistrement, la fonction `deposer-extrait` envoie le texte à un modèle Claude léger (Claude Haiku 5.5, réponse JSON imposée) qui refuse :
 
 1. **contenu interdit** : haine, racisme, antisémitisme, violence gratuite ou glorifiée, terrorisme, contenu illégal, pornographie (la fiction peut raconter un crime, comme dans un polar, sans en faire l'apologie) ;
-2. **texte pas en français** ;
-3. **texte non littéraire** : recette, spam, liste, article, texte incohérent ;
-4. **texte illisible** ou bourré de fautes graves.
+2. **plagiat** : l'IA vérifie explicitement si le texte est un extrait, une copie retouchée ou une traduction d'une œuvre déjà publiée (classique ou contemporaine) ; le dépôt est bloqué et l'œuvre reconnue est indiquée à l'auteur ;
+3. **texte pas en français** ;
+4. **texte non littéraire** : recette, spam, liste, article, texte incohérent ;
+5. **texte illisible** ou bourré de fautes graves.
+
+Avant l'envoi, l'auteur doit cocher : « Je certifie sur l'honneur être l'auteur unique de ce texte original et inédit » (vérifié aussi côté serveur). Dans la liseuse, le lien discret « Signaler un plagiat ou un problème » ouvre le formulaire de signalement (raison « Plagiat » incluse).
 
 L'auteur reçoit un message bienveillant (et un conseil personnalisé pour une relecture). Le texte reste dans le formulaire. Si la vérification est indisponible, rien n'est déposé. Ordre des contrôles : modération → détecteur d'IA → empreinte et horodatage.
 

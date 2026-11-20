@@ -804,6 +804,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 .sort select:active{transform:scale(.96)}
 .sort select:focus-visible{outline:3px solid var(--maj);outline-offset:2px}
 .sort select.pop{animation:locPop .35s cubic-bezier(.3,1.6,.5,1)}
+.cert-small{display:block;font-size:12.5px;font-weight:500;color:var(--muted);margin-top:2px}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1197,7 +1198,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
         </form>
         <div class="lz-thanks" id="lzThanks" hidden></div>
       </section>
-      <p class="lz-report-link" id="lzReportLink"><button type="button" data-report><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>Signaler ce texte</button></p>
+      <p class="lz-report-link" id="lzReportLink"><button type="button" data-report><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>Signaler un plagiat ou un problème</button></p>
       <div class="lz-lock" id="lzLock" hidden></div>
     </article>
   </div>
@@ -1287,6 +1288,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
       <div class="au-demo-b">
         <button type="button" data-exemple="conforme" class="ok">✓ Texte conforme</button>
         <button type="button" data-exemple="illicite" class="ko">✗ Contenu illicite</button>
+        <button type="button" data-exemple="plagiat" class="ko">✗ Plagiat</button>
         <button type="button" data-exemple="fautes" class="ko">✗ Bourré de fautes</button>
         <button type="button" data-exemple="recette" class="ko">✗ Recette de cuisine</button>
         <button type="button" data-exemple="anglais" class="ko">✗ En anglais</button>
@@ -1305,14 +1307,14 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
       </div>
       <button class="photo-link" type="button" id="exImport">Importer un fichier texte (.txt)</button>
       <input type="file" id="exFile" accept=".txt,.md,text/plain" hidden>
-      <label class="check"><input type="checkbox" id="exCert"> Je certifie être l’auteur de ce texte et l’avoir écrit moi-même.</label>
+      <label class="check"><input type="checkbox" id="exCert" required> <span>Je certifie sur l’honneur être l’auteur unique de ce texte original et inédit. <small class="cert-small">Tout plagiat entraîne le retrait du texte et la fermeture du compte.</small></span></label>
       <p class="sell-note" id="auNote" hidden></p>
       <p class="form-msg" id="auMsg" role="alert"></p>
       <button class="btn" type="submit" id="auSubmit">Analyser et déposer mon texte</button>
     </form>
 
     <ol class="au-steps" id="auSteps" hidden>
-      <li id="stMod"><span class="dot"></span><div><b>Vérification du contenu</b><small>Texte littéraire, en français, lisible et conforme à notre charte.</small></div></li>
+      <li id="stMod"><span class="dot"></span><div><b>Vérification du contenu</b><small>Texte original (anti-plagiat), littéraire, en français, lisible et conforme à notre charte.</small></div></li>
       <li id="stIA"><span class="dot"></span><div><b>Analyse anti-IA</b><small>Le texte doit contenir au plus 50&nbsp;% d’écriture générée par IA.</small></div></li>
       <li id="stHash"><span class="dot"></span><div><b>Empreinte numérique SHA-256</b><small>Une signature unique qui change si un seul caractère change.</small></div></li>
       <li id="stTime"><span class="dot"></span><div><b>Horodatage et certificat</b><small>La date et l’heure du dépôt sont fixées par le serveur.</small></div></li>
@@ -2153,26 +2155,39 @@ function openAuteur(){auNote();auTab(false);open($("auteur"))}
 
 /* Étapes visuelles */
 function step(id,state){var li=$(id);li.className=state||""}
-function resetSteps(){["stMod","stIA","stHash","stTime"].forEach(function(i){step(i,"")});$("stMod").querySelector("small").textContent="Texte littéraire, en français, lisible et conforme à notre charte."}
+function resetSteps(){["stMod","stIA","stHash","stTime"].forEach(function(i){step(i,"")});$("stMod").querySelector("small").textContent="Texte original (anti-plagiat), littéraire, en français, lisible et conforme à notre charte."}
 
 /* Refus de modération : messages bienveillants, le texte reste dans le formulaire pour être relu */
 var MOD_MSG={
   contenu_interdit:"Ton texte ne peut pas être publié sur Bookstery : il contient des passages contraires à notre charte (haine, violence gratuite, contenu sexuel explicite, terrorisme ou incitation à des actes illégaux). Les manuscrits mystères sont offerts à des lecteurs de tous horizons : merci de proposer un autre texte.",
+  plagiat:"Ton texte ne peut pas être déposé : il reprend une œuvre déjà publiée. Bookstery accueille uniquement des textes originaux et inédits, écrits par leur auteur. Si tu penses qu’il s’agit d’une erreur, contacte-nous.",
   pas_en_francais:"Pour l’instant, Bookstery accueille uniquement des textes écrits en français. Si tu as une version française de ton texte, n’hésite pas à la déposer !",
   pas_litteraire:"Ton envoi ne ressemble pas à une œuvre littéraire (extrait de roman, nouvelle, conte, poésie…). Bookstery accueille uniquement des textes de création : dépose plutôt un extrait de ton histoire.",
   illisible_ou_fautes:"Ton texte mérite une relecture avant d’être offert aux lecteurs : nous y avons repéré de nombreuses fautes ou des passages difficiles à lire. Prends le temps de le relire, ou de le faire relire par un proche, puis dépose-le à nouveau. On a hâte de te lire !"};
-var MOD_TITRE={contenu_interdit:"Ce texte ne peut pas être publié",pas_en_francais:"Un texte en français, s’il te plaît",pas_litteraire:"Ce n’est pas encore une histoire",illisible_ou_fautes:"Encore une petite relecture ?"};
-function showModRefus(motif,msg,conseil){
-  var hard=motif==="contenu_interdit";
+var MOD_TITRE={contenu_interdit:"Ce texte ne peut pas être publié",plagiat:"Texte déjà publié : dépôt bloqué",pas_en_francais:"Un texte en français, s’il te plaît",pas_litteraire:"Ce n’est pas encore une histoire",illisible_ou_fautes:"Encore une petite relecture ?"};
+function showModRefus(motif,msg,conseil,oeuvre){
+  var hard=motif==="contenu_interdit"||motif==="plagiat";
+  if(oeuvre)conseil=null;
   $("auResult").innerHTML='<div class="refus'+(hard?"":" soft")+'"><b>'+(MOD_TITRE[motif]||"Ton texte n’a pas été déposé")+'</b><p style="margin:6px 0 0;color:inherit">'+esc(msg||MOD_MSG[motif]||"")+'</p>'+
+    (oeuvre?'<p class="refus-tip"><span>Œuvre reconnue</span>'+esc(oeuvre)+'</p>':"")+
     (conseil?'<p class="refus-tip"><span>Conseil</span>'+esc(conseil)+'</p>':"")+
     (hard?"":'<button class="btn ghost" type="button" id="auRelire">Relire mon texte</button>')+'</div>';
   $("auResult").hidden=false;$("auResult").scrollIntoView({behavior:"smooth",block:"nearest"});
   var b=$("auRelire");if(b)b.addEventListener("click",function(){$("exTexte").focus();$("exTexte").scrollIntoView({behavior:"smooth",block:"center"})});
 }
 /* Mode démo uniquement : simulation simplifiée (la vraie vérification se fait côté serveur, par un modèle d’IA) */
+/* Démo : quelques débuts d’œuvres célèbres (domaine public) ; le serveur, lui, demande à l’IA de reconnaître toute œuvre publiée */
+var DEMO_OEUVRES=[
+  ["myriel était évêque de digne","Les Misérables, Victor Hugo"],
+  ["longtemps, je me suis couché de bonne heure","Du côté de chez Swann, Marcel Proust"],
+  ["la vigie de notre-dame de la garde signala","Le Comte de Monte-Cristo, Alexandre Dumas"],
+  ["nous étions à l’étude, quand le proviseur entra","Madame Bovary, Gustave Flaubert"]
+];
+var demoOeuvre=null;
 function demoModeration(t){
   if(t.indexOf(MARQUEUR_ILLICITE)>-1)return"contenu_interdit";
+  var low=t.toLowerCase().replace(/'/g,"’");demoOeuvre=null;
+  for(var i=0;i<DEMO_OEUVRES.length;i++)if(low.indexOf(DEMO_OEUVRES[i][0])>-1){demoOeuvre=DEMO_OEUVRES[i][1];return"plagiat"}
   var words=t.toLowerCase().match(/[a-zàâäçéèêëîïôöùûüœæ']+/g)||[],n=words.length||1;
   var fr={"le":1,"la":1,"les":1,"de":1,"des":1,"du":1,"et":1,"un":1,"une":1,"est":1,"que":1,"qui":1,"dans":1,"pour":1,"pas":1,"il":1,"elle":1,"je":1,"ne":1,"se":1,"sur":1,"au":1,"en":1,"à":1,"on":1,"avait":1,"était":1};
   var frRatio=words.filter(function(w){return fr[w]}).length/n;
@@ -2253,14 +2268,14 @@ $("auForm").addEventListener("submit",async function(e){
   if(!titre){$("exTitre").focus();return setMsg("auMsg","Donne un titre à ton texte.","err")}
   if(!genre){$("exGenre").focus();return setMsg("auMsg","Choisis le genre de ton texte.","err")}
   if(n<EX_MIN||n>EX_MAX){$("exTexte").focus();return setMsg("auMsg","Ton texte doit faire entre 1 000 et 5 000 mots (il en fait "+NF.format(n)+").","err")}
-  if(!$("exCert").checked)return setMsg("auMsg","Coche la case pour certifier que tu es l’auteur du texte.","err");
+  if(!$("exCert").checked){$("exCert").focus();return setMsg("auMsg","Coche la case : tu dois certifier sur l’honneur être l’auteur unique de ce texte original et inédit.","err")}
   if(sb&&!current){$("auMsg").className="form-msg err";$("auMsg").innerHTML='Connecte-toi pour déposer ton texte. <button type="button" class="forgot" style="display:inline;margin:0" data-login>Se connecter</button>';return}
   setMsg("auMsg","");$("auResult").hidden=true;$("auSteps").hidden=false;resetSteps();busy(btn,true,"Analyse en cours…");
   try{
     var local=await sha256Hex(texte);
     if(!sb){
       step("stMod","run");await wait(600);var dm=demoModeration(texte);
-      if(dm){step("stMod","fail");showModRefus(dm,null,null);return}
+      if(dm){step("stMod","fail");showModRefus(dm,null,null,dm==="plagiat"?demoOeuvre:null);return}
       step("stMod","done");$("stMod").querySelector("small").textContent="Simulation simplifiée en mode démo : la vérification complète se fait côté serveur.";
       step("stIA","fail");$("stIA").querySelector("small").textContent="Non lancée en mode démo : le détecteur demande une clé côté serveur.";
       step("stHash","run");await wait(450);step("stHash","done");step("stTime","run");await wait(450);step("stTime","done");
@@ -2269,10 +2284,10 @@ $("auForm").addEventListener("submit",async function(e){
       demoDepots.unshift(Object.assign({texte:texte},c));showCert($("auResult"),c,true,false,texte);return;
     }
     step("stMod","run");
-    var r=await sb.functions.invoke("deposer-extrait",{body:{titre:titre,genre:genre,texte:texte,certifie:true}});
+    var r=await sb.functions.invoke("deposer-extrait",{body:{titre:titre,genre:genre,texte:texte,certifie:$("exCert").checked===true}});
     var data=r.data,err=r.error;
     if(err){var body=null;try{if(err.context&&typeof err.context.json==="function")body=await err.context.json()}catch(x){}
-      if(body&&body.refus&&body.type==="moderation"){step("stMod","fail");showModRefus(body.motif,body.erreur,body.conseil);return}
+      if(body&&body.refus&&body.type==="moderation"){step("stMod","fail");showModRefus(body.motif,body.erreur,body.conseil,body.oeuvre);return}
       if(body&&body.refus){step("stMod","done");}
       step("stIA","fail");
       if(body&&body.refus){
@@ -2298,6 +2313,7 @@ var MARQUEUR_ILLICITE="[Passage simulé pour la démonstration]";
 function exemple(type){
   var base=DEMO_TEXTES[0].texte+"\n\n"+SUITE_BROUILLARD,t,titre="Brouillard sur le quai Saint-Vincent",genre="Polar";
   if(type==="conforme")t=base;
+  else if(type==="plagiat"){titre="Le Juste";genre="Romans";t="En 1815, M. Charles-François-Bienvenu Myriel était évêque de Digne. C’était un vieillard d’environ soixante-quinze ans ; il occupait le siège de Digne depuis 1806.\n\n"+base}
   else if(type==="illicite")t=DEMO_TEXTES[0].texte+"\n\n"+MARQUEUR_ILLICITE+" À cet endroit, le manuscrit contiendrait des propos haineux visant un groupe de personnes et un appel à la violence. Ce passage n’est volontairement pas écrit : il sert uniquement à montrer comment Bookstery refuse un contenu illicite.\n\n"+SUITE_BROUILLARD;
   else if(type==="fautes"){t=base.replace(/[.!?;:…«»,]/g,"").replace(/\bc’était\b/gi,"cété").replace(/\bqu(e|i)\b/gi,function(m,x){return x==="e"?"ke":"ki"}).replace(/\best\b/g,"é").replace(/\bbeaucoup\b/g,"bcp").replace(/\bpourquoi\b/g,"pk").replace(/\bavait\b/g,"avé").replace(/\bses\b/g,"cé");titre="brouillar sur le kai"}
   else if(type==="recette"){var l=["Ingrédients pour 6 personnes :","- 250 g de farine","- 4 oeufs","- 50 cl de lait","- 30 g de beurre fondu","- 1 pincée de sel","Préchauffez le four à 180 °C.","Mélangez la farine et le sel dans un saladier.","Ajoutez les oeufs un à un avec une cuillère en bois.","Versez le lait petit à petit en mélangeant.","Faites cuire 25 minutes et laissez refroidir."],o=[];while(o.join(" ").split(/\s+/).length<1100)o=o.concat(l);t=o.join("\n");titre="Ma recette de clafoutis";genre="Romans"}
@@ -2453,7 +2469,7 @@ function lzShow(d){
   var prenom=(d.auteur||"").split(" (")[0].split(" ")[0]||"l’auteur";
   $("lzFollow").textContent=d.suivi?"✓ Tu suis "+prenom:"+ Suivre "+prenom;$("lzFollow").setAttribute("aria-pressed",!!d.suivi);$("lzFollow").dataset.prenom=prenom;
   $("lzForm").reset();setMsg("lzMsg","");closeReport();
-  $("lzReportLink").innerHTML=d.signale?'<span class="lz-reported">Tu as signalé ce texte. Merci, notre équipe l’examine.</span>':'<button type="button" data-report><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>Signaler ce texte</button>';
+  $("lzReportLink").innerHTML=d.signale?'<span class="lz-reported">Tu as signalé ce texte. Merci, notre équipe l’examine.</span>':'<button type="button" data-report><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>Signaler un plagiat ou un problème</button>';
   $("lzForm").hidden=!!d.avis;$("lzThanks").hidden=!d.avis;
   if(d.avis)$("lzThanks").innerHTML="<b>Merci pour ton avis !</b>Tu as donné "+d.avis.note+" étoile"+(d.avis.note>1?"s":"")+" à ce texte.";
   lzNightUI();$("lzScroll").scrollTop=0;requestAnimationFrame(lzScroll);

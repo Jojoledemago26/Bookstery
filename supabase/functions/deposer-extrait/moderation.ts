@@ -9,11 +9,12 @@
 
 import Anthropic from "npm:@anthropic-ai/sdk@1.5.0";
 
-export type Motif = "aucun" | "contenu_interdit" | "pas_litteraire" | "illisible_ou_fautes" | "pas_en_francais";
+export type Motif = "aucun" | "contenu_interdit" | "plagiat" | "pas_litteraire" | "illisible_ou_fautes" | "pas_en_francais";
 export type Moderation = {
   decision: "accepte" | "refuse";
   motif: Motif;
   categories: string[];
+  oeuvre_source: string;
   explication: string;
 };
 
@@ -33,28 +34,36 @@ Refuse le texte (decision "refuse") dans l'un de ces cas, en vérifiant dans cet
    Une œuvre de fiction peut raconter un crime, une guerre, une enquête ou une scène dure (polar, thriller, roman historique) : c'est accepté tant que le récit ne fait pas l'apologie de la violence, ne la détaille pas de façon complaisante et ne sert pas de mode d'emploi. La romance est acceptée si elle reste suggestive et non explicite.
    Indique dans "categories" les catégories concernées parmi : haine, racisme, antisemitisme, violence, illegal, terrorisme, pornographie.
 
-2. motif "pas_en_francais" — le texte n'est pas écrit principalement en français. De courtes citations ou répliques dans une autre langue sont acceptées.
+2. motif "plagiat" — le texte n'est pas une œuvre originale et inédite de l'auteur : vérifie explicitement s'il reprend une œuvre littéraire déjà publiée, classique ou contemporaine, française ou traduite (roman, nouvelle, conte, poème, pièce de théâtre, chanson, scénario, fanfiction publiée). Refuse si :
+   - c'est un extrait, un chapitre ou un passage recopié d'une œuvre publiée, même partiellement (par exemple un paragraphe célèbre glissé au milieu d'un texte original) ;
+   - c'est une copie à peine retouchée : mots remplacés par des synonymes, noms des personnages ou des lieux changés, phrases réordonnées, mais structure et contenu reconnaissables ;
+   - c'est une traduction ou une adaptation fidèle d'une œuvre existante présentée comme originale.
+   Ne refuse PAS un texte simplement inspiré d'un genre, d'un thème ou d'un style (un polar à Lyon, un conte avec un loup, un pastiche clairement personnel), ni de courtes citations assumées entre guillemets. Refuse seulement quand tu reconnais une œuvre précise avec une bonne confiance.
+   Indique dans "oeuvre_source" le titre et l'auteur de l'œuvre reconnue (par exemple « Les Misérables, Victor Hugo »), sinon une chaîne vide.
 
-3. motif "pas_litteraire" — ce n'est pas une œuvre littéraire de création (récit, nouvelle, extrait de roman, conte, poésie, théâtre, BD scénarisée) : par exemple une recette de cuisine, une publicité, du spam, une liste, un article, un mode d'emploi, un CV, un texte généré au hasard, des répétitions ou un texte incohérent sans fil narratif ni intention poétique.
+3. motif "pas_en_francais" — le texte n'est pas écrit principalement en français. De courtes citations ou répliques dans une autre langue sont acceptées.
 
-4. motif "illisible_ou_fautes" — le texte est très difficile à lire : fautes d'orthographe ou de grammaire graves et nombreuses (plusieurs par phrase), absence de ponctuation, écriture SMS, mots manquants qui empêchent de comprendre. Quelques coquilles isolées ne justifient pas un refus.
+4. motif "pas_litteraire" — ce n'est pas une œuvre littéraire de création (récit, nouvelle, extrait de roman, conte, poésie, théâtre, BD scénarisée) : par exemple une recette de cuisine, une publicité, du spam, une liste, un article, un mode d'emploi, un CV, un texte généré au hasard, des répétitions ou un texte incohérent sans fil narratif ni intention poétique.
 
-Sinon, accepte (decision "accepte", motif "aucun", categories vide).
+5. motif "illisible_ou_fautes" — le texte est très difficile à lire : fautes d'orthographe ou de grammaire graves et nombreuses (plusieurs par phrase), absence de ponctuation, écriture SMS, mots manquants qui empêchent de comprendre. Quelques coquilles isolées ne justifient pas un refus.
 
-Dans "explication", écris une ou deux phrases en français, bienveillantes et tutoyant l'auteur, qui l'aident à comprendre la décision. Pour un refus "illisible_ou_fautes", donne un ou deux exemples de types d'erreurs à corriger, sans recopier de long passage. Pour "contenu_interdit", reste général et ne recopie aucun passage.`;
+Sinon, accepte (decision "accepte", motif "aucun", categories vide, oeuvre_source vide).
+
+Dans "explication", écris une ou deux phrases en français, bienveillantes et tutoyant l'auteur, qui l'aident à comprendre la décision. Pour un refus "illisible_ou_fautes", donne un ou deux exemples de types d'erreurs à corriger, sans recopier de long passage. Pour "contenu_interdit", reste général et ne recopie aucun passage. Pour "plagiat", rappelle que Bookstery accueille uniquement des textes originaux et inédits, sans recopier de passage.`;
 
 const SCHEMA = {
   type: "object",
   properties: {
     decision: { type: "string", enum: ["accepte", "refuse"] },
-    motif: { type: "string", enum: ["aucun", "contenu_interdit", "pas_litteraire", "illisible_ou_fautes", "pas_en_francais"] },
+    motif: { type: "string", enum: ["aucun", "contenu_interdit", "plagiat", "pas_litteraire", "illisible_ou_fautes", "pas_en_francais"] },
     categories: {
       type: "array",
       items: { type: "string", enum: ["haine", "racisme", "antisemitisme", "violence", "illegal", "terrorisme", "pornographie"] },
     },
+    oeuvre_source: { type: "string" },
     explication: { type: "string" },
   },
-  required: ["decision", "motif", "categories", "explication"],
+  required: ["decision", "motif", "categories", "oeuvre_source", "explication"],
   additionalProperties: false,
 };
 
@@ -78,7 +87,7 @@ export async function moderer(titre: string, genre: string, texte: string): Prom
 
   // Le modèle a décliné de traiter le texte pour raison de sécurité : le contenu n'est pas publiable.
   if (response.stop_reason === "refusal") {
-    return { decision: "refuse", motif: "contenu_interdit", categories: [], explication: "" };
+    return { decision: "refuse", motif: "contenu_interdit", categories: [], oeuvre_source: "", explication: "" };
   }
   if (response.stop_reason !== "end_turn") throw new Error(`Modération interrompue (${response.stop_reason})`);
 
@@ -94,11 +103,13 @@ export async function moderer(titre: string, genre: string, texte: string): Prom
 // Messages affichés à l'auteur, selon le motif du refus.
 export const MESSAGES: Record<Exclude<Motif, "aucun">, string> = {
   contenu_interdit:
-    "Ton texte ne peut pas être publié sur Bookstery : il contient des passages contraires à notre charte (haine, violence gratuite, contenu sexuel explicite, terrorisme ou incitation à des actes illégaux). Les Booksterbooks sont offerts à des lecteurs de tous horizons : merci de proposer un autre texte.",
+    "Ton texte ne peut pas être publié sur Bookstery : il contient des passages contraires à notre charte (haine, violence gratuite, contenu sexuel explicite, terrorisme ou incitation à des actes illégaux). Les manuscrits mystères sont offerts à des lecteurs de tous horizons : merci de proposer un autre texte.",
+  plagiat:
+    "Ton texte ne peut pas être déposé : il reprend une œuvre déjà publiée. Bookstery accueille uniquement des textes originaux et inédits, écrits par leur auteur. Si tu penses qu’il s’agit d’une erreur, contacte-nous.",
   pas_en_francais:
-    "Pour l’instant, Bookstery accueille uniquement des textes écrits en français. Si tu as une version française de ton extrait, n’hésite pas à la déposer !",
+    "Pour l’instant, Bookstery accueille uniquement des textes écrits en français. Si tu as une version française de ton texte, n’hésite pas à la déposer !",
   pas_litteraire:
-    "Ton envoi ne ressemble pas à une œuvre littéraire (nouvelle, extrait de roman, conte, poésie…). Bookstery accueille uniquement des textes de création : dépose plutôt un extrait de ton histoire.",
+    "Ton envoi ne ressemble pas à une œuvre littéraire (extrait de roman, nouvelle, conte, poésie…). Bookstery accueille uniquement des textes de création : dépose plutôt un extrait de ton histoire.",
   illisible_ou_fautes:
-    "Ton extrait mérite une relecture avant d’être offert aux lecteurs : nous y avons repéré de nombreuses fautes ou des passages difficiles à lire. Prends le temps de le relire, ou de le faire relire par un proche, puis dépose-le à nouveau. On a hâte de te lire !",
+    "Ton texte mérite une relecture avant d’être offert aux lecteurs : nous y avons repéré de nombreuses fautes ou des passages difficiles à lire. Prends le temps de le relire, ou de le faire relire par un proche, puis dépose-le à nouveau. On a hâte de te lire !",
 };
