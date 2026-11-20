@@ -11,7 +11,8 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 
-const PALIERS = [10, 20, 35];
+const PALIERS = [10, 20, 30, 40, 50]; // 1 à 5 Bookster Drops (manuscrits mystères) par vendeur
+const MECENE = 50;                     // badge Mécène Bookster
 const r2 = (x: number) => Math.round((x + Number.EPSILON) * 100) / 100;
 const booksterbooks = (sous: number) => PALIERS.filter((p) => sous + 1e-9 >= p).length;
 const protection = (livres: number) => (livres > 0 ? r2(livres * 0.05 + 0.7) : 0);
@@ -63,6 +64,7 @@ Deno.serve(async (req) => {
   let nb = 0, livres = 0;
   for (const s of parVendeur.values()) { nb += booksterbooks(s); livres = r2(livres + s); }
   const prot = protection(livres);
+  const mecene = [...parVendeur.values()].some((s) => s + 1e-9 >= MECENE);
 
   // Genre du cadeau
   const genres = [...new Set(annonces.map((a) => a.genre).filter(Boolean))];
@@ -114,5 +116,7 @@ Deno.serve(async (req) => {
     }
   }
 
-  return json(200, { commande, booksterbooks: offerts, manquants: nb - offerts.length });
+  if (mecene) await admin.from("profiles").update({ badge_mecene: true }).eq("id", user.id);
+
+  return json(200, { commande, booksterbooks: offerts, manquants: nb - offerts.length, mecene });
 });
