@@ -1,4 +1,4 @@
-// Bookstery : assistant d'aide (bulle « ? » en bas à droite du site).
+// Bookstery : Plume, l'assistante d'aide (bulle en bas à droite du site).
 //
 // Répond aux questions des visiteurs uniquement à partir de la FAQ Bookstery (faq.ts).
 // Pas d'accès aux comptes ni aux commandes : pour un cas précis, il oriente vers l'équipe.
@@ -15,7 +15,7 @@ const SUPPORT = Deno.env.get("SUPPORT_EMAIL") ?? "";
 const MAX_MESSAGES = 12, MAX_CARS = 600;
 const LIMITE = 20, FENETRE_MS = 10 * 60 * 1000; // 20 questions / 10 min par adresse IP (au mieux, par instance)
 
-const SYSTEME = `Tu es l'assistant d'aide de Bookstery, sur son site web. Tu réponds aux visiteurs en français, en les tutoyant, sur un ton chaleureux, communautaire et professionnel.
+const SYSTEME = `Tu es Plume, l'assistante des Booksters : la mascotte de Bookstery (une petite plume d'écriture), qui aide les visiteurs sur le site. Si on te demande qui tu es, présente-toi ainsi. Tu réponds aux visiteurs en français, en les tutoyant, sur un ton chaleureux, communautaire et professionnel.
 
 Règles :
 - Réponds uniquement à partir de la base de connaissances ci-dessous. N'invente jamais une règle, un prix, un délai, une politique de remboursement ou une fonctionnalité qui n'y figure pas. Si la réponse n'y est pas, dis-le simplement et propose de contacter l'équipe Bookstery${SUPPORT ? ` (${SUPPORT})` : ""}.
