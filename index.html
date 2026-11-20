@@ -805,6 +805,18 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 .sort select:focus-visible{outline:3px solid var(--maj);outline-offset:2px}
 .sort select.pop{animation:locPop .35s cubic-bezier(.3,1.6,.5,1)}
 .cert-small{display:block;font-size:12.5px;font-weight:500;color:var(--muted);margin-top:2px}
+/* Espace auteur : bouton de dépôt plus visible et plus pro */
+.modal .btn.au-submit{display:flex;align-items:center;justify-content:flex-start;gap:14px;width:100%;margin-top:22px;padding:14px 20px 14px 14px;border-radius:18px;text-align:left;white-space:normal;
+  background:linear-gradient(135deg,var(--maj) 0%,#4A3BC4 100%);box-shadow:0 14px 30px -10px rgba(96,80,220,.6),inset 0 1px 0 rgba(255,255,255,.18);transition:transform .2s ease,box-shadow .2s ease,filter .2s}
+.btn.au-submit:hover{transform:translateY(-2px);box-shadow:0 20px 36px -12px rgba(96,80,220,.7),inset 0 1px 0 rgba(255,255,255,.18);filter:brightness(1.05)}
+.btn.au-submit:active{transform:scale(.98)}
+.btn.au-submit[disabled]{justify-content:center;filter:saturate(.7)}
+.aus-ico{flex:none;width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.16);display:grid;place-items:center}
+.aus-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.aus-t b{font-size:17px;letter-spacing:-.01em}
+.aus-t small{font-size:12.5px;font-weight:600;opacity:.85}
+.aus-arrow{flex:none;font-size:20px;font-weight:800;transition:transform .2s}
+.btn.au-submit:hover .aus-arrow{transform:translateX(4px)}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1310,7 +1322,11 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
       <label class="check"><input type="checkbox" id="exCert" required> <span>Je certifie sur l’honneur être l’auteur unique de ce texte original et inédit. <small class="cert-small">Tout plagiat entraîne le retrait du texte et la fermeture du compte.</small></span></label>
       <p class="sell-note" id="auNote" hidden></p>
       <p class="form-msg" id="auMsg" role="alert"></p>
-      <button class="btn" type="submit" id="auSubmit">Analyser et déposer mon texte</button>
+      <button class="btn au-submit" type="submit" id="auSubmit">
+        <span class="aus-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span>
+        <span class="aus-t"><b>Déposer mon texte</b><small>Vérification anti-plagiat et anti-IA · certificat d’horodatage</small></span>
+        <span class="aus-arrow" aria-hidden="true">→</span>
+      </button>
     </form>
 
     <ol class="au-steps" id="auSteps" hidden>
@@ -1386,7 +1402,7 @@ if(sb)console.info("Bookstery : Supabase connecté ("+CFG.SUPABASE_URL+").");
 else console.info("Bookstery : mode démo. Remplis SUPABASE_URL et SUPABASE_ANON_KEY dans config.js pour activer l’inscription et la connexion"+(window.supabase?"":" (la librairie supabase-js n’a pas pu être chargée)")+".");
 
 function setMsg(id,txt,kind){var m=$(id);m.textContent=txt||"";m.className="form-msg"+(kind?" "+kind:"")}
-function busy(btn,on,label){if(on){btn.dataset.label=btn.textContent;btn.textContent=label;btn.disabled=true}else{btn.textContent=btn.dataset.label||btn.textContent;btn.disabled=false}}
+function busy(btn,on,label){if(on){if(!btn.disabled)btn.dataset.html=btn.innerHTML;btn.textContent=label;btn.disabled=true}else{if(btn.dataset.html!=null)btn.innerHTML=btn.dataset.html;btn.disabled=false}}
 function frErr(err){
   var m=((err&&(err.message||err.error_description))||"").toLowerCase(),c=(err&&err.code)||"";
   if(c==="user_already_exists"||m.indexOf("already registered")>-1||m.indexOf("already exists")>-1)return"Un compte existe déjà avec cet e-mail. Connecte-toi plutôt.";
