@@ -1757,14 +1757,11 @@ function chipHtml(g){var on=g===catGenre;return'<button class="chip'+(on?" chip-
 /* Pastille « Tous les genres » en début de liste : réaffiche tout le catalogue */
 function allChipHtml(){return'<button class="chip chip-all" type="button" data-chip="" aria-pressed="'+(!catGenre)+'">Tous les genres</button>'}
 function renderChips(){
-  if(catGenre){
-    /* Un genre est actif : seules « Tous les genres » et la pastille bleue restent affichées */
-    var actif=allChipHtml()+chipHtml(catGenre);
-    $("chips").innerHTML=actif;$("catChips").innerHTML=actif;return;
-  }
-  var hero=heroAll?GENRES:GENRES_TOP;
-  $("chips").innerHTML=allChipHtml()+hero.map(chipHtml).join("")+'<button class="chip chip-more" type="button" data-more aria-expanded="'+heroAll+'">'+(heroAll?"Moins de genres ↑":"Voir les "+GENRES.length+" genres ↓")+'</button>';
-  $("catChips").innerHTML=allChipHtml()+GENRES.map(chipHtml).join("");
+  /* Panneau du haut : genres populaires (+ le genre actif) et bouton pour voir les 42 genres */
+  var hero=heroAll?GENRES:GENRES_TOP.concat(catGenre&&GENRES_TOP.indexOf(catGenre)<0?[catGenre]:[]).sort(GENRE_SORT);
+  $("chips").innerHTML=hero.map(chipHtml).join("")+'<button class="chip chip-more" type="button" data-more aria-expanded="'+heroAll+'">'+(heroAll?"Moins de genres ↑":"Voir les "+GENRES.length+" genres ↓")+'</button>';
+  /* Section « Les derniers livres en vente » : si un genre est actif, seules « Tous les genres » et ce genre restent */
+  $("catChips").innerHTML=allChipHtml()+(catGenre?chipHtml(catGenre):GENRES.map(chipHtml).join(""));
 }
 function setGenre(g,scroll){catGenre=g;catLimit=8;renderChips();renderGrid();searchNote();if(scroll)$("catalogue").scrollIntoView({behavior:"smooth"})}
 renderChips();
