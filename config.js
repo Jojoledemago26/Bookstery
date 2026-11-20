@@ -25,5 +25,8 @@ window.BOOKSTERY_CONFIG = {
 
   /* Adresse publique du site (ex. https://jojoledemago26.github.io/Bookstery/) :
    * utilisée dans les QR codes de la liseuse. Vide = adresse de la page en cours. */
-  SITE_URL: ""
+  SITE_URL: "",
+
+  /* Facultatif : adresse e-mail de l’équipe, proposée par l’assistant d’aide (bulle « ? » en bas à droite). */
+  SUPPORT_EMAIL: ""
 };

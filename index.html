@@ -817,6 +817,58 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 .aus-t small{font-size:12.5px;font-weight:600;opacity:.85}
 .aus-arrow{flex:none;font-size:20px;font-weight:800;transition:transform .2s}
 .btn.au-submit:hover .aus-arrow{transform:translateX(4px)}
+/* ---------- Assistant d'aide (bulle en bas à droite) ---------- */
+.help-fab{position:fixed;right:max(20px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:55;width:60px;height:60px;border:0;border-radius:50%;
+  background:linear-gradient(135deg,var(--maj),#4A3BC4);color:#fff;display:grid;place-items:center;cursor:pointer;
+  box-shadow:0 14px 30px -8px rgba(96,80,220,.65),0 0 0 4px rgba(255,255,255,.9);transition:transform .2s ease,box-shadow .2s ease}
+.help-fab:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 18px 36px -8px rgba(96,80,220,.75),0 0 0 4px #fff}
+.help-fab:active{transform:scale(.95)}
+.help-fab:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+.help-fab .hf-x{display:none}
+.help-fab[aria-expanded="true"] .hf-ico,.help-fab[aria-expanded="true"] .hf-tip{display:none}
+.help-fab[aria-expanded="true"] .hf-x{display:block}
+.hf-tip{position:absolute;right:calc(100% + 12px);top:50%;transform:translate(6px,-50%);background:var(--ink);color:#fff;font:700 13.5px var(--sans);white-space:nowrap;padding:9px 13px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;box-shadow:0 10px 24px rgba(11,11,16,.2)}
+.help-fab:hover .hf-tip,.help-fab.hello .hf-tip{opacity:1;transform:translate(0,-50%)}
+body.help-hidden .help-fab{opacity:0;pointer-events:none;transform:scale(.8)}
+.help-panel{padding:0!important;position:fixed;right:max(20px,env(safe-area-inset-right,0px));bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:56;width:min(390px,calc(100vw - 32px));height:min(600px,calc(100dvh - 120px));
+  background:#fff;border-radius:24px;box-shadow:0 30px 80px -10px rgba(11,11,16,.35),0 0 0 1px rgba(11,11,16,.06);display:flex;flex-direction:column;overflow:hidden;transform-origin:bottom right;animation:hpIn .25s cubic-bezier(.2,.9,.3,1.15)}
+.help-panel[hidden]{display:none}
+@keyframes hpIn{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
+.hp-head{display:flex;align-items:center;gap:12px;padding:16px 16px 14px;background:linear-gradient(135deg,var(--maj),#4A3BC4);color:#fff}
+.hp-av{position:relative;flex:none;width:42px;height:42px;border-radius:14px;background:#fff;display:grid;place-items:center}
+.hp-av img{width:30px;height:30px}
+.hp-av i{position:absolute;right:-3px;bottom:-3px;width:12px;height:12px;border-radius:50%;background:#3DBE7A;border:2.5px solid #5546D4}
+.hp-id{flex:1;min-width:0}.hp-id b{display:block;font-size:16px;letter-spacing:-.01em}.hp-id small{display:block;font-size:12.5px;opacity:.85}
+.hp-x{flex:none;width:34px;height:34px;border:0;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;display:grid;place-items:center;cursor:pointer}
+.hp-x:hover{background:rgba(255,255,255,.28)}
+.hp-body{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--maj-xl);overscroll-behavior:contain}
+.hp-msg{max-width:86%;padding:10px 13px;border-radius:16px;font-size:14.5px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;animation:hpMsg .2s ease}
+@keyframes hpMsg{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.hp-msg.bot{align-self:flex-start;background:#fff;color:var(--ink);border-bottom-left-radius:5px;box-shadow:0 2px 8px rgba(28,22,80,.06)}
+.hp-msg.me{align-self:flex-end;background:var(--maj);color:#fff;border-bottom-right-radius:5px}
+.hp-msg b{font-weight:800}
+.hp-msg a{color:var(--maj);font-weight:700}
+.hp-sugg{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.hp-sugg button{border:1.5px solid #CFCAF6;background:#fff;color:var(--maj-d);border-radius:999px;padding:7px 12px;font:700 13px var(--sans);cursor:pointer;text-align:left;transition:transform .15s,background .15s,border-color .15s}
+.hp-sugg button:hover{background:var(--maj-l);border-color:var(--maj);transform:translateY(-2px)}
+.hp-typing{align-self:flex-start;display:flex;gap:4px;background:#fff;border-radius:16px;border-bottom-left-radius:5px;padding:13px 14px}
+.hp-typing i{width:7px;height:7px;border-radius:50%;background:#B8AFFF;animation:hpDot 1s infinite ease-in-out}
+.hp-typing i:nth-child(2){animation-delay:.15s}.hp-typing i:nth-child(3){animation-delay:.3s}
+@keyframes hpDot{0%,80%,100%{transform:translateY(0);opacity:.5}40%{transform:translateY(-5px);opacity:1}}
+.hp-form{display:flex;align-items:flex-end;gap:8px;padding:12px;border-top:1px solid var(--line);background:#fff}
+.hp-form textarea{flex:1;min-width:0;resize:none;max-height:120px;border:1.5px solid var(--line);border-radius:16px;padding:10px 13px;font:500 14.5px/1.4 var(--sans);color:var(--ink);outline:none}
+.hp-form textarea:focus{border-color:var(--maj);box-shadow:0 0 0 4px rgba(96,80,220,.12)}
+.hp-form button{flex:none;width:42px;height:42px;border:0;border-radius:50%;background:var(--maj);color:#fff;display:grid;place-items:center;cursor:pointer;transition:background .2s,transform .15s}
+.hp-form button:hover{background:var(--maj-d)}.hp-form button:active{transform:scale(.92)}
+.hp-form button[disabled]{opacity:.5;cursor:default}
+.hp-note{margin:0;padding:0 14px 10px;background:#fff;font-size:11.5px;color:var(--muted);text-align:center}
+@media(max-width:560px){
+  .help-fab{width:54px;height:54px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+  .hf-tip{display:none}
+  .help-panel{right:0;left:0;bottom:0;width:100%;height:min(100dvh,640px);border-radius:24px 24px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}
+  body.help-open .help-fab{display:none}
+}
+@media print{.help-fab,.help-panel{display:none!important}}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1042,7 +1094,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 <footer>
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Bookstery, retour à l’accueil"><img src="mark.png" alt=""><span><b>Book</b>stery</span></a>
-    <nav aria-label="Pied de page"><a href="#comment">Comment ça marche</a><a href="#auteurs">Auteurs</a><a href="#top">Aide</a><a href="#top">Mentions légales</a></nav>
+    <nav aria-label="Pied de page"><a href="#comment">Comment ça marche</a><a href="#auteurs">Auteurs</a><a href="#aide" data-aide>Aide</a><a href="#top">Mentions légales</a></nav>
     <p class="legal">© 2026 Bookstery. Prototype.</p>
   </div>
 </footer>
@@ -1345,6 +1397,27 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 </div>
 
 <div class="toast" id="toast" role="status"></div>
+
+<!-- Assistant d'aide -->
+<button class="help-fab" type="button" id="helpFab" data-aide aria-label="Aide Bookstery : poser une question" aria-expanded="false" aria-controls="helpPanel">
+  <svg class="hf-ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.1A8.5 8.5 0 1 1 21 12Z"/><path d="M9.6 9.6a2.5 2.5 0 0 1 4.8.9c0 1.6-2.4 2-2.4 3.5"/><path d="M12 17h.01"/></svg>
+  <svg class="hf-x" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  <span class="hf-tip" aria-hidden="true">Besoin d’aide&nbsp;?</span>
+</button>
+<section class="help-panel" id="helpPanel" role="dialog" aria-modal="false" aria-labelledby="helpTitle" hidden>
+  <div class="hp-head">
+    <span class="hp-av"><img src="mark.png" alt=""><i aria-hidden="true"></i></span>
+    <div class="hp-id"><b id="helpTitle">Aide Bookstery</b><small id="helpSub">Assistant automatique · répond en quelques secondes</small></div>
+    <button class="hp-x" type="button" id="helpClose" aria-label="Fermer l’aide"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="hp-body" id="helpBody" aria-live="polite"></div>
+  <form class="hp-form" id="helpForm" autocomplete="off">
+    <label class="sr" for="helpInput">Ta question</label>
+    <textarea id="helpInput" rows="1" maxlength="500" placeholder="Pose ta question…"></textarea>
+    <button type="submit" id="helpSend" aria-label="Envoyer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </form>
+  <p class="hp-note">Assistant automatique&nbsp;: il peut se tromper. Pour une commande précise, contacte l’équipe.</p>
+</section>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -2725,6 +2798,75 @@ loadDispo().then(function(){if(typeof renderBag==="function"&&bag.length)renderB
 
 /* Petit effet quand on change le tri */
 $("catSort").addEventListener("change",function(){var e=this;e.classList.remove("pop");void e.offsetWidth;e.classList.add("pop")});
+
+/* ================= Assistant d'aide ================= */
+/* Base de réponses du mode démo (le serveur, lui, s'appuie sur supabase/functions/aide/faq.ts) */
+var AIDE_FAQ=[
+ {k:"bookstery c est quoi qu est ce que presentation principe plateforme concept",a:"Bookstery est une plateforme lyonnaise, éthique et circulaire : tu achètes et vends des **livres d’occasion** entre Booksters, et chaque achat peut t’offrir un **manuscrit mystère**, un texte inédit d’un auteur indépendant. Une seconde vie aux livres, et une première aux auteurs !"},
+ {k:"acheter commander achat panier bag ajouter commande payer paiement passer",a:"Pour acheter :\n• clique sur « **Ajouter** » sous un livre (ou dans sa fiche) ;\n• ouvre ton **Bookster Bag** en haut ;\n• touche « **Passer au paiement** ».\nIl faut un compte Bookster pour commander."},
+ {k:"protection acheteur frais commission 5 0,70 70 centimes cout",a:"La **Protection Acheteur** est de 5 % du montant des livres + 0,70 €. Elle est payée par l’acheteur : le vendeur, lui, ne paie **aucun frais** et reçoit 100 % de son prix."},
+ {k:"drop bookstery drop manuscrit mystere mysteres cadeau jauge palier offert gratuit booksterbook 10 20 35",a:"Le **Bookstery Drop** glisse des manuscrits mystères (textes inédits d’auteurs indépendants) dans ton Bag. La jauge se remplit **par vendeur** :\n• 1 manuscrit offert dès 10 € chez un même vendeur ;\n• 2 dès 20 € ;\n• 3 dès 35 €.\nAstuce : regroupe tes achats chez un vendeur grâce à « Dans sa bibliothèque »."},
+ {k:"genre cadeau choisir genre secours famille aucun texte",a:"Si ton Bag mélange plusieurs genres, tu choisis celui de ton cadeau avant de payer. S’il n’existe pas encore de texte dans ce genre, on prend un texte de la **même famille** (par exemple Thriller → Polar) ; sinon, tu choisis parmi **tes genres préférés**."},
+ {k:"liseuse lire lis lit lecture qr code ouvrir mode nuit manuscrit mystere",a:"Après ta commande, chaque manuscrit mystère a un **QR code** : scanne-le avec ton téléphone pour l’ouvrir dans la liseuse. Tu le retrouves aussi dans « **Mes manuscrits mystères** » (ton espace, ou le raccourci dans le Bag). Fond crème ou **mode nuit**, temps de lecture estimé, et à la fin tu peux noter l’auteur, lui écrire et le suivre."},
+ {k:"copier coller copie capture proteger protection texte filigrane",a:"Dans la liseuse, le copier-coller et le clic droit sont bloqués et un filigrane protège le texte : c’est pour respecter le travail des auteurs."},
+ {k:"signaler signalement plagiat probleme contenu choquant retrait",a:"En bas de la liseuse, clique sur « **Signaler un plagiat ou un problème** » et choisis une raison (plagiat, contenu choquant, texte IA…). Ton signalement est anonyme pour l’auteur. Après 3 signalements graves, le texte est retiré automatiquement le temps que l’équipe vérifie."},
+ {k:"vendre vente annonce mettre en vente vendeur isbn scanner code barres publier",a:"Clique sur « **Vendre un livre** » en haut. Trois façons d’ajouter ton livre :\n• **scanner le code-barres** avec ton téléphone ;\n• **entrer l’ISBN** (10 ou 13 chiffres) : la fiche se remplit toute seule ;\n• « **Livre ancien sans code-barres ?** » pour remplir à la main.\nAjoute ensuite tes photos recto/verso, l’état, la ville et ton prix, puis « Publier mon annonce »."},
+ {k:"photo photos recto verso image obligatoire fausse annonce",a:"Les **photos réelles** de ton exemplaire, recto et verso, sont obligatoires : elles prouvent que tu as bien le livre chez toi et montrent son état aux acheteurs. Les images trouvées sur internet ne sont pas acceptées."},
+ {k:"prix argent paye payer vendeur recevoir recois touche toucher gagne gagner combien vends vendu 100 virement",a:"Tu fixes ton prix librement (de 0,50 € à 999 €). **Paiement sécurisé** : tu reçois 100 % de ton prix dès que l’acheteur confirme la réception du livre."},
+ {k:"etat comme neuf tres bon bon etat",a:"Trois états possibles : **Comme neuf** (jamais lu ou presque), **Très bon état** (légères traces d’usage), **Bon état** (usure visible mais complet et lisible). Tes photos recto/verso montrent l’état réel."},
+ {k:"auteur deposer depot texte ecrire publier mon texte extrait nouvelle roman chapitre espace auteur",a:"Dans la section Auteurs, clique sur « **Envoyer mon texte** » : extrait de roman, premier chapitre ou nouvelle, entre **1 000 et 5 000 mots**, en français. C’est gratuit et ton texte reste le tien. Tu reçois un **certificat d’horodatage**, puis ton texte part en manuscrit mystère dans le Bookstery Drop."},
+ {k:"refuse refus pourquoi depot bloque verification moderation ia detecteur plagiat fautes",a:"Avant tout dépôt, on vérifie que le texte est **original** (anti-plagiat), conforme à la charte, en français, littéraire et lisible, puis le **détecteur d’IA** (au-delà de 50 % d’écriture générée, il est refusé). Le message de refus t’explique la raison ; pour des fautes, tu peux relire et redéposer."},
+ {k:"certificat horodatage preuve sha empreinte droit auteur",a:"Ton **certificat d’horodatage** contient la date et l’heure du dépôt et une empreinte SHA-256 unique de ton texte : il prouve que tu l’avais écrit à cette date. Tu le retrouves dans « **Mes textes déposés** »."},
+ {k:"avis note noter etoiles suivre abonne auteur commentaire",a:"À la fin d’un manuscrit mystère, tu peux noter l’auteur (1 à 5 étoiles), lui laisser un mot (il le reçoit par e-mail) et le **suivre**."},
+ {k:"compte inscription inscrire creer deviens bookster connexion connecter mot de passe oublie",a:"Clique sur « **Deviens un Bookster** » en haut : prénom, ville, e-mail, mot de passe et tes 3 genres préférés. Déjà membre ? « **Se connecter** ». Mot de passe oublié : clique sur « Mot de passe oublié ? » dans la fenêtre de connexion."},
+ {k:"filtre genre ville region lyon france trier tri prix recherche chercher trouver",a:"Tape un titre, un auteur ou un ISBN dans la barre de recherche, ou clique sur un **genre**. Dans « Les derniers livres en vente », filtre par lieu (**Lyon, ma ville, ma région, toute la France**) et trie par nouveautés, titre ou prix."},
+ {k:"livraison envoi delai expedition colis recu pas recu rembourse remboursement retour annuler annulation",a:"Je n’ai pas d’informations sur ta commande précise. Pour une livraison, un retour ou un remboursement, contacte l’équipe Bookstery"+(CFG.SUPPORT_EMAIL?" ("+CFG.SUPPORT_EMAIL+")":"")+" : elle regardera ton cas."}
+];
+var AIDE_SUGG=["Comment marche le Bookstery Drop ?","Comment vendre un livre ?","Comment déposer mon texte ?","C’est quoi la Protection Acheteur ?"];
+var aideHist=[],aideBusy=false,aideCount=0;
+function aideNorm(t){return String(t).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9,]+/g," ").trim()}
+var AIDE_STOP=" les des une comment fais faire veux voudrais est quoi pour mes mon ton tes que qui quelle quel quels quelles avec dans sur pas plus mais tout tous bien aux elle ils cette ces son sont etre avoir peut peux puis faut bonjour salut merci svp stp quand marche fonctionne vieux vieille vos votre nos notre leur ".split(" ");
+function aideLocal(q){var w=aideNorm(q).split(" ").filter(function(x){return(x.length>2||/^\d+$/.test(x))&&AIDE_STOP.indexOf(x)<0}),best=null,bs=0;
+  AIDE_FAQ.forEach(function(f){var k=aideNorm(f.k).split(" "),sc=0;
+    w.forEach(function(x){if(k.indexOf(x)>-1)sc+=3;else if(x.length>=5&&k.some(function(y){return y.length>=5&&(y.indexOf(x.slice(0,5))===0||x.indexOf(y.slice(0,5))===0)}))sc+=2});
+    if(sc>bs){bs=sc;best=f}});
+  return bs>=2?best.a:"Je n’ai pas trouvé la réponse à ta question : je suis là pour t’aider sur Bookstery (achat, vente, Bookstery Drop, liseuse, Espace auteur). Essaie de la formuler autrement, ou choisis un sujet ci-dessous."+(CFG.SUPPORT_EMAIL?" Tu peux aussi écrire à l’équipe : "+CFG.SUPPORT_EMAIL+".":"")}
+function aideFormat(t){return esc(t).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>")}
+function aideAdd(role,text,sugg){var b=$("helpBody"),d=document.createElement("div");d.className="hp-msg "+(role==="user"?"me":"bot");d.innerHTML=aideFormat(text);b.appendChild(d);
+  if(sugg){var s=document.createElement("div");s.className="hp-sugg";s.innerHTML=sugg.map(function(x){return'<button type="button" data-ask="'+esc(x)+'">'+esc(x)+'</button>'}).join("");b.appendChild(s)}
+  b.scrollTop=b.scrollHeight}
+function aideTyping(on){var t=$("helpBody").querySelector(".hp-typing");if(on&&!t){t=document.createElement("div");t.className="hp-typing";t.setAttribute("aria-label","L’assistant écrit");t.innerHTML="<i></i><i></i><i></i>";$("helpBody").appendChild(t);$("helpBody").scrollTop=$("helpBody").scrollHeight}else if(!on&&t)t.remove()}
+var aideStarted=false;
+function openAide(){$("helpPanel").hidden=false;$("helpFab").setAttribute("aria-expanded","true");document.body.classList.add("help-open");
+  if(!aideStarted){aideStarted=true;aideAdd("bot","Bonjour ! 👋 Je suis l’assistant de Bookstery. Pose-moi ta question sur l’achat, la vente, le Bookstery Drop, la liseuse ou l’Espace auteur.",AIDE_SUGG)}
+  setTimeout(function(){$("helpInput").focus()},80)}
+function closeAide(){$("helpPanel").hidden=true;$("helpFab").setAttribute("aria-expanded","false");document.body.classList.remove("help-open");$("helpFab").focus()}
+async function aideAsk(q){q=String(q||"").trim();if(!q||aideBusy)return;
+  if(aideCount>=30){aideAdd("bot","Tu as posé beaucoup de questions : pour aller plus loin, contacte l’équipe Bookstery"+(CFG.SUPPORT_EMAIL?" ("+CFG.SUPPORT_EMAIL+")":"")+".");return}
+  aideCount++;aideBusy=true;$("helpSend").disabled=true;$("helpInput").value="";aideGrow();
+  $("helpBody").querySelectorAll(".hp-sugg").forEach(function(x){x.remove()});
+  aideAdd("user",q);aideHist.push({role:"user",content:q});aideTyping(true);
+  var rep=null;
+  if(sb){try{var r=await sb.functions.invoke("aide",{body:{messages:aideHist.slice(-12)}});if(!r.error&&r.data&&r.data.reponse)rep=r.data.reponse;
+      else if(r.error){var bd=null;try{bd=await r.error.context.json()}catch(x){}if(bd&&bd.erreur&&r.error.context&&r.error.context.status===429)rep=bd.erreur}}catch(e){console.warn("Bookstery : assistant indisponible",e)}}
+  if(!rep){await new Promise(function(ok){setTimeout(ok,500+Math.random()*400)});rep=aideLocal(q)}
+  aideTyping(false);aideHist.push({role:"assistant",content:rep});aideAdd("bot",rep,/^Je n’ai pas trouvé/.test(rep)?AIDE_SUGG:null);
+  aideBusy=false;$("helpSend").disabled=false;$("helpInput").focus()}
+function aideGrow(){var t=$("helpInput");t.style.height="auto";t.style.height=Math.min(t.scrollHeight,120)+"px"}
+document.addEventListener("click",function(e){
+  if(e.target.closest("[data-aide]")){e.preventDefault();$("helpPanel").hidden?openAide():closeAide();return}
+  var a=e.target.closest("[data-ask]");if(a)aideAsk(a.getAttribute("data-ask"))});
+$("helpClose").addEventListener("click",closeAide);
+$("helpForm").addEventListener("submit",function(e){e.preventDefault();aideAsk($("helpInput").value)});
+$("helpInput").addEventListener("input",aideGrow);
+$("helpInput").addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();aideAsk(this.value)}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("helpPanel").hidden)closeAide()});
+/* La bulle s'efface quand une fenêtre, le Bag ou la liseuse est ouvert (pour ne rien masquer) */
+(function(){function sync(){var busy=$("scrim").classList.contains("on")||($("liseuse")&&!$("liseuse").hidden);document.body.classList.toggle("help-hidden",busy);if(busy&&!$("helpPanel").hidden)closeAide()}
+  var mo=new MutationObserver(sync);mo.observe($("scrim"),{attributes:true,attributeFilter:["class"]});if($("liseuse"))mo.observe($("liseuse"),{attributes:true,attributeFilter:["hidden"]});sync();
+  /* Petit « Besoin d'aide ? » au premier passage */
+  setTimeout(function(){if($("helpPanel").hidden){$("helpFab").classList.add("hello");setTimeout(function(){$("helpFab").classList.remove("hello")},4000)}},6000);
+})();
 </script>
 </body>
 </html>

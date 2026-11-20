@@ -16,6 +16,7 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/localisation.sql` — ville et région des annonces (filtre de localisation)
 - `supabase/moderation.sql` — journal des refus de modération
 - `supabase/signalements.sql` — signalements des lecteurs + retrait automatique
+- `supabase/functions/aide/` — assistant d’aide (bulle « ? » en bas à droite) : répond à partir de la FAQ `faq.ts`
 - `supabase/functions/deposer-extrait/moderation.ts` — modération stricte par Claude Haiku 5.5
 - `supabase/functions/valider-commande/` — commande + tirage des manuscrits mystères (jetons des QR codes)
 - `supabase/functions/envoyer-avis/` — avis du lecteur envoyé par e-mail à l'auteur (Resend)
@@ -115,3 +116,15 @@ En mode démo, une simulation simplifiée (langue, recette ou liste, écriture S
 ## Signaler un texte
 
 Dans la liseuse : bouton **Signaler** (barre du haut) et lien « Signaler ce texte » en fin de lecture. Le lecteur doit choisir une raison (haine ou discrimination, violence gratuite, contenu sexuel explicite, contenu illégal ou dangereux, plagiat, texte généré par IA, illisible ou hors sujet, autre — précision obligatoire pour « autre »). Un seul signalement par lecteur et par texte, anonyme pour l'auteur. À partir de 3 signalements graves de lecteurs différents, le texte n'est plus offert en attendant la vérification de l'équipe.
+
+## Assistant d'aide
+
+Bulle « ? » en bas à droite (et lien « Aide » du pied de page) : fenêtre de discussion avec questions suggérées.
+
+- Avec Supabase : la fonction `aide` fait répondre un modèle Claude léger (Claude Haiku 5.5 par défaut, variable `AIDE_MODEL`) **uniquement à partir de la FAQ** `supabase/functions/aide/faq.ts`. Il n'a accès à aucun compte ni commande et oriente vers l'équipe pour un cas personnel. Limite : 20 questions / 10 min par adresse IP.
+  ```
+  supabase functions deploy aide
+  ```
+  (même clé `ANTHROPIC_API_KEY` que la modération ; facultatif : `supabase secrets set SUPPORT_EMAIL=...`)
+- Sans Supabase (mode démo) ou si la fonction ne répond pas : réponses tirées de la FAQ intégrée au site (liste `AIDE_FAQ` dans `index.html`).
+- Mettre à jour `faq.ts` **et** `AIDE_FAQ` quand une règle du site change. L'adresse affichée vient de `SUPPORT_EMAIL` dans `config.js`.
