@@ -797,6 +797,13 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 #locSeg button.pop{animation:locPop .35s cubic-bezier(.3,1.6,.5,1)}
 @keyframes locPop{0%{transform:scale(.9)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
 @keyframes locCheck{from{opacity:0;transform:scale(.3) rotate(-30deg)}to{opacity:1;transform:none}}
+/* Menu « Trier par » : même encadré bleu Majorelle que le filtre de lieu */
+.sort{color:var(--maj)}
+.sort select{border:2px solid var(--maj);color:var(--maj-d);box-shadow:0 6px 18px rgba(96,80,220,.14);cursor:pointer;transition:transform .18s ease,box-shadow .2s,background-color .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236050DC' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")}
+.sort select:hover{transform:translateY(-2px);background-color:var(--maj-xl)}
+.sort select:active{transform:scale(.96)}
+.sort select:focus-visible{outline:3px solid var(--maj);outline-offset:2px}
+.sort select.pop{animation:locPop .35s cubic-bezier(.3,1.6,.5,1)}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -2683,6 +2690,9 @@ cycle();
 
 /* Genres pour lesquels des manuscrits mystères existent (pour le genre de secours) */
 loadDispo().then(function(){if(typeof renderBag==="function"&&bag.length)renderBag()});
+
+/* Petit effet quand on change le tri */
+$("catSort").addEventListener("change",function(){var e=this;e.classList.remove("pop");void e.offsetWidth;e.classList.add("pop")});
 </script>
 </body>
 </html>
