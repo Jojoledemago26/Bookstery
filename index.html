@@ -732,6 +732,8 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 .chip-more{border-style:dashed;border-color:var(--maj);color:var(--maj);font-weight:700}
 @media(hover:none){.chip:hover,.gtag:hover{transform:none;box-shadow:none}}
 .gfam{background:var(--maj-xl)!important;color:var(--maj-d)!important}
+.chip-on span{margin-left:4px;opacity:.8;font-weight:700}
+.chip-all[aria-pressed="false"]{border-color:var(--maj-l);color:var(--maj-d)}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1751,16 +1753,23 @@ $("catMore").addEventListener("click",function(){catLimit+=8;renderGrid()});
 
 /* Genres et recherche filtrent le catalogue */
 var heroAll=false;
-function chipHtml(g){return'<button class="chip" type="button" data-chip="'+esc(g)+'" aria-pressed="'+(g===catGenre)+'">'+esc(g)+'</button>'}
+function chipHtml(g){var on=g===catGenre;return'<button class="chip'+(on?" chip-on":"")+'" type="button" data-chip="'+esc(g)+'" aria-pressed="'+on+'"'+(on?' title="Recliquer pour retirer le filtre"':"")+'>'+esc(g)+(on?' <span aria-hidden="true">×</span>':"")+'</button>'}
+/* Pastille « Tous les genres » en début de liste : réaffiche tout le catalogue */
+function allChipHtml(){return'<button class="chip chip-all" type="button" data-chip="" aria-pressed="'+(!catGenre)+'">Tous les genres</button>'}
 function renderChips(){
-  var hero=heroAll?GENRES:GENRES_TOP.concat(catGenre&&GENRES_TOP.indexOf(catGenre)<0?[catGenre]:[]).sort(GENRE_SORT);
-  $("chips").innerHTML=hero.map(chipHtml).join("")+'<button class="chip chip-more" type="button" data-more aria-expanded="'+heroAll+'">'+(heroAll?"Moins de genres ↑":"Tous les genres ("+GENRES.length+") ↓")+'</button>';
-  $("catChips").innerHTML=GENRES.map(chipHtml).join("");
+  if(catGenre){
+    /* Un genre est actif : seules « Tous les genres » et la pastille bleue restent affichées */
+    var actif=allChipHtml()+chipHtml(catGenre);
+    $("chips").innerHTML=actif;$("catChips").innerHTML=actif;return;
+  }
+  var hero=heroAll?GENRES:GENRES_TOP;
+  $("chips").innerHTML=allChipHtml()+hero.map(chipHtml).join("")+'<button class="chip chip-more" type="button" data-more aria-expanded="'+heroAll+'">'+(heroAll?"Moins de genres ↑":"Voir les "+GENRES.length+" genres ↓")+'</button>';
+  $("catChips").innerHTML=allChipHtml()+GENRES.map(chipHtml).join("");
 }
 function setGenre(g,scroll){catGenre=g;catLimit=8;renderChips();renderGrid();searchNote();if(scroll)$("catalogue").scrollIntoView({behavior:"smooth"})}
 renderChips();
 $("chips").addEventListener("click",function(e){if(e.target.closest("[data-more]")){heroAll=!heroAll;renderChips();var m=$("chips").querySelector("[data-more]");if(m)m.focus()}});
-["chips","catChips"].forEach(function(id){$(id).addEventListener("click",function(e){var b=e.target.closest("[data-chip]");if(!b)return;var g=b.getAttribute("data-chip");setGenre(catGenre===g?null:g)})});
+["chips","catChips"].forEach(function(id){$(id).addEventListener("click",function(e){var b=e.target.closest("[data-chip]");if(!b)return;var g=b.getAttribute("data-chip")||null;setGenre(catGenre===g?null:g)})});
 document.addEventListener("click",function(e){var t=e.target.closest("[data-genre]");if(t){var g=t.getAttribute("data-genre");closeAll(true);setGenre(g,true)}});
 
 /* Localisation et tri */
