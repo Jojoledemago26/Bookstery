@@ -654,12 +654,12 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 @media(max-width:400px){.actions .btn{padding:10px 11px}}
 /* Parcours auteur cliquable */
 .flow li{padding:0!important;background:none!important}
-.flow-btn{all:unset;box-sizing:border-box;cursor:pointer;width:100%;height:100%;display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;background:rgba(255,255,255,.06);border-radius:18px;padding:18px 20px;color:inherit;font:inherit;transition:background .2s,box-shadow .2s}
+.flow-btn{all:unset;box-sizing:border-box;cursor:pointer;width:100%;height:100%;display:flex;flex-wrap:wrap;align-content:space-between;gap:14px;align-items:flex-start;background:rgba(255,255,255,.06);border-radius:18px;padding:18px 20px;color:inherit;font:inherit;transition:background .2s,box-shadow .2s}
 .flow-btn:hover{background:rgba(255,255,255,.11)}
 .flow-btn:focus-visible{outline:3px solid #a99fff;outline-offset:3px}
 .flow-btn[aria-expanded="true"]{background:rgba(96,80,220,.28);box-shadow:inset 0 0 0 1.5px #a99fff}
 .flow-btn>div{flex:1;min-width:0}
-.flow-more{flex-basis:100%;padding-left:48px;font-style:normal;font-size:12.5px;font-weight:700;color:#a99fff}
+.flow-more{flex-basis:100%;align-self:flex-end;margin-top:auto;padding-left:48px;font-style:normal;font-size:12.5px;font-weight:700;color:#a99fff}
 .flow-more::after{content:" ↓";display:inline-block;transition:transform .2s}
 .flow-btn[aria-expanded="true"] .flow-more::after{transform:rotate(180deg)}
 .flow-panel{margin-top:14px}
@@ -845,14 +845,14 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
           </div>
         </div>
         <ol class="flow" aria-label="Le parcours de ton texte">
-            <li><button class="flow-btn" type="button" id="fb1" aria-expanded="false" aria-controls="fp1"><i>1</i><div><b>Tu envoies ton texte</b><span>Extrait de roman, premier chapitre ou nouvelle.</span></div><em class="flow-more" aria-hidden="true">En savoir plus</em></button></li>
+            <li><button class="flow-btn" type="button" id="fb1" aria-expanded="false" aria-controls="fp1"><i>1</i><div><b>Tu publies ton texte en ligne</b><span>Extrait de roman, premier chapitre ou nouvelle.</span></div><em class="flow-more" aria-hidden="true">En savoir plus</em></button></li>
             <li><button class="flow-btn" type="button" id="fb2" aria-expanded="false" aria-controls="fp2"><i>2</i><div><b>Il part en cadeau mystère</b><span>Glissé dans les Bookster Bags de la communauté.</span></div><em class="flow-more" aria-hidden="true">En savoir plus</em></button></li>
             <li><button class="flow-btn" type="button" id="fb3" aria-expanded="false" aria-controls="fp3"><i>3</i><div><b>Les Booksters te découvrent</b><span>Ils te lisent, te recommandent, te suivent.</span></div><em class="flow-more" aria-hidden="true">En savoir plus</em></button></li>
           </ol>
         <div class="flow-panel" id="flowPanel">
           <div class="fp" id="fp1" role="region" aria-labelledby="fb1" hidden>
             <div class="fp-txt">
-            <span class="fp-k">Étape 1 · Tu envoies ton texte</span>
+            <span class="fp-k">Étape 1 · Tu publies ton texte en ligne</span>
             <h3>Ton texte dort dans un tiroir&nbsp;? Fais-le sortir&nbsp;!</h3>
             <p>Extrait de roman, premier chapitre ou nouvelle&nbsp;: quel que soit ton format, publie-le en ligne en 2 minutes depuis ton Espace auteur.</p>
             <ul class="fp-list">
