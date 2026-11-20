@@ -10,12 +10,12 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/annonces.sql` — table des annonces de livres (à exécuter une fois dans Supabase > SQL Editor)
 - `supabase/extraits.sql` — tables des extraits d'auteurs et des dépôts refusés
 - `supabase/functions/deposer-extrait/` — fonction Edge : contrôle anti-IA, empreinte, horodatage
-- `supabase/liseuse.sql` — commandes, Booksterbooks, avis, abonnements
+- `supabase/liseuse.sql` — commandes, manuscrits mystères, avis, abonnements
 - `supabase/localisation.sql` — ville et région des annonces (filtre de localisation)
 - `supabase/moderation.sql` — journal des refus de modération
 - `supabase/signalements.sql` — signalements des lecteurs + retrait automatique
 - `supabase/functions/deposer-extrait/moderation.ts` — modération stricte par Claude Haiku 5.5
-- `supabase/functions/valider-commande/` — commande + tirage des Booksterbooks (jetons des QR codes)
+- `supabase/functions/valider-commande/` — commande + tirage des manuscrits mystères (jetons des QR codes)
 - `supabase/functions/envoyer-avis/` — avis du lecteur envoyé par e-mail à l'auteur (Resend)
 
 ## Lancer en local
@@ -39,8 +39,8 @@ Bouton « Vendre un livre » (en-tête) ou étape 1 de « Comment ça marche » 
 
 - Catalogue « Les derniers livres en vente » : annonces Supabase (exemples lyonnais en mode démo), filtrées par la recherche et les genres.
 - Protection Acheteur ajoutée automatiquement : 5 % du montant des livres + 0,70 €.
-- Booksterbooks offerts **par vendeur** : dès 10 € → 1, dès 20 € → 2, dès 35 € → 3, avec barre de progression.
-  Sous 10 € : « Plus que X € chez ce vendeur pour débloquer ton 1er Booksterbook ! » et des suggestions du même vendeur.
+- Manuscrits mystères offerts **par vendeur** (jauge du Bookstery Drop) : dès 10 € → 1, dès 20 € → 2, dès 35 € → 3, avec barre de progression.
+  Sous 10 € : « Plus que X € chez ce vendeur pour débloquer ton 1er manuscrit mystère ! » et des suggestions du même vendeur.
 - Si le Bag mélange plusieurs genres, l'acheteur choisit le genre de son cadeau mystère avant de payer.
 - Le Bag est gardé dans le navigateur. Le paiement en ligne n'est pas encore branché.
 
@@ -64,7 +64,7 @@ Les adresses et champs des API Pangram / ZeroGPT sont à vérifier dans la docum
 
 ## Liseuse sécurisée
 
-- Accès : QR code / lien `#lire-<jeton>` affiché après la commande, ou « Mes Booksterbooks » (espace client, raccourci dans le Bag). Réservée au compte qui a reçu le Booksterbook.
+- Accès : QR code / lien `#lire-<jeton>` affiché après la commande, ou « Mes manuscrits mystères » (espace client, raccourci dans le Bag). Réservée au compte qui a reçu le manuscrit mystère.
 - Fond papier crème, **mode nuit**, taille du texte réglable, temps de lecture estimé (230 mots/min) et temps restant, barre de progression.
 - Clic droit, sélection, copier/couper, glisser, Ctrl+A/C/P bloqués ; impression masquée ; filigrane au nom du lecteur.
 - À la fin : note de 1 à 5 étoiles, commentaire envoyé **par e-mail à l'auteur** (son adresse reste privée), bouton **Suivre l'auteur**.
@@ -81,7 +81,7 @@ Renseigne `SITE_URL` dans `config.js` pour que les QR codes pointent vers l'adre
 
 ## Catalogue : fiche livre et filtres
 
-- Clic sur une couverture ou un titre : **fiche du livre** (genre, état, prix, vendeur et ville, résumé) avec **« Dans sa bibliothèque »** : tous les autres livres du même vendeur, l'avancement vers le prochain Booksterbook chez lui et un bouton « Tout ajouter » pour acheter le lot.
+- Clic sur une couverture ou un titre : **fiche du livre** (genre, état, prix, vendeur et ville, résumé) avec **« Dans sa bibliothèque »** : tous les autres livres du même vendeur, l'avancement vers le prochain manuscrit mystère chez lui et un bouton « Tout ajouter » pour acheter le lot.
 - Bulles de genre cliquables partout (accueil, catalogue, cartes, fiche), dont le nouveau genre **Nouvelles**.
 - Filtre de localisation : **Lyon / Ma ville / Ma région / Toute la France** (ville et région demandées une fois, gardées dans le navigateur).
 - Tri : nouveautés, titre de A à Z, prix croissant ou décroissant.

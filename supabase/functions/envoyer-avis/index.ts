@@ -1,4 +1,4 @@
-// Bookstery : avis d'un lecteur sur un Booksterbook, envoyé par e-mail à l'auteur.
+// Bookstery : avis d'un lecteur sur un manuscrit mystère, envoyé par e-mail à l'auteur.
 //
 // L'adresse de l'auteur reste privée : elle est lue côté serveur et jamais renvoyée au lecteur.
 // Envoi des e-mails avec Resend (https://resend.com) :
@@ -37,7 +37,7 @@ Deno.serve(async (req) => {
     .eq("token", body.token ?? "").maybeSingle();
   // deno-lint-ignore no-explicit-any
   const ex = (bb as any)?.extraits as { titre: string; auteur_id: string } | undefined;
-  if (!bb || bb.lecteur_id !== user.id || !ex) return json(404, { erreur: "Ce Booksterbook est introuvable dans ton espace." });
+  if (!bb || bb.lecteur_id !== user.id || !ex) return json(404, { erreur: "Ce manuscrit mystère est introuvable dans ton espace." });
 
   const { error } = await admin.from("avis").insert({
     booksterbook_id: bb.id, extrait_id: bb.extrait_id, auteur_id: ex.auteur_id, lecteur_id: user.id, note, commentaire: commentaire || null,
@@ -63,7 +63,7 @@ Deno.serve(async (req) => {
       <p style="font-size:22px;color:#6050DC;margin:0 0 12px">${etoiles}</p>
       ${commentaire ? `<blockquote style="margin:0 0 16px;padding:12px 16px;background:#F7F6FE;border-radius:10px">${esc(commentaire).replace(/\n/g, "<br>")}</blockquote>` : ""}
       <p style="margin:0 0 4px">— ${esc(prenom)}, lecteur Bookstery${body.suivre ? ", qui te suit désormais" : ""}.</p>
-      <p style="color:#666;font-size:13px">Ton texte a été lu grâce aux Booksterbooks. Merci d’écrire pour la communauté !</p></div>`;
+      <p style="color:#666;font-size:13px">Ton texte a été lu grâce au Bookstery Drop. Merci d’écrire pour la communauté !</p></div>`;
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { "Authorization": `Bearer ${cle}`, "Content-Type": "application/json" },

@@ -1,4 +1,4 @@
--- Bookstery : commandes, Booksterbooks (cadeaux mystère), avis et abonnements aux auteurs
+-- Bookstery : commandes, manuscrits mystères, avis et abonnements aux auteurs
 -- À exécuter APRÈS annonces.sql et extraits.sql, dans Supabase > SQL Editor.
 
 -- Nom d'auteur affiché dans la liseuse (renseigné par la fonction deposer-extrait)
@@ -17,7 +17,7 @@ create table if not exists public.commandes (
   created_at      timestamptz not null default now()
 );
 
--- Un Booksterbook = un extrait offert à un lecteur. Le jeton sert au lien et au QR code de la liseuse.
+-- Un manuscrit mystère = un extrait offert à un lecteur. Le jeton sert au lien et au QR code de la liseuse.
 create table if not exists public.booksterbooks (
   id          uuid primary key default gen_random_uuid(),
   token       uuid not null unique default gen_random_uuid(),
@@ -59,7 +59,7 @@ drop policy if exists "acheteur voit ses commandes" on public.commandes;
 create policy "acheteur voit ses commandes" on public.commandes
   for select to authenticated using (acheteur_id = (select auth.uid()));
 
--- Booksterbooks : le lecteur voit les siens et peut seulement marquer « lu »
+-- Manuscrits mystères (table booksterbooks) : le lecteur voit les siens et peut seulement marquer « lu »
 drop policy if exists "lecteur voit ses booksterbooks" on public.booksterbooks;
 create policy "lecteur voit ses booksterbooks" on public.booksterbooks
   for select to authenticated using (lecteur_id = (select auth.uid()));

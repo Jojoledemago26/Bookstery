@@ -420,7 +420,7 @@ body.authed .me{display:inline-flex}
 .au-empty{text-align:center;color:var(--muted);background:var(--maj-xl);border-radius:16px;padding:28px 16px;margin-top:10px}
 @media(max-width:560px){.au-row{grid-template-columns:1fr;gap:0}.cert dl{grid-template-columns:1fr;gap:2px}.cert dd{margin-bottom:8px}}
 
-/* ---------- Booksterbooks & QR ---------- */
+/* ---------- Manuscrits mystères & QR ---------- */
 .bb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:6px}
 .bb-card{border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
 .bb-qr{width:92px;height:92px;border-radius:10px;background:#fff;padding:6px;border:1px solid var(--line)}
@@ -716,6 +716,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 .mk-gauge i:last-child{transform:translateX(-100%)}
 .mk-gauge i::before{content:"";position:absolute;left:50%;top:-14px;width:2px;height:10px;background:#fff}
 .mk-gauge i:last-child::before{left:auto;right:0}
+.prog-l .drop-k{display:block;font-size:12px;font-weight:800;color:var(--maj);letter-spacing:.01em;margin-bottom:2px}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -953,7 +954,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
   <div class="dbody" id="dBody"></div>
   <div class="dfoot" id="dFoot" hidden>
     <fieldset class="gpick" id="gPick" hidden>
-      <legend>Genre de tes Booksterbooks</legend>
+      <legend>Genre de tes manuscrits mystères</legend>
       <p>Ton Bag mélange plusieurs genres : choisis celui de ton cadeau mystère.</p>
       <div class="gp-opts" id="gOpts"></div>
     </fieldset>
@@ -961,7 +962,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
     <dl class="sum">
       <div><dt id="sBooksLbl">Livres</dt><dd id="sBooks">0,00 €</dd></div>
       <div><dt>Protection Acheteur <small>5&nbsp;% + 0,70&nbsp;€</small></dt><dd id="sFee">0,00 €</dd></div>
-      <div class="gift"><dt>Booksterbooks offerts</dt><dd id="sGift">0</dd></div>
+      <div class="gift"><dt>Manuscrits mystères offerts</dt><dd id="sGift">0</dd></div>
       <div class="tot"><dt>Total</dt><dd id="dTotal">0,00 €</dd></div>
     </dl>
     <p class="form-msg" id="payMsg" role="alert"></p>
@@ -1013,7 +1014,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
     <li><span>Ville</span><b id="aVille">—</b></li>
     <li><span>Genres préférés</span><b id="aGenres">—</b></li>
   </ul>
-  <button class="btn" type="button" data-mesbb>Mes Booksterbooks</button>
+  <button class="btn" type="button" data-mesbb>Mes manuscrits mystères</button>
   <button class="btn dark" type="button" id="logout" style="margin-top:10px">Se déconnecter</button>
 </div>
 
@@ -1029,7 +1030,7 @@ footer nav{flex-wrap:wrap;gap:10px 24px}
 <div class="modal wide" id="mesbb" role="dialog" aria-modal="true" aria-labelledby="mbTitre" aria-hidden="true">
   <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   <img src="mark.png" alt="">
-  <h2 id="mbTitre">Mes Booksterbooks</h2>
+  <h2 id="mbTitre">Mes manuscrits mystères</h2>
   <p>Tes cadeaux mystère, à lire dans la liseuse sécurisée. Scanne un QR code pour continuer sur ton téléphone.</p>
   <div class="bb-grid" id="mbList"></div>
 </div>
@@ -1577,7 +1578,7 @@ $("sellForm").addEventListener("submit",async function(e){
 if(sb)sb.auth.onAuthStateChange(function(ev){if(ev==="SIGNED_IN"&&sellReturn){sellReturn=false;setTimeout(function(){closeAll(true);openSell()},300)}});
 
 /* ================= Catalogue & Bookster Bag ================= */
-var TIERS=[10,20,35];                 /* paliers Booksterbook, par vendeur */
+var TIERS=[10,20,35];                 /* paliers manuscrit mystère, par vendeur */
 var FEE_RATE=0.05,FEE_FIXED=0.70;     /* Protection Acheteur : 5 % + 0,70 € sur le montant des livres */
 var ETAT_TXT={comme_neuf:"Comme neuf",tres_bon:"Très bon état",bon:"Bon état"};
 function r2(x){return Math.round((x+Number.EPSILON)*100)/100}
@@ -1749,7 +1750,7 @@ function addToBag(id){
   bag.push({id:b.id,titre:b.titre,auteur:b.auteur||"",genre:b.genre||"",etat:b.etat||"",prix:Number(b.prix),vendeur_id:b.vendeur_id,couverture_url:b.couverture_url||""});
   saveBag();renderAll();
   var g=groups().filter(function(x){return x.vid===b.vendeur_id})[0],nom=sellerOf(b.vendeur_id).nom;
-  toast(g.next?"Ajouté ! Plus que "+EUR.format(g.missing)+" chez "+nom+" pour ton "+ordinal(g.gifts+1)+" Booksterbook.":"Ajouté ! 3 Booksterbooks débloqués chez "+nom+".");
+  toast(g.next?"Ajouté ! Plus que "+EUR.format(g.missing)+" chez "+nom+" pour ton "+ordinal(g.gifts+1)+" manuscrit mystère.":"Ajouté ! 3 manuscrits mystères débloqués chez "+nom+".");
 }
 function removeFromBag(id){bag=bag.filter(function(b){return String(b.id)!==String(id)});saveBag();renderAll()}
 document.addEventListener("click",function(e){
@@ -1765,18 +1766,18 @@ function suggestions(g){
 }
 function groupHtml(g){
   var s=sellerOf(g.vid),max=TIERS[TIERS.length-1];
-  var label=g.gifts===0?"Aucun Booksterbook débloqué pour l’instant":g.gifts+" Booksterbook"+(g.gifts>1?"s":"")+" débloqué"+(g.gifts>1?"s":"");
+  var label=g.gifts===0?"Aucun manuscrit mystère débloqué pour l’instant":g.gifts+" manuscrit"+(g.gifts>1?"s":"")+" mystère"+(g.gifts>1?"s":"")+" débloqué"+(g.gifts>1?"s":"");
   var after=g.next&&g.gifts>0?' · <em>plus que '+EUR.format(g.missing)+' pour le '+ordinal(g.gifts+1)+'</em>':(!g.next?' · <em>le maximum chez ce vendeur</em>':"");
   var ticks=TIERS.map(function(t,i){return'<span class="tk'+(g.gifts>i?" on":"")+'" style="left:'+(t/max*100)+'%">'+CHECK+'<small>'+t+' €</small></span>'}).join("");
   var nudge="";
   if(g.gifts===0){
     var sg=suggestions(g);
-    nudge='<div class="nudge"><p>Plus que '+EUR.format(g.missing)+' chez ce vendeur pour débloquer ton 1er Booksterbook !</p>'+
+    nudge='<div class="nudge"><p>Plus que '+EUR.format(g.missing)+' chez ce vendeur pour débloquer ton 1er manuscrit mystère !</p>'+
       (sg.length?'<ul class="sugg">'+sg.map(function(b){return'<li><span>'+esc(b.titre)+'</span><em>'+EUR.format(b.prix)+'</em>'+addBtn(b,true)+'</li>'}).join("")+'</ul>':"")+'</div>';
   }
   return'<section class="sg" aria-label="Livres de '+esc(s.nom)+'"><div class="sg-h"><div><b>'+esc(s.nom)+'</b>'+(s.ville?' <span>· '+esc(s.ville)+'</span>':"")+'</div><span class="sub">'+EUR.format(g.sub)+'</span></div>'+
     '<ul class="items">'+g.items.map(function(b){return'<li class="item">'+coverHtml(b,true)+'<div class="item-t"><b>'+esc(b.titre)+'</b><span>'+esc(ETAT_TXT[b.etat]||b.genre||"")+'</span></div><span class="p">'+EUR.format(b.prix)+'</span><button class="icon rm" type="button" data-rm="'+esc(b.id)+'" aria-label="Retirer '+esc(b.titre)+'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></li>'}).join("")+'</ul>'+
-    '<div class="prog"><p class="prog-l">'+label+after+'</p><div class="bar-t" role="progressbar" aria-label="Progression Booksterbook chez '+esc(s.nom)+'" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+Math.min(g.sub,max)+'"><i style="width:'+(Math.min(g.sub,max)/max*100)+'%"></i>'+ticks+'</div></div>'+nudge+'</section>';
+    '<div class="prog"><p class="prog-l"><span class="drop-k">⚡ Jauge du Bookstery Drop</span>'+label+after+'</p><div class="bar-t" role="progressbar" aria-label="Jauge du Bookstery Drop chez '+esc(s.nom)+'" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+Math.min(g.sub,max)+'"><i style="width:'+(Math.min(g.sub,max)/max*100)+'%"></i>'+ticks+'</div></div>'+nudge+'</section>';
 }
 function renderBag(){
   var t=totals(),n=bag.length;
@@ -1784,7 +1785,7 @@ function renderBag(){
   $("bagBtn").setAttribute("aria-label","Ouvrir mon Bookster Bag, "+(n?n+" livre"+(n>1?"s":""):"vide")+", "+EUR.format(t.total));
   $("dCount").textContent=n?n+" livre"+(n>1?"s":""):"";
   if(!n){
-    $("dBody").innerHTML='<div class="dempty"><div class="ico"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></div><b>Ton Bookster Bag est vide</b><span>Dès 10 € chez un même vendeur, un Booksterbook mystère t’est offert.</span><a class="btn" href="#catalogue" data-close style="margin-top:8px">Voir les livres</a></div>';
+    $("dBody").innerHTML='<div class="dempty"><div class="ico"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></div><b>Ton Bookster Bag est vide</b><span>Dès 10 € chez un même vendeur, un manuscrit mystère t’est offert.</span><a class="btn" href="#catalogue" data-close style="margin-top:8px">Voir les livres</a></div>';
     $("dFoot").hidden=true;return;
   }
   $("dBody").innerHTML=t.groups.map(groupHtml).join("");
@@ -1797,7 +1798,7 @@ function renderBag(){
   else $("gPick").classList.remove("need");
   var single=t.gifts>0&&t.genres.length===1;
   $("gSingle").hidden=!single;
-  if(single)$("gSingle").textContent="Ton"+(t.gifts>1?"s":"")+" Booksterbook"+(t.gifts>1?"s":"")+" sera"+(t.gifts>1?"ont":"")+" du genre "+t.genres[0]+", comme ton Bag.";
+  if(single)$("gSingle").textContent=(t.gifts>1?"Tes":"Ton")+" manuscrit"+(t.gifts>1?"s":"")+" mystère"+(t.gifts>1?"s":"")+" sera"+(t.gifts>1?"ont":"")+" du genre "+t.genres[0]+", comme ton Bag.";
   $("sBooksLbl").textContent="Livres ("+n+")";$("sBooks").textContent=EUR.format(t.books);
   $("sFee").textContent=EUR.format(t.fee);
   $("sGift").textContent=t.gifts?t.gifts+" offert"+(t.gifts>1?"s":""):"0";
@@ -1830,7 +1831,7 @@ function renderFiche(){
   var s=sellerOf(b.vendeur_id),l=locOf(b),own=current&&b.vendeur_id===current.id;
   var others=sellerBooks(b.vendeur_id).filter(function(x){return String(x.id)!==String(b.id)});
   var g=groups().filter(function(x){return x.vid===b.vendeur_id})[0],sub=g?g.sub:0,gifts=booksterbooks(sub),next=TIERS[gifts];
-  var prog=next?(sub?"Tu as "+EUR.format(sub)+" chez "+esc(s.nom)+" : plus que <b>"+EUR.format(r2(next-sub))+"</b> pour ton "+ordinal(gifts+1)+" Booksterbook.":"Dès <b>10 €</b> chez "+esc(s.nom)+", un Booksterbook mystère t’est offert. Regroupe tes achats !"):"<b>3 Booksterbooks débloqués</b> chez "+esc(s.nom)+", le maximum.";
+  var prog=next?(sub?"Tu as "+EUR.format(sub)+" chez "+esc(s.nom)+" : plus que <b>"+EUR.format(r2(next-sub))+"</b> pour ton "+ordinal(gifts+1)+" manuscrit mystère.":"Dès <b>10 €</b> chez "+esc(s.nom)+", un manuscrit mystère t’est offert. Regroupe tes achats !"):"<b>3 manuscrits mystères débloqués</b> chez "+esc(s.nom)+", le maximum.";
   var lot=sellerBooks(b.vendeur_id).filter(function(x){return!bagHas(x.id)}),lotSum=r2(lot.reduce(function(a,x){return a+x.prix},0));
   $("ficheBody").innerHTML=
     '<div class="f-top">'+coverHtml(b)+'<div class="f-info">'+
@@ -1850,7 +1851,7 @@ function renderFiche(){
 document.addEventListener("click",function(e){
   var f=e.target.closest("[data-fiche]");if(f){var id=f.getAttribute("data-fiche");if($("fiche").classList.contains("on")){ficheId=id;renderFiche();$("fiche").scrollTop=0}else openFiche(id)}
   var lot=e.target.closest("[data-lot]");if(lot){var vid=lot.getAttribute("data-lot"),n=0;sellerBooks(vid).forEach(function(x){if(!bagHas(x.id)&&!(current&&x.vendeur_id===current.id)){bag.push({id:x.id,titre:x.titre,auteur:x.auteur||"",genre:x.genre||"",etat:x.etat||"",prix:Number(x.prix),vendeur_id:x.vendeur_id,couverture_url:x.couverture_url||""});n++}});
-    saveBag();renderAll();var g=groups().filter(function(x){return x.vid===vid})[0];toast(n+" livre"+(n>1?"s":"")+" ajouté"+(n>1?"s":"")+" : "+(g&&g.gifts?g.gifts+" Booksterbook"+(g.gifts>1?"s":"")+" débloqué"+(g.gifts>1?"s":"")+" chez "+sellerOf(vid).nom+" !":"lot ajouté à ton Bag."))}
+    saveBag();renderAll();var g=groups().filter(function(x){return x.vid===vid})[0];toast(n+" livre"+(n>1?"s":"")+" ajouté"+(n>1?"s":"")+" : "+(g&&g.gifts?g.gifts+" manuscrit"+(g.gifts>1?"s":"")+" mystère"+(g.gifts>1?"s":"")+" débloqué"+(g.gifts>1?"s":"")+" chez "+sellerOf(vid).nom+" !":"lot ajouté à ton Bag."))}
 });
 var _renderAllF=renderAll;
 renderAll=function(){_renderAllF();if(ficheId&&$("fiche").classList.contains("on"))renderFiche()};
@@ -1911,7 +1912,7 @@ function resetSteps(){["stMod","stIA","stHash","stTime"].forEach(function(i){ste
 
 /* Refus de modération : messages bienveillants, le texte reste dans le formulaire pour être relu */
 var MOD_MSG={
-  contenu_interdit:"Ton texte ne peut pas être publié sur Bookstery : il contient des passages contraires à notre charte (haine, violence gratuite, contenu sexuel explicite, terrorisme ou incitation à des actes illégaux). Les Booksterbooks sont offerts à des lecteurs de tous horizons : merci de proposer un autre texte.",
+  contenu_interdit:"Ton texte ne peut pas être publié sur Bookstery : il contient des passages contraires à notre charte (haine, violence gratuite, contenu sexuel explicite, terrorisme ou incitation à des actes illégaux). Les manuscrits mystères sont offerts à des lecteurs de tous horizons : merci de proposer un autre texte.",
   pas_en_francais:"Pour l’instant, Bookstery accueille uniquement des textes écrits en français. Si tu as une version française de ton extrait, n’hésite pas à la déposer !",
   pas_litteraire:"Ton envoi ne ressemble pas à une œuvre littéraire (nouvelle, extrait de roman, conte, poésie…). Bookstery accueille uniquement des textes de création : dépose plutôt un extrait de ton histoire.",
   illisible_ou_fautes:"Ton extrait mérite une relecture avant d’être offert aux lecteurs : nous y avons repéré de nombreuses fautes ou des passages difficiles à lire. Prends le temps de le relire, ou de le faire relire par un proche, puis dépose-le à nouveau. On a hâte de te lire !"};
@@ -2077,7 +2078,7 @@ async function loadMesTextes(){
     if(!t.hidden){t.hidden=true;return}c.auteur=sb?authorName():"Mode démo";showCert(t,c,!sb,false,c.texte)})});
 }
 
-/* ================= Booksterbooks, QR codes et liseuse sécurisée ================= */
+/* ================= manuscrits mystères, QR codes et liseuse sécurisée ================= */
 var WPM=230; /* vitesse de lecture moyenne, en mots par minute */
 var DEMO_TEXTES=[
   {genre:"Polar",titre:"Brouillard sur le quai Saint-Vincent",auteur:"Lou Ferrand (autrice fictive)",auteur_id:"demo-lou",texte:
@@ -2095,7 +2096,7 @@ function minutes(n){return Math.max(1,Math.round(n/WPM))}
 /* QR codes */
 function drawQR(el,text){el.innerHTML="";if(window.QRCode){try{new QRCode(el,{text:text,width:160,height:160,colorDark:"#0B0B10",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});return}catch(e){}}el.textContent="QR indisponible"}
 function bbCards(list,box){
-  if(!list.length){box.innerHTML='<p class="bb-empty">Pas encore de Booksterbook. Dès 10 € chez un même vendeur, un texte inédit t’est offert.</p>';return}
+  if(!list.length){box.innerHTML='<p class="bb-empty">Pas encore de manuscrit mystère. Dès 10 € chez un même vendeur, un texte inédit t’est offert.</p>';return}
   box.innerHTML=list.map(function(b,i){return'<div class="bb-card"><div class="bb-qr" id="'+box.id+'-qr'+i+'" title="Scanne pour lire sur ton téléphone"></div><div>'+(b.lu_at?"":'<span class="bb-new">Nouveau</span>')+'<b>'+esc(b.titre)+'</b><span>'+esc(b.genre||"")+(b.nb_mots?" · ≈ "+minutes(b.nb_mots)+" min":"")+'</span><button class="btn" type="button" data-lire="'+esc(b.token)+'">Lire</button></div></div>'}).join("");
   list.forEach(function(b,i){drawQR($(box.id+"-qr"+i),lireUrl(b.token))});
 }
@@ -2104,13 +2105,13 @@ async function mesBooksterbooks(){
   if(!current)return[];
   var r=await sb.from("booksterbooks").select("token,lu_at,created_at,extraits(titre,genre,nb_mots)").order("created_at",{ascending:false});
   if(r.error)throw r.error;
-  return(r.data||[]).map(function(b){var x=b.extraits||{};return{token:b.token,lu_at:b.lu_at,titre:x.titre||"Booksterbook",genre:x.genre,nb_mots:x.nb_mots}});
+  return(r.data||[]).map(function(b){var x=b.extraits||{};return{token:b.token,lu_at:b.lu_at,titre:x.titre||"Manuscrit mystère",genre:x.genre,nb_mots:x.nb_mots}});
 }
 async function openMesBB(){
   open($("mesbb"));var box=$("mbList");
-  if(sb&&!current){box.innerHTML='<p class="bb-empty">Connecte-toi pour retrouver tes Booksterbooks.</p>';return}
+  if(sb&&!current){box.innerHTML='<p class="bb-empty">Connecte-toi pour retrouver tes manuscrits mystères.</p>';return}
   box.innerHTML='<p class="bb-empty">Chargement…</p>';
-  try{bbCards(await mesBooksterbooks(),box)}catch(e){box.innerHTML='<p class="bb-empty">Tes Booksterbooks n’ont pas pu être chargés. Réessaie dans un instant.</p>'}
+  try{bbCards(await mesBooksterbooks(),box)}catch(e){box.innerHTML='<p class="bb-empty">Tes manuscrits mystères n’ont pas pu être chargés. Réessaie dans un instant.</p>'}
 }
 document.addEventListener("click",function(e){
   if(e.target.closest("[data-mesbb]"))openMesBB();
@@ -2119,10 +2120,10 @@ document.addEventListener("click",function(e){
 
 /* --- Commande : remplace le simple message par la validation + QR codes --- */
 function showCommande(total,list,manquants,demo){
-  $("cmdSum").textContent="Total réglé : "+EUR.format(total)+". "+(list.length?(list.length>1?"Tes "+list.length+" Booksterbooks t’attendent":"Ton Booksterbook t’attend")+" : lis-le ici ou scanne le QR code avec ton téléphone.":"Merci pour ta commande !");
+  $("cmdSum").textContent="Total réglé : "+EUR.format(total)+". "+(list.length?(list.length>1?"Tes "+list.length+" manuscrits mystères t’attendent":"Ton manuscrit mystère t’attend")+" : lis-le ici ou scanne le QR code avec ton téléphone.":"Merci pour ta commande !");
   bbCards(list,$("cmdBB"));if(!list.length)$("cmdBB").innerHTML="";
-  $("cmdNote").textContent=(manquants>0?manquants+" Booksterbook"+(manquants>1?"s n’ont":" n’a")+" pas pu être attribué"+(manquants>1?"s":"")+" faute de texte disponible dans ce genre : nous te l’enverrons dès qu’un auteur en dépose un. ":"")+
-    (demo?"Mode démo : aucun paiement n’a eu lieu. ":"")+"Tu retrouves tes Booksterbooks à tout moment dans « Mes Booksterbooks ».";
+  $("cmdNote").textContent=(manquants>0?manquants+" manuscrit"+(manquants>1?"s mystères n’ont":" mystère n’a")+" pas pu être attribué"+(manquants>1?"s":"")+" faute de texte disponible dans ce genre : nous te l’enverrons dès qu’un auteur en dépose un. ":"")+
+    (demo?"Mode démo : aucun paiement n’a eu lieu. ":"")+"Tu retrouves tes manuscrits mystères à tout moment dans « Mes manuscrits mystères ».";
   open($("commande"));
 }
 async function checkout(t,genre){
@@ -2144,11 +2145,11 @@ async function checkout(t,genre){
   finally{busy(btn,false)}
 }
 
-/* Raccourci vers les Booksterbooks depuis le Bag */
+/* Raccourci vers les manuscrits mystères depuis le Bag */
 var _renderBag=renderBag;
 renderBag=function(){_renderBag();
   var n=sb?0:demoBB.filter(function(b){return!b.lu_at}).length;
-  if(n||(sb&&current)){var d=document.createElement("div");d.className="bag-bb";d.innerHTML='<span>'+(n?n+" Booksterbook"+(n>1?"s":"")+" à lire":"Tes Booksterbooks")+'</span><button type="button" data-mesbb>Ouvrir</button>';$("dBody").prepend(d)}
+  if(n||(sb&&current)){var d=document.createElement("div");d.className="bag-bb";d.innerHTML='<span>'+(n?n+" manuscrit"+(n>1?"s":"")+" mystère"+(n>1?"s":"")+" à lire":"Tes manuscrits mystères")+'</span><button type="button" data-mesbb>Ouvrir</button>';$("dBody").prepend(d)}
 };
 
 /* --- Liseuse --- */
@@ -2193,7 +2194,7 @@ async function markRead(){
 function lzShow(d){
   LZ.data=d;LZ.read=!!d.lu_at;
   $("lzLock").hidden=true;["lzBody","lzFin","lzEnd","lzMeta","lzReportLink"].forEach(function(i){$(i).hidden=false});
-  $("lzKicker").textContent="Booksterbook · "+(d.genre||"Texte inédit");
+  $("lzKicker").textContent="Manuscrit mystère · "+(d.genre||"Texte inédit");
   $("lzTitre").textContent=d.titre;$("lzMini").textContent=d.titre;
   $("lzAuthor").textContent="par "+(d.auteur||"un auteur indépendant");
   $("lzMeta").innerHTML='<span>≈ '+minutes(d.nb_mots)+' min de lecture</span><span>'+NF.format(d.nb_mots)+' mots</span><span>Texte protégé</span>';
@@ -2209,7 +2210,7 @@ function lzShow(d){
 }
 function lzLocked(html){
   LZ.data=null;["lzBody","lzFin","lzEnd","lzMeta","lzReportLink"].forEach(function(i){$(i).hidden=true});
-  $("lzKicker").textContent="Liseuse Bookstery";$("lzTitre").textContent="Ton Booksterbook";$("lzMini").textContent="Liseuse";$("lzAuthor").textContent="";$("lzLeft").textContent="";$("lzProg").style.width="0";
+  $("lzKicker").textContent="Liseuse Bookstery";$("lzTitre").textContent="Ton manuscrit mystère";$("lzMini").textContent="Liseuse";$("lzAuthor").textContent="";$("lzLeft").textContent="";$("lzProg").style.width="0";
   $("lzLock").innerHTML=html;$("lzLock").hidden=false;lzNightUI();
 }
 var pendingToken=null;
@@ -2218,13 +2219,13 @@ async function openLiseuse(token){
   setTimeout(function(){$("lzClose").focus()},50);
   try{if(location.hash!=="#lire-"+token)history.replaceState(null,"","#lire-"+token)}catch(e){}
   if(!sb){var b=demoBB.filter(function(x){return x.token===token})[0];
-    if(!b)return lzLocked("<p>Ce Booksterbook n’est pas sur cet appareil. Ouvre-le depuis le navigateur où tu as passé commande.</p>");
+    if(!b)return lzLocked("<p>Ce manuscrit mystère n’est pas sur cet appareil. Ouvre-le depuis le navigateur où tu as passé commande.</p>");
     return lzShow(Object.assign({},b,{suivi:followsDemo(b.auteur_id),avis:b.avis||null}));}
-  if(!current){pendingToken=token;return lzLocked('<p>Connecte-toi pour ouvrir ton Booksterbook. Il est réservé au compte qui l’a reçu.</p><button class="btn" type="button" data-login>Se connecter</button>')}
-  lzLocked("<p>Ouverture de ton Booksterbook…</p>");
+  if(!current){pendingToken=token;return lzLocked('<p>Connecte-toi pour ouvrir ton manuscrit mystère. Il est réservé au compte qui l’a reçu.</p><button class="btn" type="button" data-login>Se connecter</button>')}
+  lzLocked("<p>Ouverture de ton manuscrit mystère…</p>");
   try{
     var r=await sb.from("booksterbooks").select("id,token,lu_at,extrait_id,extraits(titre,genre,texte,nb_mots,auteur_id,auteur_nom)").eq("token",token).maybeSingle();
-    if(r.error||!r.data||!r.data.extraits)return lzLocked("<p>Ce Booksterbook est introuvable dans ton espace. Vérifie que tu es connecté avec le bon compte.</p>");
+    if(r.error||!r.data||!r.data.extraits)return lzLocked("<p>Ce manuscrit mystère est introuvable dans ton espace. Vérifie que tu es connecté avec le bon compte.</p>");
     var x=r.data.extraits,av=await sb.from("avis").select("note").eq("booksterbook_id",r.data.id).maybeSingle(),ab=await sb.from("abonnements").select("auteur_id").eq("lecteur_id",current.id).eq("auteur_id",x.auteur_id).maybeSingle();
     var sg=await sb.from("signalements").select("id").eq("extrait_id",r.data.extrait_id).eq("lecteur_id",current.id).maybeSingle();
     lzShow({extrait_id:r.data.extrait_id,signale:!!sg.data,titre:x.titre,genre:x.genre,texte:x.texte,nb_mots:x.nb_mots,auteur:x.auteur_nom||"un auteur indépendant",auteur_id:x.auteur_id,lu_at:r.data.lu_at,avis:av.data||null,suivi:!!ab.data});
@@ -2315,7 +2316,7 @@ var STEPS=[
    hi:function(){return document.querySelector("#grid .add:not([disabled]):not([aria-pressed=\"true\"])")},
    done:function(){return bag.length>0},
    auto:function(){var b=filtered().filter(function(x){return!bagHas(x.id)})[0]||BOOKS[0];$("catalogue").scrollIntoView({behavior:"smooth"});addToBag(b.id)}},
-  {t:"Débloque ton premier Booksterbook",
+  {t:"Débloque ton premier manuscrit mystère",
    x:"Ouvre ton Bag. Dès 10 € chez un même vendeur, un texte inédit t’est offert : ajoute un livre suggéré par l’encart violet.",
    hi:function(){return tourDrawerOpen()?(document.querySelector(".nudge")||document.querySelector(".prog")):$("bagBtn")},
    done:function(){return totals().gifts>0},
@@ -2324,17 +2325,17 @@ var STEPS=[
      var pool=BOOKS.filter(function(x){return x.vendeur_id===g.vid&&!bagHas(x.id)}).sort(function(a,b){return b.prix-a.prix}),sum=g.sub;
      pool.forEach(function(x){if(sum<10){addToBag(x.id);sum=r2(sum+x.prix)}});}},
   {t:"Choisis le genre de ton cadeau",
-   x:"Ton Bag mélange plusieurs genres : dans l’encart vert, choisis celui de ton Booksterbook mystère.",
+   x:"Ton Bag mélange plusieurs genres : dans l’encart vert, choisis celui de ton manuscrit mystère.",
    hi:function(){return $("gPick")},
    skip:function(){return totals().genres.length<=1},
    done:function(){return totals().genres.length<=1||!!giftGenre},
    auto:function(){if(!tourDrawerOpen())open($("drawer"));var i=$("gOpts").querySelector("input");if(i){i.checked=true;i.dispatchEvent(new Event("change",{bubbles:true}))}}},
   {t:"Passe commande",
-   x:"Vérifie le récapitulatif (livres, Protection Acheteur de 5 % + 0,70 €, Booksterbooks offerts), puis touche « Passer au paiement ».",
+   x:"Vérifie le récapitulatif (livres, Protection Acheteur de 5 % + 0,70 €, manuscrits mystères offerts), puis touche « Passer au paiement ».",
    hi:function(){return tourDrawerOpen()?$("payBtn"):$("bagBtn")},
    done:function(){return lastBBToken()&&lastBBToken()!==TOUR.bb0},
    auto:function(){if(!tourDrawerOpen())open($("drawer"));setTimeout(function(){$("payBtn").click()},250)}},
-  {t:"Ouvre ton Booksterbook",
+  {t:"Ouvre ton manuscrit mystère",
    x:"Voici ton QR code : scanné avec un téléphone, il ouvre la liseuse. Ici, touche « Lire ».",
    hi:function(){return document.querySelector("#cmdBB [data-lire]")||document.querySelector("[data-lire]")},
    done:function(){return!$("liseuse").hidden&&!!LZ.data},
@@ -2372,7 +2373,7 @@ function tourRender(){
   var el=tourEl(),i=TOUR.i;
   if(i>=STEPS.length){
     el.innerHTML='<div class="tour-top"><span class="tour-k">Démo guidée · terminée</span><button class="tour-x" type="button" data-tour-quit aria-label="Fermer la démo">×</button></div>'+
-      '<b class="tour-t">Bravo, tu as fait le parcours complet !</b><p class="tour-p">Tu as trouvé un livre, débloqué un Booksterbook à 10 €, choisi son genre, passé commande, ouvert ton cadeau par QR code dans la liseuse sécurisée et noté l’auteur.</p>'+
+      '<b class="tour-t">Bravo, tu as fait le parcours complet !</b><p class="tour-p">Tu as trouvé un livre, débloqué un manuscrit mystère à 10 €, choisi son genre, passé commande, ouvert ton cadeau par QR code dans la liseuse sécurisée et noté l’auteur.</p>'+
       '<div class="tour-act"><button class="btn" type="button" data-tour-restart>Recommencer</button><button class="btn ghost" type="button" data-tour-quit>Fermer</button></div>';
     tourHi();return;
   }

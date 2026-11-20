@@ -1,4 +1,4 @@
-// Bookstery : validation d'une commande et attribution des Booksterbooks.
+// Bookstery : validation d'une commande et attribution des manuscrits mystères.
 //
 // Recalcule tout côté serveur (prix, Protection Acheteur, paliers par vendeur),
 // réserve les livres, tire au sort les extraits offerts dans le genre choisi
