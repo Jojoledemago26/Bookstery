@@ -936,6 +936,11 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
   .dv-tiers{gap:6px}.dv-tiers li{padding:12px 6px}.dv-tiers b{font-size:17px}.dv-tiers span{font-size:11.5px}
   .ft-cols{grid-template-columns:1fr 1fr}
 }
+.cond-opts.two{grid-template-columns:1fr 1fr}
+.vstat-tag{margin-left:8px;font-size:11.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:var(--maj-xl);color:var(--maj-d);cursor:help}
+.vstat-tag.pro{background:#E8F6EE;color:#1C7A4A}
+.legal-ok{font-size:12.5px!important;color:var(--muted)!important;margin:10px 0 0!important;text-align:center}
+.legal-ok a{color:var(--maj-d);font-weight:700}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1197,7 +1202,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
     <nav class="ft-cols" aria-label="Pied de page">
       <div><b>Acheter</b><a href="#catalogue">Derniers livres en vente</a><a href="#drop">Le Bookstery Drop</a><a href="#comment">Comment ça marche</a></div>
       <div><b>Vendre &amp; écrire</b><a href="#top" data-sell>Vendre un livre</a><a href="#auteurs">Espace auteur</a><a href="#top" data-auteur>Envoyer mon texte</a></div>
-      <div><b>Aide</b><a href="#aide" data-aide>Demander à Plume</a><a href="#top">Mentions légales</a></div>
+      <div><b>Aide</b><a href="#aide" data-aide>Demander à Plume</a><a href="legal.html#mentions">Mentions légales</a><a href="legal.html#cgu">CGU</a></div>
     </nav>
     <p class="legal">© 2026 Bookstery · Fait avec soin à Lyon.</p>
   </div>
@@ -1229,6 +1234,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
     </dl>
     <p class="form-msg" id="payMsg" role="alert"></p>
     <button class="btn" type="button" id="payBtn">Passer au paiement</button>
+    <p class="legal-ok">En commandant, tu acceptes les <a href="legal.html#cgu" target="_blank" rel="noopener">CGU</a>.</p>
   </div>
 </aside>
 
@@ -1246,6 +1252,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
     <div class="gchips" id="gChips" role="group" aria-labelledby="gLbl"></div>
     <p class="form-msg" id="joinMsg" role="alert"></p>
     <button class="btn" type="submit" id="joinSubmit">Rejoindre les Booksters</button>
+    <p class="legal-ok">En créant ton compte, tu acceptes les <a href="legal.html#cgu" target="_blank" rel="noopener">CGU</a> et la <a href="legal.html#m-donnees" target="_blank" rel="noopener">politique de données</a>.</p>
   </form>
   <p class="swap">Déjà Bookster ? <button type="button" data-login>Se connecter</button></p>
 </div>
@@ -1429,6 +1436,13 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
       <div><label for="bVille">Ville du livre</label><input id="bVille" autocomplete="address-level2" placeholder="Ex. Lyon 7e"></div>
       <div><label for="bRegion">Région</label><select id="bRegion"></select></div>
     </div>
+    <fieldset class="cond vstat">
+      <legend>Tu vends en tant que</legend>
+      <div class="cond-opts two">
+        <label><input type="radio" name="vstat" value="particulier" checked>Particulier<span>Je revends des livres de ma bibliothèque.</span></label>
+        <label><input type="radio" name="vstat" value="pro">Professionnel<span>Librairie, bouquiniste, revendeur.</span></label>
+      </div>
+    </fieldset>
     <label for="bPrice">Ton prix <span class="hint">Tu le fixes librement</span></label>
     <div class="price-in"><input id="bPrice" type="number" inputmode="decimal" min="0.5" max="999" step="0.01" placeholder="0,00"><span aria-hidden="true">€</span></div>
     <div class="safe-pay"><span class="sp-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><p><b>Paiement sécurisé</b>Tu reçois <b>100&nbsp;% de ton prix</b> dès que l’acheteur confirme la réception. Aucun frais pour toi&nbsp;: la Protection Acheteur est payée par l’acheteur.</p></div>
@@ -1935,7 +1949,8 @@ $("sellForm").addEventListener("submit",async function(e){
   if(!(prix>=0.5&&prix<=999)){$("bPrice").focus();return setMsg("sellMsg","Fixe un prix entre 0,50 € et 999 €.","err")}
   var ville=$("bVille").value.trim(),region=$("bRegion").value;
   if(!ville){$("bVille").focus();return setMsg("sellMsg","Indique la ville où se trouve le livre.","err")}
-  var annonce={isbn:isbn,titre:titre,auteur:auteur||null,resume:resume||null,couverture_url:coverUrl||null,genre:genre,etat:etat,prix:prix,ville:ville,region:region||regionOf(ville)||null};
+  var vs=this.querySelector('input[name="vstat"]:checked');
+  var annonce={vendeur_pro:!!(vs&&vs.value==="pro"),isbn:isbn,titre:titre,auteur:auteur||null,resume:resume||null,couverture_url:coverUrl||null,genre:genre,etat:etat,prix:prix,ville:ville,region:region||regionOf(ville)||null};
   if(!sb){closeAll();resetSell();toast("Annonce « "+titre+" » à "+EUR.format(prix)+" prête, avec tes 2 photos ! (Mode démo : rien n’est enregistré.)");return}
   if(!current){$("sellMsg").className="form-msg err";$("sellMsg").innerHTML='Connecte-toi pour publier ton annonce. <button type="button" class="forgot" style="display:inline;margin:0" data-login>Se connecter</button>';return}
   var btn=$("sellSubmit");busy(btn,true,"Publication…");setMsg("sellMsg","");
@@ -1977,10 +1992,10 @@ function coverHtml(b,mini){
 /* Exemples affichés en mode démo (sans Supabase) */
 var DEMO_SELLERS={
   v1:{nom:"Margaux",ville:"Lyon 4e",region:"Auvergne-Rhône-Alpes"},
-  v2:{nom:"Librairie du Canal",ville:"Lyon 7e",region:"Auvergne-Rhône-Alpes"},
+  v2:{nom:"Librairie du Canal",ville:"Lyon 7e",region:"Auvergne-Rhône-Alpes",pro:true},
   v3:{nom:"Hugo",ville:"Villeurbanne",region:"Auvergne-Rhône-Alpes"},
   v4:{nom:"Inès",ville:"Grenoble",region:"Auvergne-Rhône-Alpes"},
-  v5:{nom:"Bouquinerie du Marais",ville:"Paris 3e",region:"Île-de-France"}};
+  v5:{nom:"Bouquinerie du Marais",ville:"Paris 3e",region:"Île-de-France",pro:true}};
 var DEMO_BOOKS=[
   {id:"d13",titre:"Nouvelles orientales",auteur:"Marguerite Yourcenar",genre:"Nouvelles",etat:"tres_bon",prix:4.2,vendeur_id:"v1",resume:"Dix récits inspirés des légendes des Balkans, de la Grèce, de l’Inde et du Japon."},
   {id:"d1",titre:"L’Étranger",auteur:"Albert Camus",genre:"Classiques",etat:"tres_bon",prix:3.5,vendeur_id:"v1",resume:"Meursault, employé de bureau à Alger, assiste à l’enterrement de sa mère sans verser une larme."},
@@ -2264,6 +2279,7 @@ async function fetchSellerBooks(vid){
     (r.data||[]).forEach(function(b){if(!findBook(b.id)){b.prix=Number(b.prix);BOOKS.push(b)}});if(ficheId)renderFiche()}catch(e){}
 }
 function openFiche(id){var b=findBook(id);if(!b)return;ficheId=id;renderFiche();open($("fiche"));fetchSellerBooks(b.vendeur_id)}
+function isPro(b){return b.vendeur_pro===true||(DEMO_SELLERS[b.vendeur_id]&&DEMO_SELLERS[b.vendeur_id].pro===true&&!sb)}
 function renderFiche(){
   var b=findBook(ficheId);if(!b)return;
   var s=sellerOf(b.vendeur_id),l=locOf(b),own=current&&b.vendeur_id===current.id;
@@ -2275,7 +2291,7 @@ function renderFiche(){
     '<div class="f-top">'+coverHtml(b)+'<div class="f-info">'+
       '<div class="bcard-tags">'+(b.genre?'<button class="gtag" type="button" data-genre="'+esc(b.genre)+'">'+esc(b.genre)+'</button>':"")+'<span class="etat">'+(ETAT_TXT[b.etat]||"")+'</span></div>'+
       '<h2 id="fTitre">'+esc(b.titre)+'</h2><p class="f-auteur">'+esc(b.auteur||"")+'</p>'+
-      '<p class="f-seller"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Vendu par <b>'+esc(s.nom)+'</b>'+(l.ville?" · "+esc(l.ville):"")+'</p>'+
+      '<p class="f-seller"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Vendu par <b>'+esc(s.nom)+'</b>'+(l.ville?" · "+esc(l.ville):"")+'<span class="vstat-tag'+(isPro(b)?" pro":"")+'" title="'+(isPro(b)?"Vendeur professionnel : droit de rétractation de 14 jours et garantie légale de conformité.":"Vente entre particuliers : pas de droit de rétractation (voir les CGU).")+'">'+(isPro(b)?"Professionnel":"Particulier")+'</span></p>'+
       '<div class="f-buy"><span class="f-price">'+EUR.format(b.prix)+'</span>'+(own?'<button class="add" type="button" disabled>Ton annonce</button>':addBtn(b))+'</div>'+
     '</div></div>'+
     (b.resume?'<p class="f-resume">'+esc(b.resume)+'</p>':"")+

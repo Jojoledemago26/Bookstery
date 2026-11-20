@@ -12,6 +12,7 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/functions/deposer-extrait/` — fonction Edge : contrôle anti-IA, empreinte, horodatage
 - `supabase/liseuse.sql` — commandes, manuscrits mystères, avis, abonnements
 - `supabase/photos-annonces.sql` — photos réelles recto/verso obligatoires (colonnes, stockage « photos-annonces », contrôles)
+- `supabase/vendeur-pro.sql` — statut du vendeur (particulier / professionnel) affiché sur les annonces
 - `supabase/genres-disponibles.sql` — genres où des manuscrits mystères existent (genre de secours du cadeau)
 - `supabase/localisation.sql` — ville et région des annonces (filtre de localisation)
 - `supabase/moderation.sql` — journal des refus de modération
@@ -128,3 +129,8 @@ Bulle « ? » en bas à droite (et lien « Aide » du pied de page) : fenêtre d
   (même clé `ANTHROPIC_API_KEY` que la modération ; facultatif : `supabase secrets set SUPPORT_EMAIL=...`)
 - Sans Supabase (mode démo) ou si la fonction ne répond pas : réponses tirées de la FAQ intégrée au site (liste `AIDE_FAQ` dans `index.html`).
 - Mettre à jour `faq.ts` **et** `AIDE_FAQ` quand une règle du site change. L'adresse affichée vient de `SUPPORT_EMAIL` dans `config.js`.
+
+## Informations légales
+
+Page `legal.html` (lien « Mentions légales » et « CGU » du pied de page) : mentions légales (éditeur, hébergeurs, propriété intellectuelle, données personnelles, cookies, signalement, médiation) et CGU (vente, achat, Protection Acheteur, Bookstery Drop, Espace auteur, charte, modération, responsabilité…).
+Les passages surlignés en jaune `[à compléter]` doivent être remplis (société, SIRET, adresses, médiateur, prestataire de paiement, délais), puis le texte validé par un juriste avant l'ouverture des ventes.
