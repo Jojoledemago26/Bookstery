@@ -348,6 +348,9 @@ body.authed .me{display:inline-flex}
 .dfoot .form-msg{margin:0!important;min-height:0}
 .dfoot .form-msg:empty{display:none}
 .dfoot .btn{width:100%;justify-content:center}
+.bag-clear{align-self:center;display:inline-flex;align-items:center;gap:7px;background:none;border:1.5px solid transparent;border-radius:999px;padding:6px 14px;font:700 13px var(--sans);color:var(--muted);cursor:pointer;transition:color .15s,background .15s,border-color .15s}
+.bag-clear:hover,.bag-clear:focus-visible{color:#C0263A;background:#FDF0F2;border-color:#F3C4CC}
+.bag-clear.confirm{color:#fff;background:#C0263A;border-color:#C0263A}
 @media(max-width:560px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 14px}.bcover b{font-size:15px}.cat{padding:8px 0 56px}.drawer{padding-left:18px;padding-right:18px}.dbody{margin:14px -18px 0;padding:2px 18px 14px}}
 
 /* ---------- Espace auteur ---------- */
@@ -1491,7 +1494,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
       <div><b>Vendre &amp; écrire</b><a href="#top" data-sell>Vendre un livre</a><a href="#auteurs">Espace auteur</a><a href="#top" data-auteur>Envoyer mon texte</a></div>
       <div><b>Aide</b><a href="#aide" data-aide>Demander à Plume</a><a href="legal.html#mentions">Mentions légales</a><a href="legal.html#cgu">CGU</a></div>
     </nav>
-    <p class="legal">© 2026 Bookstery · Fait avec soin à Lyon. <span class="ver">Version du 21/11/2026 (b) · Saison 1</span></p>
+    <p class="legal">© 2026 Bookstery · Fait avec soin à Lyon. <span class="ver">Version du 21/11/2026 (c) · Saison 1</span></p>
   </div>
 </footer>
 
@@ -1521,6 +1524,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
     </dl>
     <p class="form-msg" id="payMsg" role="alert"></p>
     <button class="btn" type="button" id="payBtn">Passer au paiement</button>
+    <button class="bag-clear" type="button" id="bagClear"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg><span>Vider mon panier</span></button>
     <p class="legal-ok">En commandant, tu acceptes les <a href="legal.html#cgu" target="_blank" rel="noopener">CGU</a>.</p>
   </div>
 </aside>
@@ -1844,7 +1848,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="config.js?v=20261121b"></script>
+<script src="config.js?v=20261121c"></script>
 <script>
 /* Défini en premier : le Bag (rendu dès le chargement) en a besoin. Même calendrier que supabase/functions/_shared/saisons.ts (à garder identique) */
 var SAISONS=[
@@ -2513,6 +2517,11 @@ function addToBag(id){
   if(t.gifts>before)toast("🎉 "+ordinal(t.gifts)+" Mystery Drop débloqué !"+(t.next?" Plus que "+EUR.format(t.missing)+" pour le suivant.":" C’est le maximum : 5 Mystery Drops."));
   else toast(t.next?"Ajouté ! Plus que "+EUR.format(t.missing)+" dans ton panier pour ton "+ordinal(t.gifts+1)+" Mystery Drop.":"Ajouté ! Tu as déjà le maximum : 5 Mystery Drops.");
 }
+function resetBagClear(){var c=$("bagClear");if(!c)return;clearTimeout(resetBagClear.h);c.classList.remove("confirm");c.querySelector("span").textContent="Vider mon panier"}
+function clearBag(){var c=$("bagClear");
+  if(!c.classList.contains("confirm")){c.classList.add("confirm");c.querySelector("span").textContent="Oui, retirer les "+bag.length+" livre"+(bag.length>1?"s":"");resetBagClear.h=setTimeout(resetBagClear,4000);return}
+  resetBagClear();bag=[];giftGenre=null;giftSecours=null;saveBag();renderAll();toast("Ton panier est vide. Les livres restent disponibles dans le catalogue.")}
+$("bagClear").addEventListener("click",clearBag);
 function removeFromBag(id){bag=bag.filter(function(b){return String(b.id)!==String(id)});saveBag();renderAll()}
 document.addEventListener("click",function(e){
   var a=e.target.closest("[data-add]");if(a){var id=a.getAttribute("data-add");bagHas(id)?open($("drawer")):addToBag(id)}
