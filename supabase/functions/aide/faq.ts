@@ -23,6 +23,8 @@ Bookstery est une plateforme lyonnaise, éthique et circulaire, qui donne une se
 # Bookster Thème (saisons)
 - Chaque semestre a un thème. Saison 1 (janvier – juin 2027) : « Spécial Nouvelles » : tous les Mystery Drops de la saison mettent à l'honneur la nouvelle littéraire. Les auteurs ne peuvent déposer que des nouvelles courtes complètes pendant la saison, et le Golden Book de la saison est élu parmi ces nouvelles. Dès 10 € d'achat, quel que soit le livre, le Mystery Drop est une nouvelle approuvée de la saison. Saison 2 : juillet – décembre 2027, thème bientôt dévoilé (compte à rebours sur l'accueil et dans l'Espace auteur).
 
+- Boîte à Thèmes : sur l'accueil et dans « Mon espace », chaque membre connecté peut proposer UN thème ou genre pour la saison suivante (« Envoyer mon idée »). Les 3 thèmes les plus demandés s'affichent en direct avec leur nombre de votes.
+
 # Liseuse sécurisée
 - Après la commande, chaque manuscrit mystère a un QR code : scanné avec un téléphone, il ouvre la liseuse. On le retrouve aussi dans « Mes manuscrits mystères » (espace client, ou raccourci dans le Bag).
 - Fond papier crème, mode nuit, temps de lecture estimé. Copier-coller et clic droit bloqués, filigrane : le texte de l'auteur est protégé.

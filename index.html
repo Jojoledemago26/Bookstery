@@ -1107,6 +1107,47 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .sz-bag{margin:0!important;font-size:12.5px!important;color:#fff!important;background:#0B0B10;border-radius:12px;padding:9px 11px;line-height:1.45}
 .sz-bag b{color:#C9C2FF}
 @media(max-width:760px){.saison{flex-direction:column;align-items:stretch;padding:22px 18px}.sz-r{min-width:0}.sz-cd b{font-size:20px}}
+/* ---------- Boîte à Thèmes (Saison 2) ---------- */
+.bt{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center;background:#fff;border:1.5px solid var(--maj-l);border-radius:24px;padding:24px 28px;box-shadow:0 14px 34px -22px rgba(96,80,220,.45)}
+.bt.accueil{margin:0 0 22px}
+.bt.profil{grid-template-columns:1fr;gap:16px;padding:18px;border-radius:18px;margin:4px 0 16px}
+.bt-k{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--maj-d);background:var(--maj-l);border-radius:999px;padding:4px 11px}
+.bt-t{margin:10px 0 4px;font-size:22px;letter-spacing:-.015em;color:var(--ink)}
+.bt.profil .bt-t{font-size:18px}
+.bt-p{margin:0 0 14px!important;font-size:14.5px;color:var(--muted)!important}
+.bt-row{display:flex;gap:8px}
+.bt-in{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:999px;padding:12px 16px;font:500 14.5px var(--sans);color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}
+.bt-in:focus{border-color:var(--maj);box-shadow:0 0 0 4px rgba(96,80,220,.14)}
+.btn.bt-btn,.modal .btn.bt-btn{flex:none;width:auto;margin:0;background:var(--maj);padding:12px 20px;font-size:14.5px}
+.btn.bt-btn:hover{background:var(--maj-d)}
+.bt-sugg{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.bt-sugg button{border:1.5px solid var(--maj-l);background:#fff;color:var(--maj-d);border-radius:999px;padding:5px 11px;font:700 12.5px var(--sans);cursor:pointer;transition:transform .15s,background .15s}
+.bt-sugg button:hover{background:var(--maj-xl);transform:translateY(-2px)}
+.bt-msg{margin:8px 0 0!important;font-size:13px!important;min-height:0}.bt-msg:empty{display:none}.bt-msg.err{color:#C0263A!important;font-weight:600}
+.bt-done{display:flex;gap:12px;align-items:center;background:#E8F6EE;border-radius:14px;padding:12px 14px}
+.bt-done span{font-size:22px}.bt-done b{display:block;color:#14482E;font-size:14.5px}.bt-done small{font-size:12.5px;color:#2F6B4B}
+.bt-login{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--maj-xl);border-radius:14px;padding:12px 14px}
+.bt-login p{margin:0!important;font-size:14px;color:var(--ink-2)!important;flex:1;min-width:180px}
+.bt-r{background:#0B0B10;color:#fff;border-radius:18px;padding:16px 18px}
+.bt-live{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#C9C2FF;margin-bottom:12px}
+.bt-lbl{display:block;font-size:13.5px;font-weight:800;color:var(--ink);margin:0 0 6px}
+.bt-demo{display:block;margin:-6px 0 10px;font-style:normal;font-size:11.5px;color:#C9C2FF;opacity:.75}
+.bt-dot{width:9px;height:9px;border-radius:50%;background:#3DBE7A;box-shadow:0 0 0 0 rgba(61,190,122,.6);animation:btPulse 1.6s infinite}
+@keyframes btPulse{70%{box-shadow:0 0 0 8px rgba(61,190,122,0)}100%{box-shadow:0 0 0 0 rgba(61,190,122,0)}}
+.bt-bar{display:grid;grid-template-columns:26px 1fr auto;align-items:center;gap:10px;margin:8px 0}
+.bt-m{font-size:18px}
+.bt-track{position:relative;height:32px;border-radius:10px;background:rgba(255,255,255,.08);overflow:hidden}
+.bt-track i{position:absolute;left:0;top:0;bottom:0;border-radius:10px;background:linear-gradient(90deg,#6050DC,#8B7DF5);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.bt-bar:first-child .bt-track i{background:linear-gradient(90deg,#6050DC,#A99FFF)}
+.bt-track b{position:relative;display:block;padding:0 12px;line-height:32px;font-size:14px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bt-v{font-size:12.5px;color:#C9C2FF;white-space:nowrap}.bt-v b{font-size:17px;color:#fff;font-variant-numeric:tabular-nums}
+.bt-bar.flash .bt-v b{animation:btFlash .9s ease}
+@keyframes btFlash{0%{color:#3DBE7A;transform:scale(1.35)}100%{color:#fff;transform:scale(1)}}
+.bt-v b{display:inline-block}
+.bt-bar.mine .bt-track{box-shadow:inset 0 0 0 2px #fff}
+.bt-tot{margin:10px 0 0!important;font-size:12.5px!important;color:#fff!important;opacity:.7}
+.bt-empty{margin:0!important;font-size:13.5px;color:#fff!important;opacity:.8}
+@media(max-width:860px){.bt{grid-template-columns:1fr;gap:18px;padding:20px 18px}.bt-row{flex-direction:column}.btn.bt-btn{width:100%;justify-content:center}}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1171,6 +1212,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 
   <div class="wrap">
     <div class="saison-slot" data-saison="accueil"></div>
+    <div class="themes-slot" data-themes="accueil"></div>
     <ul class="vprops" aria-label="Pourquoi Bookstery">
       <li><span class="vp-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5Z"/><path d="M8 7h7M8 11h5"/></svg></span><div><b>Des livres d’occasion près de chez toi</b><span>Vendus par des Booksters, avec photos réelles de chaque exemplaire.</span></div></li>
       <li><span class="vp-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1.5S10 8 12 8Zm0 0c2-4 6-4 6-1.5S14 8 12 8Z"/></svg></span><div><b>Un manuscrit mystère offert dès 10&nbsp;€</b><span>Un texte inédit d’un auteur indépendant glissé dans ton panier.</span></div></li>
@@ -1453,6 +1495,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
   <h2 id="aTitle">Mon espace Bookster <span class="vip-pill" id="aVipPill" hidden>👑 Bookster VIP</span></h2>
   <p id="aHello">Bienvenue !</p>
   <div id="aVip"></div>
+  <div class="themes-slot" data-themes="profil"></div>
   <ul class="me-list">
     <li><span>Prénom</span><b id="aPrenom">—</b></li>
     <li><span>E-mail</span><b id="aEmail">—</b></li>
@@ -1871,7 +1914,7 @@ async function showUser(user){
   $("aHello").textContent=prenom?"Bonjour "+prenom+", content de te revoir !":"Bienvenue !";
   $("aPrenom").textContent=prenom||"—";$("aEmail").textContent=user.email||"—";$("aVille").textContent=ville||"—";
   $("aGenres").textContent=genres&&genres.length?genres.join(", "):"—";
-  myGenres=Array.isArray(genres)?genres:[];
+  myGenres=Array.isArray(genres)?genres:[];if(typeof themesLoad==="function")themesLoad();
   try{var vp=await sb.from("profiles").select("total_spent_books,is_vip_jury").eq("id",user.id).maybeSingle();if(!vp.error&&vp.data){vipState.total=Number(vp.data.total_spent_books)||0;vipState.jury=!!vp.data.is_vip_jury}}catch(e){}vipUI();if(typeof renderBag==="function"&&bag.length)renderBag();
 }
 $("meBtn").addEventListener("click",function(){open($("account"))});
@@ -3240,6 +3283,7 @@ var AIDE_FAQ=[
  {k:"refuse refus pourquoi depot bloque verification moderation ia detecteur plagiat fautes",a:"Avant tout dépôt, on vérifie que le texte est **original** (anti-plagiat), conforme à la charte, en français, littéraire et lisible, puis le **détecteur d’IA** (au-delà de 50 % d’écriture générée, il est refusé). Le message de refus t’explique la raison ; pour des fautes, tu peux relire et redéposer."},
  {k:"fondateur badge fondateur createur textes du fondateur",a:"Pour lancer la plateforme, le **fondateur de Bookstery** partage ses propres textes. Ils portent le badge **★ Fondateur Bookstery**, passent les mêmes vérifications que les autres, sont tirés dans les Mystery Drops **sans aucune priorité**, et ne peuvent pas gagner le Golden Book ni les prix des librairies partenaires."},
  {k:"saison saisons theme thematique bookster theme nouvelles nouvelle speciale semestre saison 2 golden book concours",a:"Chaque semestre a son **Bookster Thème**. **Saison 1 (janvier – juin 2027) : Spécial Nouvelles** : tous les Mystery Drops de la saison mettent à l’honneur la nouvelle littéraire, les auteurs déposent des nouvelles courtes complètes, et le Golden Book de la saison est élu parmi elles. Dès 10 € d’achat, quel que soit le livre, ton Mystery Drop est une nouvelle de la saison. La Saison 2 ouvre le 1er juillet 2027 : compte à rebours sur l’accueil !"},
+ {k:"boite a themes boite theme proposer proposition idee saison 2 tendance vote",a:"La **Boîte à Thèmes** (sur l’accueil et dans ton espace) te permet de proposer le thème de la **prochaine saison** : écris un thème ou un genre (polar, fantasy, poésie…) et clique sur « Envoyer mon idée ». **Une proposition par membre**, il faut être connecté. Les 3 thèmes les plus demandés s’affichent en direct, avec leur nombre de votes."},
  {k:"pack accelerateur abonnement auteur boost prioritaire statistiques stats 15 resilier arreter desabonner",a:"Le **Pack Accélérateur Auteurs** coûte **15 € par mois, sans engagement**. Tant qu’il est actif, ton texte a **3× plus de chances** d’être tiré dans les Mystery Drops de son genre, et tu vois **tes statistiques de lecture** (envois, lectures, avis, note, abonnés). Pour l’activer ou l’arrêter : Espace auteur, onglet « ⚡ Pack Accélérateur ». L’arrêt se fait en 1 clic et le Pack reste actif jusqu’à la fin du mois payé."},
  {k:"certificat horodatage preuve sha empreinte droit auteur",a:"Ton **certificat d’horodatage** contient la date et l’heure du dépôt et une empreinte SHA-256 unique de ton texte : il prouve que tu l’avais écrit à cette date. Tu le retrouves dans « **Mes textes déposés** »."},
  {k:"avis note noter etoiles suivre abonne auteur commentaire",a:"À la fin d’un manuscrit mystère, tu peux noter l’auteur (1 à 5 étoiles), lui laisser un mot (il le reçoit par e-mail) et le **suivre**."},
@@ -3480,6 +3524,75 @@ function renderSaisons(){document.querySelectorAll(".saison-slot").forEach(funct
   if(intro&&c&&c.format==="nouvelle"&&!intro.dataset.sz){intro.dataset.sz=1;intro.innerHTML="<b>"+esc(c.nom)+" · "+esc(c.theme)+"</b>&nbsp;: dépose une nouvelle courte complète (1&nbsp;000 à 5&nbsp;000 mots). Dès le dépôt, un certificat d’horodatage prouve que tu en es l’auteur. Et pour que Bookstery reste 100&nbsp;% humain, chaque texte passe par un détecteur d’IA&nbsp;: au-delà de 50&nbsp;% d’écriture générée, il est refusé."}if(row){row.hidden=!(c&&c.format);if(c&&c.consigne)$("exFormatTxt").textContent=c.consigne}}
 setInterval(function(){document.querySelectorAll("[data-cd]").forEach(function(el){el.innerHTML=rebours(Date.parse(el.getAttribute("data-cd"))-Date.now())})},1000);
 renderSaisons();
+
+/* ================= Boîte à Thèmes : la communauté propose le thème de la saison suivante ================= */
+var THEME_SUGG=["Polar","Fantasy","Poésie","Science-fiction","Romance","Horreur","Feel-good","Roman historique"];
+var THEMES={saison:null,counts:{},mine:null,chan:null,prevW:{},prevV:{},flash:{},timer:null};
+function themeCible(){var c=saisonCourante();return c?saisonSuivante(c):null}
+function themeCle(t){return String(t||"").trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim()}
+function themeTop(){return Object.keys(THEMES.counts).map(function(k){return Object.assign({cle:k},THEMES.counts[k])}).filter(function(x){return x.votes>0}).sort(function(a,b){return b.votes-a.votes||a.libelle.localeCompare(b.libelle)})}
+async function themesLoad(){
+  var nx=themeCible();if(!nx)return;THEMES.saison=nx.id;
+  if(!sb){
+    try{var v=JSON.parse(localStorage.getItem("bookstery.themes")||"null");if(v&&v.saison===nx.id){THEMES.counts=v.counts;THEMES.mine=v.mine}}catch(e){}
+    if(!Object.keys(THEMES.counts).length)THEMES.counts={polar:{libelle:"Polar",votes:42},fantasy:{libelle:"Fantasy",votes:37},poesie:{libelle:"Poésie",votes:29},"science fiction":{libelle:"Science-fiction",votes:21},romance:{libelle:"Romance",votes:17}};
+    if(!THEMES.timer)themesSimuler();
+  }else{
+    try{var r=await sb.from("themes_compteurs").select("cle,libelle,votes").eq("saison",nx.id).order("votes",{ascending:false}).limit(60);
+      if(!r.error){THEMES.counts={};(r.data||[]).forEach(function(x){THEMES.counts[x.cle]={libelle:x.libelle,votes:x.votes}})}}catch(e){}
+    THEMES.mine=null;
+    if(current){try{var m=await sb.from("propositions_themes").select("libelle").eq("saison",nx.id).eq("membre_id",current.id).maybeSingle();THEMES.mine=m.data?m.data.libelle:null}catch(e){}}
+    if(!THEMES.chan&&sb.channel){try{THEMES.chan=sb.channel("themes-"+nx.id).on("postgres_changes",{event:"*",schema:"public",table:"themes_compteurs",filter:"saison=eq."+nx.id},function(pl){var x=pl.new;if(!x||!x.cle)return;THEMES.flash[x.cle]=1;THEMES.counts[x.cle]={libelle:x.libelle,votes:x.votes};renderThemeCharts()}).subscribe()}catch(e){}}
+  }
+  renderThemes();
+}
+function themesSaveDemo(){try{localStorage.setItem("bookstery.themes",JSON.stringify({saison:THEMES.saison,counts:THEMES.counts,mine:THEMES.mine}))}catch(e){}}
+/* Mode démo uniquement : simule des votes d’autres membres pour montrer le graphe en direct */
+function themesSimuler(){var tick=function(){var top=themeTop().slice(0,5),r=Math.random(),acc=0,tot=top.reduce(function(a,x){return a+x.votes},0);
+  for(var i=0;i<top.length;i++){acc+=top[i].votes/tot;if(r<=acc){THEMES.counts[top[i].cle].votes++;THEMES.flash[top[i].cle]=1;break}}
+  themesSaveDemo();renderThemeCharts();THEMES.timer=setTimeout(tick,3500+Math.random()*5000)};THEMES.timer=setTimeout(tick,3000)}
+function themeFormHtml(nx){
+  if(THEMES.mine)return'<div class="bt-done"><span>✅</span><div><b>Merci ! Ta proposition : « '+esc(THEMES.mine)+' »</b><small>Une proposition par membre et par saison. Suis son classement en direct →</small></div></div>';
+  if(sb&&!current)return'<div class="bt-login"><p>Connecte-toi pour proposer ton thème (une proposition par membre).</p><button class="btn bt-btn" type="button" data-login>Se connecter</button></div>';
+  return'<form class="bt-form" novalidate><label class="bt-lbl" for="btIn-X">Propose un thème ou un genre pour la '+esc(nx.nom)+'</label>'+
+    '<div class="bt-row"><input class="bt-in" id="btIn-X" maxlength="40" autocomplete="off" placeholder="Ex : polar, fantasy, poésie…"><button class="btn bt-btn" type="submit">Envoyer mon idée</button></div>'+
+    '<div class="bt-sugg">'+THEME_SUGG.map(function(g){return'<button type="button" data-bt="'+esc(g)+'">'+esc(g)+'</button>'}).join("")+'</div><p class="bt-msg" role="alert"></p></form>';
+}
+function renderThemes(){var nx=themeCible();
+  document.querySelectorAll(".themes-slot").forEach(function(el,i){if(!nx){el.innerHTML="";return}
+    el.innerHTML='<section class="bt '+el.getAttribute("data-themes")+'" aria-label="Boîte à Thèmes '+esc(nx.nom)+'">'+
+      '<div class="bt-l"><span class="bt-k">💡 Boîte à Thèmes · '+esc(nx.nom)+'</span><h3 class="bt-t">Quel thème pour la '+esc(nx.nom)+'&nbsp;?</h3><p class="bt-p">Propose le prochain Bookster Thème&nbsp;: la communauté décide, et Bookstery l’écoute.</p>'+themeFormHtml(nx).replace(/btIn-X/g,"btIn-"+i)+'</div>'+
+      '<div class="bt-r"><div class="bt-live"><span class="bt-dot"></span>Tendances en direct</div>'+(sb?"":'<i class="bt-demo">Simulation en mode démo</i>')+'<div class="bt-chart" aria-live="polite"></div><p class="bt-tot"></p></div></section>'});
+  renderThemeCharts();
+}
+function renderThemeCharts(){
+  var top=themeTop(),max=top.length?top[0].votes:1,tot=top.reduce(function(a,x){return a+x.votes},0),podium=top.slice(0,3),med=["🥇","🥈","🥉"];
+  document.querySelectorAll(".bt-chart").forEach(function(ch){
+    ch.innerHTML=podium.length?podium.map(function(x,i){var w=Math.max(8,x.votes/max*100),from=THEMES.prevW[x.cle]==null?0:THEMES.prevW[x.cle],mine=THEMES.mine&&themeCle(THEMES.mine)===x.cle;
+      return'<div class="bt-bar'+(THEMES.flash[x.cle]?" flash":"")+(mine?" mine":"")+'"><span class="bt-m">'+med[i]+'</span><div class="bt-track"><i style="width:'+from+'%" data-w="'+w+'"></i><b>'+esc(x.libelle)+(mine?" · ton idée":"")+'</b></div><span class="bt-v"><b>'+x.votes+'</b> vote'+(x.votes>1?"s":"")+'</span></div>'}).join("")
+      :'<p class="bt-empty">Aucune proposition pour l’instant : sois le premier ou la première&nbsp;!</p>';
+    ch.querySelectorAll("i[data-w]").forEach(function(b){requestAnimationFrame(function(){requestAnimationFrame(function(){b.style.width=b.getAttribute("data-w")+"%"})})});
+  });
+  document.querySelectorAll(".bt-tot").forEach(function(p){p.textContent=tot?tot+" proposition"+(tot>1?"s":"")+" de la communauté · "+top.length+" thème"+(top.length>1?"s":"")+" proposé"+(top.length>1?"s":""):""});
+  podium.forEach(function(x){THEMES.prevW[x.cle]=Math.max(8,x.votes/max*100)});THEMES.flash={};
+}
+async function themeEnvoyer(form){
+  var inp=form.querySelector(".bt-in"),msg=form.querySelector(".bt-msg"),btn=form.querySelector(".bt-btn"),v=inp.value.trim().replace(/\s+/g," ");
+  var err=function(t){msg.textContent=t;msg.className="bt-msg err"};
+  if(v.length<2||v.length>40||!/^[\p{L}0-9][\p{L}0-9 &'’,.-]*$/u.test(v))return err("Propose un thème ou un genre en quelques mots (2 à 40 caractères, sans symboles).");
+  if(!sb){var k=themeCle(v),lib=v.charAt(0).toUpperCase()+v.slice(1);THEMES.counts[k]=THEMES.counts[k]||{libelle:lib,votes:0};THEMES.counts[k].votes++;THEMES.flash[k]=1;THEMES.mine=lib;themesSaveDemo();renderThemes();toast("Merci ! Ton idée « "+lib+" » est dans la Boîte à Thèmes.");return}
+  if(!current)return err("Connecte-toi pour proposer ton thème.");
+  busy(btn,true,"Envoi…");
+  try{var r=await sb.rpc("proposer_theme",{p_saison:THEMES.saison,p_theme:v});
+    if(r.error){var m=r.error.message||"";throw new Error(/deja_propose/.test(m)?"Tu as déjà proposé un thème pour cette saison : une proposition par membre.":/theme_invalide/.test(m)?"Ce thème n’est pas valide : quelques mots, sans symboles.":"Ta proposition n’a pas pu être envoyée. Réessaie.")}
+    var row=Array.isArray(r.data)?r.data[0]:r.data;THEMES.mine=row&&row.libelle||v;
+    if(row&&!THEMES.chan){THEMES.counts[row.cle]=THEMES.counts[row.cle]||{libelle:row.libelle,votes:0};THEMES.counts[row.cle].votes++}
+    renderThemes();toast("Merci ! Ton idée « "+THEMES.mine+" » est dans la Boîte à Thèmes.");
+  }catch(e){busy(btn,false);err(e.message)}
+}
+document.addEventListener("submit",function(e){var f=e.target.closest(".bt-form");if(f){e.preventDefault();themeEnvoyer(f)}});
+document.addEventListener("click",function(e){var b=e.target.closest("[data-bt]");if(b){var f=b.closest(".bt-form"),i=f.querySelector(".bt-in");i.value=b.getAttribute("data-bt");i.focus()}});
+themesLoad();
 </script>
 </body>
 </html>
