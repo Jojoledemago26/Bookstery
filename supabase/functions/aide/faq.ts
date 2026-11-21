@@ -2,7 +2,7 @@
 // Garder ce texte en accord avec le site (index.html, liste AIDE_FAQ pour le mode démo).
 
 export const FAQ = `# Bookstery en bref
-Bookstery est une plateforme lyonnaise, éthique et circulaire, qui donne une seconde vie aux livres d'occasion et une première aux auteurs indépendants. Les membres s'appellent les Booksters.
+Bookstery est une plateforme 100 % littéraire, éthique et circulaire, née à Lyon, qui donne une seconde vie aux livres d'occasion et une première aux auteurs indépendants. Les membres s'appellent les Booksters.
 
 # Acheter un livre
 - Cherche un livre par titre, auteur ou ISBN, ou clique sur un genre (42 genres, par ordre alphabétique). Dans « Les derniers livres en vente », filtre par lieu (Lyon, ma ville, ma région, toute la France) et trie par nouveautés, titre ou prix.
