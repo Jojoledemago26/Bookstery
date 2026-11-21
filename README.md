@@ -236,4 +236,4 @@ Sur l'accueil (sous la bannière de la saison) et dans « Mon espace » :
 
 ## Saison 1 : format Recueil Collectif
 
-Bannière (accueil + Espace auteur) : 3 étapes — janvier → mai (Mystery Drops, lectures, notes) ; juin, la finale (les Bookster VIP élisent le Top 8) ; le palmarès (n°1 sacré **Golden Bookster**, en tête d'affiche ; les 8 lauréats publiés dans le premier **Recueil Collectif Bookstery**, en librairie partenaire). Règlement complet : CGU, article 7 bis (`legal.html#c-saison1`). Le vote de la finale reste à construire avant juin 2027.
+Bannière (accueil + Espace auteur) : 3 étapes — janvier → mai (Mystery Drops, lectures, notes) ; juin, la finale (les Bookster VIP élisent le Top 8) ; le palmarès (n°1 sacré **Golden Bookster**, sa nouvelle donne son titre au livre ; les 8 lauréats publiés dans le premier **Recueil Collectif Bookstery**, en librairie partenaire). Règlement complet : CGU, article 7 bis (`legal.html#c-saison1`). Le vote de la finale reste à construire avant juin 2027.
