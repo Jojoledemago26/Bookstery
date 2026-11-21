@@ -1054,6 +1054,9 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .gb-def{display:flex;align-items:flex-start;gap:6px;margin-top:8px;font-size:12.5px;line-height:1.45;color:#FFE7AE}
 .gb-def svg{flex:none;margin-top:1px}
 .gb-def b{display:inline;font-size:inherit;color:#FFD37A}
+.fond-badge{display:inline-flex;align-items:center;gap:4px;vertical-align:middle;margin-left:8px;font:800 11.5px/1 var(--sans);letter-spacing:.02em;font-style:normal;color:#F5C451;background:#0B0B10;border:1px solid #E3B341;border-radius:999px;padding:4px 9px;white-space:nowrap;cursor:help}
+.lz .fond-badge{font-size:12px}
+.au-item b+.fond-badge{margin:4px 0 2px}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -2720,12 +2723,12 @@ async function loadMesTextes(){
   if(sb&&!current){box.innerHTML='<p class="au-empty">Connecte-toi pour retrouver tes textes déposés et leurs certificats.</p>';return}
   if(!sb)list=demoDepots;
   else{box.innerHTML='<p class="au-empty">Chargement…</p>';
-    var r=await sb.from("extraits").select("id,titre,genre,nb_mots,sha256,ai_score,created_at,texte").order("created_at",{ascending:false});
+    var r=await sb.from("extraits").select("*").order("created_at",{ascending:false});
     if(r.error){box.innerHTML='<p class="au-empty">Tes textes n’ont pas pu être chargés. Réessaie dans un instant.</p>';return}
     list=r.data||[];}
   if(!list.length){box.innerHTML='<p class="au-empty">Aucun texte déposé pour l’instant. Ton premier certificat t’attend dans « Nouveau dépôt ».</p>';return}
   packLoad().then(function(){box.classList.toggle("boosted",packActif())});
-  box.innerHTML=list.map(function(c,i){return'<div class="au-item"><div><b>'+esc(c.titre)+'</b><span>'+esc(c.genre)+' · '+NF.format(c.nb_mots)+' mots · '+esc(frDate(c.created_at))+'</span></div><button class="btn ghost" type="button" data-mes="'+i+'">Certificat</button></div><div class="au-result" id="mes'+i+'" hidden></div>'}).join("");
+  box.innerHTML=list.map(function(c,i){return'<div class="au-item"><div><b>'+esc(c.titre)+'</b>'+(c.est_fondateur?FONDATEUR_BADGE:"")+'<span>'+esc(c.genre)+' · '+NF.format(c.nb_mots)+' mots · '+esc(frDate(c.created_at))+'</span></div><button class="btn ghost" type="button" data-mes="'+i+'">Certificat</button></div><div class="au-result" id="mes'+i+'" hidden></div>'}).join("");
   box.querySelectorAll("[data-mes]").forEach(function(b){b.addEventListener("click",function(){var i=+b.getAttribute("data-mes"),c=Object.assign({},list[i]),t=$("mes"+i);
     if(!t.hidden){t.hidden=true;return}c.auteur=sb?authorName():"Mode démo";showCert(t,c,!sb,false,c.texte)})});
 }
@@ -2855,7 +2858,7 @@ function lzShow(d){
   $("lzLock").hidden=true;["lzBody","lzFin","lzEnd","lzMeta","lzReportLink"].forEach(function(i){$(i).hidden=false});
   $("lzKicker").textContent="Manuscrit mystère · "+(d.genre||"Texte inédit");
   $("lzTitre").textContent=d.titre;$("lzMini").textContent=d.titre;
-  $("lzAuthor").textContent="par "+(d.auteur||"un auteur indépendant");
+  $("lzAuthor").innerHTML="par "+esc(d.auteur||"un auteur indépendant")+(d.fondateur?FONDATEUR_BADGE:"");
   $("lzMeta").innerHTML='<span>≈ '+minutes(d.nb_mots)+' min de lecture</span><span>'+NF.format(d.nb_mots)+' mots</span><span>Texte protégé</span>';
   $("lzText").innerHTML=normTexte(d.texte).split(/\n{2,}/).map(function(p){return"<p>"+esc(p).replace(/\n/g,"<br>")+"</p>"}).join("");
   $("lzText").style.setProperty("--lzfs",LZ.fs+"px");
@@ -2869,7 +2872,7 @@ function lzShow(d){
 }
 function lzLocked(html){
   LZ.data=null;["lzBody","lzFin","lzEnd","lzMeta","lzReportLink"].forEach(function(i){$(i).hidden=true});
-  $("lzKicker").textContent="Liseuse Bookstery";$("lzTitre").textContent="Ton manuscrit mystère";$("lzMini").textContent="Liseuse";$("lzAuthor").textContent="";$("lzLeft").textContent="";$("lzProg").style.width="0";
+  $("lzKicker").textContent="Liseuse Bookstery";$("lzTitre").textContent="Ton manuscrit mystère";$("lzMini").textContent="Liseuse";$("lzAuthor").innerHTML="";$("lzLeft").textContent="";$("lzProg").style.width="0";
   $("lzLock").innerHTML=html;$("lzLock").hidden=false;lzNightUI();
 }
 var pendingToken=null;
@@ -2883,11 +2886,11 @@ async function openLiseuse(token){
   if(!current){pendingToken=token;return lzLocked('<p>Connecte-toi pour ouvrir ton manuscrit mystère. Il est réservé au compte qui l’a reçu.</p><button class="btn" type="button" data-login>Se connecter</button>')}
   lzLocked("<p>Ouverture de ton manuscrit mystère…</p>");
   try{
-    var r=await sb.from("booksterbooks").select("id,token,lu_at,extrait_id,extraits(titre,genre,texte,nb_mots,auteur_id,auteur_nom)").eq("token",token).maybeSingle();
+    var r=await sb.from("booksterbooks").select("id,token,lu_at,extrait_id,extraits(*)").eq("token",token).maybeSingle();
     if(r.error||!r.data||!r.data.extraits)return lzLocked("<p>Ce manuscrit mystère est introuvable dans ton espace. Vérifie que tu es connecté avec le bon compte.</p>");
     var x=r.data.extraits,av=await sb.from("avis").select("note").eq("booksterbook_id",r.data.id).maybeSingle(),ab=await sb.from("abonnements").select("auteur_id").eq("lecteur_id",current.id).eq("auteur_id",x.auteur_id).maybeSingle();
     var sg=await sb.from("signalements").select("id").eq("extrait_id",r.data.extrait_id).eq("lecteur_id",current.id).maybeSingle();
-    lzShow({extrait_id:r.data.extrait_id,signale:!!sg.data,titre:x.titre,genre:x.genre,texte:x.texte,nb_mots:x.nb_mots,auteur:x.auteur_nom||"un auteur indépendant",auteur_id:x.auteur_id,lu_at:r.data.lu_at,avis:av.data||null,suivi:!!ab.data});
+    lzShow({extrait_id:r.data.extrait_id,signale:!!sg.data,titre:x.titre,genre:x.genre,texte:x.texte,nb_mots:x.nb_mots,auteur:x.auteur_nom||"un auteur indépendant",auteur_id:x.auteur_id,fondateur:!!x.est_fondateur,lu_at:r.data.lu_at,avis:av.data||null,suivi:!!ab.data});
   }catch(e){console.error(e);lzLocked("<p>La liseuse n’a pas pu s’ouvrir. Vérifie ta connexion et réessaie.</p>")}
 }
 function closeLiseuse(){
@@ -3121,6 +3124,7 @@ var AIDE_FAQ=[
  {k:"etat comme neuf tres bon bon etat",a:"Trois états possibles : **Comme neuf** (jamais lu ou presque), **Très bon état** (légères traces d’usage), **Bon état** (usure visible mais complet et lisible). Tes photos recto/verso montrent l’état réel."},
  {k:"auteur deposer depot texte ecrire publier mon texte extrait nouvelle roman chapitre espace auteur",a:"Dans la section Auteurs, clique sur « **Envoyer mon texte** » : extrait de roman, premier chapitre ou nouvelle, entre **1 000 et 5 000 mots**, en français. C’est gratuit et ton texte reste le tien. Tu reçois un **certificat d’horodatage**, puis ton texte part en manuscrit mystère dans le Bookstery Drop."},
  {k:"refuse refus pourquoi depot bloque verification moderation ia detecteur plagiat fautes",a:"Avant tout dépôt, on vérifie que le texte est **original** (anti-plagiat), conforme à la charte, en français, littéraire et lisible, puis le **détecteur d’IA** (au-delà de 50 % d’écriture générée, il est refusé). Le message de refus t’explique la raison ; pour des fautes, tu peux relire et redéposer."},
+ {k:"fondateur badge fondateur createur textes du fondateur",a:"Pour lancer la plateforme, le **fondateur de Bookstery** partage ses propres textes. Ils portent le badge **★ Fondateur Bookstery**, passent les mêmes vérifications que les autres, sont tirés dans les Mystery Drops **sans aucune priorité**, et ne peuvent pas gagner le Golden Book ni les prix des librairies partenaires."},
  {k:"pack accelerateur abonnement auteur boost prioritaire statistiques stats 15 resilier arreter desabonner",a:"Le **Pack Accélérateur Auteurs** coûte **15 € par mois, sans engagement**. Tant qu’il est actif, ton texte a **3× plus de chances** d’être tiré dans les Mystery Drops de son genre, et tu vois **tes statistiques de lecture** (envois, lectures, avis, note, abonnés). Pour l’activer ou l’arrêter : Espace auteur, onglet « ⚡ Pack Accélérateur ». L’arrêt se fait en 1 clic et le Pack reste actif jusqu’à la fin du mois payé."},
  {k:"certificat horodatage preuve sha empreinte droit auteur",a:"Ton **certificat d’horodatage** contient la date et l’heure du dépôt et une empreinte SHA-256 unique de ton texte : il prouve que tu l’avais écrit à cette date. Tu le retrouves dans « **Mes textes déposés** »."},
  {k:"avis note noter etoiles suivre abonne auteur commentaire",a:"À la fin d’un manuscrit mystère, tu peux noter l’auteur (1 à 5 étoiles), lui laisser un mot (il le reçoit par e-mail) et le **suivre**."},
@@ -3179,6 +3183,7 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("helpPan
 vipLoad();if(typeof renderBag==="function"&&bag.length)renderBag();
 
 /* ================= Pack Accélérateur Auteurs (abonnement Stripe 15 €/mois) ================= */
+var FONDATEUR_BADGE='<span class="fond-badge" title="Œuvre du fondateur de Bookstery : distribuée comme les autres, non éligible au Golden Book ni aux prix des librairies partenaires.">★ Fondateur Bookstery</span>';
 var PACK_PRIX=15,packState={statut:"aucun",fin:null,annule:false};
 function packActif(){return packState.statut==="active"||packState.statut==="trialing"}
 function packSaveDemo(){try{localStorage.setItem("bookstery.pack",JSON.stringify(packState))}catch(e){}}
@@ -3220,7 +3225,7 @@ async function renderPack(){
   $("packManage").addEventListener("click",packPortail);
   try{var st=await packStats();
     $("packStats").innerHTML=st.length?'<div class="pk-tot"><div><b>'+st.reduce(function(a,x){return a+Number(x.envois)},0)+'</b><span>envois en Mystery Drop</span></div><div><b>'+st.reduce(function(a,x){return a+Number(x.lectures)},0)+'</b><span>lectures</span></div><div><b>'+(st[0].abonnes||0)+'</b><span>abonnés</span></div></div>'+
-      '<table class="pk-table"><thead><tr><th>Texte</th><th>Envois</th><th>Lectures</th><th>Avis</th><th>Note</th></tr></thead><tbody>'+st.map(function(x){return'<tr><td><b>'+esc(x.titre)+'</b><small>'+esc(x.genre)+(x.is_boosted?' · ⚡ prioritaire':'')+'</small></td><td>'+x.envois+'</td><td>'+x.lectures+'</td><td>'+x.avis+'</td><td>'+(x.note_moyenne!=null?String(x.note_moyenne).replace(".",",")+" ★":"—")+'</td></tr>'}).join("")+'</tbody></table>'+(sb?"":'<p class="pk-small">Chiffres d’exemple en mode démo.</p>')
+      '<table class="pk-table"><thead><tr><th>Texte</th><th>Envois</th><th>Lectures</th><th>Avis</th><th>Note</th></tr></thead><tbody>'+st.map(function(x){return'<tr><td><b>'+esc(x.titre)+'</b>'+(x.est_fondateur?FONDATEUR_BADGE:"")+'<small>'+esc(x.genre)+(x.is_boosted?' · ⚡ prioritaire':'')+'</small></td><td>'+x.envois+'</td><td>'+x.lectures+'</td><td>'+x.avis+'</td><td>'+(x.note_moyenne!=null?String(x.note_moyenne).replace(".",",")+" ★":"—")+'</td></tr>'}).join("")+'</tbody></table>'+(sb?"":'<p class="pk-small">Chiffres d’exemple en mode démo.</p>')
       :'<p class="au-empty">Dépose ton premier texte pour voir ses statistiques ici.</p>';
   }catch(e){$("packStats").innerHTML='<p class="au-empty">Les statistiques n’ont pas pu être chargées. Réessaie dans un instant.</p>'}
 }

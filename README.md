@@ -14,6 +14,7 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/photos-annonces.sql` — photos réelles recto/verso obligatoires (colonnes, stockage « photos-annonces », contrôles)
 - `supabase/vendeur-pro.sql` — statut du vendeur (particulier / professionnel) affiché sur les annonces
 - `supabase/vip.sql` — statut Bookster VIP : cumul des achats et badge à 50 €
+- `supabase/fondateur.sql` — badge « Fondateur Bookstery » sur les œuvres du fondateur (non éligibles au Golden Book et aux prix)
 - `supabase/tirage.sql` — tirage équitable des Mystery Drops par genre, sur tous les textes (à exécuter)
 - `supabase/accelerateur.sql` — Pack Accélérateur Auteurs : abonnements, textes prioritaires, statistiques
 - `supabase/functions/stripe-abonnement/` et `stripe-webhook/` — abonnement Stripe du Pack Accélérateur
@@ -168,3 +169,8 @@ Sans Supabase (mode démo), l'activation et l'arrêt sont simulés dans le navig
 1. **Dépôt** : l'auteur choisit le genre (liste des genres de fiction, vérifiée par le serveur). Le texte accepté est enregistré dans `extraits` avec ce genre et devient disponible tout de suite (statut `depose`), indexé par genre.
 2. **Commande** : `valider-commande` appelle `tirer_manuscrits()` (`supabase/tirage.sql`) avec le genre du cadeau.
 3. **Tirage** : genre demandé d'abord, puis sa famille, puis le genre de secours ; à l'intérieur de chaque groupe, **tirage aléatoire sur tous les textes disponibles** : même chance pour chaque texte (×3 pour le Pack Accélérateur). Jamais ses propres textes, jamais un texte déjà reçu, jamais un genre utilitaire.
+
+## Œuvres du fondateur
+
+Les textes déposés par le compte fondateur portent le badge « ★ Fondateur Bookstery » (liseuse, « Mes textes déposés »), sont tirés dans les Mystery Drops comme les autres (sans priorité) et sont non éligibles au Golden Book et aux prix des partenaires (CGU, article 8 ter ; vue `extraits_eligibles_prix`).
+Mise en place : exécuter `supabase/fondateur.sql`, puis les deux requêtes `update` à la fin du fichier avec l'adresse e-mail du compte fondateur.
