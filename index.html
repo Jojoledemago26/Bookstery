@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>Bookstery</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1148,6 +1149,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .bt-tot{margin:10px 0 0!important;font-size:12.5px!important;color:#fff!important;opacity:.7}
 .bt-empty{margin:0!important;font-size:13.5px;color:#fff!important;opacity:.8}
 @media(max-width:860px){.bt{grid-template-columns:1fr;gap:18px;padding:20px 18px}.bt-row{flex-direction:column}.btn.bt-btn{width:100%;justify-content:center}}
+.ver{opacity:.6;margin-left:6px}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1211,8 +1213,8 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
   </div>
 
   <div class="wrap">
-    <div class="saison-slot" data-saison="accueil"></div>
-    <div class="themes-slot" data-themes="accueil"></div>
+    <div class="saison-slot" data-saison="accueil"><section class="saison accueil" aria-label="Bookster Thème Saison 1"><div class="sz-l"><span class="sz-k">✦ Bookster Thème · Saison 1 <i>(janvier – juin 2027)</i></span><h2 class="sz-t">Spécial Nouvelles</h2><p class="sz-p">Tous les Mystery Drops de cette saison mettent à l’honneur la nouvelle littéraire&nbsp;!</p><p class="sz-gb">🏆 Concours <b>Golden Book</b> de la saison&nbsp;: la meilleure nouvelle, élue par les Bookster VIP, est publiée par une maison d’édition partenaire.</p><button class="sz-btn" type="button" data-auteur>Écrire ma nouvelle</button></div><div class="sz-r"><span class="sz-cd-k">Ouverture de la Saison 2</span><span class="sz-cd">1er juillet 2027</span><span class="sz-cd-n">Thème bientôt dévoilé</span></div></section></div>
+    <div class="themes-slot" data-themes="accueil"><section class="bt accueil" aria-label="Boîte à Thèmes Saison 2"><div class="bt-l"><span class="bt-k">💡 Boîte à Thèmes · Saison 2</span><h3 class="bt-t">Quel thème pour la Saison 2&nbsp;?</h3><p class="bt-p">Propose le prochain Bookster Thème&nbsp;: la communauté décide, et Bookstery l’écoute.</p></div><div class="bt-r"><div class="bt-live"><span class="bt-dot"></span>Tendances en direct</div><p class="bt-empty">Chargement des tendances…</p></div></section></div>
     <ul class="vprops" aria-label="Pourquoi Bookstery">
       <li><span class="vp-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5Z"/><path d="M8 7h7M8 11h5"/></svg></span><div><b>Des livres d’occasion près de chez toi</b><span>Vendus par des Booksters, avec photos réelles de chaque exemplaire.</span></div></li>
       <li><span class="vp-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1.5S10 8 12 8Zm0 0c2-4 6-4 6-1.5S14 8 12 8Z"/></svg></span><div><b>Un manuscrit mystère offert dès 10&nbsp;€</b><span>Un texte inédit d’un auteur indépendant glissé dans ton panier.</span></div></li>
@@ -1421,7 +1423,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
       <div><b>Vendre &amp; écrire</b><a href="#top" data-sell>Vendre un livre</a><a href="#auteurs">Espace auteur</a><a href="#top" data-auteur>Envoyer mon texte</a></div>
       <div><b>Aide</b><a href="#aide" data-aide>Demander à Plume</a><a href="legal.html#mentions">Mentions légales</a><a href="legal.html#cgu">CGU</a></div>
     </nav>
-    <p class="legal">© 2026 Bookstery · Fait avec soin à Lyon.</p>
+    <p class="legal">© 2026 Bookstery · Fait avec soin à Lyon. <span class="ver">Version du 21/11/2026 · Saison 1</span></p>
   </div>
 </footer>
 
@@ -1774,7 +1776,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="config.js"></script>
+<script src="config.js?v=20261121"></script>
 <script>
 var QUOTES=[
  ["Lire, c’est boire et manger. L’esprit qui ne lit pas maigrit comme le corps qui ne mange pas.","Victor Hugo"],
@@ -3523,7 +3525,7 @@ function renderSaisons(){document.querySelectorAll(".saison-slot").forEach(funct
   var c=saisonCourante(),row=$("exFormatRow"),intro=$("auIntro");
   if(intro&&c&&c.format==="nouvelle"&&!intro.dataset.sz){intro.dataset.sz=1;intro.innerHTML="<b>"+esc(c.nom)+" · "+esc(c.theme)+"</b>&nbsp;: dépose une nouvelle courte complète (1&nbsp;000 à 5&nbsp;000 mots). Dès le dépôt, un certificat d’horodatage prouve que tu en es l’auteur. Et pour que Bookstery reste 100&nbsp;% humain, chaque texte passe par un détecteur d’IA&nbsp;: au-delà de 50&nbsp;% d’écriture générée, il est refusé."}if(row){row.hidden=!(c&&c.format);if(c&&c.consigne)$("exFormatTxt").textContent=c.consigne}}
 setInterval(function(){document.querySelectorAll("[data-cd]").forEach(function(el){el.innerHTML=rebours(Date.parse(el.getAttribute("data-cd"))-Date.now())})},1000);
-renderSaisons();
+try{renderSaisons()}catch(e){console.error("Bookstery : bannière",e)}
 
 /* ================= Boîte à Thèmes : la communauté propose le thème de la saison suivante ================= */
 var THEME_SUGG=["Polar","Fantasy","Poésie","Science-fiction","Romance","Horreur","Feel-good","Roman historique"];
@@ -3592,7 +3594,7 @@ async function themeEnvoyer(form){
 }
 document.addEventListener("submit",function(e){var f=e.target.closest(".bt-form");if(f){e.preventDefault();themeEnvoyer(f)}});
 document.addEventListener("click",function(e){var b=e.target.closest("[data-bt]");if(b){var f=b.closest(".bt-form"),i=f.querySelector(".bt-in");i.value=b.getAttribute("data-bt");i.focus()}});
-themesLoad();
+try{themesLoad()}catch(e){console.error("Bookstery : Boîte à Thèmes",e)}
 </script>
 </body>
 </html>
