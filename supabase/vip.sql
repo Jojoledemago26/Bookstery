@@ -1,6 +1,6 @@
 -- Bookstery : statut Bookster VIP (fidélité)
 -- Cumul des livres achetés au fil de toutes les commandes ; à 30 € → is_vip_jury = true
--- (badge doré sur le profil, vote pour le prochain Golden Book).
+-- (badge doré sur le profil, vote pour le prochain Golden Bookster).
 -- À exécuter dans Supabase > SQL Editor (la table profiles doit exister).
 
 alter table public.profiles add column if not exists total_spent_books numeric(10, 2) not null default 0;

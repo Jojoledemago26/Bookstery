@@ -14,7 +14,7 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/photos-annonces.sql` — photos réelles recto/verso obligatoires (colonnes, stockage « photos-annonces », contrôles)
 - `supabase/vendeur-pro.sql` — statut du vendeur (particulier / professionnel) affiché sur les annonces
 - `supabase/vip.sql` — statut Bookster VIP : cumul des achats et badge à 30 €
-- `supabase/fondateur.sql` — badge « Fondateur Bookstery » sur les œuvres du fondateur (non éligibles au Golden Book et aux prix)
+- `supabase/fondateur.sql` — badge « Fondateur Bookstery » sur les œuvres du fondateur (non éligibles au Golden Bookster et aux prix)
 - `supabase/themes.sql` — Boîte à Thèmes : propositions (1 par membre), compteurs publics en temps réel
 - `supabase/saisons.sql` — Bookster Thème : saison et format des textes, tirage prioritaire dans la saison en cours
 - `supabase/qualite.sql` — contrôle qualité : note IA sur 10 conservée, archivage automatique (moyenne < 2,5/5 après 10 lectures)
@@ -57,7 +57,7 @@ Bouton « Vendre un livre » (en-tête) :
 - Catalogue « Les derniers livres en vente » : annonces Supabase (exemples lyonnais en mode démo), filtrées par la recherche et les genres.
 - Protection Acheteur ajoutée automatiquement : 5 % du montant des livres + 0,70 €.
 - **Mystery Drops (commande en cours)** : le montant des livres du panier, tous vendeurs confondus, débloque des Mystery Drops (manuscrits mystères offerts) par **paliers dégressifs** : 10 € = 1, 18 € = 2, 25 € = 3, 28 € = 4, 30 € = 5 (maximum par commande). Jauge animée en haut du panier, qui fête chaque Drop et indique le montant manquant avec des suggestions.
-- **Statut Bookster VIP (fidélité)** : cumul `total_spent_books` des livres achetés sur toutes les commandes ; barre bleu Majorelle de 0 à 30 € en bas du panier et dans « Mon espace » ; à 30 €, `is_vip_jury = true` et badge doré (vote du prochain Golden Book). Côté Supabase : `supabase/vip.sql`.
+- **Statut Bookster VIP (fidélité)** : cumul `total_spent_books` des livres achetés sur toutes les commandes ; barre bleu Majorelle de 0 à 30 € en bas du panier et dans « Mon espace » ; à 30 €, `is_vip_jury = true` et badge doré (vote du prochain Golden Bookster). Côté Supabase : `supabase/vip.sql`.
   Sous 10 € : « Plus que X € chez ce vendeur pour débloquer ton 1er manuscrit mystère ! » et des suggestions du même vendeur.
 - Si le Bag mélange plusieurs genres, l'acheteur choisit le genre de son cadeau mystère avant de payer.
 - Genre de secours : s'il n'existe aucun texte dans ce genre, le manuscrit mystère vient de la même famille (Imaginaire, Polar & Thriller, Littérature, Jeunesse) ; sinon le Bookster choisit parmi ses genres préférés (ou les genres disponibles) avant de payer.
@@ -179,7 +179,7 @@ Sans Supabase (mode démo), l'activation et l'arrêt sont simulés dans le navig
 
 ## Œuvres du fondateur
 
-Les textes déposés par le compte fondateur portent le badge « ★ Fondateur Bookstery » (liseuse, « Mes textes déposés »), sont tirés dans les Mystery Drops comme les autres (sans priorité) et sont non éligibles au Golden Book et aux prix des partenaires (CGU, article 8 ter ; vue `extraits_eligibles_prix`).
+Les textes déposés par le compte fondateur portent le badge « ★ Fondateur Bookstery » (liseuse, « Mes textes déposés »), sont tirés dans les Mystery Drops comme les autres (sans priorité) et sont non éligibles au Golden Bookster et aux prix des partenaires (CGU, article 8 ter ; vue `extraits_eligibles_prix`).
 Mise en place : exécuter `supabase/fondateur.sql`, puis les deux requêtes `update` à la fin du fichier avec l'adresse e-mail du compte fondateur.
 
 ## Paiement des commandes (Stripe Connect)
@@ -231,3 +231,7 @@ Sur l'accueil (sous la bannière de la saison) et dans « Mon espace » :
 - **Vote cliquable** : les 22 genres littéraires du site (genres utilitaires exclus) en pastilles ; un clic sélectionne le genre, puis « Voter pour « … » ». Réservée aux membres connectés, **un vote par membre et par saison** (clé primaire `(saison, membre_id)`, fonction `proposer_theme`). Les variantes d'écriture (« Polar », « polar », « Pölar ») comptent pour le même thème.
 - **Tendances en direct** : top 3 des thèmes avec barres et compteurs de votes, mis à jour en temps réel (Supabase Realtime sur `themes_compteurs`) dès qu'un membre propose. En mode démo, des votes sont simulés.
 - Mise en place : exécuter `supabase/themes.sql` (il active Realtime sur `themes_compteurs`).
+
+## Saison 1 : format Recueil Collectif
+
+Bannière (accueil + Espace auteur) : 3 étapes — janvier → mai (Mystery Drops, lectures, notes) ; juin, la finale (les Bookster VIP élisent le Top 8) ; le palmarès (n°1 sacré **Golden Bookster**, en tête d'affiche ; les 8 lauréats publiés dans le premier **Recueil Collectif Bookstery**, l'Anthologie Bookstery en librairie partenaire). Règlement complet : CGU, article 7 bis (`legal.html#c-saison1`). Le vote de la finale reste à construire avant juin 2027.

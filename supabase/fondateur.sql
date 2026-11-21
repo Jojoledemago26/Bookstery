@@ -3,7 +3,7 @@
 --
 -- Les textes déposés par le compte fondateur portent le badge « Fondateur Bookstery »,
 -- sont distribués dans les Mystery Drops comme les autres (sans priorité),
--- mais sont NON ÉLIGIBLES au Golden Book et à tout prix ou sélection de Bookstery
+-- mais sont NON ÉLIGIBLES au Golden Bookster et à tout prix ou sélection de Bookstery
 -- et de ses librairies partenaires (voir CGU, article 8 ter).
 
 alter table public.profiles add column if not exists is_fondateur boolean not null default false;
@@ -33,7 +33,7 @@ drop trigger if exists profiles_fondateur on public.profiles;
 create trigger profiles_fondateur before insert or update on public.profiles
   for each row execute function public.proteger_fondateur();
 
--- Vue des textes éligibles au Golden Book et aux prix des librairies partenaires
+-- Vue des textes éligibles au Golden Bookster et aux prix des librairies partenaires
 create or replace view public.extraits_eligibles_prix as
   select * from public.extraits where statut <> 'retire' and not est_fondateur;
 
