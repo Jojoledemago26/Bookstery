@@ -1491,7 +1491,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
       <div><b>Vendre &amp; écrire</b><a href="#top" data-sell>Vendre un livre</a><a href="#auteurs">Espace auteur</a><a href="#top" data-auteur>Envoyer mon texte</a></div>
       <div><b>Aide</b><a href="#aide" data-aide>Demander à Plume</a><a href="legal.html#mentions">Mentions légales</a><a href="legal.html#cgu">CGU</a></div>
     </nav>
-    <p class="legal">© 2026 Bookstery · Fait avec soin à Lyon. <span class="ver">Version du 21/11/2026 · Saison 1</span></p>
+    <p class="legal">© 2026 Bookstery · Fait avec soin à Lyon. <span class="ver">Version du 21/11/2026 (b) · Saison 1</span></p>
   </div>
 </footer>
 
@@ -1844,8 +1844,14 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="config.js?v=20261121"></script>
+<script src="config.js?v=20261121b"></script>
 <script>
+/* Défini en premier : le Bag (rendu dès le chargement) en a besoin. Même calendrier que supabase/functions/_shared/saisons.ts (à garder identique) */
+var SAISONS=[
+  {id:"2027-S1",nom:"Saison 1",periode:"janvier – juin 2027",debut:"2027-01-01T00:00:00+01:00",fin:"2027-07-01T00:00:00+02:00",theme:"Spécial Nouvelles",format:"nouvelle",formatNom:"Nouvelle courte",genre:"Nouvelles",
+   accroche:"Tous les Mystery Drops de cette saison mettent à l’honneur la nouvelle littéraire !",recueil:true,consigne:"Mon texte est une nouvelle courte complète, avec un début, un développement et une fin."},
+  {id:"2027-S2",nom:"Saison 2",periode:"juillet – décembre 2027",debut:"2027-07-01T00:00:00+02:00",fin:"2028-01-01T00:00:00+01:00",theme:"Thème bientôt dévoilé",format:null,genre:null,formatNom:null,accroche:"",consigne:""}
+];
 var QUOTES=[
  ["Lire, c’est boire et manger. L’esprit qui ne lit pas maigrit comme le corps qui ne mange pas.","Victor Hugo"],
  ["La lecture est une amitié.","Marcel Proust"],
@@ -2719,7 +2725,7 @@ function goHome(){
   var b=document.querySelector("header .brand");if(b)b.focus({preventScroll:true});
 }
 document.querySelectorAll(".brand").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();goHome()})});
-renderBag();loadCatalogue();
+try{renderBag()}catch(e){console.error("Bookstery : Bag",e)}loadCatalogue();
 
 /* ================= Espace auteur ================= */
 var EX_MIN=1000,EX_MAX=5000,EX_MIN_CAR=2500,NOTE_QUALITE_MIN=6,EX_SEUIL_IA=0.5,demoDepots=[];
@@ -3577,12 +3583,6 @@ function szTextes(c){var t=c&&c.format==="nouvelle"?SZ_TEXTES.nouvelle:SZ_TEXTES
   document.querySelectorAll("[data-szt]").forEach(function(el){var k=el.getAttribute("data-szt");if(t[k])el.innerHTML=t[k]});
   var ta=document.querySelector("[data-szph]");if(ta)ta.placeholder=c&&c.format==="nouvelle"?"Colle ici ta nouvelle courte complète.":"Colle ici ton extrait de roman, ton premier chapitre ou ta nouvelle.";}
 
-/* Même calendrier que supabase/functions/_shared/saisons.ts (à garder identique) */
-var SAISONS=[
-  {id:"2027-S1",nom:"Saison 1",periode:"janvier – juin 2027",debut:"2027-01-01T00:00:00+01:00",fin:"2027-07-01T00:00:00+02:00",theme:"Spécial Nouvelles",format:"nouvelle",formatNom:"Nouvelle courte",genre:"Nouvelles",
-   accroche:"Tous les Mystery Drops de cette saison mettent à l’honneur la nouvelle littéraire !",recueil:true,consigne:"Mon texte est une nouvelle courte complète, avec un début, un développement et une fin."},
-  {id:"2027-S2",nom:"Saison 2",periode:"juillet – décembre 2027",debut:"2027-07-01T00:00:00+02:00",fin:"2028-01-01T00:00:00+01:00",theme:"Thème bientôt dévoilé",format:null,genre:null,formatNom:null,accroche:"",consigne:""}
-];
 function saisonCourante(){var n=Date.now();for(var i=0;i<SAISONS.length;i++)if(n<Date.parse(SAISONS[i].fin))return SAISONS[i];return null}
 function saisonSuivante(c){var i=SAISONS.indexOf(c);return i>-1?SAISONS[i+1]||null:null}
 function rebours(ms){if(ms<=0)return"c’est ouvert !";var j=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4),s2=Math.floor(ms%6e4/1e3);
