@@ -1,4 +1,4 @@
--- Bookstery : Boîte à Thèmes — la communauté vote pour le genre de la prochaine saison
+-- Bookstery : Le Grand Vote — la communauté vote pour le genre de la prochaine saison
 -- (genres littéraires du site uniquement, les genres utilitaires sont exclus)
 -- À exécuter dans Supabase > SQL Editor.
 --

@@ -15,7 +15,7 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/vendeur-pro.sql` — statut du vendeur (particulier / professionnel) affiché sur les annonces
 - `supabase/vip.sql` — statut Bookster VIP : cumul des achats et badge à 30 €
 - `supabase/fondateur.sql` — badge « Fondateur Bookstery » sur les œuvres du fondateur (non éligibles au Golden Bookster et aux prix)
-- `supabase/themes.sql` — Boîte à Thèmes : propositions (1 par membre), compteurs publics en temps réel
+- `supabase/themes.sql` — Le Grand Vote : propositions (1 par membre), compteurs publics en temps réel
 - `supabase/saisons.sql` — Bookster Thème : saison et format des textes, tirage prioritaire dans la saison en cours
 - `supabase/qualite.sql` — contrôle qualité : note IA sur 10 conservée, archivage automatique (moyenne < 2,5/5 après 10 lectures)
 - `supabase/tirage.sql` — tirage équitable des Mystery Drops par genre, sur tous les textes (à exécuter)
@@ -225,7 +225,7 @@ Saison 1 (janvier – juin 2027) : « Spécial Nouvelles », format nouvelle cou
 - **Mystery Drops** : dès 10 €, quel que soit le type de livre, tirés en priorité parmi les nouvelles approuvées de la saison en cours (puis parmi les autres textes s'il n'y en a pas assez).
 - Mise en place : exécuter `supabase/saisons.sql`, puis redéployer `deposer-extrait`, `valider-commande` et `stripe-webhook`.
 
-## Boîte à Thèmes (prochaine saison)
+## Le Grand Vote (genre de la prochaine saison)
 
 Sur l'accueil (sous la bannière de la saison) et dans « Mon espace » :
 - **Vote cliquable** : les 22 genres littéraires du site (genres utilitaires exclus) en pastilles ; un clic sélectionne le genre, puis « Voter pour « … » ». Réservée aux membres connectés, **un vote par membre et par saison** (clé primaire `(saison, membre_id)`, fonction `proposer_theme`). Les variantes d'écriture (« Polar », « polar », « Pölar ») comptent pour le même thème.
