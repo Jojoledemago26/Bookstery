@@ -123,9 +123,9 @@ export const MESSAGES: Record<Exclude<Motif, "aucun">, string> = {
   pas_en_francais:
     "Pour l’instant, Bookstery accueille uniquement des textes écrits en français. Si tu as une version française de ton texte, n’hésite pas à la déposer !",
   pas_litteraire:
-    "Ton envoi ne ressemble pas à une œuvre littéraire (extrait de roman, nouvelle, conte, poésie…). Bookstery accueille uniquement des textes de création : dépose plutôt un extrait de ton histoire.",
+    "Ton envoi ne ressemble pas à une œuvre littéraire (extrait de roman, nouvelle, conte, poésie…). Bookstery accueille uniquement des textes de création : dépose plutôt un récit de ton invention.",
   hors_theme:
-    "Cette saison, le Bookster Thème est « Spécial Nouvelles » : on accueille uniquement des nouvelles courtes complètes, avec un début, un développement et une fin. Ton texte ressemble plutôt à un extrait ou à un chapitre d’un récit plus long. Tu peux le retravailler en nouvelle, ou le garder pour une prochaine saison !",
+    "Cette saison, le Bookster Thème est « Spécial Nouvelles » : on accueille uniquement des nouvelles complètes (1 000 à 5 000 mots), avec un début, un développement et une fin. Ton texte ressemble plutôt à un extrait ou à un chapitre d’un récit plus long. Tu peux le retravailler en nouvelle, ou le garder pour une prochaine saison !",
   qualite_insuffisante:
     "Ton texte a du potentiel, mais il n’est pas encore tout à fait prêt à être offert aux lecteurs : notre relecture automatique lui donne une note de qualité rédactionnelle inférieure à 6/10 (orthographe, syntaxe, narration). Prends le temps de te relire, à voix haute si possible, ou de le faire relire par un proche, puis dépose-le à nouveau. On a hâte de te lire !",
   illisible_ou_fautes:

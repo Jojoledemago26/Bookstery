@@ -6,7 +6,7 @@ export const SAISONS: Saison[] = [
   {
     id: "2027-S1", nom: "Saison 1", debut: "2027-01-01T00:00:00+01:00", fin: "2027-07-01T00:00:00+02:00",
     theme: "Spécial Nouvelles", format: "nouvelle", genre: "Nouvelles", // genre imposé à tous les dépôts de la saison
-    consigne: "une nouvelle courte COMPLÈTE (un récit qui se suffit à lui-même, avec un début, un développement et une fin), pas un extrait ni un chapitre d'un texte plus long",
+    consigne: "une nouvelle COMPLÈTE de 1 000 à 5 000 mots (un récit qui se suffit à lui-même, avec un début, un développement et une fin), pas un extrait ni un chapitre d'un texte plus long",
   },
   {
     id: "2027-S2", nom: "Saison 2", debut: "2027-07-01T00:00:00+02:00", fin: "2028-01-01T00:00:00+01:00",

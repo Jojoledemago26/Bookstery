@@ -100,7 +100,7 @@ Deno.serve(async (req) => {
   const auth = req.headers.get("Authorization") ?? "";
   const userClient = createClient(url, Deno.env.get("SUPABASE_ANON_KEY")!, { global: { headers: { Authorization: auth } } });
   const { data: { user } } = await userClient.auth.getUser();
-  if (!user) return json(401, { erreur: "Connecte-toi pour déposer un extrait." });
+  if (!user) return json(401, { erreur: "Connecte-toi pour déposer ton texte." });
 
   let body: { titre?: string; genre?: string; texte?: string; certifie?: boolean };
   try { body = await req.json(); } catch { return json(400, { erreur: "Requête illisible." }); }
@@ -114,7 +114,7 @@ Deno.serve(async (req) => {
   if (!GENRES.includes(genre)) return json(400, { erreur: "Choisis un genre dans la liste." });
   if (body.certifie !== true) return json(400, { erreur: "Certifie sur l’honneur être l’auteur unique de ce texte original et inédit." });
   if (texte.length < MIN_CARACTERES) return json(400, { erreur: `Ton texte est trop court : il doit faire au moins ${MIN_CARACTERES} caractères (il en fait ${texte.length}).` });
-  if (nbMots < MIN_MOTS || nbMots > MAX_MOTS) return json(400, { erreur: `Ton extrait doit faire entre ${MIN_MOTS} et ${MAX_MOTS} mots (il en fait ${nbMots}).` });
+  if (nbMots < MIN_MOTS || nbMots > MAX_MOTS) return json(400, { erreur: `Ton texte doit faire entre ${MIN_MOTS} et ${MAX_MOTS} mots (il en fait ${nbMots}).` });
 
   const empreinte = await sha256(texte);
   const admin = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);

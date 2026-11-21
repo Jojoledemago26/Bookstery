@@ -218,11 +218,11 @@ Mise en place :
 ## Bookster Thème (saisons)
 
 Un thème par semestre, défini à deux endroits identiques : `SAISONS` dans `index.html` et `supabase/functions/_shared/saisons.ts`.
-Saison 1 (janvier – juin 2027) : « Spécial Nouvelles », format nouvelle courte complète ; Saison 2 (juillet – décembre 2027) : thème à définir.
+Saison 1 (janvier – juin 2027) : « Spécial Nouvelles », format nouvelle complète (1 000 à 5 000 mots, pas un extrait) ; Saison 2 (juillet – décembre 2027) : thème à définir.
 
 - **Bannière** noir / bleu Majorelle / blanc sur l'accueil et dans l'Espace auteur, avec le compte à rebours jusqu'à l'ouverture de la saison suivante. Avant le 1er janvier 2027, la Saison 1 est en « avant-première » (dépôts déjà ouverts).
 - **Genre imposé** : chaque saison peut fixer un genre (`genre` dans `SAISONS` / `saisons.ts`). Saison 1 : « Nouvelles », champ Genre verrouillé dans l'Espace auteur, et forcé par le serveur (`deposer-extrait`). Il change automatiquement à l'ouverture d'une saison qui a un autre thème.
-- **Dépôt verrouillé** sur le format de la saison : case obligatoire « Mon texte est une nouvelle courte complète… », et contrôle par l'IA (motif `hors_theme` si c'est un extrait ou un chapitre). Chaque texte est enregistré avec sa saison et son format.
+- **Dépôt verrouillé** sur le format de la saison : case obligatoire « Mon texte est une nouvelle complète… », et contrôle par l'IA (motif `hors_theme` si c'est un extrait ou un chapitre). Chaque texte est enregistré avec sa saison et son format.
 - **Mystery Drops** : dès 10 €, quel que soit le type de livre, tirés en priorité parmi les nouvelles approuvées de la saison en cours (puis parmi les autres textes s'il n'y en a pas assez).
 - Mise en place : exécuter `supabase/saisons.sql`, puis redéployer `deposer-extrait`, `valider-commande` et `stripe-webhook`.
 
