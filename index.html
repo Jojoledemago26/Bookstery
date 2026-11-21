@@ -126,9 +126,10 @@ section{padding:72px 0}
 .authors{background:var(--ink);color:#fff;border-radius:32px;padding:56px}
 .a-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,340px);gap:44px;align-items:center}
 .a-top:has(.a-quote[hidden]){display:block;max-width:760px}
-.a-quote{position:relative;margin:0;padding:6px 0 6px 26px;border-left:1px solid rgba(255,255,255,.16)}
+.a-quote{position:relative;margin:0;padding:30px 30px 26px;border-radius:24px;background:radial-gradient(120% 90% at 100% 0%,rgba(96,80,220,.28),transparent 60%),linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.015));border:1px solid rgba(201,194,255,.22);box-shadow:0 24px 60px -28px rgba(96,80,220,.55),inset 0 1px 0 rgba(255,255,255,.08)}
 .a-quote[hidden]{display:none}
-.a-quote::before{content:"“";position:absolute;top:-36px;left:20px;font:400 60px/1 Georgia,serif;color:rgba(255,255,255,.12)}
+.a-quote::before{content:"“";position:absolute;top:6px;right:22px;font:400 72px/1 Georgia,serif;color:rgba(201,194,255,.22)}
+.a-quote::after{content:"";position:absolute;left:30px;right:30px;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(201,194,255,.55),transparent)}
 .aq-k{display:block;font:600 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:14px}
 .a-quote blockquote{margin:0}
 .a-quote blockquote p{margin:0!important;font:italic 300 16px/1.75 "Literata",Georgia,serif;color:rgba(248,246,255,.78);letter-spacing:.005em;text-shadow:0 0 18px rgba(255,255,255,.06)}
@@ -1509,7 +1510,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
       <div><b>Vendre &amp; écrire</b><a href="#top" data-sell>Vendre un livre</a><a href="#auteurs">Espace auteur</a><a href="#top" data-auteur>Envoyer mon texte</a></div>
       <div><b>Aide</b><a href="#aide" data-aide>Demander à Plume</a><a href="legal.html#mentions">Mentions légales</a><a href="legal.html#cgu">CGU</a></div>
     </nav>
-    <p class="legal">© 2026 Bookstery · Fait avec soin à Lyon. <span class="ver">Version du 21/11/2026 (e) · Saison 1</span></p>
+    <p class="legal">© 2026 Bookstery · Fait avec soin à Lyon. <span class="ver">Version du 21/11/2026 (f) · Saison 1</span></p>
   </div>
 </footer>
 
@@ -1863,7 +1864,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="config.js?v=20261121e"></script>
+<script src="config.js?v=20261121f"></script>
 <script>
 /* Défini en premier : le Bag (rendu dès le chargement) en a besoin. Même calendrier que supabase/functions/_shared/saisons.ts (à garder identique) */
 var SAISONS=[
