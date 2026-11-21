@@ -50,6 +50,8 @@ declare
   v_cle text;
 begin
   if auth.uid() is null then raise exception 'connexion_requise'; end if;
+  -- Le vote ouvre au lancement de la saison concernée
+  if p_saison = '2027-S2' and now() < timestamptz '2027-07-01 00:00:00+02' then raise exception 'vote_ferme'; end if;
   if char_length(v_lib) < 2 or char_length(v_lib) > 40 or v_lib !~ '^[[:alpha:]0-9][[:alpha:]0-9 &''’,.-]*$' then
     raise exception 'theme_invalide';
   end if;

@@ -227,6 +227,8 @@ Saison 1 (janvier – juin 2027) : « Spécial Nouvelles », format nouvelle cou
 
 ## Le Grand Vote (genre de la prochaine saison)
 
+Le vote ouvre au lancement de la Saison 2 (1er juillet 2027) : avant, les genres sont affichés mais verrouillés, avec un encart discret (contrôle aussi côté base, erreur `vote_ferme`).
+
 Sur l'accueil (sous la bannière de la saison) et dans « Mon espace » :
 - **Vote cliquable** : les 22 genres littéraires du site (genres utilitaires exclus) en pastilles ; un clic sélectionne le genre, puis « Voter pour « … » ». Réservée aux membres connectés, **un vote par membre et par saison** (clé primaire `(saison, membre_id)`, fonction `proposer_theme`). Les variantes d'écriture (« Polar », « polar », « Pölar ») comptent pour le même thème.
 - **Tendances en direct** : top 3 des thèmes avec barres et compteurs de votes, mis à jour en temps réel (Supabase Realtime sur `themes_compteurs`) dès qu'un membre propose. En mode démo, des votes sont simulés.

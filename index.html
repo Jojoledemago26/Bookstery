@@ -1203,6 +1203,14 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .sz-ri .sz-cd b{font-size:12.5px;font-weight:800;color:#C9C2FF}
 @keyframes szRuban{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media(max-width:760px){.sz-ruban{margin:16px -18px 0}}
+.bt-lbl span{font-weight:700;font-size:12px;color:var(--maj-d);background:var(--maj-l);border-radius:999px;padding:2px 8px;margin-left:4px}
+.bt-g[disabled]{cursor:default;transform:none!important}
+.bt-form.voted .bt-g:not(.on),.bt-g[disabled]:not(.on){opacity:.45;background:#fff;border-color:var(--line)}
+.bt-g.sending{animation:btSend .8s ease-in-out infinite}
+@keyframes btSend{50%{transform:scale(1.06)}}
+.bt-form.voted .bt-grid{margin-top:12px}
+.bt-closed{margin:0 0 10px!important;font-size:12.5px!important;color:var(--muted)!important;background:#F4F3F8;border:1px dashed #CFCAF6;border-radius:10px;padding:7px 11px;line-height:1.45}
+.bt-form .bt-g[disabled]:not(.on){opacity:.55}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -3338,7 +3346,7 @@ var AIDE_FAQ=[
  {k:"refuse refus pourquoi depot bloque verification moderation ia detecteur plagiat fautes",a:"Avant tout dépôt, on vérifie que le texte est **original** (anti-plagiat), conforme à la charte, en français, littéraire et lisible, puis le **détecteur d’IA** (au-delà de 50 % d’écriture générée, il est refusé). Le message de refus t’explique la raison ; pour des fautes, tu peux relire et redéposer."},
  {k:"fondateur badge fondateur createur textes du fondateur",a:"Pour lancer la plateforme, le **fondateur de Bookstery** partage ses propres textes. Ils portent le badge **★ Fondateur Bookstery**, passent les mêmes vérifications que les autres, sont tirés dans les Mystery Drops **sans aucune priorité**, et ne peuvent pas gagner le Golden Bookster ni les prix des librairies partenaires."},
  {k:"saison saisons theme thematique bookster theme nouvelles nouvelle speciale semestre saison 2 golden book concours",a:"Chaque semestre a son **Bookster Thème**. **Saison 1 (janvier – juin 2027) : Spécial Nouvelles** : tous les Mystery Drops de la saison mettent à l’honneur la nouvelle littéraire, les auteurs déposent des nouvelles courtes complètes, et à la finale de juin, les Bookster VIP élisent le **Top 8** : le n°1 est sacré **Golden Bookster** et les 8 lauréats sont publiés ensemble dans le premier **Recueil Collectif Bookstery**, en librairie partenaire. Dès 10 € d’achat, quel que soit le livre, ton Mystery Drop est une nouvelle de la saison. La Saison 2 ouvre le 1er juillet 2027 : compte à rebours sur l’accueil !"},
- {k:"grand vote boite a themes boite theme genre proposer proposition idee saison 2 tendance vote",a:"**Le Grand Vote** (sur l’accueil et dans ton espace) te permet de voter pour le genre de la **prochaine saison** : clique sur un genre (polar, fantasy, poésie…, les genres utilitaires ne sont pas proposés) puis sur « Voter ». **Un vote par membre**, il faut être connecté. Les 3 thèmes les plus demandés s’affichent en direct, avec leur nombre de votes."},
+ {k:"grand vote boite a themes boite theme genre proposer proposition idee saison 2 tendance vote",a:"**Le Grand Vote** (sur l’accueil et dans ton espace) te permet de voter pour le genre de la **prochaine saison** : clique sur un genre (polar, fantasy, poésie…, les genres utilitaires ne sont pas proposés) tu votes en un clic. **Un seul vote par membre, définitif**. Le vote ouvre au lancement de la Saison 2, le 1er juillet 2027, il faut être connecté. Les 3 thèmes les plus demandés s’affichent en direct, avec leur nombre de votes."},
  {k:"pack accelerateur abonnement auteur boost prioritaire statistiques stats 15 resilier arreter desabonner",a:"Le **Pack Accélérateur Auteurs** coûte **15 € par mois, sans engagement**. Tant qu’il est actif, ton texte a **3× plus de chances** d’être tiré dans les Mystery Drops de son genre, et tu vois **tes statistiques de lecture** (envois, lectures, avis, note, abonnés). Pour l’activer ou l’arrêter : Espace auteur, onglet « ⚡ Pack Accélérateur ». L’arrêt se fait en 1 clic et le Pack reste actif jusqu’à la fin du mois payé."},
  {k:"certificat horodatage preuve sha empreinte droit auteur",a:"Ton **certificat d’horodatage** contient la date et l’heure du dépôt et une empreinte SHA-256 unique de ton texte : il prouve que tu l’avais écrit à cette date. Tu le retrouves dans « **Mes textes déposés** »."},
  {k:"avis note noter etoiles suivre abonne auteur commentaire",a:"À la fin d’un manuscrit mystère, tu peux noter l’auteur (1 à 5 étoiles), lui laisser un mot (il le reçoit par e-mail) et le **suivre**."},
@@ -3596,6 +3604,8 @@ try{renderSaisons()}catch(e){console.error("Bookstery : bannière",e)}
 /* Genres votables : tous les genres du site sauf les utilitaires (scolaire, cuisine, guides…) */
 function genresVotables(){return GENRES.filter(function(g){return!isUtilitaire(g)})}
 var themeChoix=null;
+/* Le Grand Vote ouvre au lancement de la saison concernée (Saison 2 : 1er juillet 2027) */
+function voteOuvert(){var nx=themeCible();return!!nx&&Date.now()>=Date.parse(nx.debut)}
 var THEMES={saison:null,counts:{},mine:null,chan:null,prevW:{},prevV:{},flash:{},timer:null};
 function themeCible(){var c=saisonCourante();return c?saisonSuivante(c):null}
 function themeCle(t){return String(t||"").trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim()}
@@ -3605,7 +3615,7 @@ async function themesLoad(){
   if(!sb){
     try{var v=JSON.parse(localStorage.getItem("bookstery.themes")||"null");if(v&&v.saison===nx.id){THEMES.counts=v.counts;THEMES.mine=v.mine}}catch(e){}
     if(!Object.keys(THEMES.counts).length)THEMES.counts={polar:{libelle:"Polar",votes:42},fantasy:{libelle:"Fantasy",votes:37},poesie:{libelle:"Poésie",votes:29},"science fiction":{libelle:"Science-fiction",votes:21},romance:{libelle:"Romance",votes:17},thriller:{libelle:"Thriller",votes:12},manga:{libelle:"Manga",votes:9}};
-    if(!THEMES.timer)themesSimuler();
+    if(!THEMES.timer&&voteOuvert())themesSimuler();
   }else{
     try{var r=await sb.from("themes_compteurs").select("cle,libelle,votes").eq("saison",nx.id).order("votes",{ascending:false}).limit(60);
       if(!r.error){THEMES.counts={};(r.data||[]).forEach(function(x){THEMES.counts[x.cle]={libelle:x.libelle,votes:x.votes}})}}catch(e){}
@@ -3621,20 +3631,22 @@ function themesSimuler(){var tick=function(){var top=themeTop().slice(0,5),r=Mat
   for(var i=0;i<top.length;i++){acc+=top[i].votes/tot;if(r<=acc){THEMES.counts[top[i].cle].votes++;THEMES.flash[top[i].cle]=1;break}}
   themesSaveDemo();renderThemeCharts();THEMES.timer=setTimeout(tick,3500+Math.random()*5000)};THEMES.timer=setTimeout(tick,3000)}
 function themeFormHtml(nx){
-  if(THEMES.mine)return'<div class="bt-done"><span>✅</span><div><b>Merci ! Tu as voté pour « '+esc(THEMES.mine)+' »</b><small>Un vote par membre et par saison. Suis son classement en direct →</small></div></div>';
-  var chips=genresVotables().map(function(g){var c=THEMES.counts[themeCle(g)],n=c?c.votes:0;
-    return'<button type="button" class="bt-g'+(themeChoix===g?" on":"")+'" data-btg="'+esc(g)+'" aria-pressed="'+(themeChoix===g)+'">'+esc(g)+(n?'<small>'+n+'</small>':"")+'</button>'}).join("");
-  var login=sb&&!current;
-  return'<form class="bt-form" novalidate><p class="bt-lbl">Clique sur le genre que tu veux pour la '+esc(nx.nom)+'&nbsp;:</p><div class="bt-grid" role="group" aria-label="Genres proposés">'+chips+'</div>'+
-    (login?'<div class="bt-login"><p>Connecte-toi pour voter (un vote par membre).</p><button class="btn bt-btn" type="button" data-login>Se connecter</button></div>'
-      :'<button class="btn bt-btn bt-go" type="submit"'+(themeChoix?"":" disabled")+'>'+(themeChoix?"Voter pour « "+esc(themeChoix)+" »":"Choisis un genre pour voter")+'</button>')+
+  var voted=!!THEMES.mine,ferme=!voteOuvert(),login=sb&&!current&&!ferme,mineK=voted?themeCle(THEMES.mine):null;
+  var chips=genresVotables().map(function(g){var k=themeCle(g),c=THEMES.counts[k],n=c?c.votes:0,on=k===mineK;
+    return'<button type="button" class="bt-g'+(on?" on":"")+'" data-btg="'+esc(g)+'" aria-pressed="'+on+'"'+(voted||login||ferme?" disabled":"")+' aria-label="Voter pour '+esc(g)+(n?", "+n+" vote"+(n>1?"s":""):"")+'">'+esc(g)+(n?'<small>'+n+'</small>':"")+'</button>'}).join("");
+  return'<form class="bt-form'+(voted?" voted":"")+'" novalidate>'+
+    (voted?'<div class="bt-done"><span>✅</span><div><b>Merci ! Tu as voté pour « '+esc(THEMES.mine)+' »</b><small>Un seul vote par membre et par saison : ton choix est définitif. Suis son classement en direct →</small></div></div>'
+      :ferme?'<p class="bt-closed">🔒 Vote disponible à partir du lancement de la '+esc(nx.nom)+', le '+new Date(nx.debut).toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric",timeZone:"Europe/Paris"}).replace(/^1 /,"1er ")+'. En attendant, découvre les genres en lice.</p>'
+      :'<p class="bt-lbl">Clique sur ton genre pour voter&nbsp;: <span>un seul vote, définitif</span></p>')+
+    '<div class="bt-grid" role="group" aria-label="Genres proposés">'+chips+'</div>'+
+    (login?'<div class="bt-login"><p>Connecte-toi pour voter (un vote par membre).</p><button class="btn bt-btn" type="button" data-login>Se connecter</button></div>':"")+
     '<p class="bt-note">Les genres utilitaires (scolaire, cuisine, guides…) ne sont pas proposés : la saison est toujours littéraire.</p><p class="bt-msg" role="alert"></p></form>';
 }
 function renderThemes(){var nx=themeCible();
   document.querySelectorAll(".themes-slot").forEach(function(el,i){if(!nx){el.innerHTML="";return}
     el.innerHTML='<section class="bt '+el.getAttribute("data-themes")+'" aria-label="Le Grand Vote '+esc(nx.nom)+'">'+
       '<div class="bt-l"><span class="bt-k">🗳️ Le Grand Vote · '+esc(nx.nom)+'</span><h3 class="bt-t">Quel genre pour la '+esc(nx.nom)+'&nbsp;?</h3><p class="bt-p">Vote pour le genre de la prochaine saison&nbsp;: la communauté décide, et Bookstery l’écoute.</p>'+themeFormHtml(nx).replace(/btIn-X/g,"btIn-"+i)+'</div>'+
-      '<div class="bt-r"><div class="bt-live"><span class="bt-dot"></span>Tendances en direct</div>'+(sb?"":'<i class="bt-demo">Simulation en mode démo</i>')+'<div class="bt-chart" aria-live="polite"></div><p class="bt-tot"></p></div></section>'});
+      '<div class="bt-r"><div class="bt-live"><span class="bt-dot"></span>Tendances en direct</div>'+(sb?"":'<i class="bt-demo">'+(voteOuvert()?"Simulation en mode démo":"Exemple en mode démo · le vote n’est pas encore ouvert")+'</i>')+'<div class="bt-chart" aria-live="polite"></div><p class="bt-tot"></p></div></section>'});
   renderThemeCharts();
 }
 function renderThemeCharts(){
@@ -3648,22 +3660,28 @@ function renderThemeCharts(){
   document.querySelectorAll(".bt-tot").forEach(function(p){p.textContent=tot?tot+" vote"+(tot>1?"s":"")+" de la communauté · "+top.length+" genre"+(top.length>1?"s":"")+" en lice":""});
   podium.forEach(function(x){THEMES.prevW[x.cle]=Math.max(8,x.votes/max*100)});THEMES.flash={};
 }
-async function themeEnvoyer(form){
-  var msg=form.querySelector(".bt-msg"),btn=form.querySelector(".bt-go"),v=themeChoix;
+var themeEnCours=false;
+async function themeVoter(g,btn){
+  if(themeEnCours||THEMES.mine||!voteOuvert())return;                  /* un seul vote, jamais de double envoi */
+  var form=btn.closest(".bt-form"),msg=form.querySelector(".bt-msg");
   var err=function(t){msg.textContent=t;msg.className="bt-msg err"};
-  if(!v||genresVotables().indexOf(v)<0)return err("Clique d’abord sur un genre.");
-  if(!sb){var k=themeCle(v);THEMES.counts[k]=THEMES.counts[k]||{libelle:v,votes:0};THEMES.counts[k].votes++;THEMES.flash[k]=1;THEMES.mine=v;themeChoix=null;themesSaveDemo();renderThemes();toast("Merci ! Ton vote pour « "+v+" » est enregistré.");return}
-  if(!current)return err("Connecte-toi pour voter.");
-  busy(btn,true,"Envoi…");
-  try{var r=await sb.rpc("proposer_theme",{p_saison:THEMES.saison,p_theme:v});
-    if(r.error){var m=r.error.message||"";throw new Error(/deja_propose/.test(m)?"Tu as déjà voté pour cette saison : un vote par membre.":/theme_invalide/.test(m)?"Ce genre ne peut pas être choisi.":"Ton vote n’a pas pu être envoyé. Réessaie.")}
-    var row=Array.isArray(r.data)?r.data[0]:r.data;THEMES.mine=row&&row.libelle||v;themeChoix=null;
-    if(row&&!THEMES.chan){THEMES.counts[row.cle]=THEMES.counts[row.cle]||{libelle:row.libelle,votes:0};THEMES.counts[row.cle].votes++}
+  if(genresVotables().indexOf(g)<0)return err("Ce genre ne peut pas être choisi.");
+  if(sb&&!current)return err("Connecte-toi pour voter.");
+  themeEnCours=true;form.querySelectorAll(".bt-g").forEach(function(b){b.disabled=true});btn.classList.add("on","sending");
+  try{
+    if(!sb){var k=themeCle(g);THEMES.counts[k]=THEMES.counts[k]||{libelle:g,votes:0};THEMES.counts[k].votes++;THEMES.flash[k]=1;THEMES.mine=g;themesSaveDemo()}
+    else{var r=await sb.rpc("proposer_theme",{p_saison:THEMES.saison,p_theme:g});
+      if(r.error){var m=r.error.message||"";
+        if(/deja_propose/.test(m)){await themesLoad();throw new Error("Tu as déjà voté pour cette saison : un seul vote par membre.")}
+        throw new Error(/vote_ferme/.test(m)?"Le vote n’est pas encore ouvert.":/theme_invalide/.test(m)?"Ce genre ne peut pas être choisi.":"Ton vote n’a pas pu être envoyé. Réessaie.")}
+      var row=Array.isArray(r.data)?r.data[0]:r.data;THEMES.mine=row&&row.libelle||g;
+      if(row&&!THEMES.chan){THEMES.counts[row.cle]=THEMES.counts[row.cle]||{libelle:row.libelle,votes:0};THEMES.counts[row.cle].votes++}}
     renderThemes();toast("Merci ! Ton vote pour « "+THEMES.mine+" » est enregistré.");
-  }catch(e){busy(btn,false);err(e.message)}
+  }catch(e){if(!THEMES.mine){form.querySelectorAll(".bt-g").forEach(function(b){b.disabled=false});btn.classList.remove("on")}btn.classList.remove("sending");err(e.message)}
+  finally{themeEnCours=false}
 }
-document.addEventListener("submit",function(e){var f=e.target.closest(".bt-form");if(f){e.preventDefault();themeEnvoyer(f)}});
-document.addEventListener("click",function(e){var b=e.target.closest("[data-btg]");if(b){var g=b.getAttribute("data-btg");themeChoix=themeChoix===g?null:g;renderThemes();var x=document.querySelector(".bt-g.on");if(x)x.focus({preventScroll:true})}});
+document.addEventListener("submit",function(e){if(e.target.closest(".bt-form"))e.preventDefault()});
+document.addEventListener("click",function(e){var b=e.target.closest("[data-btg]");if(b&&!b.disabled)themeVoter(b.getAttribute("data-btg"),b)});
 try{themesLoad()}catch(e){console.error("Bookstery : Grand Vote",e)}
 </script>
 </body>
