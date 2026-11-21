@@ -1184,6 +1184,9 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .sz-steps li:last-child::before{width:26px;height:26px;font-size:14px;box-shadow:0 0 0 3px rgba(245,196,81,.35)}
 @keyframes pmGlow{0%,100%{box-shadow:0 0 0 1px rgba(233,196,106,.25),0 14px 30px -12px rgba(227,155,27,.5)}50%{box-shadow:0 0 0 1px rgba(233,196,106,.5),0 16px 38px -10px rgba(227,155,27,.8)}}
 @media(max-width:760px){.sz-r{transform:none}}
+/* Étapes 1 et 2 : contour bleu Majorelle */
+.sz-steps li:not(:last-child){border:1.5px solid #6050DC;background:rgba(96,80,220,.14);box-shadow:0 0 0 1px rgba(96,80,220,.25),0 10px 24px -14px rgba(96,80,220,.7)}
+.sz-steps li:not(:last-child)::before{box-shadow:0 0 0 3px rgba(96,80,220,.35)}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
