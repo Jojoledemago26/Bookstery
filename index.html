@@ -1017,6 +1017,11 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .util-note{display:flex;gap:8px;align-items:flex-start;margin:0!important;background:#F4F3F8;border-radius:12px;padding:9px 11px;font-size:12.5px!important;line-height:1.45;color:var(--muted)!important}
 .util-note b{color:var(--ink-2)}
 .util-note.on{background:#FFF8E6;color:#6B4A12!important}.util-note.on b{color:#7A4E00}
+#gSecours.univ{background:linear-gradient(135deg,var(--maj-xl),#fff);border:1.5px solid var(--maj-l)}
+#gSecours.univ legend{color:var(--maj-d)}
+#gSecours.univ p{color:var(--muted)}
+#gSecours.univ .gp-opts span{border-color:#CFCAF6;color:var(--maj-d)}
+#gSecours.univ .gp-opts input:checked+span{background:var(--maj);border-color:var(--maj);color:#fff}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -2277,9 +2282,10 @@ function resolveGift(genre,t){
   var d=GENRES_DISPO;
   /* Panier 100 % utilitaire : le Bookster choisit le genre (fiction) de ses Mystery Drops */
   if(!genre&&t&&t.gifts>0&&!t.genres.length){
-    var ok=function(g){return!isUtilitaire(g)&&(!d||d[g]>0)},base=d?Object.keys(d).filter(ok).sort(GENRE_SORT):GENRES_AUTEUR.slice();
-    var pf=myGenres.filter(ok);
-    return base.length||pf.length?{mode:"choix",options:pf.length?pf:base,prefs:!!pf.length,util:true}:{mode:"aucun"};
+    /* Tous les univers de fiction, genres préférés du Bookster en premier (et présélectionnés) */
+    var pf=myGenres.filter(function(g){return GENRES_AUTEUR.indexOf(g)>-1});
+    var opts=pf.concat(GENRES_AUTEUR.filter(function(g){return pf.indexOf(g)<0}));
+    return{mode:"choix",options:opts,prefs:pf,defaut:pf[0]||null,util:true};
   }
   if(!genre||!d)return{mode:"exact"};
   if(d[genre]>0)return{mode:"exact"};
@@ -2299,9 +2305,11 @@ function renderSecours(t){
   $("gSecours").hidden=r.mode!=="choix";
   if(r.mode==="choix"){
     if(giftSecours&&r.options.indexOf(giftSecours)<0)giftSecours=null;
-    $("gSecTitre").textContent=r.util?"Choisis le genre de tes Mystery Drops":"Pas encore de texte en "+genre;
-    $("gSecTxt").textContent=r.util?"Ton panier ne contient que des livres utilitaires, exclus des Mystery Drops : choisis le genre de tes manuscrits mystères"+(r.prefs?" parmi tes genres préférés.":"."):(r.prefs?"Choisis parmi tes genres préférés : ton manuscrit mystère viendra de là.":"Choisis un autre genre pour ton manuscrit mystère :");
-    $("gSecOpts").innerHTML=r.options.map(function(g,i){return'<label><input type="radio" name="giftSecours" id="gs'+i+'" value="'+esc(g)+'"'+(g===giftSecours?" checked":"")+'><span>'+esc(g)+'</span></label>'}).join("");
+    if(r.util&&!giftSecours&&r.defaut)giftSecours=r.defaut;
+    $("gSecours").classList.toggle("univ",!!r.util);
+    $("gSecTitre").textContent=r.util?"Choisis l’univers de ton Mystery Drop cadeau":"Pas encore de texte en "+genre;
+    $("gSecTxt").textContent=r.util?"Aucun manuscrit mystère n’existe en "+t.utils.join(", ")+" : choisis le genre littéraire de ton cadeau."+(r.prefs.length?" Tes genres préférés sont proposés en premier.":""):(r.prefs?"Choisis parmi tes genres préférés : ton manuscrit mystère viendra de là.":"Choisis un autre genre pour ton manuscrit mystère :");
+    $("gSecOpts").innerHTML=r.options.map(function(g,i){var fav=r.util&&r.prefs.indexOf(g)>-1;return'<label><input type="radio" name="giftSecours" id="gs'+i+'" value="'+esc(g)+'"'+(g===giftSecours?" checked":"")+'><span>'+(fav?"★ ":"")+esc(g)+'</span></label>'}).join("");
   }else{giftSecours=null;$("gSecours").classList.remove("need")}
   return r;
 }
@@ -2399,7 +2407,7 @@ $("payBtn").addEventListener("click",function(){
   if(sb&&!current){$("payMsg").className="form-msg err";$("payMsg").innerHTML='Connecte-toi pour payer ta commande. <button type="button" class="forgot" style="display:inline;margin:0" data-login>Se connecter</button>';return}
   var genre=t.gifts?(giftGenre||t.genres[0]||null):"";
   var rs=resolveGift(genre,t);
-  if(t.gifts>0&&rs.mode==="choix"&&!giftSecours){$("gSecours").classList.add("need");$("gSecours").scrollIntoView({block:"nearest",behavior:"smooth"});return setMsg("payMsg",rs.util?"Choisis le genre de tes Mystery Drops avant de payer.":"Pas encore de texte dans ce genre : choisis un genre de secours pour ton cadeau mystère.","err")}
+  if(t.gifts>0&&rs.mode==="choix"&&!giftSecours){$("gSecours").classList.add("need");$("gSecours").scrollIntoView({block:"nearest",behavior:"smooth"});return setMsg("payMsg",rs.util?"Choisis l’univers de ton Mystery Drop cadeau avant de payer.":"Pas encore de texte dans ce genre : choisis un genre de secours pour ton cadeau mystère.","err")}
   setMsg("payMsg","");
   checkout(t,genre,rs.mode==="choix"?giftSecours:null);
 });
