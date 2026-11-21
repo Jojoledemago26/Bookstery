@@ -100,20 +100,29 @@ Deno.serve(async (req) => {
   // jamais ses propres textes ni un texte déjà reçu
   const offerts: { token: string; titre: string; genre: string }[] = [];
   if (nb > 0) {
-    const { data: deja } = await admin.from("booksterbooks").select("extrait_id").eq("lecteur_id", user.id);
-    const exclus = new Set((deja ?? []).map((d) => d.extrait_id));
-    const lire = (cols: string) => admin.from("extraits").select(cols)
-      .in("statut", ["depose", "publie"]).neq("auteur_id", user.id).limit(500);
-    let r = await lire("id, titre, genre, is_boosted");
-    if (r.error) r = await lire("id, titre, genre"); // accelerateur.sql pas encore exécuté
-    const pool = (r.data ?? []) as unknown as { id: string; titre: string; genre: string; is_boosted?: boolean }[];
-    const dispo = (pool ?? []).filter((x) => !exclus.has(x.id) && !UTILITAIRES.has(x.genre));
-    const fam = famille(genre);
-    const rang = (x: { genre: string }) => (x.genre === genre ? 0 : fam.includes(x.genre) ? 1 : secours && x.genre === secours ? 2 : 3);
-    // Tirage pondéré : un texte du Pack Accélérateur (is_boosted) a 3× plus de chances d'être tiré
-    // parmi les textes de son genre (clé aléatoire -ln(U)/poids : plus le poids est grand, plus il sort tôt)
-    const cle = new Map(dispo.map((x) => [x.id, -Math.log(1 - Math.random()) / (x.is_boosted && rang(x) < 3 ? 3 : 1)]));
-    const choisis = [...dispo].sort((a, b) => rang(a) - rang(b) || cle.get(a.id)! - cle.get(b.id)!).slice(0, nb);
+    // Tirage équitable dans la base, sur TOUS les textes du genre (voir supabase/tirage.sql)
+    type Texte = { id: string; titre: string; genre: string; is_boosted?: boolean };
+    let choisis: Texte[] = [];
+    const { data: tires, error: eT } = await admin.rpc("tirer_manuscrits", {
+      p_lecteur: user.id, p_genre: genre, p_famille: famille(genre), p_secours: secours,
+      p_genres_exclus: [...UTILITAIRES], p_nb: nb,
+    });
+    if (!eT) choisis = (tires ?? []) as Texte[];
+    else {
+      // Secours si tirage.sql n'a pas encore été exécuté : même règle, côté fonction
+      console.warn("tirer_manuscrits indisponible, tirage local", eT.message);
+      const { data: deja } = await admin.from("booksterbooks").select("extrait_id").eq("lecteur_id", user.id);
+      const exclus = new Set((deja ?? []).map((d) => d.extrait_id));
+      const lire = (cols: string) => admin.from("extraits").select(cols)
+        .in("statut", ["depose", "publie"]).neq("auteur_id", user.id).limit(5000);
+      let r = await lire("id, titre, genre, is_boosted");
+      if (r.error) r = await lire("id, titre, genre");
+      const dispo = ((r.data ?? []) as unknown as Texte[]).filter((x) => !exclus.has(x.id) && !UTILITAIRES.has(x.genre));
+      const fam = famille(genre);
+      const rang = (x: Texte) => (x.genre === genre ? 0 : fam.includes(x.genre) ? 1 : secours && x.genre === secours ? 2 : 3);
+      const cle = new Map(dispo.map((x) => [x.id, -Math.log(1 - Math.random()) / (x.is_boosted ? 3 : 1)]));
+      choisis = [...dispo].sort((a, b) => rang(a) - rang(b) || cle.get(a.id)! - cle.get(b.id)!).slice(0, nb);
+    }
     if (choisis.length) {
       const { data: bb } = await admin.from("booksterbooks")
         .insert(choisis.map((x) => ({ commande_id: commande.id, lecteur_id: user.id, extrait_id: x.id })))

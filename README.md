@@ -14,6 +14,7 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/photos-annonces.sql` — photos réelles recto/verso obligatoires (colonnes, stockage « photos-annonces », contrôles)
 - `supabase/vendeur-pro.sql` — statut du vendeur (particulier / professionnel) affiché sur les annonces
 - `supabase/vip.sql` — statut Bookster VIP : cumul des achats et badge à 50 €
+- `supabase/tirage.sql` — tirage équitable des Mystery Drops par genre, sur tous les textes (à exécuter)
 - `supabase/accelerateur.sql` — Pack Accélérateur Auteurs : abonnements, textes prioritaires, statistiques
 - `supabase/functions/stripe-abonnement/` et `stripe-webhook/` — abonnement Stripe du Pack Accélérateur
 - `supabase/genres-disponibles.sql` — genres où des manuscrits mystères existent (genre de secours du cadeau)
@@ -161,3 +162,9 @@ Mise en place :
 6. Redéployer `valider-commande` (tirage pondéré des textes prioritaires).
 
 Sans Supabase (mode démo), l'activation et l'arrêt sont simulés dans le navigateur, avec des statistiques d'exemple.
+
+## Distribution des textes (Mystery Drops)
+
+1. **Dépôt** : l'auteur choisit le genre (liste des genres de fiction, vérifiée par le serveur). Le texte accepté est enregistré dans `extraits` avec ce genre et devient disponible tout de suite (statut `depose`), indexé par genre.
+2. **Commande** : `valider-commande` appelle `tirer_manuscrits()` (`supabase/tirage.sql`) avec le genre du cadeau.
+3. **Tirage** : genre demandé d'abord, puis sa famille, puis le genre de secours ; à l'intérieur de chaque groupe, **tirage aléatoire sur tous les textes disponibles** : même chance pour chaque texte (×3 pour le Pack Accélérateur). Jamais ses propres textes, jamais un texte déjà reçu, jamais un genre utilitaire.
