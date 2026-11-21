@@ -127,7 +127,7 @@ footer a{color:var(--muted)}
         <li><b>Questions posées à l’assistante Plume</b> — pour y répondre ; elles ne sont pas rattachées à ton compte (intérêt légitime).</li>
       </ul>
       <h4>Destinataires et sous-traitants</h4>
-      <p>Les données sont destinées à l’éditeur et à ses sous-traitants techniques, dans la limite de leurs missions : Vercel (hébergement du site), Supabase (base de données et stockage), Anthropic (modération automatique des textes et assistante Plume, par modèle d’IA), <span class="todo">[Pangram Labs ou ZeroGPT]</span> (détection de texte généré par IA), Resend (envoi des e-mails), Google Books et Open Library (recherche d’un livre par ISBN, sans donnée personnelle), <span class="todo">[prestataire de paiement, ex. Stripe]</span>. Certains de ces prestataires sont situés hors de l’Union européenne ; les transferts sont encadrés par des clauses contractuelles types de la Commission européenne ou par le cadre de protection des données UE–États-Unis.</p>
+      <p>Les données sont destinées à l’éditeur et à ses sous-traitants techniques, dans la limite de leurs missions : Vercel (hébergement du site), Supabase (base de données et stockage), Anthropic (modération automatique des textes et assistante Plume, par modèle d’IA), <span class="todo">[Pangram Labs ou ZeroGPT]</span> (détection de texte généré par IA), Resend (envoi des e-mails), Google Books et Open Library (recherche d’un livre par ISBN, sans donnée personnelle), Stripe Payments Europe Ltd (paiements et abonnements). Certains de ces prestataires sont situés hors de l’Union européenne ; les transferts sont encadrés par des clauses contractuelles types de la Commission européenne ou par le cadre de protection des données UE–États-Unis.</p>
       <p>Les autres utilisateurs voient uniquement : ton prénom et ta ville sur tes annonces, ton nom d’auteur sur tes textes. Un auteur ne voit jamais l’identité des lecteurs qui le signalent.</p>
       <h4>Durées de conservation</h4>
       <ul>
@@ -198,7 +198,7 @@ footer a{color:var(--muted)}
       <h4>5.2 Prix et Protection Acheteur</h4>
       <p>Le prix total comprend le prix des livres fixé par le Vendeur et la <b>Protection Acheteur</b> de Bookstery : <b>5 % du montant des livres + 0,70 €</b> par commande, toutes taxes comprises. Elle rémunère le service de mise en relation, la sécurisation du paiement, l’assistance en cas de litige et le Bookstery Drop.</p>
       <h4>5.3 Paiement sécurisé</h4>
-      <p>Le paiement est réalisé en ligne par l’intermédiaire de <span class="todo">[prestataire de paiement agréé]</span>. Le prix des livres est conservé jusqu’à la confirmation de réception, puis reversé au Vendeur. Bookstery n’a jamais accès à tes données bancaires complètes.</p>
+      <p>Le paiement est réalisé en ligne par l’intermédiaire de Stripe Payments Europe Ltd, prestataire de paiement agréé. Le prix des livres est conservé jusqu’à la confirmation de réception, puis reversé au Vendeur. Bookstery n’a jamais accès à tes données bancaires complètes.</p>
       <h4>5.4 Réception et litiges</h4>
       <p>À réception, l’Acheteur vérifie que le livre est conforme à l’annonce. En cas de livre non reçu, non conforme (édition, état, pages manquantes) ou endommagé, il le signale à Bookstery <b>avant de confirmer la réception</b> et au plus tard <span class="todo">[X] jours</span> après la remise prévue. Bookstery examine le litige au vu des éléments fournis (photos de l’annonce, échanges, photos du livre reçu) et peut décider du remboursement de l’Acheteur, en tout ou partie, et le cas échéant du retour du livre au Vendeur.</p>
       <h4>5.5 Droit de rétractation</h4>
@@ -228,6 +228,18 @@ footer a{color:var(--muted)}
       <p>Toute proposition d’édition par une librairie ou un éditeur partenaire fera l’objet d’un contrat distinct, librement négocié avec l’Auteur.</p>
       <h4>8.5 Avis des lecteurs</h4>
       <p>Les lecteurs peuvent noter un texte, laisser un commentaire transmis par e-mail à l’Auteur et suivre l’Auteur. Les avis doivent rester respectueux et porter sur le texte.</p>
+
+      <h3 id="c-pack">Article 8 bis — Pack Accélérateur Auteurs (abonnement)</h3>
+      <h4>Contenu</h4>
+      <p>Le Pack Accélérateur est un service optionnel proposé aux Auteurs. Tant que l’abonnement est actif : (i) les textes de l’Auteur bénéficient d’un <b>statut prioritaire</b> et ont trois fois plus de chances que les autres d’être attribués dans les Mystery Drops de leur genre, sans garantie d’un nombre minimal d’attributions, celui-ci dépendant des commandes des Acheteurs ; (ii) l’Auteur accède à ses <b>statistiques de lecture</b> (envois, lectures, avis, note moyenne, abonnés). Le Pack ne modifie ni les règles de modération ni la charte : un texte prioritaire peut être retiré comme tout autre texte.</p>
+      <h4>Prix et paiement</h4>
+      <p>Le Pack coûte <b>15 € TTC par mois</b>. Le paiement est réalisé par carte bancaire via Stripe Payments Europe Ltd, prestataire de paiement agréé ; Bookstery n’a pas accès aux données bancaires complètes. Le premier mois est payé à l’activation, puis l’abonnement est <b>renouvelé automatiquement chaque mois</b> à la même date, pour le même prix. Toute évolution du prix est annoncée au moins 30 jours avant de s’appliquer, et l’Auteur peut résilier avant son entrée en vigueur.</p>
+      <h4>Sans engagement et résiliation en 1 clic</h4>
+      <p>L’abonnement est <b>sans engagement de durée</b>. L’Auteur peut l’arrêter à tout moment depuis son Espace auteur, onglet «&nbsp;Pack Accélérateur&nbsp;», bouton «&nbsp;Gérer / Arrêter mon abonnement&nbsp;», qui ouvre l’espace client Stripe (fonctionnalité de résiliation prévue à l’article L. 215-1-1 du Code de la consommation). La résiliation prend effet à la fin de la période mensuelle en cours, déjà payée : le Pack reste actif jusqu’à cette date et aucun nouveau prélèvement n’a lieu. Les mois commencés ne sont pas remboursés au prorata, sauf droit de rétractation ci-dessous. Une confirmation de résiliation est adressée par e-mail.</p>
+      <h4>Droit de rétractation</h4>
+      <p>L’Auteur consommateur dispose d’un délai de 14 jours à compter de la souscription pour se rétracter, sans motif, en écrivant à <span class="todo">[adresse e-mail]</span>. En activant le Pack, il demande expressément que le service commence immédiatement ; en cas de rétractation, il paie le montant correspondant au service fourni jusqu’à sa demande (article L. 221-25 du Code de la consommation) et le reste lui est remboursé sous 14 jours.</p>
+      <h4>Défaut de paiement</h4>
+      <p>Si un prélèvement échoue, l’Auteur en est informé et peut mettre à jour son moyen de paiement depuis l’espace client Stripe. À défaut de régularisation, l’abonnement prend fin et le statut prioritaire est retiré automatiquement.</p>
 
       <h3 id="c-charte">Article 9 — Charte de bonne conduite</h3>
       <p>Il est interdit de publier, déposer ou transmettre sur le Site tout contenu :</p>

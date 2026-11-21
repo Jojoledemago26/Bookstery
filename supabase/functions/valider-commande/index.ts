@@ -102,12 +102,18 @@ Deno.serve(async (req) => {
   if (nb > 0) {
     const { data: deja } = await admin.from("booksterbooks").select("extrait_id").eq("lecteur_id", user.id);
     const exclus = new Set((deja ?? []).map((d) => d.extrait_id));
-    const { data: pool } = await admin.from("extraits").select("id, titre, genre")
+    const lire = (cols: string) => admin.from("extraits").select(cols)
       .in("statut", ["depose", "publie"]).neq("auteur_id", user.id).limit(500);
-    const dispo = (pool ?? []).filter((x) => !exclus.has(x.id) && !UTILITAIRES.has(x.genre)).sort(() => Math.random() - 0.5);
+    let r = await lire("id, titre, genre, is_boosted");
+    if (r.error) r = await lire("id, titre, genre"); // accelerateur.sql pas encore exécuté
+    const pool = (r.data ?? []) as unknown as { id: string; titre: string; genre: string; is_boosted?: boolean }[];
+    const dispo = (pool ?? []).filter((x) => !exclus.has(x.id) && !UTILITAIRES.has(x.genre));
     const fam = famille(genre);
     const rang = (x: { genre: string }) => (x.genre === genre ? 0 : fam.includes(x.genre) ? 1 : secours && x.genre === secours ? 2 : 3);
-    const choisis = [...dispo].sort((a, b) => rang(a) - rang(b)).slice(0, nb);
+    // Tirage pondéré : un texte du Pack Accélérateur (is_boosted) a 3× plus de chances d'être tiré
+    // parmi les textes de son genre (clé aléatoire -ln(U)/poids : plus le poids est grand, plus il sort tôt)
+    const cle = new Map(dispo.map((x) => [x.id, -Math.log(1 - Math.random()) / (x.is_boosted && rang(x) < 3 ? 3 : 1)]));
+    const choisis = [...dispo].sort((a, b) => rang(a) - rang(b) || cle.get(a.id)! - cle.get(b.id)!).slice(0, nb);
     if (choisis.length) {
       const { data: bb } = await admin.from("booksterbooks")
         .insert(choisis.map((x) => ({ commande_id: commande.id, lecteur_id: user.id, extrait_id: x.id })))

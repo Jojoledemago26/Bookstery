@@ -14,6 +14,8 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/photos-annonces.sql` — photos réelles recto/verso obligatoires (colonnes, stockage « photos-annonces », contrôles)
 - `supabase/vendeur-pro.sql` — statut du vendeur (particulier / professionnel) affiché sur les annonces
 - `supabase/vip.sql` — statut Bookster VIP : cumul des achats et badge à 50 €
+- `supabase/accelerateur.sql` — Pack Accélérateur Auteurs : abonnements, textes prioritaires, statistiques
+- `supabase/functions/stripe-abonnement/` et `stripe-webhook/` — abonnement Stripe du Pack Accélérateur
 - `supabase/genres-disponibles.sql` — genres où des manuscrits mystères existent (genre de secours du cadeau)
 - `supabase/localisation.sql` — ville et région des annonces (filtre de localisation)
 - `supabase/moderation.sql` — journal des refus de modération
@@ -136,3 +138,26 @@ Bulle « ? » en bas à droite (et lien « Aide » du pied de page) : fenêtre d
 
 Page `legal.html` (lien « Mentions légales » et « CGU » du pied de page) : mentions légales (éditeur, hébergeurs, propriété intellectuelle, données personnelles, cookies, signalement, médiation) et CGU (vente, achat, Protection Acheteur, Bookstery Drop, Espace auteur, charte, modération, responsabilité…).
 Les passages surlignés en jaune `[à compléter]` doivent être remplis (société, SIRET, adresses, médiateur, prestataire de paiement, délais), puis le texte validé par un juriste avant l'ouverture des ventes.
+
+## Pack Accélérateur Auteurs (abonnement Stripe)
+
+Espace auteur, onglet « ⚡ Pack Accélérateur » : 15 €/mois, sans engagement. Sous le bouton « Activer le Pack Accélérateur (15€/mois) », mention : « Sans engagement – renouvellement mensuel automatique, annulable en 1 clic à tout moment depuis ton Espace Auteur ».
+
+- Tant que l'abonnement Stripe est `active` (ou `trialing`) : `is_boosted = true` sur les textes de l'auteur (3× plus de chances dans les Mystery Drops de leur genre, tirage pondéré dans `valider-commande`) et accès aux statistiques de lecture (`stats_auteur()`).
+- « Gérer / Arrêter mon abonnement » ouvre le portail client Stripe (arrêt du renouvellement à la fin du mois en cours, changement de carte).
+- Le webhook Stripe tient le statut à jour ; un déclencheur SQL répercute `is_boosted` sur tous les textes de l'auteur.
+
+Mise en place :
+1. Stripe > Catalogue de produits : produit « Pack Accélérateur Auteurs », prix récurrent **15,00 € / mois** (TTC). Noter l'identifiant `price_...`.
+2. Stripe > Paramètres > Portail client : autoriser l'annulation **à la fin de la période de facturation** et la mise à jour du moyen de paiement.
+3. SQL : exécuter `supabase/accelerateur.sql`.
+4. Secrets et déploiement :
+   ```
+   supabase secrets set STRIPE_SECRET_KEY=sk_live_... STRIPE_PRICE_ACCELERATEUR=price_... SITE_URL=https://ton-site.fr
+   supabase functions deploy stripe-abonnement
+   supabase functions deploy stripe-webhook --no-verify-jwt
+   ```
+5. Stripe > Développeurs > Webhooks : point de terminaison `https://<projet>.supabase.co/functions/v1/stripe-webhook`, événements `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted` ; puis `supabase secrets set STRIPE_WEBHOOK_SECRET=whsec_...`.
+6. Redéployer `valider-commande` (tirage pondéré des textes prioritaires).
+
+Sans Supabase (mode démo), l'activation et l'arrêt sont simulés dans le navigateur, avec des statistiques d'exemple.

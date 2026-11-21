@@ -1022,6 +1022,34 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 #gSecours.univ p{color:var(--muted)}
 #gSecours.univ .gp-opts span{border-color:#CFCAF6;color:var(--maj-d)}
 #gSecours.univ .gp-opts input:checked+span{background:var(--maj);border-color:var(--maj);color:#fff}
+/* ---------- Pack Accélérateur Auteurs ---------- */
+.au-tabs{flex-wrap:wrap}
+#tabPack{color:var(--maj-d)}
+.pk-hero{border-radius:20px;padding:20px 22px;color:#fff;background:radial-gradient(400px 200px at 100% 0%,rgba(169,159,255,.4),transparent 60%),linear-gradient(135deg,#6050DC,#3B2DB0);margin-top:10px}
+.pk-k{display:inline-block;font-size:12.5px;font-weight:800;background:rgba(255,255,255,.16);border-radius:999px;padding:4px 11px}
+.pk-price{display:flex;align-items:baseline;gap:6px;margin:10px 0 6px}.pk-price b{font-size:34px;letter-spacing:-.02em}.pk-price span{opacity:.85;font-weight:600}
+.pk-list{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px}
+.pk-list li{position:relative;padding-left:24px;font-size:14px;line-height:1.45;opacity:.95}
+.pk-list li::before{content:"✓";position:absolute;left:0;top:0;width:17px;height:17px;border-radius:50%;background:#fff;color:var(--maj);font-size:11px;font-weight:900;display:grid;place-items:center}
+.modal .btn.pk-go{margin-top:18px;font-size:16px;padding:15px 20px;box-shadow:0 14px 30px -10px rgba(96,80,220,.65)}
+.pk-legal{margin:10px 0 0!important;text-align:center;font-size:13.5px!important;color:var(--ink-2)!important;background:var(--maj-xl);border:1px solid var(--maj-l);border-radius:12px;padding:10px 12px}
+.pk-small{margin:8px 0 0!important;font-size:12px!important;color:var(--muted)!important;line-height:1.5;text-align:center}
+.pk-alert{margin:14px 0 0!important;background:#FDF1F3;border:1px solid #F2B8C0;color:#7A1626!important;border-radius:12px;padding:10px 12px;font-size:13.5px}
+.pk-on{margin-top:10px;border-radius:16px;padding:14px 16px;background:linear-gradient(135deg,var(--maj-xl),#fff);border:1.5px solid var(--maj)}
+.pk-chip{display:inline-block;font-size:13px;font-weight:800;color:#fff;background:var(--maj);border-radius:999px;padding:5px 12px}
+.pk-on p{margin:8px 0 0!important;font-size:14px;color:var(--ink-2)!important}
+.pk-h{font-size:17px;margin:20px 0 8px}
+.pk-tot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.pk-tot div{background:var(--maj-xl);border-radius:14px;padding:12px;text-align:center}
+.pk-tot b{display:block;font-size:24px;color:var(--maj-d)}.pk-tot span{font-size:12px;color:var(--muted)}
+.pk-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.pk-table th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:6px 6px;border-bottom:1px solid var(--line)}
+.pk-table td{padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.pk-table td b{display:block;color:var(--ink)}.pk-table td small{color:var(--muted);font-size:12px}
+.pk-table th:not(:first-child),.pk-table td:not(:first-child){text-align:center;white-space:nowrap}
+.modal .btn.pk-manage{margin-top:16px}
+.au-list.boosted .au-item b::after{content:" ⚡ Prioritaire";font-size:11.5px;font-weight:800;color:var(--maj-d);background:var(--maj-l);border-radius:999px;padding:1px 8px;margin-left:6px;white-space:nowrap}
+@media(max-width:560px){.pk-hero{padding:18px}.pk-price b{font-size:28px}.pk-table{font-size:12.5px}.pk-table th:nth-child(4),.pk-table td:nth-child(4){display:none}}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1553,6 +1581,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
   <div class="au-tabs" role="tablist">
     <button type="button" role="tab" id="tabDepot" aria-selected="true" aria-controls="auDepot">Nouveau dépôt</button>
     <button type="button" role="tab" id="tabMes" aria-selected="false" aria-controls="auMes">Mes textes déposés</button>
+    <button type="button" role="tab" id="tabPack" aria-selected="false" aria-controls="auPack">⚡ Pack Accélérateur</button>
   </div>
 
   <div id="auDepot" role="tabpanel" aria-labelledby="tabDepot">
@@ -1603,6 +1632,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
   <div id="auMes" role="tabpanel" aria-labelledby="tabMes" hidden>
     <div id="auList" class="au-list"></div>
   </div>
+  <div id="auPack" role="tabpanel" aria-labelledby="tabPack" hidden></div>
 </div>
 
 <div class="toast" id="toast" role="status"></div>
@@ -2494,9 +2524,12 @@ $("exFile").addEventListener("change",function(){var f=this.files&&this.files[0]
   var r=new FileReader();r.onload=function(){$("exTexte").value=String(r.result||"");calib();setMsg("auMsg","")};r.onerror=function(){setMsg("auMsg","Ce fichier n’a pas pu être lu. Colle plutôt ton texte.","err")};r.readAsText(f,"utf-8")});
 
 /* Onglets */
-function auTab(mes){$("tabDepot").setAttribute("aria-selected",!mes);$("tabMes").setAttribute("aria-selected",mes);$("auDepot").hidden=mes;$("auMes").hidden=!mes;if(mes)loadMesTextes()}
+function auTab(w){w=w===true?"mes":(w||"depot");
+  [["depot","tabDepot","auDepot"],["mes","tabMes","auMes"],["pack","tabPack","auPack"]].forEach(function(x){var on=x[0]===w;$(x[1]).setAttribute("aria-selected",on);$(x[2]).hidden=!on});
+  if(w==="mes")loadMesTextes();if(w==="pack")renderPack()}
 $("tabDepot").addEventListener("click",function(){auTab(false)});
 $("tabMes").addEventListener("click",function(){auTab(true)});
+$("tabPack").addEventListener("click",function(){auTab("pack")});
 
 function auNote(){
   var n=$("auNote");
@@ -2687,6 +2720,7 @@ async function loadMesTextes(){
     if(r.error){box.innerHTML='<p class="au-empty">Tes textes n’ont pas pu être chargés. Réessaie dans un instant.</p>';return}
     list=r.data||[];}
   if(!list.length){box.innerHTML='<p class="au-empty">Aucun texte déposé pour l’instant. Ton premier certificat t’attend dans « Nouveau dépôt ».</p>';return}
+  packLoad().then(function(){box.classList.toggle("boosted",packActif())});
   box.innerHTML=list.map(function(c,i){return'<div class="au-item"><div><b>'+esc(c.titre)+'</b><span>'+esc(c.genre)+' · '+NF.format(c.nb_mots)+' mots · '+esc(frDate(c.created_at))+'</span></div><button class="btn ghost" type="button" data-mes="'+i+'">Certificat</button></div><div class="au-result" id="mes'+i+'" hidden></div>'}).join("");
   box.querySelectorAll("[data-mes]").forEach(function(b){b.addEventListener("click",function(){var i=+b.getAttribute("data-mes"),c=Object.assign({},list[i]),t=$("mes"+i);
     if(!t.hidden){t.hidden=true;return}c.auteur=sb?authorName():"Mode démo";showCert(t,c,!sb,false,c.texte)})});
@@ -3083,6 +3117,7 @@ var AIDE_FAQ=[
  {k:"etat comme neuf tres bon bon etat",a:"Trois états possibles : **Comme neuf** (jamais lu ou presque), **Très bon état** (légères traces d’usage), **Bon état** (usure visible mais complet et lisible). Tes photos recto/verso montrent l’état réel."},
  {k:"auteur deposer depot texte ecrire publier mon texte extrait nouvelle roman chapitre espace auteur",a:"Dans la section Auteurs, clique sur « **Envoyer mon texte** » : extrait de roman, premier chapitre ou nouvelle, entre **1 000 et 5 000 mots**, en français. C’est gratuit et ton texte reste le tien. Tu reçois un **certificat d’horodatage**, puis ton texte part en manuscrit mystère dans le Bookstery Drop."},
  {k:"refuse refus pourquoi depot bloque verification moderation ia detecteur plagiat fautes",a:"Avant tout dépôt, on vérifie que le texte est **original** (anti-plagiat), conforme à la charte, en français, littéraire et lisible, puis le **détecteur d’IA** (au-delà de 50 % d’écriture générée, il est refusé). Le message de refus t’explique la raison ; pour des fautes, tu peux relire et redéposer."},
+ {k:"pack accelerateur abonnement auteur boost prioritaire statistiques stats 15 resilier arreter desabonner",a:"Le **Pack Accélérateur Auteurs** coûte **15 € par mois, sans engagement**. Tant qu’il est actif, ton texte a **3× plus de chances** d’être tiré dans les Mystery Drops de son genre, et tu vois **tes statistiques de lecture** (envois, lectures, avis, note, abonnés). Pour l’activer ou l’arrêter : Espace auteur, onglet « ⚡ Pack Accélérateur ». L’arrêt se fait en 1 clic et le Pack reste actif jusqu’à la fin du mois payé."},
  {k:"certificat horodatage preuve sha empreinte droit auteur",a:"Ton **certificat d’horodatage** contient la date et l’heure du dépôt et une empreinte SHA-256 unique de ton texte : il prouve que tu l’avais écrit à cette date. Tu le retrouves dans « **Mes textes déposés** »."},
  {k:"avis note noter etoiles suivre abonne auteur commentaire",a:"À la fin d’un manuscrit mystère, tu peux noter l’auteur (1 à 5 étoiles), lui laisser un mot (il le reçoit par e-mail) et le **suivre**."},
  {k:"compte inscription inscrire creer deviens bookster connexion connecter mot de passe oublie",a:"Clique sur « **Deviens un Bookster** » en haut : prénom, ville, e-mail, mot de passe et tes 3 genres préférés. Déjà membre ? « **Se connecter** ». Mot de passe oublié : clique sur « Mot de passe oublié ? » dans la fenêtre de connexion."},
@@ -3138,6 +3173,77 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("helpPan
 })();
 
 vipLoad();if(typeof renderBag==="function"&&bag.length)renderBag();
+
+/* ================= Pack Accélérateur Auteurs (abonnement Stripe 15 €/mois) ================= */
+var PACK_PRIX=15,packState={statut:"aucun",fin:null,annule:false};
+function packActif(){return packState.statut==="active"||packState.statut==="trialing"}
+function packSaveDemo(){try{localStorage.setItem("bookstery.pack",JSON.stringify(packState))}catch(e){}}
+async function packLoad(){
+  if(!sb){try{var v=JSON.parse(localStorage.getItem("bookstery.pack")||"null");if(v)packState=v}catch(e){}return}
+  packState={statut:"aucun",fin:null,annule:false};if(!current)return;
+  try{var r=await sb.from("abonnements_auteurs").select("statut,current_period_end,cancel_at_period_end").eq("auteur_id",current.id).maybeSingle();
+    if(!r.error&&r.data)packState={statut:r.data.statut,fin:r.data.current_period_end,annule:!!r.data.cancel_at_period_end}}catch(e){}
+}
+function packDate(d){try{return new Date(d).toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"})}catch(e){return""}}
+async function packStats(){
+  if(sb){var r=await sb.rpc("stats_auteur");if(r.error)throw r.error;return r.data||[]}
+  /* Mode démo : chiffres d’exemple calculés à partir des textes déposés dans ce navigateur */
+  var src=(typeof demoDepots!=="undefined"&&demoDepots.length?demoDepots:[{titre:"La dernière marée",genre:"Romans",id:"demo"}]);
+  return src.map(function(c,i){var h=0;for(var k=0;k<c.titre.length;k++)h=(h*31+c.titre.charCodeAt(k))%997;var env=12+h%30,lu=Math.round(env*.7);
+    return{titre:c.titre,genre:c.genre,is_boosted:true,envois:env,lectures:lu,avis:Math.round(lu*.4),note_moyenne:(4+(h%9)/10).toFixed(1),abonnes:8+h%20}});
+}
+async function renderPack(){
+  var box=$("auPack");box.innerHTML='<p class="au-empty">Chargement…</p>';
+  await packLoad();
+  var actif=packActif(),retard=packState.statut==="past_due"||packState.statut==="unpaid";
+  var head='<div class="pk-hero"><span class="pk-k">⚡ Pack Accélérateur Auteurs</span><div class="pk-price"><b>'+PACK_PRIX+'&nbsp;€</b><span>/ mois</span></div>'+
+    '<ul class="pk-list"><li><b>Statut prioritaire</b> : ton texte a <b>3× plus de chances</b> d’être tiré dans les Mystery Drops de son genre.</li>'+
+    '<li><b>Tes statistiques de lecture</b> : envois, lectures, avis, note moyenne et abonnés, texte par texte.</li>'+
+    '<li><b>Sans engagement</b> : tu arrêtes quand tu veux, en 1 clic.</li></ul></div>';
+  if(sb&&!current){box.innerHTML=head+'<p class="au-empty">Connecte-toi pour activer ton Pack Accélérateur. <button class="forgot" type="button" style="display:inline;margin:0" data-login>Se connecter</button></p>';return}
+  if(!actif){
+    box.innerHTML=head+(retard?'<p class="pk-alert">Ton dernier paiement n’a pas abouti : mets à jour ta carte pour garder ton Pack. <button class="forgot" type="button" style="display:inline;margin:0" id="packManage2">Mettre à jour mon paiement</button></p>':"")+
+      '<button class="btn pk-go" type="button" id="packGo">⚡ Activer le Pack Accélérateur ('+PACK_PRIX+'€/mois)</button>'+
+      '<p class="pk-legal"><b>Sans engagement – renouvellement mensuel automatique, annulable en 1 clic à tout moment depuis ton Espace Auteur.</b></p>'+
+      '<p class="pk-small">Paiement sécurisé par Stripe · '+PACK_PRIX+'&nbsp;€ TTC par mois, prélevés à chaque date anniversaire. En activant le Pack, tu demandes qu’il commence tout de suite et tu gardes ton droit de rétractation de 14 jours (voir les <a href="legal.html#c-pack" target="_blank" rel="noopener">CGU</a>).'+(sb?"":" <i>Mode démo : aucun paiement n’est réalisé.</i>")+'</p>';
+    $("packGo").addEventListener("click",packCheckout);var m2=$("packManage2");if(m2)m2.addEventListener("click",packPortail);return;
+  }
+  var etat=packState.annule?'Actif jusqu’au <b>'+packDate(packState.fin)+'</b>, renouvellement arrêté':'Actif · prochain renouvellement le <b>'+packDate(packState.fin)+'</b>';
+  box.innerHTML='<div class="pk-on"><span class="pk-chip">⚡ Pack Accélérateur actif</span><p>'+etat+'.</p></div>'+
+    '<h3 class="pk-h">Tes statistiques de lecture</h3><div id="packStats" class="pk-stats"><p class="au-empty">Chargement…</p></div>'+
+    '<button class="btn ghost pk-manage" type="button" id="packManage">'+(sb?"Gérer / Arrêter mon abonnement":(packState.annule?"Reprendre mon abonnement":"Gérer / Arrêter mon abonnement"))+'</button>'+
+    '<p class="pk-small">'+(sb?"Ouvre ton espace de paiement Stripe : tu peux arrêter le renouvellement en 1 clic ou changer de carte. Si tu arrêtes, ton Pack reste actif jusqu’à la fin du mois en cours.":"Mode démo : l’arrêt est simulé (en vrai, le portail Stripe s’ouvre). Ton Pack reste actif jusqu’à la fin du mois en cours.")+'</p>';
+  $("packManage").addEventListener("click",packPortail);
+  try{var st=await packStats();
+    $("packStats").innerHTML=st.length?'<div class="pk-tot"><div><b>'+st.reduce(function(a,x){return a+Number(x.envois)},0)+'</b><span>envois en Mystery Drop</span></div><div><b>'+st.reduce(function(a,x){return a+Number(x.lectures)},0)+'</b><span>lectures</span></div><div><b>'+(st[0].abonnes||0)+'</b><span>abonnés</span></div></div>'+
+      '<table class="pk-table"><thead><tr><th>Texte</th><th>Envois</th><th>Lectures</th><th>Avis</th><th>Note</th></tr></thead><tbody>'+st.map(function(x){return'<tr><td><b>'+esc(x.titre)+'</b><small>'+esc(x.genre)+(x.is_boosted?' · ⚡ prioritaire':'')+'</small></td><td>'+x.envois+'</td><td>'+x.lectures+'</td><td>'+x.avis+'</td><td>'+(x.note_moyenne!=null?String(x.note_moyenne).replace(".",",")+" ★":"—")+'</td></tr>'}).join("")+'</tbody></table>'+(sb?"":'<p class="pk-small">Chiffres d’exemple en mode démo.</p>')
+      :'<p class="au-empty">Dépose ton premier texte pour voir ses statistiques ici.</p>';
+  }catch(e){$("packStats").innerHTML='<p class="au-empty">Les statistiques n’ont pas pu être chargées. Réessaie dans un instant.</p>'}
+}
+async function packCheckout(){
+  var btn=$("packGo");
+  if(!sb){packState={statut:"active",fin:new Date(Date.now()+30*864e5).toISOString(),annule:false};packSaveDemo();toast("Mode démo : Pack Accélérateur activé, sans paiement.");renderPack();return}
+  busy(btn,true,"Ouverture du paiement sécurisé…");
+  try{var r=await sb.functions.invoke("stripe-abonnement",{body:{action:"checkout"}});
+    if(r.error){var b=null;try{b=await r.error.context.json()}catch(x){}throw new Error(b&&b.erreur||"Paiement indisponible.")}
+    location.href=r.data.url}
+  catch(e){busy(btn,false);toast(e.message||"Paiement indisponible pour le moment.")}
+}
+async function packPortail(){
+  if(!sb){packState.annule=!packState.annule;packSaveDemo();toast(packState.annule?"Mode démo : renouvellement arrêté. Ton Pack reste actif jusqu’au "+packDate(packState.fin)+".":"Mode démo : abonnement repris.");renderPack();return}
+  var btn=this&&this.tagName?this:null;if(btn)busy(btn,true,"Ouverture…");
+  try{var r=await sb.functions.invoke("stripe-abonnement",{body:{action:"portail"}});
+    if(r.error){var b=null;try{b=await r.error.context.json()}catch(x){}throw new Error(b&&b.erreur||"Portail indisponible.")}
+    location.href=r.data.url}
+  catch(e){if(btn)busy(btn,false);toast(e.message||"Portail indisponible pour le moment.")}
+}
+/* Retour depuis Stripe (?pack=ok | annule | retour) */
+(function(){var m=/[?&]pack=(ok|annule|retour)/.exec(location.search);if(!m)return;
+  try{history.replaceState(null,"",location.pathname+location.hash)}catch(e){}
+  setTimeout(function(){openAuteur();auTab("pack");
+    if(m[1]==="ok")toast("Merci ! Ton Pack Accélérateur s’active (quelques secondes).");
+    if(m[1]==="annule")toast("Paiement annulé : ton Pack n’a pas été activé.");
+    if(m[1]==="ok")setTimeout(function(){if(!$("auPack").hidden)renderPack()},4000);},800)})();
 </script>
 </body>
 </html>
