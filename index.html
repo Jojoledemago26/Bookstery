@@ -1014,6 +1014,9 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .authors .a-top p{margin-bottom:22px}
 @media(max-width:560px){.cta-arrow{flex-wrap:nowrap}.ca-svg{width:66px;height:40px}.ca-txt{display:none}.cta-main{padding:14px 20px}}
 @media(max-width:380px){.ca-txt{display:none}}
+.util-note{display:flex;gap:8px;align-items:flex-start;margin:0!important;background:#F4F3F8;border-radius:12px;padding:9px 11px;font-size:12.5px!important;line-height:1.45;color:var(--muted)!important}
+.util-note b{color:var(--ink-2)}
+.util-note.on{background:#FFF8E6;color:#6B4A12!important}.util-note.on b{color:#7A4E00}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1637,7 +1640,10 @@ var GENRE_SORT=new Intl.Collator("fr",{sensitivity:"base"}).compare;
 var GENRES=["Art & Photographie","Aventure","BD","Biographies & Mémoires","Classiques","Comics","Contes & Légendes","Cuisine","Développement personnel","Économie & Entreprise","Essais","Fantastique","Fantasy","Feel-good","Histoire","Horreur","Humour","Jeunesse","Langues & Dictionnaires","Loisirs créatifs","Manga","Musique & Cinéma","Nature & Animaux","Nouvelles","Philosophie","Poésie","Polar","Psychologie","Religion & Spiritualité","Roman historique","Romance","Romans","Santé & Bien-être","Science-fiction","Sciences","Scolaire","Société & Politique","Sport","Théâtre","Thriller","Voyage","Young Adult"].sort(GENRE_SORT);
 /* Genres proposés aux auteurs pour leurs textes (fiction et création littéraire) */
 var GENRES_AUTEUR=["Aventure","Contes & Légendes","Fantastique","Fantasy","Feel-good","Horreur","Humour","Jeunesse","Nouvelles","Poésie","Polar","Roman historique","Romance","Romans","Science-fiction","Théâtre","Thriller","Young Adult"].sort(GENRE_SORT);
-/* Genres affichés d'emblée sous la barre de recherche ; « Tous les genres » déplie le reste */
+/* Genres utilitaires et documentaires : exclus des Mystery Drops (personne ne veut recevoir une page de manuel scolaire en cadeau) */
+var GENRES_UTILITAIRES=["Art & Photographie","Biographies & Mémoires","Cuisine","Développement personnel","Économie & Entreprise","Essais","Histoire","Langues & Dictionnaires","Loisirs créatifs","Musique & Cinéma","Nature & Animaux","Philosophie","Psychologie","Religion & Spiritualité","Santé & Bien-être","Sciences","Scolaire","Société & Politique","Sport","Voyage"];
+function isUtilitaire(g){return GENRES_UTILITAIRES.indexOf(g)>-1}
+/* Genres affichés d’emblée sous la barre de recherche ; « Tous les genres » déplie le reste */
 var GENRES_TOP=["BD","Classiques","Fantasy","Jeunesse","Manga","Nouvelles","Poésie","Polar","Romance","Romans","Science-fiction","Thriller"].sort(GENRE_SORT);
 function $(i){return document.getElementById(i)}
 var EUR=new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"});
@@ -2231,8 +2237,8 @@ function groups(){
 }
 function totals(){
   var gs=groups(),books=0;gs.forEach(function(g){books=r2(books+g.sub)});var gifts=booksterbooks(books),next=gifts<DROP_MAX?(gifts+1)*DROP_STEP:null;
-  var fee=protection(books),genres=bag.map(function(b){return b.genre}).filter(function(v,i,a){return v&&a.indexOf(v)===i});
-  return{groups:gs,books:books,fee:fee,total:r2(books+fee),gifts:gifts,next:next,missing:next?r2(next-books):0,genres:genres};
+  var fee=protection(books),tous=bag.map(function(b){return b.genre}).filter(function(v,i,a){return v&&a.indexOf(v)===i}),genres=tous.filter(function(g){return!isUtilitaire(g)}),utils=tous.filter(isUtilitaire);
+  return{groups:gs,books:books,fee:fee,total:r2(books+fee),gifts:gifts,next:next,missing:next?r2(next-books):0,genres:genres,utils:utils};
 }
 
 function addToBag(id){
@@ -2267,27 +2273,34 @@ async function loadDispo(){
   try{var r=await sb.rpc("genres_disponibles");if(!r.error&&r.data){var m={};r.data.forEach(function(x){m[x.genre]=Number(x.nb)||0});GENRES_DISPO=m;if(typeof renderBag==="function")renderBag()}}catch(e){}
 }
 function giftCible(t){return t.gifts?(t.genres.length>1?giftGenre:t.genres[0])||null:null}
-function resolveGift(genre){
-  var d=GENRES_DISPO;if(!genre||!d)return{mode:"exact"};
+function resolveGift(genre,t){
+  var d=GENRES_DISPO;
+  /* Panier 100 % utilitaire : le Bookster choisit le genre (fiction) de ses Mystery Drops */
+  if(!genre&&t&&t.gifts>0&&!t.genres.length){
+    var ok=function(g){return!isUtilitaire(g)&&(!d||d[g]>0)},base=d?Object.keys(d).filter(ok).sort(GENRE_SORT):GENRES_AUTEUR.slice();
+    var pf=myGenres.filter(ok);
+    return base.length||pf.length?{mode:"choix",options:pf.length?pf:base,prefs:!!pf.length,util:true}:{mode:"aucun"};
+  }
+  if(!genre||!d)return{mode:"exact"};
   if(d[genre]>0)return{mode:"exact"};
   var f=familleDe(genre);
   if(f){var proches=GENRE_FAMILLES[f].filter(function(g){return d[g]>0});if(proches.length)return{mode:"famille",famille:f,proches:proches}}
-  var dispo=Object.keys(d).filter(function(g){return d[g]>0}).sort(GENRE_SORT);
-  var prefs=myGenres.filter(function(g){return d[g]>0});
+  var dispo=Object.keys(d).filter(function(g){return d[g]>0&&!isUtilitaire(g)}).sort(GENRE_SORT);
+  var prefs=myGenres.filter(function(g){return d[g]>0&&!isUtilitaire(g)});
   if(prefs.length)return{mode:"choix",options:prefs,prefs:true};
   if(dispo.length)return{mode:"choix",options:dispo,prefs:false};
   return{mode:"aucun"};
 }
 function renderSecours(t){
-  var genre=giftCible(t),r=resolveGift(genre);
+  var genre=giftCible(t),r=resolveGift(genre,t);
   if(r.mode==="famille"||r.mode==="choix")$("gSingle").hidden=true;
   $("gFamille").hidden=r.mode!=="famille";
   if(r.mode==="famille")$("gFamille").textContent="Pas encore de texte en "+genre+" : ton manuscrit mystère sera choisi dans la même famille, "+r.famille+" ("+r.proches.slice(0,3).join(", ")+(r.proches.length>3?"…":"")+").";
   $("gSecours").hidden=r.mode!=="choix";
   if(r.mode==="choix"){
     if(giftSecours&&r.options.indexOf(giftSecours)<0)giftSecours=null;
-    $("gSecTitre").textContent="Pas encore de texte en "+genre;
-    $("gSecTxt").textContent=r.prefs?"Choisis parmi tes genres préférés : ton manuscrit mystère viendra de là.":"Choisis un autre genre pour ton manuscrit mystère :";
+    $("gSecTitre").textContent=r.util?"Choisis le genre de tes Mystery Drops":"Pas encore de texte en "+genre;
+    $("gSecTxt").textContent=r.util?"Ton panier ne contient que des livres utilitaires, exclus des Mystery Drops : choisis le genre de tes manuscrits mystères"+(r.prefs?" parmi tes genres préférés.":"."):(r.prefs?"Choisis parmi tes genres préférés : ton manuscrit mystère viendra de là.":"Choisis un autre genre pour ton manuscrit mystère :");
     $("gSecOpts").innerHTML=r.options.map(function(g,i){return'<label><input type="radio" name="giftSecours" id="gs'+i+'" value="'+esc(g)+'"'+(g===giftSecours?" checked":"")+'><span>'+esc(g)+'</span></label>'}).join("");
   }else{giftSecours=null;$("gSecours").classList.remove("need")}
   return r;
@@ -2328,6 +2341,7 @@ function dropBlockHtml(t){
   var sg=t.next?suggestions(t.missing):[];
   return'<section class="drop-box" aria-label="Mystery Drops de ta commande"><p class="prog-l"><span class="drop-k">⚡ Mystery Drops de ta commande</span>'+label+'</p>'+
     gaugeHtml("cart",t.books,end,marks,"Mystery Drops de ta commande : "+EUR.format(t.books)+", "+drops(t.gifts))+
+    '<p class="util-note'+(t.utils.length?" on":"")+'"><span aria-hidden="true">ℹ️</span><span><b>Mystery Drops = fictions uniquement.</b> Les genres utilitaires (scolaire, cuisine, dictionnaires, guides pratiques, essais…) comptent dans ta jauge mais sont exclus des Mystery Drops : personne n’a envie de recevoir une page de manuel scolaire en cadeau&nbsp;!'+(t.utils.length?" Dans ton panier : "+t.utils.map(esc).join(", ")+".":"")+'</span></p>'+
     (t.next?'<div class="nudge"><p>Plus que <b>'+EUR.format(t.missing)+'</b> dans ton panier pour ton '+ordinal(t.gifts+1)+' Mystery Drop !</p>'+
     (sg.length?'<ul class="sugg">'+sg.map(function(b){return'<li><span>'+esc(b.titre)+'</span><em>'+EUR.format(b.prix)+'</em>'+addBtn(b,true)+'</li>'}).join("")+'</ul>':"")+'</div>':'<div class="drop-max">🎉 Maximum atteint : <b>5 Mystery Drops</b> offerts avec cette commande !</div>')+'</section>';
 }
@@ -2369,7 +2383,7 @@ function renderBag(){
   else $("gPick").classList.remove("need");
   var single=t.gifts>0&&t.genres.length===1;
   $("gSingle").hidden=!single;
-  if(single)$("gSingle").textContent=(t.gifts>1?"Tes":"Ton")+" manuscrit"+(t.gifts>1?"s":"")+" mystère"+(t.gifts>1?"s":"")+" sera"+(t.gifts>1?"ont":"")+" du genre "+t.genres[0]+", comme ton Bag.";
+  if(single)$("gSingle").textContent=(t.gifts>1?"Tes":"Ton")+" manuscrit"+(t.gifts>1?"s":"")+" mystère"+(t.gifts>1?"s":"")+(t.gifts>1?" seront":" sera")+" du genre "+t.genres[0]+(t.utils.length?", comme la fiction de ton Bag (les livres utilitaires sont exclus des Mystery Drops).":", comme ton Bag.");
   renderSecours(t);
   $("sBooksLbl").textContent="Livres ("+n+")";$("sBooks").textContent=EUR.format(t.books);
   $("sFee").textContent=EUR.format(t.fee);
@@ -2383,9 +2397,9 @@ $("payBtn").addEventListener("click",function(){
   var t=totals();if(!bag.length)return;
   if(t.gifts>0&&t.genres.length>1&&!giftGenre){$("gPick").classList.add("need");$("gPick").scrollIntoView({block:"nearest",behavior:"smooth"});return setMsg("payMsg","Choisis le genre de ton cadeau mystère avant de payer.","err")}
   if(sb&&!current){$("payMsg").className="form-msg err";$("payMsg").innerHTML='Connecte-toi pour payer ta commande. <button type="button" class="forgot" style="display:inline;margin:0" data-login>Se connecter</button>';return}
-  var genre=t.gifts?(giftGenre||t.genres[0]):"";
-  var rs=resolveGift(genre);
-  if(t.gifts>0&&rs.mode==="choix"&&!giftSecours){$("gSecours").classList.add("need");$("gSecours").scrollIntoView({block:"nearest",behavior:"smooth"});return setMsg("payMsg","Pas encore de texte dans ce genre : choisis un genre de secours pour ton cadeau mystère.","err")}
+  var genre=t.gifts?(giftGenre||t.genres[0]||null):"";
+  var rs=resolveGift(genre,t);
+  if(t.gifts>0&&rs.mode==="choix"&&!giftSecours){$("gSecours").classList.add("need");$("gSecours").scrollIntoView({block:"nearest",behavior:"smooth"});return setMsg("payMsg",rs.util?"Choisis le genre de tes Mystery Drops avant de payer.":"Pas encore de texte dans ce genre : choisis un genre de secours pour ton cadeau mystère.","err")}
   setMsg("payMsg","");
   checkout(t,genre,rs.mode==="choix"?giftSecours:null);
 });
@@ -3050,6 +3064,7 @@ var AIDE_FAQ=[
  {k:"protection acheteur frais commission 5 0,70 70 centimes cout",a:"La **Protection Acheteur** est de 5 % du montant des livres + 0,70 €. Elle est payée par l’acheteur : le vendeur, lui, ne paie **aucun frais** et reçoit 100 % de son prix."},
  {k:"drop drops mystery bookstery drop manuscrit mystere mysteres cadeau jauge palier offert gratuit 10 20 30 40 50 maximum",a:"Le **Bookstery Drop** glisse des manuscrits mystères (textes inédits d’auteurs indépendants) dans ta commande : **chaque tranche de 10 € de livres dans ton panier** débloque tout de suite un **Mystery Drop**, tous vendeurs confondus :\n• 10 € = 1 Mystery Drop · 20 € = 2 · 30 € = 3 · 40 € = 4\n• 50 € = 5 Mystery Drops (le maximum par commande).\nLe panier t’indique combien il te manque pour le suivant."},
  {k:"vip bookster vip statut badge dore jury golden book vote fidelite cumul 50 recompense profil mecene",a:"Le statut **Bookster VIP** 👑 récompense ta fidélité : tous tes achats de livres s’additionnent, commande après commande. Dès **50 € cumulés**, tu passes VIP automatiquement : badge doré sur ton profil, et tu peux **voter pour le prochain Golden Book**. Ta progression s’affiche en bas de ton panier et dans ton espace."},
+ {k:"utilitaire utilitaires scolaire manuel cuisine dictionnaire guide essai documentaire exclu exclus pratique",a:"Les **Mystery Drops sont toujours des fictions** (roman, nouvelle, polar, poésie…). Les genres utilitaires et documentaires (scolaire, cuisine, dictionnaires, guides pratiques, essais…) **comptent dans ta jauge** mais sont exclus des Mystery Drops : personne n’a envie de recevoir une page de manuel scolaire en cadeau ! Si ton panier ne contient que ce type de livres, tu choisis le genre de tes manuscrits mystères."},
  {k:"genre cadeau choisir genre secours famille aucun texte",a:"Si ton Bag mélange plusieurs genres, tu choisis celui de ton cadeau avant de payer. S’il n’existe pas encore de texte dans ce genre, on prend un texte de la **même famille** (par exemple Thriller → Polar) ; sinon, tu choisis parmi **tes genres préférés**."},
  {k:"liseuse lire lis lit lecture qr code ouvrir mode nuit manuscrit mystere",a:"Après ta commande, chaque manuscrit mystère a un **QR code** : scanne-le avec ton téléphone pour l’ouvrir dans la liseuse. Tu le retrouves aussi dans « **Mes manuscrits mystères** » (ton espace, ou le raccourci dans le Bag). Fond crème ou **mode nuit**, temps de lecture estimé, et à la fin tu peux noter l’auteur, lui écrire et le suivre."},
  {k:"copier coller copie capture proteger protection texte filigrane",a:"Dans la liseuse, le copier-coller et le clic droit sont bloqués et un filigrane protège le texte : c’est pour respecter le travail des auteurs."},

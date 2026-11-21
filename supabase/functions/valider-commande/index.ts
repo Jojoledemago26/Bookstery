@@ -25,6 +25,8 @@ const FAMILLES: Record<string, string[]> = {
   "Littérature": ["Romans", "Romance", "Roman historique", "Feel-good", "Aventure", "Humour", "Classiques", "Nouvelles", "Théâtre", "Poésie"],
   "Jeunesse": ["Jeunesse", "Young Adult", "Contes & Légendes"],
 };
+// Genres utilitaires et documentaires : exclus des Mystery Drops (même liste que dans index.html)
+const UTILITAIRES = new Set(["Art & Photographie", "Biographies & Mémoires", "Cuisine", "Développement personnel", "Économie & Entreprise", "Essais", "Histoire", "Langues & Dictionnaires", "Loisirs créatifs", "Musique & Cinéma", "Nature & Animaux", "Philosophie", "Psychologie", "Religion & Spiritualité", "Santé & Bien-être", "Sciences", "Scolaire", "Société & Politique", "Sport", "Voyage"]);
 const famille = (g: string | null) => (g ? Object.values(FAMILLES).find((f) => f.includes(g)) ?? [] : []);
 
 const cors = {
@@ -67,7 +69,8 @@ Deno.serve(async (req) => {
   const prot = protection(livres);
 
   // Genre du cadeau
-  const genres = [...new Set(annonces.map((a) => a.genre).filter(Boolean))];
+  // Seuls les genres non utilitaires du panier peuvent donner le genre des Mystery Drops
+  const genres = [...new Set(annonces.map((a) => a.genre).filter((g) => g && !UTILITAIRES.has(g)))];
   let genre: string | null = null;
   if (nb > 0) {
     if (genres.length > 1) {
@@ -91,7 +94,7 @@ Deno.serve(async (req) => {
   if (e2) { await admin.from("annonces").update({ statut: "en_vente" }).in("id", ids); return json(500, { erreur: "Commande impossible pour le moment." }); }
 
   // Genre de secours choisi par le Bookster quand ni le genre ni sa famille n'ont de texte
-  const secours = typeof body.genre_secours === "string" && body.genre_secours.length <= 60 ? body.genre_secours : null;
+  const secours = typeof body.genre_secours === "string" && body.genre_secours.length <= 60 && !UTILITAIRES.has(body.genre_secours) ? body.genre_secours : null;
 
   // Tirage des extraits : genre exact, puis même famille, puis genre de secours, puis le reste ;
   // jamais ses propres textes ni un texte déjà reçu
@@ -101,7 +104,7 @@ Deno.serve(async (req) => {
     const exclus = new Set((deja ?? []).map((d) => d.extrait_id));
     const { data: pool } = await admin.from("extraits").select("id, titre, genre")
       .in("statut", ["depose", "publie"]).neq("auteur_id", user.id).limit(500);
-    const dispo = (pool ?? []).filter((x) => !exclus.has(x.id)).sort(() => Math.random() - 0.5);
+    const dispo = (pool ?? []).filter((x) => !exclus.has(x.id) && !UTILITAIRES.has(x.genre)).sort(() => Math.random() - 0.5);
     const fam = famille(genre);
     const rang = (x: { genre: string }) => (x.genre === genre ? 0 : fam.includes(x.genre) ? 1 : secours && x.genre === secours ? 2 : 3);
     const choisis = [...dispo].sort((a, b) => rang(a) - rang(b)).slice(0, nb);
