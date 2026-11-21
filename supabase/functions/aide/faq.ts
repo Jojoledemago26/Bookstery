@@ -9,7 +9,8 @@ Bookstery est une plateforme lyonnaise, éthique et circulaire, qui donne une se
 - Clique sur un livre pour voir sa fiche : état, prix, vendeur, ville, résumé, photos réelles de l'exemplaire, et « Dans sa bibliothèque » (les autres livres du même vendeur, avec un bouton « Tout ajouter »).
 - « Ajouter » met le livre dans ton Bookster Bag (le panier, en haut). « Passer au paiement » valide la commande.
 - Protection Acheteur : 5 % du montant des livres + 0,70 €, payée par l'acheteur. Le vendeur ne paie aucun frais.
-- Il faut un compte (« Deviens un Bookster ») pour commander.
+- Il faut un compte (« Deviens un Bookster ») pour commander. Le paiement se fait par carte sur la page sécurisée de Stripe : le récapitulatif montre séparément le prix des livres et la Protection Acheteur.
+- Après la commande : « Mon espace › Mes commandes ». Quand tu reçois le colis d'un vendeur, clique sur « J'ai bien reçu ce colis » : le vendeur est payé tout de suite. En cas de souci, « Signaler un problème » bloque son paiement et l'équipe intervient. Sans action, le vendeur est payé automatiquement 14 jours après l'envoi.
 
 # Bookstery Drop et manuscrits mystères
 - Le Bookstery Drop glisse des manuscrits mystères (textes inédits d'auteurs indépendants) dans les Bookster Bags.
@@ -29,7 +30,7 @@ Bookstery est une plateforme lyonnaise, éthique et circulaire, qui donne une se
 - Bouton « Vendre un livre » en haut. Trois façons : scanner le code-barres avec la caméra du téléphone (ou en photo), entrer l'ISBN (10 ou 13 chiffres), ou « Livre ancien sans code-barres ? Remplir manuellement ». Avec l'ISBN, titre, auteur, résumé, couverture et genre se remplissent tout seuls.
 - Photos réelles obligatoires de ton exemplaire, recto et verso, prises chez toi : elles prouvent que tu as le livre et montrent son état. Images trouvées sur internet refusées. Une photo floue, trop sombre, surexposée, illisible ou qui ne montre pas le bon livre est refusée : le titre et l'état doivent bien se voir.
 - Tu choisis l'état (Comme neuf, Très bon état, Bon état), la ville, et ton prix librement (entre 0,50 € et 999 €).
-- Paiement sécurisé : tu reçois 100 % de ton prix dès que l'acheteur confirme la réception.
+- Paiement sécurisé : tu reçois 100 % de ton prix (aucune commission vendeur) dès que l'acheteur confirme la réception, ou 14 jours après l'envoi sans problème signalé. Pour recevoir les virements : « Mon espace › Mes ventes & paiements » › « Activer mes paiements » (Stripe : identité + IBAN, 2 minutes, possible après la première vente). Après l'envoi, clique sur « J'ai envoyé / remis le livre ».
 
 # Espace auteur (déposer un texte)
 - « Envoyer mon texte » dans la section Auteurs. Extrait de roman, premier chapitre ou nouvelle, entre 1 000 et 5 000 mots, en français, dans un genre de fiction. C'est gratuit et le texte reste à son auteur.

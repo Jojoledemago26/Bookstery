@@ -1,49 +1,26 @@
-// Bookstery : validation d'une commande et attribution des manuscrits mystères.
+// Bookstery : création d'une commande et ouverture du paiement Stripe.
 //
-// Recalcule tout côté serveur (prix, Protection Acheteur, Mystery Drops : 1 par tranche de 10 €),
-// réserve les livres, tire au sort les extraits offerts dans le genre choisi
-// et renvoie les jetons d'accès à la liseuse (pour les QR codes).
+// Stripe Connect, « paiements et virements séparés » :
+//   • l'acheteur paie en une fois, sur le compte Stripe de Bookstery, le prix des livres
+//     + la Protection Acheteur (ligne séparée : 5 % du prix des livres + 0,70 €) ;
+//   • chaque vendeur reçoit ensuite 100 % du prix de SES livres, par virement Stripe,
+//     à la confirmation de réception (fonction suivi-commande) ou automatiquement après le délai
+//     (fonction liberer-paiements) ;
+//   • la Protection Acheteur reste à Bookstery.
+// Les Mystery Drops et le cumul VIP sont calculés sur le montant des livres seul, et attribués
+// quand Stripe confirme le paiement (fonction stripe-webhook).
 //
-// ⚠️ En production, cette fonction doit être appelée APRÈS confirmation du paiement
-// (par exemple depuis le webhook Stripe), pas directement par le navigateur.
-//
+//   supabase secrets set STRIPE_SECRET_KEY=sk_live_... SITE_URL=https://ton-site.fr
 //   supabase functions deploy valider-commande
 
-import { createClient } from "npm:@supabase/supabase-js@2.45.4";
+import { admin, finaliserCommande, siteUrl, stripe, utilisateur } from "../_shared/paiement.ts";
+import { cents, cors, json, mysteryDrops, protection, r2, UTILITAIRES } from "../_shared/regles.ts";
 
-// Commande en cours, paliers dégressifs : 10 € = 1 Mystery Drop, 18 € = 2, 25 € = 3, 28 € = 4, 30 € = 5 (maximum)
-const PALIERS = [10, 18, 25, 28, 30];
-const r2 = (x: number) => Math.round((x + Number.EPSILON) * 100) / 100;
-const booksterbooks = (livres: number) => PALIERS.filter((p) => livres + 1e-9 >= p).length;
-const protection = (livres: number) => (livres > 0 ? r2(livres * 0.05 + 0.7) : 0);
-
-// Familles de genres (même liste que dans index.html) : si aucun texte n'existe
-// dans le sous-genre demandé, on pioche dans sa famille (genre parent).
-const FAMILLES: Record<string, string[]> = {
-  "Imaginaire": ["Fantasy", "Fantastique", "Science-fiction", "Horreur"],
-  "Polar & Thriller": ["Polar", "Thriller"],
-  "Littérature": ["Romans", "Romance", "Roman historique", "Feel-good", "Aventure", "Humour", "Classiques", "Nouvelles", "Théâtre", "Poésie"],
-  "Jeunesse": ["Jeunesse", "Young Adult", "Contes & Légendes"],
-};
-// Genres utilitaires et documentaires : exclus des Mystery Drops (même liste que dans index.html)
-const UTILITAIRES = new Set(["Art & Photographie", "Biographies & Mémoires", "Cuisine", "Développement personnel", "Économie & Entreprise", "Essais", "Histoire", "Langues & Dictionnaires", "Loisirs créatifs", "Musique & Cinéma", "Nature & Animaux", "Philosophie", "Psychologie", "Religion & Spiritualité", "Santé & Bien-être", "Sciences", "Scolaire", "Société & Politique", "Sport", "Voyage"]);
-const famille = (g: string | null) => (g ? Object.values(FAMILLES).find((f) => f.includes(g)) ?? [] : []);
-
-const cors = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
-const json = (status: number, body: unknown) =>
-  new Response(JSON.stringify(body), { status, headers: { ...cors, "Content-Type": "application/json" } });
+const DUREE_PAIEMENT_MIN = 30; // les livres restent réservés 30 minutes pendant le paiement
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
-  const url = Deno.env.get("SUPABASE_URL")!;
-  const userClient = createClient(url, Deno.env.get("SUPABASE_ANON_KEY")!, {
-    global: { headers: { Authorization: req.headers.get("Authorization") ?? "" } },
-  });
-  const { data: { user } } = await userClient.auth.getUser();
+  const user = await utilisateur(req);
   if (!user) return json(401, { erreur: "Connecte-toi pour valider ta commande." });
 
   let body: { annonce_ids?: string[]; genre?: string | null; genre_secours?: string | null };
@@ -51,25 +28,31 @@ Deno.serve(async (req) => {
   const ids = [...new Set(body.annonce_ids ?? [])];
   if (!ids.length || ids.length > 50) return json(400, { erreur: "Ton Bag est vide." });
 
-  const admin = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+  const sansPaiement = Deno.env.get("ALLOW_ORDERS_WITHOUT_PAYMENT") === "true"; // tests uniquement
+  if (!Deno.env.get("STRIPE_SECRET_KEY") && !sansPaiement) return json(503, { erreur: "Le paiement en ligne n’est pas encore activé." });
+  const site = siteUrl(req);
+  if (!sansPaiement && !/^https:\/\//.test(site)) return json(503, { erreur: "SITE_URL n’est pas configurée." });
+
   const { data: annonces, error } = await admin.from("annonces")
-    .select("id, prix, genre, vendeur_id, statut").in("id", ids);
+    .select("id, titre, prix, genre, vendeur_id, statut").in("id", ids);
   if (error) return json(500, { erreur: "Commande impossible pour le moment." });
   if (!annonces || annonces.length !== ids.length || annonces.some((a) => a.statut !== "en_vente")) {
     return json(409, { erreur: "Un livre de ton Bag vient d’être vendu. Retire-le et réessaie." });
   }
   if (annonces.some((a) => a.vendeur_id === user.id)) return json(400, { erreur: "Tu ne peux pas acheter tes propres annonces." });
 
-  // Montant des livres (par vendeur pour le contrôle, puis total)
-  const parVendeur = new Map<string, number>();
-  for (const a of annonces) parVendeur.set(a.vendeur_id, r2((parVendeur.get(a.vendeur_id) ?? 0) + Number(a.prix)));
-  let nb = 0, livres = 0;
-  for (const s of parVendeur.values()) livres = r2(livres + s);
-  nb = booksterbooks(livres);
-  const prot = protection(livres);
+  // Montants : 100 % du prix des livres par vendeur ; Protection Acheteur sur le total des livres
+  const parVendeur = new Map<string, { montant: number; ids: string[]; titres: string[] }>();
+  for (const a of annonces) {
+    const v = parVendeur.get(a.vendeur_id) ?? { montant: 0, ids: [], titres: [] };
+    v.montant = r2(v.montant + Number(a.prix)); v.ids.push(a.id); v.titres.push(a.titre);
+    parVendeur.set(a.vendeur_id, v);
+  }
+  let livres = 0;
+  for (const v of parVendeur.values()) livres = r2(livres + v.montant);
+  const prot = protection(livres), total = r2(livres + prot), nb = mysteryDrops(livres);
 
-  // Genre du cadeau
-  // Seuls les genres non utilitaires du panier peuvent donner le genre des Mystery Drops
+  // Genre du cadeau (genres non utilitaires du panier uniquement)
   const genres = [...new Set(annonces.map((a) => a.genre).filter((g) => g && !UTILITAIRES.has(g)))];
   let genre: string | null = null;
   if (nb > 0) {
@@ -78,6 +61,7 @@ Deno.serve(async (req) => {
       genre = body.genre;
     } else genre = genres[0] ?? null;
   }
+  const secours = typeof body.genre_secours === "string" && body.genre_secours.length <= 60 && !UTILITAIRES.has(body.genre_secours) ? body.genre_secours : null;
 
   // Réserve les livres (seulement s'ils sont toujours en vente)
   const { data: reserves } = await admin.from("annonces").update({ statut: "reserve" })
@@ -86,58 +70,56 @@ Deno.serve(async (req) => {
     if (reserves?.length) await admin.from("annonces").update({ statut: "en_vente" }).in("id", reserves.map((r) => r.id));
     return json(409, { erreur: "Un livre de ton Bag vient d’être vendu. Retire-le et réessaie." });
   }
+  const liberer = () => admin.from("annonces").update({ statut: "en_vente" }).in("id", ids).eq("statut", "reserve");
 
   const { data: commande, error: e2 } = await admin.from("commandes").insert({
-    acheteur_id: user.id, annonce_ids: ids, montant_livres: livres, protection: prot,
-    total: r2(livres + prot), genre_cadeau: genre, nb_booksterbooks: nb,
+    acheteur_id: user.id, annonce_ids: ids, montant_livres: livres, protection: prot, total,
+    genre_cadeau: genre, genre_secours: secours, nb_booksterbooks: nb, statut: "en_attente",
   }).select("id, total, created_at").single();
-  if (e2) { await admin.from("annonces").update({ statut: "en_vente" }).in("id", ids); return json(500, { erreur: "Commande impossible pour le moment." }); }
+  if (e2) { await liberer(); console.error("commande", e2); return json(500, { erreur: "Commande impossible pour le moment." }); }
 
-  // Genre de secours choisi par le Bookster quand ni le genre ni sa famille n'ont de texte
-  const secours = typeof body.genre_secours === "string" && body.genre_secours.length <= 60 && !UTILITAIRES.has(body.genre_secours) ? body.genre_secours : null;
+  const { error: e3 } = await admin.from("commande_vendeurs").insert([...parVendeur].map(([vid, v]) => ({
+    commande_id: commande.id, vendeur_id: vid, acheteur_id: user.id, annonce_ids: v.ids, titres: v.titres, montant: v.montant,
+  })));
+  if (e3) { await liberer(); await admin.from("commandes").update({ statut: "annulee" }).eq("id", commande.id); console.error("lignes", e3); return json(500, { erreur: "Commande impossible pour le moment." }); }
 
-  // Tirage des extraits : genre exact, puis même famille, puis genre de secours, puis le reste ;
-  // jamais ses propres textes ni un texte déjà reçu
-  const offerts: { token: string; titre: string; genre: string }[] = [];
-  if (nb > 0) {
-    // Tirage équitable dans la base, sur TOUS les textes du genre (voir supabase/tirage.sql)
-    type Texte = { id: string; titre: string; genre: string; is_boosted?: boolean };
-    let choisis: Texte[] = [];
-    const { data: tires, error: eT } = await admin.rpc("tirer_manuscrits", {
-      p_lecteur: user.id, p_genre: genre, p_famille: famille(genre), p_secours: secours,
-      p_genres_exclus: [...UTILITAIRES], p_nb: nb,
-    });
-    if (!eT) choisis = (tires ?? []) as Texte[];
-    else {
-      // Secours si tirage.sql n'a pas encore été exécuté : même règle, côté fonction
-      console.warn("tirer_manuscrits indisponible, tirage local", eT.message);
-      const { data: deja } = await admin.from("booksterbooks").select("extrait_id").eq("lecteur_id", user.id);
-      const exclus = new Set((deja ?? []).map((d) => d.extrait_id));
-      const lire = (cols: string) => admin.from("extraits").select(cols)
-        .in("statut", ["depose", "publie"]).neq("auteur_id", user.id).limit(5000);
-      let r = await lire("id, titre, genre, is_boosted");
-      if (r.error) r = await lire("id, titre, genre");
-      const dispo = ((r.data ?? []) as unknown as Texte[]).filter((x) => !exclus.has(x.id) && !UTILITAIRES.has(x.genre));
-      const fam = famille(genre);
-      const rang = (x: Texte) => (x.genre === genre ? 0 : fam.includes(x.genre) ? 1 : secours && x.genre === secours ? 2 : 3);
-      const cle = new Map(dispo.map((x) => [x.id, -Math.log(1 - Math.random()) / (x.is_boosted ? 3 : 1)]));
-      choisis = [...dispo].sort((a, b) => rang(a) - rang(b) || cle.get(a.id)! - cle.get(b.id)!).slice(0, nb);
-    }
-    if (choisis.length) {
-      const { data: bb } = await admin.from("booksterbooks")
-        .insert(choisis.map((x) => ({ commande_id: commande.id, lecteur_id: user.id, extrait_id: x.id })))
-        .select("token, extrait_id");
-      for (const b of bb ?? []) {
-        const x = choisis.find((c) => c.id === b.extrait_id)!;
-        offerts.push({ token: b.token, titre: x.titre, genre: x.genre });
-      }
-    }
+  // Mode test sans paiement (jamais en production)
+  if (sansPaiement) {
+    await finaliserCommande(commande.id, null);
+    return json(200, { commande_id: commande.id, sans_paiement: true });
   }
 
-  // Fidélité : cumul des livres achetés → statut Bookster VIP (jury du Golden Book) à 50 €
-  let vip: { total_spent_books: number; is_vip_jury: boolean } | null = null;
-  const { data: v, error: e3 } = await admin.rpc("ajouter_achats_livres", { p_user: user.id, p_montant: livres });
-  if (e3) console.error("vip", e3); else vip = Array.isArray(v) ? v[0] ?? null : v;
-
-  return json(200, { commande, booksterbooks: offerts, manquants: nb - offerts.length, vip });
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      locale: "fr",
+      customer_email: user.email ?? undefined,
+      client_reference_id: user.id,
+      line_items: [
+        // Une ligne par livre : 100 % de ce prix ira au vendeur
+        ...annonces.map((a) => ({
+          quantity: 1,
+          price_data: { currency: "eur", unit_amount: cents(Number(a.prix)), product_data: { name: a.titre, metadata: { annonce_id: a.id } } },
+        })),
+        // Ligne séparée : la Protection Acheteur, qui revient à Bookstery
+        {
+          quantity: 1,
+          price_data: { currency: "eur", unit_amount: cents(prot), product_data: { name: "Protection Acheteur Bookstery (5 % + 0,70 €)" } },
+        },
+      ],
+      payment_intent_data: { transfer_group: commande.id, metadata: { commande_id: commande.id } },
+      metadata: { commande_id: commande.id, type: "commande" },
+      expires_at: Math.floor(Date.now() / 1000) + DUREE_PAIEMENT_MIN * 60,
+      success_url: `${site}/?commande=ok&id=${commande.id}`,
+      cancel_url: `${site}/?commande=annule&id=${commande.id}`,
+    }, { idempotencyKey: `commande-${commande.id}` });
+    await admin.from("commandes").update({ stripe_session_id: session.id }).eq("id", commande.id);
+    return json(200, { commande_id: commande.id, url: session.url });
+  } catch (e) {
+    console.error("stripe checkout", e);
+    await liberer();
+    await admin.from("commandes").update({ statut: "annulee" }).eq("id", commande.id);
+    await admin.from("commande_vendeurs").update({ statut: "annule" }).eq("commande_id", commande.id);
+    return json(502, { erreur: "Le paiement est indisponible pour le moment. Réessaie dans un instant." });
+  }
 });

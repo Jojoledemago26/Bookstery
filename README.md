@@ -17,7 +17,8 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/fondateur.sql` — badge « Fondateur Bookstery » sur les œuvres du fondateur (non éligibles au Golden Book et aux prix)
 - `supabase/tirage.sql` — tirage équitable des Mystery Drops par genre, sur tous les textes (à exécuter)
 - `supabase/accelerateur.sql` — Pack Accélérateur Auteurs : abonnements, textes prioritaires, statistiques
-- `supabase/functions/stripe-abonnement/` et `stripe-webhook/` — abonnement Stripe du Pack Accélérateur
+- `supabase/connect.sql` — paiement des commandes Stripe Connect (comptes vendeurs, lignes vendeur, suivi)
+- `supabase/functions/valider-commande/`, `stripe-connect/`, `suivi-commande/`, `liberer-paiements/`, `stripe-webhook/` — paiement Stripe Connect des commandes et abonnement du Pack Accélérateur
 - `supabase/genres-disponibles.sql` — genres où des manuscrits mystères existent (genre de secours du cadeau)
 - `supabase/localisation.sql` — ville et région des annonces (filtre de localisation)
 - `supabase/moderation.sql` — journal des refus de modération
@@ -177,3 +178,30 @@ Sans Supabase (mode démo), l'activation et l'arrêt sont simulés dans le navig
 
 Les textes déposés par le compte fondateur portent le badge « ★ Fondateur Bookstery » (liseuse, « Mes textes déposés »), sont tirés dans les Mystery Drops comme les autres (sans priorité) et sont non éligibles au Golden Book et aux prix des partenaires (CGU, article 8 ter ; vue `extraits_eligibles_prix`).
 Mise en place : exécuter `supabase/fondateur.sql`, puis les deux requêtes `update` à la fin du fichier avec l'adresse e-mail du compte fondateur.
+
+## Paiement des commandes (Stripe Connect)
+
+Modèle Stripe « paiements et virements séparés » (le plus adapté à un panier multi-vendeurs payé à la réception) :
+
+1. **Paiement** — `valider-commande` recalcule tout, réserve les livres 30 min et ouvre Stripe Checkout : une ligne par livre + une ligne séparée « Protection Acheteur Bookstery (5 % + 0,70 €) ». L'acheteur paie le total sur le compte Stripe de Bookstery.
+2. **Confirmation** — webhook `checkout.session.completed` : commande payée, livres vendus, Mystery Drops tirés et cumul VIP (sur le montant des livres seul). Paiement abandonné/expiré : livres remis en vente.
+3. **Vendeur** — « Mon espace › Mes ventes & paiements » : activation Stripe Express (identité + IBAN, `stripe-connect`), suivi des ventes, bouton « J'ai envoyé / remis le livre ».
+4. **Réception** — « Mon espace › Mes commandes » : « J'ai bien reçu ce colis » → virement Stripe immédiat de **100 % du prix de ses livres** au vendeur (`suivi-commande`, `transfer_group` = commande, `source_transaction` = paiement). « Signaler un problème » bloque le virement.
+5. **Automatique** — `liberer-paiements` (cron quotidien) vire les ventes envoyées depuis 14 jours sans problème signalé. Un vendeur sans compte Stripe actif est payé dès l'activation (webhook `account.updated`).
+6. **Bookstery** garde la Protection Acheteur : c'est la différence entre le paiement et les virements (équivalent d'un `application_fee_amount`, compatible avec plusieurs vendeurs).
+
+Mise en place :
+1. Stripe > Connect : activer Connect (comptes **Express**, France), personnaliser le nom et le logo.
+2. SQL : `supabase/connect.sql` (après `tirage.sql`, `vip.sql`).
+3. Secrets : `supabase secrets set STRIPE_SECRET_KEY=sk_... SITE_URL=https://ton-site.fr CRON_SECRET=...` (facultatif `DELAI_CONFIRMATION_JOURS=14`).
+4. Déployer :
+   ```
+   supabase functions deploy valider-commande
+   supabase functions deploy stripe-connect
+   supabase functions deploy suivi-commande
+   supabase functions deploy stripe-webhook --no-verify-jwt
+   supabase functions deploy liberer-paiements --no-verify-jwt
+   ```
+5. Webhook Stripe : ajouter les événements `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.expired` ; et un second point de terminaison (même URL) pour **les événements des comptes connectés** : `account.updated` (son secret : le même `STRIPE_WEBHOOK_SECRET` si un seul point de terminaison écoute les deux, sinon adapter).
+6. Cron quotidien (Supabase > Integrations > Cron, `pg_net`) : `POST https://<projet>.supabase.co/functions/v1/liberer-paiements` avec l'en-tête `x-cron-secret`.
+7. Tester en **mode test** Stripe (carte `4242 4242 4242 4242`) avant de passer en production.

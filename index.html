@@ -1058,6 +1058,23 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .lz .fond-badge{font-size:12px}
 .au-item b+.fond-badge{margin:4px 0 2px}
 .ph-msg{margin:8px 0 0!important}.ph-msg:empty{display:none}
+/* ---------- Suivi des commandes et des ventes ---------- */
+.acc-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.modal .acc-row .btn{margin:0;padding:11px 10px;font-size:13.5px;white-space:normal}
+.pay-ok{background:#E8F6EE;color:#1C5C3B!important;border-radius:12px;padding:10px 12px;font-size:13.5px}
+.su-card{border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-top:12px}
+.su-h{display:flex;justify-content:space-between;gap:10px}.su-h span{font-weight:800}
+.su-sub{margin:2px 0 6px!important;font-size:12.5px!important}
+.su-line{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px dashed var(--line);padding:10px 0 4px;font-size:14px}
+.su-act{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.modal .su-act .btn{width:auto;margin:0;padding:9px 14px;font-size:13px}
+.su-tag{display:inline-block;margin-top:4px;font-size:11.5px;font-weight:800;border-radius:999px;padding:2px 9px}
+.su-tag.bleu{background:var(--maj-l);color:var(--maj-d)}.su-tag.vert{background:#E8F6EE;color:#1C7A4A}.su-tag.rouge{background:#FDF1F3;color:#9B1C2E}.su-tag.gris{background:#F1F1F4;color:var(--muted)}
+.su-stripe{display:flex;flex-direction:column;gap:4px;border:1.5px solid var(--maj);background:var(--maj-xl);border-radius:16px;padding:14px 16px;margin:6px 0 14px}
+.su-stripe.ok{border-color:#B9DEC9;background:#E8F6EE}
+.su-stripe span{font-size:13.5px;color:var(--muted)}
+.modal .su-stripe .btn{width:auto;align-self:flex-start;margin-top:8px;padding:10px 16px;font-size:14px}
+@media(max-width:560px){.acc-row{grid-template-columns:1fr}.su-act{align-items:stretch;width:100%}}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1410,6 +1427,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
     <li><span>Genres préférés</span><b id="aGenres">—</b></li>
   </ul>
   <button class="btn" type="button" data-mesbb>Mes manuscrits mystères</button>
+  <div class="acc-row"><button class="btn ghost" type="button" data-suivi="achats">📦 Mes commandes</button><button class="btn ghost" type="button" data-suivi="ventes">💶 Mes ventes &amp; paiements</button></div>
   <button class="btn dark" type="button" id="logout" style="margin-top:10px">Se déconnecter</button>
 </div>
 
@@ -1417,10 +1435,19 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
   <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   <img src="mark.png" alt="">
   <h2 id="cmdTitre">Commande confirmée</h2>
+  <p class="pay-ok" id="cmdPay" hidden></p>
   <p id="cmdSum"></p>
   <div class="bb-grid" id="cmdBB"></div>
   <div id="cmdVip"></div>
   <p class="cert-legal" id="cmdNote"></p>
+</div>
+
+<div class="modal wide" id="suivi" role="dialog" aria-modal="true" aria-labelledby="suTitre" aria-hidden="true">
+  <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <img src="mark.png" alt="">
+  <h2 id="suTitre">Suivi</h2>
+  <div class="au-tabs" role="tablist"><button type="button" role="tab" id="suTabA" aria-selected="true">📦 Mes commandes</button><button type="button" role="tab" id="suTabV" aria-selected="false">💶 Mes ventes &amp; paiements</button></div>
+  <div id="suBody"></div>
 </div>
 
 <div class="modal wide" id="mesbb" role="dialog" aria-modal="true" aria-labelledby="mbTitre" aria-hidden="true">
@@ -1573,7 +1600,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
     </fieldset>
     <label for="bPrice">Ton prix <span class="hint">Tu le fixes librement</span></label>
     <div class="price-in"><input id="bPrice" type="number" inputmode="decimal" min="0.5" max="999" step="0.01" placeholder="0,00"><span aria-hidden="true">€</span></div>
-    <div class="safe-pay"><span class="sp-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><p><b>Paiement sécurisé</b>Tu reçois <b>100&nbsp;% de ton prix</b> dès que l’acheteur confirme la réception. Aucun frais pour toi&nbsp;: la Protection Acheteur est payée par l’acheteur.</p></div>
+    <div class="safe-pay"><span class="sp-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><p><b>Paiement sécurisé</b>Tu reçois <b>100&nbsp;% de ton prix</b> dès que l’acheteur confirme la réception. Aucun frais pour toi&nbsp;: la Protection Acheteur est payée par l’acheteur. Pour recevoir tes virements, active tes paiements Stripe (2&nbsp;minutes, même après ta première vente) dans «&nbsp;Mon espace&nbsp;».</p></div>
 
     <p class="sell-note" id="sellNote" hidden></p>
     <p class="form-msg" id="sellMsg" role="alert"></p>
@@ -1701,7 +1728,7 @@ new IntersectionObserver(function(e){var off=!e[0].isIntersecting;hdr.classList.
 /* Drawer / modal */
 var lastFocus;
 function open(el){closeAll(true);lastFocus=document.activeElement;$("scrim").classList.add("on");el.classList.add("on");el.setAttribute("aria-hidden","false");var f=el.querySelector("input")||el.querySelector("button");f&&setTimeout(function(){f.focus()},60)}
-function closeAll(keep){if(window.stopScan)stopScan();["drawer","modal","login","account","sell","auteur","commande","mesbb","fiche"].forEach(function(id){$(id).classList.remove("on");$(id).setAttribute("aria-hidden","true")});$("scrim").classList.remove("on");if(!keep&&lastFocus)lastFocus.focus()}
+function closeAll(keep){if(window.stopScan)stopScan();["drawer","modal","login","account","sell","auteur","commande","mesbb","fiche","suivi"].forEach(function(id){$(id).classList.remove("on");$(id).setAttribute("aria-hidden","true")});$("scrim").classList.remove("on");if(!keep&&lastFocus)lastFocus.focus()}
 $("bagBtn").addEventListener("click",function(){open($("drawer"))});
 document.addEventListener("click",function(e){
   if(e.target.closest("[data-join]"))open($("modal"));
@@ -2838,12 +2865,14 @@ async function checkout(t,genre,secours){
     var wasVip=isVip();vipState.total=r2(vipState.total+t.books);if(vipState.total+1e-9>=VIP_SEUIL)vipState.jury=true;vipSaveDemo();
     bag=[];giftGenre=null;giftSecours=null;saveBag();renderAll();closeAll(true);showCommande(t.total,nouveaux,0,true,!wasVip&&isVip());vipUI();return;
   }
-  busy(btn,true,"Validation…");setMsg("payMsg","");
+  busy(btn,true,"Ouverture du paiement sécurisé…");setMsg("payMsg","");
   try{
     var r=await sb.functions.invoke("valider-commande",{body:{annonce_ids:bag.map(function(b){return b.id}),genre:genre||null,genre_secours:secours||null}});
     if(r.error){var body=null;try{body=await r.error.context.json()}catch(x){}return setMsg("payMsg",(body&&body.erreur)||"La commande n’a pas pu être validée. Réessaie.","err")}
-    var d=r.data;bag=[];giftGenre=null;giftSecours=null;saveBag();loadDispo();loadCatalogue();closeAll(true);
-    showCommande(Number(d.commande.total),(d.booksterbooks||[]).map(function(b){return{token:b.token,titre:b.titre,genre:b.genre,lu_at:null}}),d.manquants||0,false,(function(){var was=isVip();if(d.vip){vipState.total=Number(d.vip.total_spent_books)||vipState.total;vipState.jury=!!d.vip.is_vip_jury}return!was&&isVip()})());vipUI();
+    var d=r.data;
+    if(d.url){location.href=d.url;return}                     /* paiement Stripe (Checkout) */
+    if(d.sans_paiement){commandeRetour(d.commande_id);return} /* mode test sans paiement */
+    setMsg("payMsg","La commande n’a pas pu être validée. Réessaie.","err");
   }catch(e){console.error(e);setMsg("payMsg","La commande n’a pas pu être validée. Réessaie.","err")}
   finally{busy(btn,false)}
 }
@@ -3294,6 +3323,92 @@ async function packPortail(){
     if(m[1]==="ok")toast("Merci ! Ton Pack Accélérateur s’active (quelques secondes).");
     if(m[1]==="annule")toast("Paiement annulé : ton Pack n’a pas été activé.");
     if(m[1]==="ok")setTimeout(function(){if(!$("auPack").hidden)renderPack()},4000);},800)})();
+
+/* ================= Paiement Stripe Connect : retour, commandes, ventes ================= */
+var SU_LABEL={en_attente_paiement:["Paiement en cours","gris"],a_expedier:["À envoyer par le vendeur","bleu"],expedie:["Envoyé","bleu"],recu:["Reçu · virement en attente du compte Stripe du vendeur","vert"],paye:["Reçu · vendeur payé","vert"],litige:["Problème signalé · l’équipe examine","rouge"],annule:["Annulée","gris"],rembourse:["Remboursée","gris"]};
+var SU_LABEL_V={a_expedier:["À envoyer à l’acheteur","bleu"],expedie:["Envoyé · en attente de confirmation de l’acheteur","bleu"],recu:["Reçu par l’acheteur · active tes paiements pour être payé","vert"],paye:["Payé sur ton compte","vert"],litige:["Problème signalé par l’acheteur · l’équipe examine","rouge"]};
+function suTag(st,vendeur){var l=(vendeur&&SU_LABEL_V[st])||SU_LABEL[st]||[st,"gris"];return'<span class="su-tag '+l[1]+'">'+esc(l[0])+'</span>'}
+async function commandeRetour(id){
+  bag=[];giftGenre=null;giftSecours=null;saveBag();renderAll();loadCatalogue();closeAll(true);
+  $("cmdSum").textContent="Paiement reçu, merci ! On prépare tes Mystery Drops…";$("cmdBB").innerHTML='<p class="au-empty">Un instant…</p>';$("cmdVip").innerHTML="";$("cmdNote").textContent="";$("cmdPay").hidden=true;open($("commande"));
+  for(var i=0;i<12;i++){
+    try{var c=await sb.from("commandes").select("id,total,statut,montant_livres,protection,nb_booksterbooks").eq("id",id).maybeSingle();
+      if(c.data&&c.data.statut==="payee"){
+        var bb=await sb.from("booksterbooks").select("token,lu_at,extraits(titre,genre,nb_mots)").eq("commande_id",id);
+        var list=(bb.data||[]).map(function(b){var x=b.extraits||{};return{token:b.token,lu_at:b.lu_at,titre:x.titre||"Manuscrit mystère",genre:x.genre,nb_mots:x.nb_mots}});
+        var was=isVip();try{var vp=await sb.from("profiles").select("total_spent_books,is_vip_jury").eq("id",current.id).maybeSingle();if(vp.data){vipState.total=Number(vp.data.total_spent_books)||0;vipState.jury=!!vp.data.is_vip_jury}}catch(e){}
+        showCommande(Number(c.data.total),list,Math.max(0,(c.data.nb_booksterbooks||0)-list.length),false,!was&&isVip());vipUI();
+        $("cmdPay").hidden=false;$("cmdPay").innerHTML="✅ Paiement sécurisé par Stripe : "+EUR.format(c.data.montant_livres)+" de livres + "+EUR.format(c.data.protection)+" de Protection Acheteur. Chaque vendeur sera payé quand tu confirmeras la réception, dans <b>Mon espace › Mes commandes</b>.";return}
+      if(c.data&&c.data.statut==="annulee"){$("cmdSum").textContent="Ce paiement n’a pas abouti : ta commande est annulée.";$("cmdBB").innerHTML="";return}
+    }catch(e){}
+    await new Promise(function(ok){setTimeout(ok,1500)});
+  }
+  $("cmdSum").textContent="Ton paiement est en cours de confirmation. Tu retrouveras ta commande et tes Mystery Drops dans « Mon espace » d’ici quelques minutes.";$("cmdBB").innerHTML="";
+}
+(function(){var m=/[?&]commande=(ok|annule)&id=([0-9a-f-]{36})/.exec(location.search),p=/[?&]paiements=(retour|relance)/.exec(location.search);
+  if(!m&&!p)return;try{history.replaceState(null,"",location.pathname+location.hash)}catch(e){}
+  var go=function(){if(!sb)return;
+    if(m&&m[1]==="ok")commandeRetour(m[2]);
+    if(m&&m[1]==="annule"){sb.functions.invoke("suivi-commande",{body:{action:"abandon",commande_id:m[2]}}).finally(function(){loadCatalogue()});toast("Paiement annulé : ton panier est toujours là.")}
+    if(p&&p[1]==="retour"){openSuivi("ventes");toast("Merci ! Stripe vérifie tes informations, ça prend en général quelques minutes.")}
+    if(p&&p[1]==="relance")stripeConnect("onboarding");};
+  var t=0,iv=setInterval(function(){if(current||++t>20){clearInterval(iv);go()}},300)})();
+async function stripeConnect(action,btn){
+  if(!sb)return toast("Mode démo : les paiements Stripe ne sont pas branchés.");
+  if(btn)busy(btn,true,"Ouverture de Stripe…");
+  try{var r=await sb.functions.invoke("stripe-connect",{body:{action:action}});
+    if(r.error){var b=null;try{b=await r.error.context.json()}catch(x){}throw new Error(b&&b.erreur||"Stripe indisponible.")}
+    location.href=r.data.url}
+  catch(e){if(btn)busy(btn,false);toast(e.message)}
+}
+async function suiviAction(action,cid,vid,btn){
+  if(action==="recu"&&!confirm("Tu confirmes avoir bien reçu ce colis, conforme à l’annonce ? Le vendeur sera payé tout de suite."))return;
+  if(action==="litige"&&!confirm("Signaler un problème avec ce colis ? Le paiement du vendeur sera bloqué et l’équipe Bookstery te contactera."))return;
+  if(btn)busy(btn,true,"…");
+  try{var r=await sb.functions.invoke("suivi-commande",{body:{action:action,commande_id:cid,vendeur_id:vid}});
+    if(r.error){var b=null;try{b=await r.error.context.json()}catch(x){}throw new Error(b&&b.erreur||"Action impossible.")}
+    toast(action==="recu"?(r.data.versement==="paye"?"Merci ! Le vendeur vient d’être payé.":"Merci ! Le vendeur sera payé dès que son compte Stripe sera activé."):action==="expedie"?"Noté : l’acheteur est prévenu que c’est envoyé.":"Problème signalé : l’équipe Bookstery va te contacter.");
+    renderSuivi()}
+  catch(e){if(btn)busy(btn,false);toast(e.message)}
+}
+var suMode="achats";
+function openSuivi(mode){suMode=mode||"achats";open($("suivi"));renderSuivi()}
+async function renderSuivi(){
+  $("suTabA").setAttribute("aria-selected",suMode==="achats");$("suTabV").setAttribute("aria-selected",suMode==="ventes");
+  var box=$("suBody");
+  if(!sb){box.innerHTML='<p class="au-empty">Mode démo : le suivi des commandes et des ventes s’active avec Supabase et Stripe.</p>';return}
+  if(!current){box.innerHTML='<p class="au-empty">Connecte-toi pour voir tes commandes et tes ventes.</p>';return}
+  box.innerHTML='<p class="au-empty">Chargement…</p>';
+  try{
+    if(suMode==="achats"){
+      var r=await sb.from("commandes").select("id,created_at,statut,total,montant_livres,protection").eq("acheteur_id",current.id).neq("statut","annulee").order("created_at",{ascending:false}).limit(30);
+      var cs=r.data||[];if(!cs.length){box.innerHTML='<p class="au-empty">Aucune commande pour l’instant.</p>';return}
+      var l=await sb.from("commande_vendeurs").select("*").in("commande_id",cs.map(function(c){return c.id}));
+      var lignes=l.data||[],vids=lignes.map(function(x){return x.vendeur_id}).filter(function(v,i,a){return a.indexOf(v)===i}),noms={};
+      if(vids.length){var pr=await sb.from("profiles").select("id,prenom").in("id",vids);(pr.data||[]).forEach(function(p){noms[p.id]=p.prenom||"Un Bookster"})}
+      box.innerHTML=cs.map(function(c){return'<div class="su-card"><div class="su-h"><b>Commande du '+esc(frDate(c.created_at))+'</b><span>'+EUR.format(c.total)+'</span></div><p class="su-sub">'+EUR.format(c.montant_livres)+' de livres + '+EUR.format(c.protection)+' de Protection Acheteur'+(c.statut==="en_attente"?" · paiement en cours":"")+'</p>'+
+        lignes.filter(function(x){return x.commande_id===c.id}).map(function(x){var act=x.statut==="a_expedier"||x.statut==="expedie";
+          return'<div class="su-line"><div><b>'+esc(noms[x.vendeur_id]||"Vendeur")+'</b> · '+esc((x.titres||[]).join(", "))+'<br>'+suTag(x.statut)+'</div>'+
+          (act?'<div class="su-act"><button class="btn" type="button" data-su="recu" data-c="'+x.commande_id+'" data-v="'+x.vendeur_id+'">✅ J’ai bien reçu ce colis</button><button class="forgot" type="button" data-su="litige" data-c="'+x.commande_id+'" data-v="'+x.vendeur_id+'">Signaler un problème</button></div>':"")+'</div>'}).join("")+'</div>'}).join("")+
+        '<p class="pk-small">Le vendeur est payé quand tu confirmes la réception. Sans confirmation ni problème signalé, il est payé automatiquement 14 jours après l’envoi.</p>';
+    }else{
+      var acc=await sb.from("vendeurs_stripe").select("details_submitted,payouts_enabled").eq("vendeur_id",current.id).maybeSingle();
+      var a=acc.data,head=a&&a.payouts_enabled?'<div class="su-stripe ok"><b>✅ Paiements activés</b><span>Tes ventes te sont virées automatiquement sur ton compte bancaire.</span><button class="btn ghost" type="button" data-stripe="tableau">Mon tableau de bord Stripe</button></div>'
+        :'<div class="su-stripe"><b>'+(a?"⏳ Activation en cours":"💶 Active tes paiements pour recevoir tes ventes")+'</b><span>'+(a&&a.details_submitted?"Stripe vérifie tes informations. Si on te demande un document, reprends l’activation.":"2 minutes avec Stripe : ton identité et ton IBAN. Tu reçois 100 % du prix de tes livres, sans commission.")+'</span><button class="btn" type="button" data-stripe="onboarding">'+(a?"Reprendre l’activation":"Activer mes paiements")+'</button></div>';
+      var v=await sb.from("commande_vendeurs").select("*").eq("vendeur_id",current.id).neq("statut","annule").order("created_at",{ascending:false}).limit(50);
+      var vs=v.data||[],du=vs.filter(function(x){return x.statut!=="paye"&&x.statut!=="rembourse"&&x.statut!=="en_attente_paiement"}).reduce(function(s2,x){return s2+Number(x.montant)},0),paye=vs.filter(function(x){return x.statut==="paye"}).reduce(function(s2,x){return s2+Number(x.montant)},0);
+      box.innerHTML=head+'<div class="pk-tot"><div><b>'+EUR.format(paye)+'</b><span>déjà versés</span></div><div><b>'+EUR.format(du)+'</b><span>à recevoir</span></div><div><b>'+vs.length+'</b><span>ventes</span></div></div>'+
+        (vs.length?vs.map(function(x){return'<div class="su-line"><div><b>'+esc((x.titres||[]).join(", "))+'</b> · '+EUR.format(x.montant)+' pour toi (100 %)<br>'+suTag(x.statut,true)+'</div>'+(x.statut==="a_expedier"?'<div class="su-act"><button class="btn" type="button" data-su="expedie" data-c="'+x.commande_id+'">📦 J’ai envoyé / remis le livre</button></div>':"")+'</div>'}).join(""):'<p class="au-empty">Aucune vente pour l’instant.</p>');
+    }
+  }catch(e){console.error(e);box.innerHTML='<p class="au-empty">Le suivi n’a pas pu être chargé. Réessaie dans un instant.</p>'}
+}
+document.addEventListener("click",function(e){
+  var s2=e.target.closest("[data-suivi]");if(s2){closeAll(true);openSuivi(s2.getAttribute("data-suivi"))}
+  var a=e.target.closest("[data-su]");if(a)suiviAction(a.getAttribute("data-su"),a.getAttribute("data-c"),a.getAttribute("data-v"),a);
+  var st=e.target.closest("[data-stripe]");if(st)stripeConnect(st.getAttribute("data-stripe"),st);
+});
+$("suTabA").addEventListener("click",function(){suMode="achats";renderSuivi()});
+$("suTabV").addEventListener("click",function(){suMode="ventes";renderSuivi()});
 </script>
 </body>
 </html>
