@@ -15,6 +15,7 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/vendeur-pro.sql` — statut du vendeur (particulier / professionnel) affiché sur les annonces
 - `supabase/vip.sql` — statut Bookster VIP : cumul des achats et badge à 30 €
 - `supabase/fondateur.sql` — badge « Fondateur Bookstery » sur les œuvres du fondateur (non éligibles au Golden Book et aux prix)
+- `supabase/qualite.sql` — contrôle qualité : note IA sur 10 conservée, archivage automatique (moyenne < 2,5/5 après 10 lectures)
 - `supabase/tirage.sql` — tirage équitable des Mystery Drops par genre, sur tous les textes (à exécuter)
 - `supabase/accelerateur.sql` — Pack Accélérateur Auteurs : abonnements, textes prioritaires, statistiques
 - `supabase/connect.sql` — paiement des commandes Stripe Connect (comptes vendeurs, lignes vendeur, suivi)
@@ -205,3 +206,9 @@ Mise en place :
 5. Webhook Stripe : ajouter les événements `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.expired` ; et un second point de terminaison (même URL) pour **les événements des comptes connectés** : `account.updated` (son secret : le même `STRIPE_WEBHOOK_SECRET` si un seul point de terminaison écoute les deux, sinon adapter).
 6. Cron quotidien (Supabase > Integrations > Cron, `pg_net`) : `POST https://<projet>.supabase.co/functions/v1/liberer-paiements` avec l'en-tête `x-cron-secret`.
 7. Tester en **mode test** Stripe (carte `4242 4242 4242 4242`) avant de passer en production.
+
+## Contrôle qualité des manuscrits
+
+1. **Longueur** : au moins 2 500 caractères et 1 000 mots (site + `deposer-extrait`).
+2. **Note IA sur 10** : la modération (`moderation.ts`) note la qualité rédactionnelle (orthographe, syntaxe, narration). Sous **6/10**, refus poli (motif `qualite_insuffisante`) avec la note et un conseil personnalisé ; la note des textes acceptés est enregistrée (`note_qualite`).
+3. **Archivage automatique** (`supabase/qualite.sql`) : dès qu'un texte a **au moins 10 lectures** et une **note moyenne < 2,5/5**, il passe en `archived` et n'est plus tiré dans les Mystery Drops (déclencheurs sur les avis et les lectures).

@@ -9,12 +9,14 @@
 
 import Anthropic from "npm:@anthropic-ai/sdk@1.5.0";
 
-export type Motif = "aucun" | "contenu_interdit" | "plagiat" | "pas_litteraire" | "illisible_ou_fautes" | "pas_en_francais";
+export type Motif = "aucun" | "contenu_interdit" | "plagiat" | "pas_litteraire" | "illisible_ou_fautes" | "qualite_insuffisante" | "pas_en_francais";
+export const NOTE_MIN = 6; // note de qualité rédactionnelle minimale, sur 10
 export type Moderation = {
   decision: "accepte" | "refuse";
   motif: Motif;
   categories: string[];
   oeuvre_source: string;
+  note_qualite: number;
   explication: string;
 };
 
@@ -49,6 +51,12 @@ Refuse le texte (decision "refuse") dans l'un de ces cas, en vérifiant dans cet
 
 Sinon, accepte (decision "accepte", motif "aucun", categories vide, oeuvre_source vide).
 
+Dans tous les cas, donne "note_qualite" : une note entière de 0 à 10 sur la qualité rédactionnelle du texte, en tenant compte à parts égales de :
+- l'orthographe et la grammaire (accords, conjugaisons, ponctuation) ;
+- la syntaxe et le style (phrases construites, vocabulaire, fluidité, répétitions) ;
+- la narration (fil du récit ou intention poétique, cohérence, rythme, capacité à donner envie de lire la suite).
+Repères : 9-10 texte publiable tel quel ; 7-8 bon texte, quelques maladresses ; 6 correct mais perfectible ; 4-5 nombreuses fautes ou récit confus ; 0-3 très difficile à lire. Sois juste et bienveillant : un style simple mais propre mérite au moins 6. Ne note pas le genre ni le goût, seulement la qualité d'écriture.
+
 Dans "explication", écris une ou deux phrases en français, bienveillantes et tutoyant l'auteur, qui l'aident à comprendre la décision. Pour un refus "illisible_ou_fautes", donne un ou deux exemples de types d'erreurs à corriger, sans recopier de long passage. Pour "contenu_interdit", reste général et ne recopie aucun passage. Pour "plagiat", rappelle que Bookstery accueille uniquement des textes originaux et inédits, sans recopier de passage.`;
 
 const SCHEMA = {
@@ -56,6 +64,7 @@ const SCHEMA = {
   properties: {
     decision: { type: "string", enum: ["accepte", "refuse"] },
     motif: { type: "string", enum: ["aucun", "contenu_interdit", "plagiat", "pas_litteraire", "illisible_ou_fautes", "pas_en_francais"] },
+    note_qualite: { type: "integer", minimum: 0, maximum: 10 },
     categories: {
       type: "array",
       items: { type: "string", enum: ["haine", "racisme", "antisemitisme", "violence", "illegal", "terrorisme", "pornographie"] },
@@ -63,7 +72,7 @@ const SCHEMA = {
     oeuvre_source: { type: "string" },
     explication: { type: "string" },
   },
-  required: ["decision", "motif", "categories", "oeuvre_source", "explication"],
+  required: ["decision", "motif", "categories", "oeuvre_source", "note_qualite", "explication"],
   additionalProperties: false,
 };
 
@@ -87,7 +96,7 @@ export async function moderer(titre: string, genre: string, texte: string): Prom
 
   // Le modèle a décliné de traiter le texte pour raison de sécurité : le contenu n'est pas publiable.
   if (response.stop_reason === "refusal") {
-    return { decision: "refuse", motif: "contenu_interdit", categories: [], oeuvre_source: "", explication: "" };
+    return { decision: "refuse", motif: "contenu_interdit", categories: [], oeuvre_source: "", note_qualite: 0, explication: "" };
   }
   if (response.stop_reason !== "end_turn") throw new Error(`Modération interrompue (${response.stop_reason})`);
 
@@ -97,6 +106,9 @@ export async function moderer(titre: string, genre: string, texte: string): Prom
   // Cohérence : un motif de refus implique un refus, et inversement
   if (m.motif !== "aucun") m.decision = "refuse";
   if (m.decision === "refuse" && m.motif === "aucun") m.motif = "pas_litteraire";
+  m.note_qualite = Math.max(0, Math.min(10, Math.round(Number(m.note_qualite) || 0)));
+  // Contrôle qualité : un texte noté sous 6/10 est refusé poliment, avec une invitation à se relire
+  if (m.decision === "accepte" && m.note_qualite < NOTE_MIN) { m.decision = "refuse"; m.motif = "qualite_insuffisante"; }
   return m;
 }
 
@@ -110,6 +122,8 @@ export const MESSAGES: Record<Exclude<Motif, "aucun">, string> = {
     "Pour l’instant, Bookstery accueille uniquement des textes écrits en français. Si tu as une version française de ton texte, n’hésite pas à la déposer !",
   pas_litteraire:
     "Ton envoi ne ressemble pas à une œuvre littéraire (extrait de roman, nouvelle, conte, poésie…). Bookstery accueille uniquement des textes de création : dépose plutôt un extrait de ton histoire.",
+  qualite_insuffisante:
+    "Ton texte a du potentiel, mais il n’est pas encore tout à fait prêt à être offert aux lecteurs : notre relecture automatique lui donne une note de qualité rédactionnelle inférieure à 6/10 (orthographe, syntaxe, narration). Prends le temps de te relire, à voix haute si possible, ou de le faire relire par un proche, puis dépose-le à nouveau. On a hâte de te lire !",
   illisible_ou_fautes:
     "Ton texte mérite une relecture avant d’être offert aux lecteurs : nous y avons repéré de nombreuses fautes ou des passages difficiles à lire. Prends le temps de le relire, ou de le faire relire par un proche, puis dépose-le à nouveau. On a hâte de te lire !",
 };

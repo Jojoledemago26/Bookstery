@@ -25,6 +25,7 @@ import { MESSAGES, moderer, type Moderation } from "./moderation.ts";
 
 const MIN_MOTS = 1000;
 const MAX_MOTS = 5000;
+const MIN_CARACTERES = 2500; // contre les textes bâclés (lettres isolées, mots très courts)
 const SEUIL_IA = 0.5; // refus si le taux d'IA est strictement supérieur à 50 %
 const GENRES = ["Aventure", "Contes & Légendes", "Fantastique", "Fantasy", "Feel-good", "Horreur", "Humour", "Jeunesse", "Nouvelles", "Polar", "Poésie", "Roman historique", "Romance", "Romans", "Science-fiction", "Thriller", "Théâtre", "Young Adult"];
 
@@ -110,6 +111,7 @@ Deno.serve(async (req) => {
   if (!titre || titre.length > 200) return json(400, { erreur: "Indique un titre (200 caractères maximum)." });
   if (!GENRES.includes(genre)) return json(400, { erreur: "Choisis un genre dans la liste." });
   if (body.certifie !== true) return json(400, { erreur: "Certifie sur l’honneur être l’auteur unique de ce texte original et inédit." });
+  if (texte.length < MIN_CARACTERES) return json(400, { erreur: `Ton texte est trop court : il doit faire au moins ${MIN_CARACTERES} caractères (il en fait ${texte.length}).` });
   if (nbMots < MIN_MOTS || nbMots > MAX_MOTS) return json(400, { erreur: `Ton extrait doit faire entre ${MIN_MOTS} et ${MAX_MOTS} mots (il en fait ${nbMots}).` });
 
   const empreinte = await sha256(texte);
@@ -130,13 +132,14 @@ Deno.serve(async (req) => {
     return json(503, { erreur: "La vérification du contenu est indisponible pour le moment. Ton texte n’a pas été déposé : réessaie dans quelques minutes." });
   }
   if (mod.decision === "refuse" && mod.motif !== "aucun") {
-    await admin.from("depots_refuses").insert({ auteur_id: user.id, sha256: empreinte, nb_mots: nbMots, ai_score: null, motif: mod.motif, categories: mod.motif === "plagiat" && mod.oeuvre_source ? [mod.oeuvre_source] : mod.categories });
+    await admin.from("depots_refuses").insert({ auteur_id: user.id, sha256: empreinte, nb_mots: nbMots, ai_score: null, motif: mod.motif, note_qualite: mod.note_qualite, categories: mod.motif === "plagiat" && mod.oeuvre_source ? [mod.oeuvre_source] : mod.categories });
     return json(422, {
       refus: true, type: "moderation", motif: mod.motif,
       erreur: MESSAGES[mod.motif],
       oeuvre: mod.motif === "plagiat" ? mod.oeuvre_source || null : null,
       // Le conseil personnalisé n'est renvoyé que pour les refus « à corriger », jamais pour un contenu interdit
-      conseil: mod.motif === "illisible_ou_fautes" || mod.motif === "pas_litteraire" ? mod.explication : null,
+      note_qualite: mod.motif === "qualite_insuffisante" ? mod.note_qualite : null,
+      conseil: mod.motif === "illisible_ou_fautes" || mod.motif === "pas_litteraire" || mod.motif === "qualite_insuffisante" ? mod.explication : null,
     });
   }
 
@@ -155,7 +158,7 @@ Deno.serve(async (req) => {
   }
 
   const { data: ex, error } = await admin.from("extraits")
-    .insert({ auteur_id: user.id, auteur_nom: (user.user_metadata?.prenom as string | undefined) ?? null, titre, genre, texte, nb_mots: nbMots, sha256: empreinte, ai_score: score })
+    .insert({ auteur_id: user.id, auteur_nom: (user.user_metadata?.prenom as string | undefined) ?? null, titre, genre, texte, nb_mots: nbMots, sha256: empreinte, ai_score: score, note_qualite: mod.note_qualite })
     .select("id, titre, genre, nb_mots, sha256, ai_score, created_at").single();
   if (error) { console.error(error); return json(500, { erreur: "Le dépôt n’a pas pu être enregistré. Réessaie." }); }
 
