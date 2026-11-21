@@ -228,6 +228,6 @@ Saison 1 (janvier – juin 2027) : « Spécial Nouvelles », format nouvelle cou
 ## Boîte à Thèmes (prochaine saison)
 
 Sur l'accueil (sous la bannière de la saison) et dans « Mon espace » :
-- **Proposition rapide** : « Propose un thème ou un genre pour la Saison 2 » + bouton « Envoyer mon idée » (suggestions en un clic). Réservée aux membres connectés, **une proposition par membre et par saison** (clé primaire `(saison, membre_id)`, fonction `proposer_theme`). Les variantes d'écriture (« Polar », « polar », « Pölar ») comptent pour le même thème.
+- **Vote cliquable** : les 22 genres littéraires du site (genres utilitaires exclus) en pastilles ; un clic sélectionne le genre, puis « Voter pour « … » ». Réservée aux membres connectés, **un vote par membre et par saison** (clé primaire `(saison, membre_id)`, fonction `proposer_theme`). Les variantes d'écriture (« Polar », « polar », « Pölar ») comptent pour le même thème.
 - **Tendances en direct** : top 3 des thèmes avec barres et compteurs de votes, mis à jour en temps réel (Supabase Realtime sur `themes_compteurs`) dès qu'un membre propose. En mode démo, des votes sont simulés.
 - Mise en place : exécuter `supabase/themes.sql` (il active Realtime sur `themes_compteurs`).

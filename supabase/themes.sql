@@ -1,4 +1,5 @@
--- Bookstery : Boîte à Thèmes — la communauté propose le thème de la prochaine saison
+-- Bookstery : Boîte à Thèmes — la communauté vote pour le genre de la prochaine saison
+-- (genres littéraires du site uniquement, les genres utilitaires sont exclus)
 -- À exécuter dans Supabase > SQL Editor.
 --
 -- • Une seule proposition par membre et par saison (table propositions_themes, privée).
@@ -53,6 +54,10 @@ begin
     raise exception 'theme_invalide';
   end if;
   v_lib := upper(left(v_lib, 1)) || substr(v_lib, 2);
+  -- Vote limité aux genres littéraires du site (les genres utilitaires sont exclus)
+  if v_lib <> all (array['Aventure','BD','Classiques','Comics','Contes & Légendes','Fantastique','Fantasy','Feel-good','Horreur','Humour','Jeunesse','Manga','Nouvelles','Poésie','Polar','Roman historique','Romance','Romans','Science-fiction','Théâtre','Thriller','Young Adult']) then
+    raise exception 'theme_invalide';
+  end if;
   v_cle := public.cle_theme(v_lib);
   insert into public.propositions_themes (saison, membre_id, cle, libelle) values (p_saison, auth.uid(), v_cle, v_lib);
   return query select v_cle, v_lib;
