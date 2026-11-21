@@ -1,5 +1,5 @@
 -- Bookstery : statut Bookster VIP (fidélité)
--- Cumul des livres achetés au fil de toutes les commandes ; à 50 € → is_vip_jury = true
+-- Cumul des livres achetés au fil de toutes les commandes ; à 30 € → is_vip_jury = true
 -- (badge doré sur le profil, vote pour le prochain Golden Book).
 -- À exécuter dans Supabase > SQL Editor (la table profiles doit exister).
 
@@ -15,7 +15,7 @@ set search_path = public
 as $$
   update public.profiles p
      set total_spent_books = p.total_spent_books + greatest(p_montant, 0),
-         is_vip_jury = p.is_vip_jury or (p.total_spent_books + greatest(p_montant, 0) >= 50)
+         is_vip_jury = p.is_vip_jury or (p.total_spent_books + greatest(p_montant, 0) >= 30)
    where p.id = p_user
   returning p.total_spent_books, p.is_vip_jury;
 $$;
@@ -40,3 +40,6 @@ end $$;
 drop trigger if exists profiles_statut_vip on public.profiles;
 create trigger profiles_statut_vip before insert or update on public.profiles
   for each row execute function public.proteger_statut_vip();
+
+-- Seuil VIP abaissé à 30 € : à exécuter une fois si vip.sql a déjà été lancé avec l'ancien seuil (50 €)
+update public.profiles set is_vip_jury = true where total_spent_books >= 30 and not is_vip_jury;
