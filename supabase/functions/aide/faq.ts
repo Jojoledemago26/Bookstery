@@ -27,7 +27,7 @@ Bookstery est une plateforme lyonnaise, éthique et circulaire, qui donne une se
 
 # Vendre un livre
 - Bouton « Vendre un livre » en haut. Trois façons : scanner le code-barres avec la caméra du téléphone (ou en photo), entrer l'ISBN (10 ou 13 chiffres), ou « Livre ancien sans code-barres ? Remplir manuellement ». Avec l'ISBN, titre, auteur, résumé, couverture et genre se remplissent tout seuls.
-- Photos réelles obligatoires de ton exemplaire, recto et verso, prises chez toi : elles prouvent que tu as le livre et montrent son état. Images trouvées sur internet refusées.
+- Photos réelles obligatoires de ton exemplaire, recto et verso, prises chez toi : elles prouvent que tu as le livre et montrent son état. Images trouvées sur internet refusées. Une photo floue, trop sombre, surexposée, illisible ou qui ne montre pas le bon livre est refusée : le titre et l'état doivent bien se voir.
 - Tu choisis l'état (Comme neuf, Très bon état, Bon état), la ville, et ton prix librement (entre 0,50 € et 999 €).
 - Paiement sécurisé : tu reçois 100 % de ton prix dès que l'acheteur confirme la réception.
 

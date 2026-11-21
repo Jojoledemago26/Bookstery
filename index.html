@@ -1057,6 +1057,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .fond-badge{display:inline-flex;align-items:center;gap:4px;vertical-align:middle;margin-left:8px;font:800 11.5px/1 var(--sans);letter-spacing:.02em;font-style:normal;color:#F5C451;background:#0B0B10;border:1px solid #E3B341;border-radius:999px;padding:4px 9px;white-space:nowrap;cursor:help}
 .lz .fond-badge{font-size:12px}
 .au-item b+.fond-badge{margin:4px 0 2px}
+.ph-msg{margin:8px 0 0!important}.ph-msg:empty{display:none}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1543,11 +1544,12 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
     <label for="bResume">Résumé</label><textarea id="bResume" rows="4" maxlength="5000" placeholder="Le résumé de l’éditeur s’affichera ici. Tu peux le modifier."></textarea>
 
     <label class="ph-label">Photo réelle de ton exemplaire <span class="req">obligatoire</span></label>
-    <p class="ph-help">Prends <b>ton</b> livre en photo, chez toi, recto et verso. Ça prouve que tu l’as bien en main et ça montre son état réel aux acheteurs. Les images trouvées sur internet ne sont pas acceptées.</p>
+    <p class="ph-help">Prends <b>ton</b> livre en photo, chez toi, recto et verso. Ça prouve que tu l’as bien en main et ça montre son état réel aux acheteurs. Les images trouvées sur internet ne sont pas acceptées. Une photo floue, trop sombre ou illisible est refusée&nbsp;: le titre et l’état du livre doivent bien se voir.</p>
     <div class="ph-grid">
       <label class="ph-slot" id="phRectoBox" data-k="Recto"><input type="file" id="phRecto" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" capture="environment"><img id="phRectoImg" alt="Photo recto de ton exemplaire" hidden><span class="ph-ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><b>Recto</b><small>La couverture</small></span></label>
       <label class="ph-slot" id="phVersoBox" data-k="Verso"><input type="file" id="phVerso" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" capture="environment"><img id="phVersoImg" alt="Photo verso de ton exemplaire" hidden><span class="ph-ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><b>Verso</b><small>Le dos du livre</small></span></label>
     </div>
+    <p class="form-msg err ph-msg" id="phMsg" role="alert"></p>
 
     <fieldset class="cond">
       <legend>État du livre</legend>
@@ -2030,7 +2032,7 @@ $("manualBtn").addEventListener("click",function(){stopScan();lastIsbn=null;look
 
 /* --- Photos réelles de l’exemplaire (recto / verso), obligatoires --- */
 var sellPhotos={recto:null,verso:null};
-function resetPhotos(){["recto","verso"].forEach(function(k){var P=k==="recto"?"phRecto":"phVerso";
+function resetPhotos(){if($("phMsg"))$("phMsg").textContent="";["recto","verso"].forEach(function(k){var P=k==="recto"?"phRecto":"phVerso";
   if(sellPhotos[k]&&sellPhotos[k].url)URL.revokeObjectURL(sellPhotos[k].url);sellPhotos[k]=null;
   $(P+"Img").hidden=true;$(P+"Img").removeAttribute("src");$(P+"Box").classList.remove("has","need");$(P).value=""})}
 /* Redimensionne (1600 px max) et réencode en JPEG : photos légères, métadonnées GPS retirées */
@@ -2038,21 +2040,49 @@ function compressPhoto(file){return new Promise(function(res,rej){
   var url=URL.createObjectURL(file),img=new Image();
   img.onload=function(){var m=1600,w=img.naturalWidth,h=img.naturalHeight,k=Math.min(1,m/Math.max(w,h));
     var c=document.createElement("canvas");c.width=Math.round(w*k);c.height=Math.round(h*k);c.getContext("2d").drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);
-    c.toBlob(function(b){b?res({blob:b,w:w,h:h}):rej(new Error("photo"))},"image/jpeg",0.85)};
+    var q=photoQualite(c);c.toBlob(function(b){b?res({blob:b,w:w,h:h,q:q}):rej(new Error("photo"))},"image/jpeg",0.85)};
   img.onerror=function(){URL.revokeObjectURL(url);rej(new Error("photo"))};img.src=url})}
+/* Qualité d'une photo (analyse locale, instantanée) : luminosité, contraste et netteté
+   (variance du laplacien sur une version réduite à 320 px de large) */
+function photoQualite(src){
+  try{var W=320,H=Math.max(1,Math.round(src.height*W/src.width)),c=document.createElement("canvas");c.width=W;c.height=H;
+    var x=c.getContext("2d");x.drawImage(src,0,0,W,H);var d=x.getImageData(0,0,W,H).data,g=new Float32Array(W*H),sum=0,sum2=0;
+    for(var i=0;i<W*H;i++){var v=.299*d[i*4]+.587*d[i*4+1]+.114*d[i*4+2];g[i]=v;sum+=v;sum2+=v*v}
+    var n=W*H,moy=sum/n,ec=Math.sqrt(Math.max(0,sum2/n-moy*moy)),ls=0,ls2=0,m=0;
+    for(var yy=1;yy<H-1;yy++)for(var xx=1;xx<W-1;xx++){var j=yy*W+xx,l=g[j-1]+g[j+1]+g[j-W]+g[j+W]-4*g[j];ls+=l;ls2+=l*l;m++}
+    var lm=ls/m;return{lum:Math.round(moy),contraste:Math.round(ec),nettete:Math.round(ls2/m-lm*lm)};
+  }catch(e){return null}
+}
+var PHOTO_MIN={lumMin:45,lumMax:225,contraste:22,nettete:40};
+function photoProbleme(q){if(!q)return null;
+  if(q.lum<PHOTO_MIN.lumMin)return"photo trop sombre ; prends-la à la lumière du jour ou près d’une fenêtre";
+  if(q.lum>PHOTO_MIN.lumMax)return"photo surexposée (trop claire) ; évite le flash et le plein soleil";
+  if(q.contraste<PHOTO_MIN.contraste)return"on ne distingue pas le livre ; cadre-le en entier sur un fond uni";
+  if(q.nettete<PHOTO_MIN.nettete)return"photo floue ; tiens ton téléphone bien droit, touche l’écran pour faire la mise au point, puis reprends-la";
+  return null}
 async function photoHash(blob){try{var d=await crypto.subtle.digest("SHA-256",await blob.arrayBuffer());return Array.from(new Uint8Array(d)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")}catch(e){return String(blob.size)}}
 ["recto","verso"].forEach(function(k){var P=k==="recto"?"phRecto":"phVerso";
-  $(P).addEventListener("change",async function(){var f=this.files&&this.files[0];if(!f)return;setMsg("sellMsg","");
-    if(!/^image\//.test(f.type)&&!/\.(jpe?g|png|webp|heic|heif)$/i.test(f.name))return setMsg("sellMsg","Choisis une photo (JPEG, PNG ou WebP).","err");
-    if(f.size>20e6)return setMsg("sellMsg","Cette photo est trop lourde (20 Mo maximum).","err");
-    try{var r=await compressPhoto(f)}catch(e){return setMsg("sellMsg","Cette photo n’a pas pu être lue. Essaie en JPEG ou PNG.","err")}
-    if(Math.min(r.w,r.h)<400)return setMsg("sellMsg","Photo trop petite : prends ton livre en photo avec ton téléphone, en entier et bien net.","err");
+  $(P).addEventListener("change",async function(){var f=this.files&&this.files[0];if(!f)return;phErr("");
+    if(!/^image\//.test(f.type)&&!/\.(jpe?g|png|webp|heic|heif)$/i.test(f.name))return phErr("Choisis une photo (JPEG, PNG ou WebP).","err");
+    if(f.size>20e6)return phErr("Cette photo est trop lourde (20 Mo maximum).","err");
+    try{var r=await compressPhoto(f)}catch(e){return phErr("Cette photo n’a pas pu être lue. Essaie en JPEG ou PNG.","err")}
+    if(Math.min(r.w,r.h)<400)return phErr("Photo trop petite : prends ton livre en photo avec ton téléphone, en entier et bien net.","err");
+    var pb=photoProbleme(r.q);
+    if(pb){$(P).value="";$(P+"Box").classList.add("need");return phErr("Photo "+k+" refusée : "+pb+". Le titre et l’état du livre doivent être bien lisibles.","err")}
     var h=await photoHash(r.blob),o=sellPhotos[k==="recto"?"verso":"recto"];
-    if(o&&o.hash===h)return setMsg("sellMsg","Les photos recto et verso sont identiques : photographie aussi le dos du livre.","err");
+    if(o&&o.hash===h)return phErr("Les photos recto et verso sont identiques : photographie aussi le dos du livre.","err");
     if(sellPhotos[k]&&sellPhotos[k].url)URL.revokeObjectURL(sellPhotos[k].url);
-    sellPhotos[k]={blob:r.blob,hash:h,url:URL.createObjectURL(r.blob)};
-    $(P+"Img").src=sellPhotos[k].url;$(P+"Img").hidden=false;$(P+"Box").classList.add("has");$(P+"Box").classList.remove("need")});
+    sellPhotos[k]={blob:r.blob,hash:h,q:r.q,url:URL.createObjectURL(r.blob)};
+    phErr("");$(P+"Img").src=sellPhotos[k].url;$(P+"Img").hidden=false;$(P+"Box").classList.add("has");$(P+"Box").classList.remove("need")});
 });
+function phErr(m,kind){$("phMsg").textContent=m||"";setMsg("sellMsg",m||"",m?(kind||"err"):"")}
+function blobB64(b){return new Promise(function(ok,ko){var r=new FileReader();r.onload=function(){ok(String(r.result).split(",")[1]||"")};r.onerror=ko;r.readAsDataURL(b)})}
+/* Renvoie {ok,recto,verso,correspond} ; null si le service est indisponible (les contrôles locaux restent appliqués) */
+async function verifierPhotos(titre,auteur){
+  try{var r=await sb.functions.invoke("verifier-photos",{body:{titre:titre,auteur:auteur||"",recto:await blobB64(sellPhotos.recto.blob),verso:await blobB64(sellPhotos.verso.blob)}});
+    if(r.error){console.warn("Bookstery : vérification des photos indisponible",r.error);return null}return r.data}
+  catch(e){console.warn("Bookstery : vérification des photos indisponible",e);return null}
+}
 async function uploadPhotos(){
   var dir=current.id+"/"+uuid(),out={},done=[];
   try{for(var k of ["recto","verso"]){var path=dir+"/"+k+".jpg";
@@ -2088,6 +2118,15 @@ $("sellForm").addEventListener("submit",async function(e){
   var btn=$("sellSubmit");busy(btn,true,"Publication…");setMsg("sellMsg","");
   try{
     annonce.vendeur_id=current.id;
+    /* Vérification des photos par IA (vraie photo du livre, nette, lisible, bon livre) */
+    busy(btn,true,"Vérification des photos…");
+    var vp=await verifierPhotos(titre,auteur);
+    if(vp&&vp.ok===false){busy(btn,false);
+      ["recto","verso"].forEach(function(k){if(vp[k]&&!vp[k].ok)$(k==="recto"?"phRectoBox":"phVersoBox").classList.add("need")});
+      var why=(vp.recto&&!vp.recto.ok?"Recto : "+vp.recto.probleme+" ":"")+(vp.verso&&!vp.verso.ok?"Verso : "+vp.verso.probleme+" ":"")+(vp.correspond==="non"?"La couverture ne correspond pas au livre annoncé ("+titre+"). ":"");
+      $("phRectoBox").scrollIntoView({block:"center",behavior:"smooth"});
+      return phErr("Photos refusées. "+why+"Reprends-les bien nettes, à la lumière du jour, avec le livre en entier.")}
+    busy(btn,true,"Publication…");
     var up=await uploadPhotos();annonce.photo_recto_url=up.urls.recto;annonce.photo_verso_url=up.urls.verso;
     var r=await sb.from("annonces").insert(annonce).select("id").single();
     if(r.error){try{await sb.storage.from("photos-annonces").remove(up.paths)}catch(x){}throw r.error}
@@ -3119,7 +3158,7 @@ var AIDE_FAQ=[
  {k:"copier coller copie capture proteger protection texte filigrane",a:"Dans la liseuse, le copier-coller et le clic droit sont bloqués et un filigrane protège le texte : c’est pour respecter le travail des auteurs."},
  {k:"signaler signalement plagiat probleme contenu choquant retrait",a:"En bas de la liseuse, clique sur « **Signaler un plagiat ou un problème** » et choisis une raison (plagiat, contenu choquant, texte IA…). Ton signalement est anonyme pour l’auteur. Après 3 signalements graves, le texte est retiré automatiquement le temps que l’équipe vérifie."},
  {k:"vendre vente annonce mettre en vente vendeur isbn scanner code barres publier",a:"Clique sur « **Vendre un livre** » en haut. Trois façons d’ajouter ton livre :\n• **scanner le code-barres** avec ton téléphone ;\n• **entrer l’ISBN** (10 ou 13 chiffres) : la fiche se remplit toute seule ;\n• « **Livre ancien sans code-barres ?** » pour remplir à la main.\nAjoute ensuite tes photos recto/verso, l’état, la ville et ton prix, puis « Publier mon annonce »."},
- {k:"photo photos recto verso image obligatoire fausse annonce",a:"Les **photos réelles** de ton exemplaire, recto et verso, sont obligatoires : elles prouvent que tu as bien le livre chez toi et montrent son état aux acheteurs. Les images trouvées sur internet ne sont pas acceptées."},
+ {k:"photo photos recto verso image obligatoire fausse annonce",a:"Les **photos réelles** de ton exemplaire, recto et verso, sont obligatoires : elles prouvent que tu as bien le livre chez toi et montrent son état aux acheteurs. Les images trouvées sur internet ne sont pas acceptées, et une photo floue, trop sombre ou illisible est refusée : le titre et l’état du livre doivent bien se voir."},
  {k:"prix argent paye payer vendeur recevoir recois touche toucher gagne gagner combien vends vendu 100 virement",a:"Tu fixes ton prix librement (de 0,50 € à 999 €). **Paiement sécurisé** : tu reçois 100 % de ton prix dès que l’acheteur confirme la réception du livre."},
  {k:"etat comme neuf tres bon bon etat",a:"Trois états possibles : **Comme neuf** (jamais lu ou presque), **Très bon état** (légères traces d’usage), **Bon état** (usure visible mais complet et lisible). Tes photos recto/verso montrent l’état réel."},
  {k:"auteur deposer depot texte ecrire publier mon texte extrait nouvelle roman chapitre espace auteur",a:"Dans la section Auteurs, clique sur « **Envoyer mon texte** » : extrait de roman, premier chapitre ou nouvelle, entre **1 000 et 5 000 mots**, en français. C’est gratuit et ton texte reste le tien. Tu reçois un **certificat d’horodatage**, puis ton texte part en manuscrit mystère dans le Bookstery Drop."},

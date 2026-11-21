@@ -22,6 +22,7 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/localisation.sql` — ville et région des annonces (filtre de localisation)
 - `supabase/moderation.sql` — journal des refus de modération
 - `supabase/signalements.sql` — signalements des lecteurs + retrait automatique
+- `supabase/functions/verifier-photos/` — vérification par IA des photos recto/verso d'une annonce
 - `supabase/functions/aide/` — assistant d’aide (bulle « ? » en bas à droite) : répond à partir de la FAQ `faq.ts`
 - `supabase/functions/deposer-extrait/moderation.ts` — modération stricte par Claude Haiku 5.5
 - `supabase/functions/valider-commande/` — commande + tirage des manuscrits mystères (jetons des QR codes)
@@ -41,7 +42,9 @@ Bouton « Vendre un livre » (en-tête) :
 
 1. Trois façons de trouver le livre : **scanner le code-barres** (caméra du téléphone, ou photo du code-barres), **entrer l'ISBN** (10 ou 13 chiffres), ou **« Livre ancien sans code-barres ? Remplir manuellement »**.
 2. Avec un ISBN, recherche automatique sur Google Books (Open Library en secours) : titre, auteur, résumé, couverture, genre.
-3. **Photos réelles obligatoires** de l'exemplaire, recto et verso, contre les fausses annonces : réduites à 1600 px en JPEG sur le téléphone (métadonnées GPS retirées), photos identiques ou trop petites refusées, affichées sur la fiche du livre. Côté Supabase : `supabase/photos-annonces.sql`.
+3. **Photos réelles obligatoires** de l'exemplaire, recto et verso, contre les fausses annonces : réduites à 1600 px en JPEG sur le téléphone (métadonnées GPS retirées), affichées sur la fiche du livre. Côté Supabase : `supabase/photos-annonces.sql`.
+   - **Contrôle instantané sur le téléphone** : photo trop petite, identique recto/verso, floue (netteté), trop sombre, surexposée ou sans contraste → refusée avec un conseil.
+   - **Vérification par IA au moment de publier** (`supabase functions deploy verifier-photos`) : vraie photo d'un livre physique (pas une capture ou une image de catalogue), titre et texte lisibles, livre visible, couverture qui correspond au titre annoncé. Photo refusée = annonce non publiée. Si le service est indisponible, seuls les contrôles du téléphone s'appliquent.
 4. Le vendeur choisit l'état (Comme neuf, Très bon état, Bon état), la ville et son prix. Encart « Paiement sécurisé : tu reçois 100 % de ton prix dès que l'acheteur confirme la réception ».
 5. L'annonce est enregistrée dans la table `annonces` de Supabase (vendeur connecté requis).
 
