@@ -1050,6 +1050,10 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .modal .btn.pk-manage{margin-top:16px}
 .au-list.boosted .au-item b::after{content:" ⚡ Prioritaire";font-size:11.5px;font-weight:800;color:var(--maj-d);background:var(--maj-l);border-radius:999px;padding:1px 8px;margin-left:6px;white-space:nowrap}
 @media(max-width:560px){.pk-hero{padding:18px}.pk-price b{font-size:28px}.pk-table{font-size:12.5px}.pk-table th:nth-child(4),.pk-table td:nth-child(4){display:none}}
+.dv-badge .gb-word{display:inline;font-size:inherit;color:#FFE7AE}
+.gb-def{display:flex;align-items:flex-start;gap:6px;margin-top:8px;font-size:12.5px;line-height:1.45;color:#FFE7AE}
+.gb-def svg{flex:none;margin-top:1px}
+.gb-def b{display:inline;font-size:inherit;color:#FFD37A}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1175,7 +1179,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
             <li><b>40&nbsp;€</b><span>4 Mystery Drops</span></li>
             <li class="max"><b>50&nbsp;€</b><span>5 Mystery Drops (max)</span></li>
           </ol>
-          <div class="dv-badge"><span>👑</span><div><b>Statut Bookster VIP</b><small>Dès 50&nbsp;€ de livres achetés au total, toutes commandes confondues&nbsp;: badge doré sur ton profil et vote pour le prochain Golden Book.</small></div></div>
+          <div class="dv-badge"><span>👑</span><div><b>Statut Bookster VIP</b><small>Dès 50&nbsp;€ de livres achetés au total, toutes commandes confondues&nbsp;: badge doré sur ton profil et vote pour le prochain <b class="gb-word">Golden Book</b>.</small><span class="gb-def"><svg width="22" height="18" viewBox="0 0 22 18" fill="none" aria-hidden="true"><path d="M3 2v6a5 5 0 0 0 5 5h10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M14 9l4 4-4 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Golden Book</b>&nbsp;: le texte d’auteur élu par les Bookster VIP, publié par une maison d’édition partenaire.</span></span></div></div>
           <p class="dv-note">Tous vendeurs confondus&nbsp;: chaque livre compte.</p>
         </div>
       </div>
@@ -3105,7 +3109,7 @@ var AIDE_FAQ=[
  {k:"acheter commander achat panier bag ajouter commande payer paiement passer",a:"Pour acheter :\n• clique sur « **Ajouter** » sous un livre (ou dans sa fiche) ;\n• ouvre ton **Bookster Bag** en haut ;\n• touche « **Passer au paiement** ».\nIl faut un compte Bookster pour commander."},
  {k:"protection acheteur frais commission 5 0,70 70 centimes cout",a:"La **Protection Acheteur** est de 5 % du montant des livres + 0,70 €. Elle est payée par l’acheteur : le vendeur, lui, ne paie **aucun frais** et reçoit 100 % de son prix."},
  {k:"drop drops mystery bookstery drop manuscrit mystere mysteres cadeau jauge palier offert gratuit 10 20 30 40 50 maximum",a:"Le **Bookstery Drop** glisse des manuscrits mystères (textes inédits d’auteurs indépendants) dans ta commande : **chaque tranche de 10 € de livres dans ton panier** débloque tout de suite un **Mystery Drop**, tous vendeurs confondus :\n• 10 € = 1 Mystery Drop · 20 € = 2 · 30 € = 3 · 40 € = 4\n• 50 € = 5 Mystery Drops (le maximum par commande).\nLe panier t’indique combien il te manque pour le suivant."},
- {k:"vip bookster vip statut badge dore jury golden book vote fidelite cumul 50 recompense profil mecene",a:"Le statut **Bookster VIP** 👑 récompense ta fidélité : tous tes achats de livres s’additionnent, commande après commande. Dès **50 € cumulés**, tu passes VIP automatiquement : badge doré sur ton profil, et tu peux **voter pour le prochain Golden Book**. Ta progression s’affiche en bas de ton panier et dans ton espace."},
+ {k:"vip bookster vip statut badge dore jury golden book vote fidelite cumul 50 recompense profil mecene",a:"Le statut **Bookster VIP** 👑 récompense ta fidélité : tous tes achats de livres s’additionnent, commande après commande. Dès **50 € cumulés**, tu passes VIP automatiquement : badge doré sur ton profil, et tu peux **voter pour le prochain Golden Book** : le texte d’auteur élu par les Bookster VIP, publié par une maison d’édition partenaire. Ta progression s’affiche en bas de ton panier et dans ton espace."},
  {k:"utilitaire utilitaires scolaire manuel cuisine dictionnaire guide essai documentaire exclu exclus pratique",a:"Les **Mystery Drops sont toujours des fictions** (roman, nouvelle, polar, poésie…). Les genres utilitaires et documentaires (scolaire, cuisine, dictionnaires, guides pratiques, essais…) **comptent dans ta jauge** mais sont exclus des Mystery Drops : personne n’a envie de recevoir une page de manuel scolaire en cadeau ! Si ton panier ne contient que ce type de livres, tu choisis le genre de tes manuscrits mystères."},
  {k:"genre cadeau choisir genre secours famille aucun texte",a:"Si ton Bag mélange plusieurs genres, tu choisis celui de ton cadeau avant de payer. S’il n’existe pas encore de texte dans ce genre, on prend un texte de la **même famille** (par exemple Thriller → Polar) ; sinon, tu choisis parmi **tes genres préférés**."},
  {k:"liseuse lire lis lit lecture qr code ouvrir mode nuit manuscrit mystere",a:"Après ta commande, chaque manuscrit mystère a un **QR code** : scanne-le avec ton téléphone pour l’ouvrir dans la liseuse. Tu le retrouves aussi dans « **Mes manuscrits mystères** » (ton espace, ou le raccourci dans le Bag). Fond crème ou **mode nuit**, temps de lecture estimé, et à la fin tu peux noter l’auteur, lui écrire et le suivre."},
