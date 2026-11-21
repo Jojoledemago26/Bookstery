@@ -106,7 +106,8 @@ Deno.serve(async (req) => {
   try { body = await req.json(); } catch { return json(400, { erreur: "Requête illisible." }); }
 
   const titre = (body.titre ?? "").trim();
-  const genre = body.genre ?? "";
+  // Pendant une saison à genre imposé (Saison 1 : Nouvelles), le genre est fixé par le serveur
+  const genre = saisonCourante()?.genre ?? body.genre ?? "";
   const texte = normaliser(body.texte ?? "");
   const nbMots = compterMots(texte);
   if (!titre || titre.length > 200) return json(400, { erreur: "Indique un titre (200 caractères maximum)." });
