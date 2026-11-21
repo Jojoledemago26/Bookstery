@@ -1187,6 +1187,22 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 /* Étapes 1 et 2 : contour bleu Majorelle */
 .sz-steps li:not(:last-child){border:1.5px solid #6050DC;background:rgba(96,80,220,.14);box-shadow:0 0 0 1px rgba(96,80,220,.25),0 10px 24px -14px rgba(96,80,220,.7)}
 .sz-steps li:not(:last-child)::before{box-shadow:0 0 0 3px rgba(96,80,220,.35)}
+/* Liseré défilant de la saison suivante */
+.saison{flex-wrap:wrap;padding-bottom:0!important}
+.saison .sz-l{flex:1 1 100%;min-width:0}
+.saison{min-width:0;max-width:100%}
+.sz-ruban{min-width:0;max-width:none;width:auto;contain:inline-size}
+.sz-ruban{flex:1 1 100%;margin:18px -30px 0;overflow:hidden;border-top:1px solid rgba(169,159,255,.3);background:rgba(255,255,255,.04);white-space:nowrap;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.saison.auteur .sz-ruban{margin:14px -20px 0}
+.sz-rt{display:inline-flex;animation:szRuban 38s linear infinite}
+.sz-ruban:hover .sz-rt{animation-play-state:paused}
+.sz-ri{display:inline-flex;align-items:center;gap:6px;padding:7px 22px;font-size:12px;font-weight:700;letter-spacing:.03em;color:rgba(255,255,255,.55)}
+.sz-ri::after{content:"✦";margin-left:22px;color:rgba(169,159,255,.6)}
+.sz-ri .sz-cd{font-size:12px;opacity:1;color:rgba(255,255,255,.75)}
+.sz-ri .sz-cd b{font-size:12.5px;font-weight:800;color:#C9C2FF}
+@keyframes szRuban{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(max-width:760px){.sz-ruban{margin:16px -18px 0}}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1250,7 +1266,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
   </div>
 
   <div class="wrap">
-    <div class="saison-slot" data-saison="accueil"><section class="saison accueil" aria-label="Bookster Thème Saison 1"><div class="sz-l"><span class="sz-k">✦ Bookster Thème · Saison 1 <i>(janvier – juin 2027)</i></span><h2 class="sz-t">Spécial Nouvelles</h2><p class="sz-p">Tous les Mystery Drops de cette saison mettent à l’honneur la nouvelle littéraire&nbsp;!</p><div class="sz-rc"><b class="sz-rc-t">📚 Format Recueil Collectif</b><ol class="sz-steps"><li><span>Janvier → mai</span>Les nouvelles déposées partent en Mystery Drops et sont lues, notées par les Booksters.</li><li><span>Juin · la finale</span>Les <b>Bookster VIP</b> élisent le <b>Top 8</b> des meilleures nouvelles de la saison.</li><li><span>Le palmarès</span>Le n°1 est sacré <b>🏆 Golden Bookster</b>, en tête d’affiche du livre, et les <b>8 lauréats</b> sont publiés ensemble dans le premier <b>Recueil Collectif Bookstery</b>, en librairie partenaire.</li></ol><a class="sz-reg" href="legal.html#c-saison1">Lire le règlement de la saison →</a></div><button class="sz-btn" type="button" data-auteur>Écrire ma nouvelle</button></div><div class="sz-r"><span class="sz-soon">🔒 Pas encore disponible</span><span class="sz-cd-k">Ouverture de la Saison 2</span><span class="sz-cd">1er juillet 2027</span><span class="sz-cd-n">Thème bientôt dévoilé</span></div></section></div>
+    <div class="saison-slot" data-saison="accueil"><section class="saison accueil" aria-label="Bookster Thème Saison 1"><div class="sz-l"><span class="sz-k">✦ Bookster Thème · Saison 1 <i>(janvier – juin 2027)</i></span><h2 class="sz-t">Spécial Nouvelles</h2><p class="sz-p">Tous les Mystery Drops de cette saison mettent à l’honneur la nouvelle littéraire&nbsp;!</p><div class="sz-rc"><b class="sz-rc-t">📚 Format Recueil Collectif</b><ol class="sz-steps"><li><span>Janvier → mai</span>Les nouvelles déposées partent en Mystery Drops et sont lues, notées par les Booksters.</li><li><span>Juin · la finale</span>Les <b>Bookster VIP</b> élisent le <b>Top 8</b> des meilleures nouvelles de la saison.</li><li><span>Le palmarès</span>Le n°1 est sacré <b>🏆 Golden Bookster</b>, en tête d’affiche du livre, et les <b>8 lauréats</b> sont publiés ensemble dans le premier <b>Recueil Collectif Bookstery</b>, en librairie partenaire.</li></ol><a class="sz-reg" href="legal.html#c-saison1">Lire le règlement de la saison →</a></div><button class="sz-btn" type="button" data-auteur>Écrire ma nouvelle</button></div><div class="sz-ruban" role="note"><div class="sz-rt"><span class="sz-ri">🔒 Saison 2 · pas encore disponible</span><span class="sz-ri">Ouverture le 1er juillet 2027</span><span class="sz-ri">Thème bientôt dévoilé</span><span class="sz-ri">🔒 Saison 2 · pas encore disponible</span><span class="sz-ri">Ouverture le 1er juillet 2027</span><span class="sz-ri">Thème bientôt dévoilé</span><span class="sz-ri">🔒 Saison 2 · pas encore disponible</span><span class="sz-ri">Ouverture le 1er juillet 2027</span><span class="sz-ri">Thème bientôt dévoilé</span><span class="sz-ri">🔒 Saison 2 · pas encore disponible</span><span class="sz-ri">Ouverture le 1er juillet 2027</span><span class="sz-ri">Thème bientôt dévoilé</span></div></div></section></div>
     <div class="themes-slot" data-themes="accueil"><section class="bt accueil" aria-label="Boîte à Thèmes Saison 2"><div class="bt-l"><span class="bt-k">💡 Boîte à Thèmes · Saison 2</span><h3 class="bt-t">Quel thème pour la Saison 2&nbsp;?</h3><p class="bt-p">Propose le prochain Bookster Thème&nbsp;: la communauté décide, et Bookstery l’écoute.</p><div class="bt-grid"><span class="bt-g">Aventure</span><span class="bt-g">BD</span><span class="bt-g">Classiques</span><span class="bt-g">Fantasy</span><span class="bt-g">Feel-good</span><span class="bt-g">Horreur</span><span class="bt-g">Manga</span><span class="bt-g">Nouvelles</span><span class="bt-g">Poésie</span><span class="bt-g">Polar</span><span class="bt-g">Romance</span><span class="bt-g">Science-fiction</span><span class="bt-g">Thriller</span><span class="bt-g">Young Adult</span></div></div><div class="bt-r"><div class="bt-live"><span class="bt-dot"></span>Tendances en direct</div><p class="bt-empty">Chargement des tendances…</p></div></section></div>
     <ul class="vprops" aria-label="Pourquoi Bookstery">
       <li><span class="vp-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5Z"/><path d="M8 7h7M8 11h5"/></svg></span><div><b>Des livres d’occasion près de chez toi</b><span>Vendus par des Booksters, avec photos réelles de chaque exemplaire.</span></div></li>
@@ -3556,6 +3572,9 @@ function saisonCourante(){var n=Date.now();for(var i=0;i<SAISONS.length;i++)if(n
 function saisonSuivante(c){var i=SAISONS.indexOf(c);return i>-1?SAISONS[i+1]||null:null}
 function rebours(ms){if(ms<=0)return"c’est ouvert !";var j=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4),s2=Math.floor(ms%6e4/1e3);
   return'<b>'+j+'</b> j <b>'+String(h).padStart(2,"0")+'</b> h <b>'+String(m).padStart(2,"0")+'</b> min <b>'+String(s2).padStart(2,"0")+'</b> s'}
+/* Liseré défilant (Saison suivante, pas encore disponible) : le contenu est doublé pour un défilement sans coupure */
+function szRuban(nx){var item='<span class="sz-ri">🔒 '+esc(nx.nom)+' · pas encore disponible</span><span class="sz-ri">Ouverture dans <b class="sz-cd" data-cd="'+esc(nx.debut)+'">'+rebours(Date.parse(nx.debut)-Date.now())+'</b></span><span class="sz-ri">'+esc(nx.theme)+'</span>';
+  return'<div class="sz-ruban" role="note" aria-label="'+esc(nx.nom)+' : pas encore disponible, ouverture le 1er juillet 2027"><div class="sz-rt">'+item+item+item+item+'</div></div>'}
 function saisonBanner(ctx){var c=saisonCourante();if(!c)return"";var nx=saisonSuivante(c),avant=Date.now()<Date.parse(c.debut);
   return'<section class="saison '+ctx+'" aria-label="Bookster Thème '+esc(c.nom)+'">'+
     '<div class="sz-l"><span class="sz-k">✦ Bookster Thème · '+esc(c.nom)+' <i>('+esc(c.periode)+')</i></span>'+
@@ -3564,7 +3583,7 @@ function saisonBanner(ctx){var c=saisonCourante();if(!c)return"";var nx=saisonSu
     (ctx==="auteur"?'<p class="sz-lock">🔒 Dépôts de la saison : <b>format '+esc(c.formatNom||"libre")+'</b> uniquement.</p>':"")+
     (c.recueil?'<div class="sz-rc"><b class="sz-rc-t">📚 Format Recueil Collectif</b><ol class="sz-steps"><li><span>Janvier → mai</span>Les nouvelles déposées partent en Mystery Drops et sont lues, notées par les Booksters.</li><li><span>Juin · la finale</span>Les <b>Bookster VIP</b> élisent le <b>Top 8</b> des meilleures nouvelles de la saison.</li><li><span>Le palmarès</span>Le n°1 est sacré <b>🏆 Golden Bookster</b>, en tête d’affiche du livre, et les <b>8 lauréats</b> sont publiés ensemble dans le premier <b>Recueil Collectif Bookstery</b>, en librairie partenaire.</li></ol><a class="sz-reg" href="legal.html#c-saison1">Lire le règlement de la saison →</a></div>':"")+
     (ctx==="accueil"?'<button class="sz-btn" type="button" data-auteur>Écrire ma nouvelle</button>':"")+'</div>'+
-    (nx?'<div class="sz-r"><span class="sz-soon">🔒 Pas encore disponible</span><span class="sz-cd-k">Ouverture de la '+esc(nx.nom)+'</span><span class="sz-cd" data-cd="'+esc(nx.debut)+'">'+rebours(Date.parse(nx.debut)-Date.now())+'</span><span class="sz-cd-n">'+esc(nx.theme)+'</span></div>':"")+
+    (nx?szRuban(nx):"")+
   '</section>'}
 function renderSaisons(){document.querySelectorAll(".saison-slot").forEach(function(el){el.innerHTML=saisonBanner(el.getAttribute("data-saison"))});
   var c=saisonCourante(),row=$("exFormatRow");
