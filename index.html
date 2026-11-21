@@ -1125,6 +1125,11 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .bt-sugg button{border:1.5px solid var(--maj-l);background:#fff;color:var(--maj-d);border-radius:999px;padding:5px 11px;font:700 12.5px var(--sans);cursor:pointer;transition:transform .15s,background .15s}
 .bt-sugg button:hover{background:var(--maj-xl);transform:translateY(-2px)}
 .bt-msg{margin:8px 0 0!important;font-size:13px!important;min-height:0}.bt-msg:empty{display:none}.bt-msg.err{color:#C0263A!important;font-weight:600}
+.bt-msg.wait{background:var(--maj-xl);border:1px solid #CFCAF6;border-left:4px solid var(--maj);border-radius:10px;padding:9px 12px;color:var(--ink)!important;line-height:1.5;animation:btWait .35s ease-out}
+.bt-msg.wait b{color:var(--maj-d)}.bt-msg.wait .bt-go{display:inline-block;margin-left:4px;font-weight:800;color:var(--maj);text-decoration:none;white-space:nowrap}.bt-msg.wait .bt-go:hover{text-decoration:underline}
+@keyframes btWait{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.bt-g[aria-disabled="true"]:not(.on){opacity:.6}.bt-g.nudge{animation:btNudge .4s}
+@keyframes btNudge{0%,100%{transform:none}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
 .bt-done{display:flex;gap:12px;align-items:center;background:#E8F6EE;border-radius:14px;padding:12px 14px}
 .bt-done span{font-size:22px}.bt-done b{display:block;color:#14482E;font-size:14.5px}.bt-done small{font-size:12.5px;color:#2F6B4B}
 .bt-login{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--maj-xl);border-radius:14px;padding:12px 14px}
@@ -3639,7 +3644,7 @@ function themesSimuler(){var tick=function(){var top=themeTop().slice(0,5),r=Mat
 function themeFormHtml(nx){
   var voted=!!THEMES.mine,ferme=!voteOuvert(),login=sb&&!current&&!ferme,mineK=voted?themeCle(THEMES.mine):null;
   var chips=genresVotables().map(function(g){var k=themeCle(g),c=THEMES.counts[k],n=c?c.votes:0,on=k===mineK;
-    return'<button type="button" class="bt-g'+(on?" on":"")+'" data-btg="'+esc(g)+'" aria-pressed="'+on+'"'+(voted||login||ferme?" disabled":"")+' aria-label="Voter pour '+esc(g)+(n?", "+n+" vote"+(n>1?"s":""):"")+'">'+esc(g)+(n?'<small>'+n+'</small>':"")+'</button>'}).join("");
+    return'<button type="button" class="bt-g'+(on?" on":"")+'" data-btg="'+esc(g)+'" aria-pressed="'+on+'"'+(voted||login?" disabled":"")+(ferme?' aria-disabled="true"':"")+' aria-label="Voter pour '+esc(g)+(n?", "+n+" vote"+(n>1?"s":""):"")+'">'+esc(g)+(n?'<small>'+n+'</small>':"")+'</button>'}).join("");
   return'<form class="bt-form'+(voted?" voted":"")+'" novalidate>'+
     (voted?'<div class="bt-done"><span>✅</span><div><b>Merci ! Tu as voté pour « '+esc(THEMES.mine)+' »</b><small>Un seul vote par membre et par saison : ton choix est définitif. Suis son classement en direct →</small></div></div>'
       :ferme?'<p class="bt-closed">🔒 Vote disponible à partir du lancement de la '+esc(nx.nom)+', le '+new Date(nx.debut).toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric",timeZone:"Europe/Paris"}).replace(/^1 /,"1er ")+'. En attendant, découvre les genres en lice.</p>'
@@ -3668,8 +3673,11 @@ function renderThemeCharts(){
 }
 var themeEnCours=false;
 async function themeVoter(g,btn){
-  if(themeEnCours||THEMES.mine||!voteOuvert())return;                  /* un seul vote, jamais de double envoi */
   var form=btn.closest(".bt-form"),msg=form.querySelector(".bt-msg");
+  if(!voteOuvert()){var nx=themeCible();                                 /* vote pas encore ouvert : message d’attente */
+    msg.className="bt-msg wait";msg.innerHTML='<b>Patience, Bookster&nbsp;! ⏳</b> La '+esc(nx?nx.nom:"prochaine saison")+' n’est pas encore lancée&nbsp;: ton vote pour « '+esc(g)+' » attendra le '+(nx?new Date(nx.debut).toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric",timeZone:"Europe/Paris"}).replace(/^1 /,"1er "):"lancement")+'. En attendant, plonge dans les nouvelles de la Saison&nbsp;1&nbsp;: remplis ton Bag et reçois-les en Mystery Drop&nbsp;📚 <a href="#catalogue" class="bt-go">Découvrir les livres →</a>';
+    btn.classList.remove("nudge");void btn.offsetWidth;btn.classList.add("nudge");try{msg.scrollIntoView({block:"nearest",behavior:"smooth"})}catch(e){}return}
+  if(themeEnCours||THEMES.mine)return;                                   /* un seul vote, jamais de double envoi */
   var err=function(t){msg.textContent=t;msg.className="bt-msg err"};
   if(genresVotables().indexOf(g)<0)return err("Ce genre ne peut pas être choisi.");
   if(sb&&!current)return err("Connecte-toi pour voter.");
