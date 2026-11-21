@@ -1078,6 +1078,35 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 .refus .q-note{display:inline;font-size:16px;margin:0}
 .arch-tag{display:inline-block;margin:4px 6px 2px 0;font-size:11.5px;font-weight:800;color:#7A4E00;background:#FFF4D6;border-radius:999px;padding:2px 9px;cursor:help}
 .q-tag{display:inline-block;margin:4px 0 2px 6px;font-size:11.5px;font-weight:800;color:var(--maj-d);background:var(--maj-l);border-radius:999px;padding:2px 9px}
+/* ---------- Bookster Thème (bannière saisonnière) ---------- */
+.saison{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:24px;border-radius:24px;padding:26px 30px;color:#fff;
+  background:radial-gradient(500px 220px at 0% 0%,rgba(96,80,220,.55),transparent 60%),radial-gradient(400px 200px at 100% 100%,rgba(96,80,220,.45),transparent 60%),#0B0B10;
+  border:1px solid rgba(169,159,255,.35);box-shadow:0 20px 44px -24px rgba(96,80,220,.7)}
+.saison::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 2px,transparent 2px 14px);pointer-events:none}
+.saison>*{position:relative}
+.saison.accueil{margin:8px 0 18px}
+.saison.auteur{margin:6px 0 14px;padding:18px 20px;border-radius:18px}
+.sz-k{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#C9C2FF}
+.sz-k i{font-style:normal;text-transform:none;letter-spacing:0;color:#fff;opacity:.75;font-weight:600}
+.sz-t{margin:6px 0 4px;font-size:clamp(24px,3vw,34px);letter-spacing:-.02em;color:#fff;font-family:"Literata",Georgia,serif;font-weight:700}
+.saison.auteur .sz-t{font-size:22px}
+.saison.auteur .sz-pre{display:table;margin-top:6px}
+.sz-p{margin:0!important;color:rgba(255,255,255,.92)!important;font-size:15.5px;line-height:1.5;max-width:40em}
+.sz-pre{display:inline-block;white-space:nowrap;margin:4px 0 0;font-size:12.5px;font-weight:800;color:#0B0B10;background:#fff;border-radius:999px;padding:1px 9px}
+.sz-gb,.sz-lock{margin:8px 0 0!important;font-size:13.5px!important;color:#C9C2FF!important}
+.sz-lock b,.sz-gb b{color:#fff}
+.sz-btn{margin-top:14px;border:0;border-radius:999px;background:#fff;color:#0B0B10;font:800 14.5px var(--sans);padding:11px 20px;cursor:pointer;transition:transform .2s,background .2s}
+.sz-btn:hover{transform:translateY(-2px);background:#EEECFC}
+.sz-r{flex:none;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:18px;padding:14px 18px;min-width:220px}
+.sz-cd-k{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#C9C2FF}
+.sz-cd{font-size:14px;color:#fff;opacity:.9;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sz-cd b{font-size:24px;font-weight:800;color:#fff;opacity:1}
+.sz-cd-n{font-size:12.5px;color:#fff;opacity:.7}
+.saison.auteur .sz-r{min-width:0;padding:10px 12px}.saison.auteur .sz-cd b{font-size:18px}
+.sz-check{background:var(--maj-xl);border:1px solid var(--maj-l);border-radius:12px;padding:10px 12px}
+.sz-bag{margin:0!important;font-size:12.5px!important;color:#fff!important;background:#0B0B10;border-radius:12px;padding:9px 11px;line-height:1.45}
+.sz-bag b{color:#C9C2FF}
+@media(max-width:760px){.saison{flex-direction:column;align-items:stretch;padding:22px 18px}.sz-r{min-width:0}.sz-cd b{font-size:20px}}
 @media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -1141,6 +1170,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
   </div>
 
   <div class="wrap">
+    <div class="saison-slot" data-saison="accueil"></div>
     <ul class="vprops" aria-label="Pourquoi Bookstery">
       <li><span class="vp-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5Z"/><path d="M8 7h7M8 11h5"/></svg></span><div><b>Des livres d’occasion près de chez toi</b><span>Vendus par des Booksters, avec photos réelles de chaque exemplaire.</span></div></li>
       <li><span class="vp-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1.5S10 8 12 8Zm0 0c2-4 6-4 6-1.5S14 8 12 8Z"/></svg></span><div><b>Un manuscrit mystère offert dès 10&nbsp;€</b><span>Un texte inédit d’un auteur indépendant glissé dans ton panier.</span></div></li>
@@ -1615,7 +1645,8 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
   <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   <span class="a-kicker">Espace auteur</span>
   <h2 id="auTitle">Partage ton texte</h2>
-  <p>Extrait de roman, premier chapitre ou nouvelle&nbsp;: colle ici les pages que tu as envie de faire lire. Dès le dépôt, un certificat d’horodatage prouve que tu en es l’auteur. Et pour que Bookstery reste 100&nbsp;% humain, chaque texte passe par un détecteur d’IA&nbsp;: au-delà de 50&nbsp;% d’écriture générée, il est refusé.</p>
+  <div class="saison-slot" data-saison="auteur"></div>
+  <p id="auIntro">Extrait de roman, premier chapitre ou nouvelle&nbsp;: colle ici les pages que tu as envie de faire lire. Dès le dépôt, un certificat d’horodatage prouve que tu en es l’auteur. Et pour que Bookstery reste 100&nbsp;% humain, chaque texte passe par un détecteur d’IA&nbsp;: au-delà de 50&nbsp;% d’écriture générée, il est refusé.</p>
 
   <div class="au-tabs" role="tablist">
     <button type="button" role="tab" id="tabDepot" aria-selected="true" aria-controls="auDepot">Nouveau dépôt</button>
@@ -1648,6 +1679,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
       </div>
       <button class="photo-link" type="button" id="exImport">Importer un fichier texte (.txt)</button>
       <input type="file" id="exFile" accept=".txt,.md,text/plain" hidden>
+      <label class="check sz-check" id="exFormatRow" hidden><input type="checkbox" id="exFormat"> <span id="exFormatTxt">Mon texte est une nouvelle courte complète, avec un début, un développement et une fin.</span></label>
       <label class="check"><input type="checkbox" id="exCert" required> <span>Je certifie sur l’honneur être l’auteur unique de ce texte original et inédit. <small class="cert-small">Tout plagiat entraîne le retrait du texte et la fermeture du compte.</small></span></label>
       <p class="sell-note" id="auNote" hidden></p>
       <p class="form-msg" id="auMsg" role="alert"></p>
@@ -2457,7 +2489,7 @@ function dropBlockHtml(t){
   var sg=t.next?suggestions(t.missing):[];
   return'<section class="drop-box" aria-label="Mystery Drops de ta commande"><p class="prog-l"><span class="drop-k">⚡ Mystery Drops de ta commande</span>'+label+'</p>'+
     gaugeHtml("cart",pos,end,marks,"Mystery Drops de ta commande : "+EUR.format(t.books)+", "+drops(t.gifts))+
-    '<p class="util-note'+(t.utils.length?" on":"")+'"><span aria-hidden="true">ℹ️</span><span><b>Mystery Drops = fictions uniquement.</b> Les genres utilitaires (scolaire, cuisine, dictionnaires, guides pratiques, essais…) comptent dans ta jauge mais sont exclus des Mystery Drops : personne n’a envie de recevoir une page de manuel scolaire en cadeau&nbsp;!'+(t.utils.length?" Dans ton panier : "+t.utils.map(esc).join(", ")+".":"")+'</span></p>'+
+    '<p class="util-note'+(t.utils.length?" on":"")+'"><span aria-hidden="true">ℹ️</span><span><b>Mystery Drops = fictions uniquement.</b> Les genres utilitaires (scolaire, cuisine, dictionnaires, guides pratiques, essais…) comptent dans ta jauge mais sont exclus des Mystery Drops : personne n’a envie de recevoir une page de manuel scolaire en cadeau&nbsp;!'+(t.utils.length?" Dans ton panier : "+t.utils.map(esc).join(", ")+".":"")+'</span></p>'+(saisonCourante()&&saisonCourante().format?'<p class="sz-bag">✦ <b>'+esc(saisonCourante().nom)+' · '+esc(saisonCourante().theme)+'</b> : tes Mystery Drops sont choisis parmi les nouvelles approuvées de la saison.</p>':"")+
     (t.next?'<div class="nudge"><p>Plus que <b>'+EUR.format(t.missing)+'</b> dans ton panier pour ton '+ordinal(t.gifts+1)+' Mystery Drop !</p>'+
     (sg.length?'<ul class="sugg">'+sg.map(function(b){return'<li><span>'+esc(b.titre)+'</span><em>'+EUR.format(b.prix)+'</em>'+addBtn(b,true)+'</li>'}).join("")+'</ul>':"")+'</div>':'<div class="drop-max">🎉 Maximum atteint : <b>5 Mystery Drops</b> offerts avec cette commande !</div>')+'</section>';
 }
@@ -2627,9 +2659,10 @@ var MOD_MSG={
   plagiat:"Ton texte ne peut pas être déposé : il reprend une œuvre déjà publiée. Bookstery accueille uniquement des textes originaux et inédits, écrits par leur auteur. Si tu penses qu’il s’agit d’une erreur, contacte-nous.",
   pas_en_francais:"Pour l’instant, Bookstery accueille uniquement des textes écrits en français. Si tu as une version française de ton texte, n’hésite pas à la déposer !",
   pas_litteraire:"Ton envoi ne ressemble pas à une œuvre littéraire (extrait de roman, nouvelle, conte, poésie…). Bookstery accueille uniquement des textes de création : dépose plutôt un extrait de ton histoire.",
+  hors_theme:"Cette saison, le Bookster Thème est « Spécial Nouvelles » : on accueille uniquement des nouvelles courtes complètes, avec un début, un développement et une fin. Ton texte ressemble plutôt à un extrait ou à un chapitre d’un récit plus long. Tu peux le retravailler en nouvelle, ou le garder pour une prochaine saison !",
   qualite_insuffisante:"Ton texte a du potentiel, mais il n’est pas encore tout à fait prêt à être offert aux lecteurs : notre relecture automatique lui donne une note de qualité rédactionnelle inférieure à 6/10 (orthographe, syntaxe, narration). Prends le temps de te relire, à voix haute si possible, ou de le faire relire par un proche, puis dépose-le à nouveau. On a hâte de te lire !",
   illisible_ou_fautes:"Ton texte mérite une relecture avant d’être offert aux lecteurs : nous y avons repéré de nombreuses fautes ou des passages difficiles à lire. Prends le temps de le relire, ou de le faire relire par un proche, puis dépose-le à nouveau. On a hâte de te lire !"};
-var MOD_TITRE={qualite_insuffisante:"Encore une petite relecture ?",contenu_interdit:"Ce texte ne peut pas être publié",plagiat:"Texte déjà publié : dépôt bloqué",pas_en_francais:"Un texte en français, s’il te plaît",pas_litteraire:"Ce n’est pas encore une histoire",illisible_ou_fautes:"Encore une petite relecture ?"};
+var MOD_TITRE={hors_theme:"Hors thème pour cette saison",qualite_insuffisante:"Encore une petite relecture ?",contenu_interdit:"Ce texte ne peut pas être publié",plagiat:"Texte déjà publié : dépôt bloqué",pas_en_francais:"Un texte en français, s’il te plaît",pas_litteraire:"Ce n’est pas encore une histoire",illisible_ou_fautes:"Encore une petite relecture ?"};
 function showModRefus(motif,msg,conseil,oeuvre,note){
   var hard=motif==="contenu_interdit"||motif==="plagiat";
   if(oeuvre)conseil=null;
@@ -2737,6 +2770,7 @@ $("auForm").addEventListener("submit",async function(e){
   var titre=$("exTitre").value.trim(),genre=$("exGenre").value,texte=normTexte($("exTexte").value),n=nbMots(texte),btn=$("auSubmit");
   if(!titre){$("exTitre").focus();return setMsg("auMsg","Donne un titre à ton texte.","err")}
   if(!genre){$("exGenre").focus();return setMsg("auMsg","Choisis le genre de ton texte.","err")}
+  var sz=saisonCourante();if(sz&&sz.format&&!$("exFormat").checked){$("exFormat").focus();return setMsg("auMsg","Cette saison, le Bookster Thème est « "+sz.theme+" » : coche la case pour confirmer que ton texte est au format "+sz.formatNom.toLowerCase()+".","err")}
   if(texte.length<EX_MIN_CAR){$("exTexte").focus();return setMsg("auMsg","Ton texte est trop court : il doit faire au moins 2 500 caractères (il en fait "+NF.format(texte.length)+").","err")}
   if(n<EX_MIN||n>EX_MAX){$("exTexte").focus();return setMsg("auMsg","Ton texte doit faire entre 1 000 et 5 000 mots (il en fait "+NF.format(n)+").","err")}
   if(!$("exCert").checked){$("exCert").focus();return setMsg("auMsg","Coche la case : tu dois certifier sur l’honneur être l’auteur unique de ce texte original et inédit.","err")}
@@ -2789,7 +2823,7 @@ function exemple(type){
   else if(type==="fautes"){t=base.replace(/[.!?;:…«»,]/g,"").replace(/\bc’était\b/gi,"cété").replace(/\bqu(e|i)\b/gi,function(m,x){return x==="e"?"ke":"ki"}).replace(/\best\b/g,"é").replace(/\bbeaucoup\b/g,"bcp").replace(/\bpourquoi\b/g,"pk").replace(/\bavait\b/g,"avé").replace(/\bses\b/g,"cé");titre="brouillar sur le kai"}
   else if(type==="recette"){var l=["Ingrédients pour 6 personnes :","- 250 g de farine","- 4 oeufs","- 50 cl de lait","- 30 g de beurre fondu","- 1 pincée de sel","Préchauffez le four à 180 °C.","Mélangez la farine et le sel dans un saladier.","Ajoutez les oeufs un à un avec une cuillère en bois.","Versez le lait petit à petit en mélangeant.","Faites cuire 25 minutes et laissez refroidir."],o=[];while(o.join(" ").split(/\s+/).length<1100)o=o.concat(l);t=o.join("\n");titre="Ma recette de clafoutis";genre="Romans"}
   else{var e="The fog had risen from the river before dawn and swallowed the barges one by one. Inspector Vasseur liked this hour, when the city hesitated between night and day. She said it was the time when people forgot to lie. Someone had left a book on a bench by the quay, open at page one hundred and twelve, with an old brass key between the pages.",o2=[];while(o2.join(" ").split(/\s+/).length<1100)o2.push(e);t=o2.join("\n\n");titre="Fog on the quay"}
-  $("exTitre").value=titre;$("exGenre").value=genre;$("exTexte").value=t;$("exCert").checked=true;calib();
+  $("exTitre").value=titre;$("exGenre").value=genre;$("exTexte").value=t;$("exCert").checked=true;if($("exFormat"))$("exFormat").checked=true;calib();
   setMsg("auMsg","");$("auResult").hidden=true;$("auSteps").hidden=true;
   $("auSubmit").scrollIntoView({behavior:"smooth",block:"center"});$("auSubmit").classList.add("tour-hi");setTimeout(function(){$("auSubmit").classList.remove("tour-hi")},2500);
 }
@@ -3205,6 +3239,7 @@ var AIDE_FAQ=[
  {k:"auteur deposer depot texte ecrire publier mon texte extrait nouvelle roman chapitre espace auteur",a:"Dans la section Auteurs, clique sur « **Envoyer mon texte** » : extrait de roman, premier chapitre ou nouvelle, entre **1 000 et 5 000 mots**, en français. C’est gratuit et ton texte reste le tien. Tu reçois un **certificat d’horodatage**, puis ton texte part en manuscrit mystère dans le Bookstery Drop."},
  {k:"refuse refus pourquoi depot bloque verification moderation ia detecteur plagiat fautes",a:"Avant tout dépôt, on vérifie que le texte est **original** (anti-plagiat), conforme à la charte, en français, littéraire et lisible, puis le **détecteur d’IA** (au-delà de 50 % d’écriture générée, il est refusé). Le message de refus t’explique la raison ; pour des fautes, tu peux relire et redéposer."},
  {k:"fondateur badge fondateur createur textes du fondateur",a:"Pour lancer la plateforme, le **fondateur de Bookstery** partage ses propres textes. Ils portent le badge **★ Fondateur Bookstery**, passent les mêmes vérifications que les autres, sont tirés dans les Mystery Drops **sans aucune priorité**, et ne peuvent pas gagner le Golden Book ni les prix des librairies partenaires."},
+ {k:"saison saisons theme thematique bookster theme nouvelles nouvelle speciale semestre saison 2 golden book concours",a:"Chaque semestre a son **Bookster Thème**. **Saison 1 (janvier – juin 2027) : Spécial Nouvelles** : tous les Mystery Drops de la saison mettent à l’honneur la nouvelle littéraire, les auteurs déposent des nouvelles courtes complètes, et le Golden Book de la saison est élu parmi elles. Dès 10 € d’achat, quel que soit le livre, ton Mystery Drop est une nouvelle de la saison. La Saison 2 ouvre le 1er juillet 2027 : compte à rebours sur l’accueil !"},
  {k:"pack accelerateur abonnement auteur boost prioritaire statistiques stats 15 resilier arreter desabonner",a:"Le **Pack Accélérateur Auteurs** coûte **15 € par mois, sans engagement**. Tant qu’il est actif, ton texte a **3× plus de chances** d’être tiré dans les Mystery Drops de son genre, et tu vois **tes statistiques de lecture** (envois, lectures, avis, note, abonnés). Pour l’activer ou l’arrêter : Espace auteur, onglet « ⚡ Pack Accélérateur ». L’arrêt se fait en 1 clic et le Pack reste actif jusqu’à la fin du mois payé."},
  {k:"certificat horodatage preuve sha empreinte droit auteur",a:"Ton **certificat d’horodatage** contient la date et l’heure du dépôt et une empreinte SHA-256 unique de ton texte : il prouve que tu l’avais écrit à cette date. Tu le retrouves dans « **Mes textes déposés** »."},
  {k:"avis note noter etoiles suivre abonne auteur commentaire",a:"À la fin d’un manuscrit mystère, tu peux noter l’auteur (1 à 5 étoiles), lui laisser un mot (il le reçoit par e-mail) et le **suivre**."},
@@ -3419,6 +3454,32 @@ document.addEventListener("click",function(e){
 });
 $("suTabA").addEventListener("click",function(){suMode="achats";renderSuivi()});
 $("suTabV").addEventListener("click",function(){suMode="ventes";renderSuivi()});
+
+/* ================= Bookster Thème : un thème par semestre ================= */
+/* Même calendrier que supabase/functions/_shared/saisons.ts (à garder identique) */
+var SAISONS=[
+  {id:"2027-S1",nom:"Saison 1",periode:"janvier – juin 2027",debut:"2027-01-01T00:00:00+01:00",fin:"2027-07-01T00:00:00+02:00",theme:"Spécial Nouvelles",format:"nouvelle",formatNom:"Nouvelle courte",
+   accroche:"Tous les Mystery Drops de cette saison mettent à l’honneur la nouvelle littéraire !",consigne:"Mon texte est une nouvelle courte complète, avec un début, un développement et une fin."},
+  {id:"2027-S2",nom:"Saison 2",periode:"juillet – décembre 2027",debut:"2027-07-01T00:00:00+02:00",fin:"2028-01-01T00:00:00+01:00",theme:"Thème bientôt dévoilé",format:null,formatNom:null,accroche:"",consigne:""}
+];
+function saisonCourante(){var n=Date.now();for(var i=0;i<SAISONS.length;i++)if(n<Date.parse(SAISONS[i].fin))return SAISONS[i];return null}
+function saisonSuivante(c){var i=SAISONS.indexOf(c);return i>-1?SAISONS[i+1]||null:null}
+function rebours(ms){if(ms<=0)return"c’est ouvert !";var j=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4),s2=Math.floor(ms%6e4/1e3);
+  return'<b>'+j+'</b> j <b>'+String(h).padStart(2,"0")+'</b> h <b>'+String(m).padStart(2,"0")+'</b> min <b>'+String(s2).padStart(2,"0")+'</b> s'}
+function saisonBanner(ctx){var c=saisonCourante();if(!c)return"";var nx=saisonSuivante(c),avant=Date.now()<Date.parse(c.debut);
+  return'<section class="saison '+ctx+'" aria-label="Bookster Thème '+esc(c.nom)+'">'+
+    '<div class="sz-l"><span class="sz-k">✦ Bookster Thème · '+esc(c.nom)+' <i>('+esc(c.periode)+')</i></span>'+
+    '<h2 class="sz-t">'+esc(c.theme)+'</h2>'+
+    '<p class="sz-p">'+esc(c.accroche)+(avant?" <span class=\"sz-pre\">Avant-première : les dépôts sont déjà ouverts.</span>":"")+'</p>'+
+    (ctx==="auteur"?'<p class="sz-lock">🔒 Dépôts de la saison : <b>format '+esc(c.formatNom||"libre")+'</b> uniquement.</p>':'<p class="sz-gb">🏆 Concours <b>Golden Book</b> de la saison : la meilleure nouvelle, élue par les Bookster VIP, est publiée par une maison d’édition partenaire.</p>')+
+    (ctx==="accueil"?'<button class="sz-btn" type="button" data-auteur>Écrire ma nouvelle</button>':"")+'</div>'+
+    (nx?'<div class="sz-r"><span class="sz-cd-k">Ouverture de la '+esc(nx.nom)+'</span><span class="sz-cd" data-cd="'+esc(nx.debut)+'">'+rebours(Date.parse(nx.debut)-Date.now())+'</span><span class="sz-cd-n">'+esc(nx.theme)+'</span></div>':"")+
+  '</section>'}
+function renderSaisons(){document.querySelectorAll(".saison-slot").forEach(function(el){el.innerHTML=saisonBanner(el.getAttribute("data-saison"))});
+  var c=saisonCourante(),row=$("exFormatRow"),intro=$("auIntro");
+  if(intro&&c&&c.format==="nouvelle"&&!intro.dataset.sz){intro.dataset.sz=1;intro.innerHTML="<b>"+esc(c.nom)+" · "+esc(c.theme)+"</b>&nbsp;: dépose une nouvelle courte complète (1&nbsp;000 à 5&nbsp;000 mots). Dès le dépôt, un certificat d’horodatage prouve que tu en es l’auteur. Et pour que Bookstery reste 100&nbsp;% humain, chaque texte passe par un détecteur d’IA&nbsp;: au-delà de 50&nbsp;% d’écriture générée, il est refusé."}if(row){row.hidden=!(c&&c.format);if(c&&c.consigne)$("exFormatTxt").textContent=c.consigne}}
+setInterval(function(){document.querySelectorAll("[data-cd]").forEach(function(el){el.innerHTML=rebours(Date.parse(el.getAttribute("data-cd"))-Date.now())})},1000);
+renderSaisons();
 </script>
 </body>
 </html>

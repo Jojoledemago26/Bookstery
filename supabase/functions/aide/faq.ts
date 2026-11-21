@@ -20,6 +20,9 @@ Bookstery est une plateforme lyonnaise, éthique et circulaire, qui donne une se
 - Si le Bag mélange plusieurs genres de fiction, l'acheteur choisit le genre de son cadeau avant de payer.
 - Genre de secours : s'il n'existe aucun texte dans ce genre, le manuscrit vient de la même famille (Imaginaire : Fantasy, Fantastique, Science-fiction, Horreur ; Polar & Thriller ; Littérature : Romans, Romance, Roman historique, Feel-good, Aventure, Humour, Classiques, Nouvelles, Théâtre, Poésie ; Jeunesse : Jeunesse, Young Adult, Contes & Légendes). Sinon, le Bookster choisit parmi ses genres préférés.
 
+# Bookster Thème (saisons)
+- Chaque semestre a un thème. Saison 1 (janvier – juin 2027) : « Spécial Nouvelles » : tous les Mystery Drops de la saison mettent à l'honneur la nouvelle littéraire. Les auteurs ne peuvent déposer que des nouvelles courtes complètes pendant la saison, et le Golden Book de la saison est élu parmi ces nouvelles. Dès 10 € d'achat, quel que soit le livre, le Mystery Drop est une nouvelle approuvée de la saison. Saison 2 : juillet – décembre 2027, thème bientôt dévoilé (compte à rebours sur l'accueil et dans l'Espace auteur).
+
 # Liseuse sécurisée
 - Après la commande, chaque manuscrit mystère a un QR code : scanné avec un téléphone, il ouvre la liseuse. On le retrouve aussi dans « Mes manuscrits mystères » (espace client, ou raccourci dans le Bag).
 - Fond papier crème, mode nuit, temps de lecture estimé. Copier-coller et clic droit bloqués, filigrane : le texte de l'auteur est protégé.

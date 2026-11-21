@@ -22,6 +22,7 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 import { MESSAGES, moderer, type Moderation } from "./moderation.ts";
+import { saisonCourante } from "../_shared/saisons.ts";
 
 const MIN_MOTS = 1000;
 const MAX_MOTS = 5000;
@@ -126,7 +127,8 @@ Deno.serve(async (req) => {
 
   // Modération stricte AVANT tout enregistrement : contenu, anti-plagiat (œuvre déjà publiée), langue, qualité
   let mod: Moderation;
-  try { mod = await moderer(titre, genre, texte); }
+  const saison = saisonCourante();
+  try { mod = await moderer(titre, genre, texte, saison?.format ? saison.consigne : ""); }
   catch (e) {
     console.error("modération", e);
     return json(503, { erreur: "La vérification du contenu est indisponible pour le moment. Ton texte n’a pas été déposé : réessaie dans quelques minutes." });
@@ -139,7 +141,7 @@ Deno.serve(async (req) => {
       oeuvre: mod.motif === "plagiat" ? mod.oeuvre_source || null : null,
       // Le conseil personnalisé n'est renvoyé que pour les refus « à corriger », jamais pour un contenu interdit
       note_qualite: mod.motif === "qualite_insuffisante" ? mod.note_qualite : null,
-      conseil: mod.motif === "illisible_ou_fautes" || mod.motif === "pas_litteraire" || mod.motif === "qualite_insuffisante" ? mod.explication : null,
+      conseil: ["illisible_ou_fautes", "pas_litteraire", "qualite_insuffisante", "hors_theme"].includes(mod.motif) ? mod.explication : null,
     });
   }
 
@@ -157,9 +159,12 @@ Deno.serve(async (req) => {
       erreur: `Dépôt refusé : le détecteur d’IA estime à ${Math.round(score * 100)} % la part de texte générée par IA (maximum autorisé : 50 %).` });
   }
 
-  const { data: ex, error } = await admin.from("extraits")
-    .insert({ auteur_id: user.id, auteur_nom: (user.user_metadata?.prenom as string | undefined) ?? null, titre, genre, texte, nb_mots: nbMots, sha256: empreinte, ai_score: score, note_qualite: mod.note_qualite })
+  const base = { auteur_id: user.id, auteur_nom: (user.user_metadata?.prenom as string | undefined) ?? null, titre, genre, texte, nb_mots: nbMots, sha256: empreinte, ai_score: score };
+  const enregistrer = (ligne: Record<string, unknown>) => admin.from("extraits").insert(ligne)
     .select("id, titre, genre, nb_mots, sha256, ai_score, created_at").single();
+  let { data: ex, error } = await enregistrer({ ...base, note_qualite: mod.note_qualite, saison: saison?.id ?? null, format: saison?.format ?? null });
+  // Colonnes de qualite.sql / saisons.sql pas encore créées : enregistrement sans elles
+  if (error && /column|colonne/i.test(error.message)) ({ data: ex, error } = await enregistrer(base));
   if (error) { console.error(error); return json(500, { erreur: "Le dépôt n’a pas pu être enregistré. Réessaie." }); }
 
   return json(200, { certificat: { ...ex, detecteur: DETECTEUR, auteur_id: user.id, auteur_email: user.email } });

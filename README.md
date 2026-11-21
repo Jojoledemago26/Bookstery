@@ -15,6 +15,7 @@ Site Bookstery (page statique), repris depuis l'artefact Claude.
 - `supabase/vendeur-pro.sql` — statut du vendeur (particulier / professionnel) affiché sur les annonces
 - `supabase/vip.sql` — statut Bookster VIP : cumul des achats et badge à 30 €
 - `supabase/fondateur.sql` — badge « Fondateur Bookstery » sur les œuvres du fondateur (non éligibles au Golden Book et aux prix)
+- `supabase/saisons.sql` — Bookster Thème : saison et format des textes, tirage prioritaire dans la saison en cours
 - `supabase/qualite.sql` — contrôle qualité : note IA sur 10 conservée, archivage automatique (moyenne < 2,5/5 après 10 lectures)
 - `supabase/tirage.sql` — tirage équitable des Mystery Drops par genre, sur tous les textes (à exécuter)
 - `supabase/accelerateur.sql` — Pack Accélérateur Auteurs : abonnements, textes prioritaires, statistiques
@@ -212,3 +213,13 @@ Mise en place :
 1. **Longueur** : au moins 2 500 caractères et 1 000 mots (site + `deposer-extrait`).
 2. **Note IA sur 10** : la modération (`moderation.ts`) note la qualité rédactionnelle (orthographe, syntaxe, narration). Sous **6/10**, refus poli (motif `qualite_insuffisante`) avec la note et un conseil personnalisé ; la note des textes acceptés est enregistrée (`note_qualite`).
 3. **Archivage automatique** (`supabase/qualite.sql`) : dès qu'un texte a **au moins 10 lectures** et une **note moyenne < 2,5/5**, il passe en `archived` et n'est plus tiré dans les Mystery Drops (déclencheurs sur les avis et les lectures).
+
+## Bookster Thème (saisons)
+
+Un thème par semestre, défini à deux endroits identiques : `SAISONS` dans `index.html` et `supabase/functions/_shared/saisons.ts`.
+Saison 1 (janvier – juin 2027) : « Spécial Nouvelles », format nouvelle courte complète ; Saison 2 (juillet – décembre 2027) : thème à définir.
+
+- **Bannière** noir / bleu Majorelle / blanc sur l'accueil et dans l'Espace auteur, avec le compte à rebours jusqu'à l'ouverture de la saison suivante. Avant le 1er janvier 2027, la Saison 1 est en « avant-première » (dépôts déjà ouverts).
+- **Dépôt verrouillé** sur le format de la saison : case obligatoire « Mon texte est une nouvelle courte complète… », et contrôle par l'IA (motif `hors_theme` si c'est un extrait ou un chapitre). Chaque texte est enregistré avec sa saison et son format.
+- **Mystery Drops** : dès 10 €, quel que soit le type de livre, tirés en priorité parmi les nouvelles approuvées de la saison en cours (puis parmi les autres textes s'il n'y en a pas assez).
+- Mise en place : exécuter `supabase/saisons.sql`, puis redéployer `deposer-extrait`, `valider-commande` et `stripe-webhook`.

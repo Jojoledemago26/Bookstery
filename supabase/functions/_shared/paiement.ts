@@ -4,6 +4,7 @@
 import Stripe from "npm:stripe@17.7.0";
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2.45.4";
 import { cents, famille, mysteryDrops, UTILITAIRES } from "./regles.ts";
+import { saisonCourante } from "./saisons.ts";
 
 export const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") ?? "", { httpClient: Stripe.createFetchHttpClient() });
 export const admin: SupabaseClient = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
@@ -30,10 +31,13 @@ export async function finaliserCommande(commandeId: string, paymentIntentId: str
   // Mystery Drops : calculés sur le montant des livres seul
   const livres = Number(cmd.montant_livres), nb = mysteryDrops(livres);
   if (nb > 0) {
-    const { data: tires, error } = await admin.rpc("tirer_manuscrits", {
+    const params = {
       p_lecteur: cmd.acheteur_id, p_genre: cmd.genre_cadeau, p_famille: famille(cmd.genre_cadeau),
       p_secours: cmd.genre_secours, p_genres_exclus: [...UTILITAIRES], p_nb: nb,
-    });
+    };
+    // Bookster Thème : textes de la saison en cours d’abord (saisons.sql) ; sinon tirage classique
+    let { data: tires, error } = await admin.rpc("tirer_manuscrits", { ...params, p_saison: saisonCourante()?.id ?? null });
+    if (error) ({ data: tires, error } = await admin.rpc("tirer_manuscrits", params));
     if (error) console.error("tirer_manuscrits", error);
     const choisis = (tires ?? []) as { id: string }[];
     if (choisis.length) {

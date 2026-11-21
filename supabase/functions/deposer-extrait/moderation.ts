@@ -9,7 +9,7 @@
 
 import Anthropic from "npm:@anthropic-ai/sdk@1.5.0";
 
-export type Motif = "aucun" | "contenu_interdit" | "plagiat" | "pas_litteraire" | "illisible_ou_fautes" | "qualite_insuffisante" | "pas_en_francais";
+export type Motif = "aucun" | "contenu_interdit" | "plagiat" | "pas_litteraire" | "illisible_ou_fautes" | "qualite_insuffisante" | "hors_theme" | "pas_en_francais";
 export const NOTE_MIN = 6; // note de qualité rédactionnelle minimale, sur 10
 export type Moderation = {
   decision: "accepte" | "refuse";
@@ -63,7 +63,7 @@ const SCHEMA = {
   type: "object",
   properties: {
     decision: { type: "string", enum: ["accepte", "refuse"] },
-    motif: { type: "string", enum: ["aucun", "contenu_interdit", "plagiat", "pas_litteraire", "illisible_ou_fautes", "pas_en_francais"] },
+    motif: { type: "string", enum: ["aucun", "contenu_interdit", "plagiat", "pas_litteraire", "illisible_ou_fautes", "hors_theme", "pas_en_francais"] },
     note_qualite: { type: "integer", minimum: 0, maximum: 10 },
     categories: {
       type: "array",
@@ -78,7 +78,7 @@ const SCHEMA = {
 
 let client: Anthropic | null = null;
 
-export async function moderer(titre: string, genre: string, texte: string): Promise<Moderation> {
+export async function moderer(titre: string, genre: string, texte: string, consigneSaison = ""): Promise<Moderation> {
   const apiKey = Deno.env.get("ANTHROPIC_API_KEY");
   if (!apiKey) throw new Error("ANTHROPIC_API_KEY manquante");
   client ??= new Anthropic({ apiKey });
@@ -86,7 +86,9 @@ export async function moderer(titre: string, genre: string, texte: string): Prom
   const response = await client.messages.create({
     model: MODELE,
     max_tokens: 4000,
-    system: CONSIGNES,
+    system: consigneSaison
+      ? `${CONSIGNES}\n\nThème de la saison en cours : le texte doit être ${consigneSaison}. Après les contrôles 1 à 4, refuse avec le motif "hors_theme" un texte qui ne respecte manifestement pas ce format (par exemple un chapitre de roman qui s'arrête sans fin). Sois tolérant avec une fin ouverte, si le récit forme un tout.`
+      : CONSIGNES,
     output_config: { effort: "low", format: { type: "json_schema", schema: SCHEMA } },
     messages: [{
       role: "user",
@@ -122,6 +124,8 @@ export const MESSAGES: Record<Exclude<Motif, "aucun">, string> = {
     "Pour l’instant, Bookstery accueille uniquement des textes écrits en français. Si tu as une version française de ton texte, n’hésite pas à la déposer !",
   pas_litteraire:
     "Ton envoi ne ressemble pas à une œuvre littéraire (extrait de roman, nouvelle, conte, poésie…). Bookstery accueille uniquement des textes de création : dépose plutôt un extrait de ton histoire.",
+  hors_theme:
+    "Cette saison, le Bookster Thème est « Spécial Nouvelles » : on accueille uniquement des nouvelles courtes complètes, avec un début, un développement et une fin. Ton texte ressemble plutôt à un extrait ou à un chapitre d’un récit plus long. Tu peux le retravailler en nouvelle, ou le garder pour une prochaine saison !",
   qualite_insuffisante:
     "Ton texte a du potentiel, mais il n’est pas encore tout à fait prêt à être offert aux lecteurs : notre relecture automatique lui donne une note de qualité rédactionnelle inférieure à 6/10 (orthographe, syntaxe, narration). Prends le temps de te relire, à voix haute si possible, ou de le faire relire par un proche, puis dépose-le à nouveau. On a hâte de te lire !",
   illisible_ou_fautes:
