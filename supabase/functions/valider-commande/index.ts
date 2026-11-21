@@ -11,10 +11,10 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 
-const DROP_STEP = 10; // commande en cours : chaque tranche de 10 € de livres = 1 Mystery Drop (manuscrit mystère offert)
+// Commande en cours, paliers dégressifs : 10 € = 1 Mystery Drop, 18 € = 2, 25 € = 3, 28 € = 4, 30 € = 5 (maximum)
+const PALIERS = [10, 18, 25, 28, 30];
 const r2 = (x: number) => Math.round((x + Number.EPSILON) * 100) / 100;
-const DROP_MAX = 5;   // 50 € = 5 Mystery Drops, le maximum par commande
-const booksterbooks = (livres: number) => Math.min(DROP_MAX, Math.floor((livres + 1e-9) / DROP_STEP));
+const booksterbooks = (livres: number) => PALIERS.filter((p) => livres + 1e-9 >= p).length;
 const protection = (livres: number) => (livres > 0 ? r2(livres * 0.05 + 0.7) : 0);
 
 // Familles de genres (même liste que dans index.html) : si aucun texte n'existe
