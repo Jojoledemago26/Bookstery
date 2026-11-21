@@ -1318,7 +1318,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
           <div>
             <span class="a-eyebrow">Auteurs</span>
             <h2>Ton texte, <span>cadeau mystère</span> de toute une communauté.</h2>
-            <p>Extrait de roman, premier chapitre ou nouvelle&nbsp;: partage ton écriture avec la communauté. Ton texte se glisse en surprise dans les Bookster Bags, et des lecteurs qui ne te connaissent pas encore vont l’ouvrir, te lire… et parler de toi.</p>
+            <p data-szt="accueil"><b>Saison 1 · Spécial Nouvelles</b>&nbsp;: partage ta nouvelle avec la communauté. Elle se glisse en surprise dans les Bookster Bags, et des lecteurs qui ne te connaissent pas encore vont l’ouvrir, te lire… et parler de toi.</p>
             <div class="cta-arrow">
               <button class="btn cta-main" type="button" data-auteur>Envoyer mon texte</button>
               <span class="ca-wrap" aria-hidden="true">
@@ -1329,7 +1329,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
           </div>
         </div>
         <ol class="flow" aria-label="Le parcours de ton texte">
-            <li><button class="flow-btn" type="button" id="fb1" aria-expanded="false" aria-controls="fp1"><i>1</i><div><b>Tu publies ton texte en ligne</b><span>Extrait de roman, premier chapitre ou nouvelle.</span></div><em class="flow-more" aria-hidden="true">En savoir plus</em></button></li>
+            <li><button class="flow-btn" type="button" id="fb1" aria-expanded="false" aria-controls="fp1"><i>1</i><div><b>Tu publies ton texte en ligne</b><span data-szt="etape">Une nouvelle courte complète (Saison 1).</span></div><em class="flow-more" aria-hidden="true">En savoir plus</em></button></li>
             <li><button class="flow-btn" type="button" id="fb2" aria-expanded="false" aria-controls="fp2"><i>2</i><div><b>Il part en cadeau mystère</b><span>Glissé dans les Bookster Bags de la communauté.</span></div><em class="flow-more" aria-hidden="true">En savoir plus</em></button></li>
             <li><button class="flow-btn" type="button" id="fb3" aria-expanded="false" aria-controls="fp3"><i>3</i><div><b>Les Booksters te découvrent</b><span>Ils te lisent, te recommandent, te suivent.</span></div><em class="flow-more" aria-hidden="true">En savoir plus</em></button></li>
           </ol>
@@ -1338,7 +1338,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
             <div class="fp-txt">
             <span class="fp-k">Étape 1 · Tu publies ton texte en ligne</span>
             <h3>Ton texte dort dans un tiroir&nbsp;? Fais-le sortir&nbsp;!</h3>
-            <p>Extrait de roman, premier chapitre ou nouvelle&nbsp;: quel que soit ton format, publie-le en ligne en 2 minutes depuis ton Espace auteur.</p>
+            <p data-szt="panneau">Cette saison, c’est <b>Spécial Nouvelles</b>&nbsp;: dépose une nouvelle courte complète, en ligne en 2 minutes depuis ton Espace auteur.</p>
             <ul class="fp-list">
               <li><b>1&nbsp;000 à 5&nbsp;000 mots</b><span>Juste de quoi donner envie de lire la suite.</span></li>
               <li><b>100&nbsp;% humain</b><span>Ici, on lit des plumes, pas des machines.</span></li>
@@ -1700,9 +1700,9 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
 <div class="modal wide" id="auteur" role="dialog" aria-modal="true" aria-labelledby="auTitle" aria-hidden="true">
   <button class="icon x" type="button" data-close aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   <span class="a-kicker">Espace auteur</span>
-  <h2 id="auTitle">Partage ton texte</h2>
+  <h2 id="auTitle" data-szt="titre">Partage ta nouvelle</h2>
   <div class="saison-slot" data-saison="auteur"></div>
-  <p id="auIntro">Extrait de roman, premier chapitre ou nouvelle&nbsp;: colle ici les pages que tu as envie de faire lire. Dès le dépôt, un certificat d’horodatage prouve que tu en es l’auteur. Et pour que Bookstery reste 100&nbsp;% humain, chaque texte passe par un détecteur d’IA&nbsp;: au-delà de 50&nbsp;% d’écriture générée, il est refusé.</p>
+  <p id="auIntro" data-szt="intro"><b>Saison 1 · Spécial Nouvelles</b>&nbsp;: colle ici ta nouvelle courte complète (1&nbsp;000 à 5&nbsp;000 mots). Dès le dépôt, un certificat d’horodatage prouve que tu en es l’auteur. Et pour que Bookstery reste 100&nbsp;% humain, chaque texte passe par un détecteur d’IA&nbsp;: au-delà de 50&nbsp;% d’écriture générée, il est refusé.</p>
 
   <div class="au-tabs" role="tablist">
     <button type="button" role="tab" id="tabDepot" aria-selected="true" aria-controls="auDepot">Nouveau dépôt</button>
@@ -1728,7 +1728,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px
         <div><label for="exGenre">Genre</label><select id="exGenre" required></select></div>
       </div>
       <label for="exTexte">Ton texte <span class="hint">Entre 1&nbsp;000 et 5&nbsp;000 mots, soit 4 à 20 pages environ</span></label>
-      <textarea id="exTexte" rows="9" placeholder="Colle ici ton extrait de roman, ton premier chapitre ou ta nouvelle."></textarea>
+      <textarea id="exTexte" rows="9" placeholder="Colle ici ta nouvelle courte complète." data-szph="1"></textarea>
       <div class="calib">
         <div class="calib-bar" aria-hidden="true"><span class="calib-ok"></span><i id="calibFill"></i></div>
         <div class="calib-info"><b id="calibCount">0 mot</b><span id="calibTxt">Ton texte doit faire au moins 1&nbsp;000 mots.</span></div>
@@ -3513,6 +3513,13 @@ $("suTabA").addEventListener("click",function(){suMode="achats";renderSuivi()});
 $("suTabV").addEventListener("click",function(){suMode="ventes";renderSuivi()});
 
 /* ================= Bookster Thème : un thème par semestre ================= */
+/* Textes de dépôt adaptés au format de la saison ("nouvelle" ou thème libre) */
+var SZ_TEXTES={nouvelle:{"accueil": "<b>Saison 1 · Spécial Nouvelles</b>&nbsp;: partage ta nouvelle avec la communauté. Elle se glisse en surprise dans les Bookster Bags, et des lecteurs qui ne te connaissent pas encore vont l’ouvrir, te lire… et parler de toi.", "etape": "Une nouvelle courte complète (Saison 1).", "panneau": "Cette saison, c’est <b>Spécial Nouvelles</b>&nbsp;: dépose une nouvelle courte complète, en ligne en 2 minutes depuis ton Espace auteur.", "intro": "<b>Saison 1 · Spécial Nouvelles</b>&nbsp;: colle ici ta nouvelle courte complète (1&nbsp;000 à 5&nbsp;000 mots). Dès le dépôt, un certificat d’horodatage prouve que tu en es l’auteur. Et pour que Bookstery reste 100&nbsp;% humain, chaque texte passe par un détecteur d’IA&nbsp;: au-delà de 50&nbsp;% d’écriture générée, il est refusé.", "titre": "Partage ta nouvelle"},libre:{"accueil": "<b>Thème libre</b>&nbsp;: extrait de roman, premier chapitre ou nouvelle, partage ton écriture avec la communauté. Ton texte se glisse en surprise dans les Bookster Bags, et des lecteurs qui ne te connaissent pas encore vont l’ouvrir, te lire… et parler de toi.", "etape": "Thème libre : extrait, chapitre ou nouvelle.", "panneau": "<b>Thème libre</b>&nbsp;: extrait de roman, premier chapitre ou nouvelle, quel que soit ton format, publie-le en ligne en 2 minutes depuis ton Espace auteur.", "intro": "<b>Thème libre</b>&nbsp;: extrait de roman, premier chapitre ou nouvelle, colle ici les pages que tu as envie de faire lire. Dès le dépôt, un certificat d’horodatage prouve que tu en es l’auteur. Et pour que Bookstery reste 100&nbsp;% humain, chaque texte passe par un détecteur d’IA&nbsp;: au-delà de 50&nbsp;% d’écriture générée, il est refusé.", "titre": "Partage ton texte"}};
+function szTextes(c){var t=c&&c.format==="nouvelle"?SZ_TEXTES.nouvelle:SZ_TEXTES.libre;
+  if(c&&c.format==="nouvelle"&&c.nom!=="Saison 1")t=JSON.parse(JSON.stringify(t).replace(/Saison 1/g,c.nom));
+  document.querySelectorAll("[data-szt]").forEach(function(el){var k=el.getAttribute("data-szt");if(t[k])el.innerHTML=t[k]});
+  var ta=document.querySelector("[data-szph]");if(ta)ta.placeholder=c&&c.format==="nouvelle"?"Colle ici ta nouvelle courte complète.":"Colle ici ton extrait de roman, ton premier chapitre ou ta nouvelle.";}
+
 /* Même calendrier que supabase/functions/_shared/saisons.ts (à garder identique) */
 var SAISONS=[
   {id:"2027-S1",nom:"Saison 1",periode:"janvier – juin 2027",debut:"2027-01-01T00:00:00+01:00",fin:"2027-07-01T00:00:00+02:00",theme:"Spécial Nouvelles",format:"nouvelle",formatNom:"Nouvelle courte",
@@ -3533,8 +3540,9 @@ function saisonBanner(ctx){var c=saisonCourante();if(!c)return"";var nx=saisonSu
     (nx?'<div class="sz-r"><span class="sz-cd-k">Ouverture de la '+esc(nx.nom)+'</span><span class="sz-cd" data-cd="'+esc(nx.debut)+'">'+rebours(Date.parse(nx.debut)-Date.now())+'</span><span class="sz-cd-n">'+esc(nx.theme)+'</span></div>':"")+
   '</section>'}
 function renderSaisons(){document.querySelectorAll(".saison-slot").forEach(function(el){el.innerHTML=saisonBanner(el.getAttribute("data-saison"))});
-  var c=saisonCourante(),row=$("exFormatRow"),intro=$("auIntro");
-  if(intro&&c&&c.format==="nouvelle"&&!intro.dataset.sz){intro.dataset.sz=1;intro.innerHTML="<b>"+esc(c.nom)+" · "+esc(c.theme)+"</b>&nbsp;: dépose une nouvelle courte complète (1&nbsp;000 à 5&nbsp;000 mots). Dès le dépôt, un certificat d’horodatage prouve que tu en es l’auteur. Et pour que Bookstery reste 100&nbsp;% humain, chaque texte passe par un détecteur d’IA&nbsp;: au-delà de 50&nbsp;% d’écriture générée, il est refusé."}if(row){row.hidden=!(c&&c.format);if(c&&c.consigne)$("exFormatTxt").textContent=c.consigne}}
+  var c=saisonCourante(),row=$("exFormatRow");
+  szTextes(c);
+  if(row){row.hidden=!(c&&c.format);if(c&&c.consigne)$("exFormatTxt").textContent=c.consigne}}
 setInterval(function(){document.querySelectorAll("[data-cd]").forEach(function(el){el.innerHTML=rebours(Date.parse(el.getAttribute("data-cd"))-Date.now())})},1000);
 try{renderSaisons()}catch(e){console.error("Bookstery : bannière",e)}
 
